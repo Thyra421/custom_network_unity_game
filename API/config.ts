@@ -1,0 +1,4 @@
+const SERVER_PORT: number = 8080
+const UPDATE_FREQUENCY: number = 20
+
+export { SERVER_PORT, UPDATE_FREQUENCY }
