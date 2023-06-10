@@ -1,7 +1,9 @@
+import { players } from "../api"
+import { Player } from "../components/player"
 import { PlayerData } from "./player_data"
 
 enum ServerMessageType {
-    joinedGame, position
+    me, joinedGame, leftGame, positions
 }
 
 class ServerMessage {
@@ -9,6 +11,15 @@ class ServerMessage {
 
     protected constructor(type: ServerMessageType) {
         this.type = type
+    }
+}
+
+class ServerMessageMe extends ServerMessage {
+    readonly id: string
+
+    constructor(id: string) {
+        super(ServerMessageType.me)
+        this.id = id
     }
 }
 
@@ -21,13 +32,24 @@ class ServerMessageJoinedGame extends ServerMessage {
     }
 }
 
-class ServerMessagePosition extends ServerMessage {
+class ServerMessagePositions extends ServerMessage {
     readonly players: PlayerData[]
 
-    constructor(players: PlayerData[]) {
-        super(ServerMessageType.position)
-        this.players = players
+    constructor() {
+        super(ServerMessageType.positions)
+        this.players = players.getPlayers().map((p: Player) => p.data)
     }
 }
 
-export { ServerMessageType, ServerMessage, ServerMessagePosition, ServerMessageJoinedGame }
+class ServerMessageLeftGame extends ServerMessage {
+    readonly id: string
+
+    constructor(id: string) {
+        super(ServerMessageType.leftGame)
+        this.id = id
+    }
+}
+
+export {
+    ServerMessageType, ServerMessage, ServerMessageMe, ServerMessagePositions, ServerMessageJoinedGame, ServerMessageLeftGame
+}

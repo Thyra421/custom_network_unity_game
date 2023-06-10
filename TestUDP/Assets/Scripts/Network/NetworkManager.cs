@@ -9,6 +9,10 @@ public class NetworkManager : MonoBehaviour
 
     public readonly UDPClient udp = new UDPClient(SERVER_ENDPOINT, SERVER_PORT);
     public readonly TCPClient tcp = new TCPClient(SERVER_ENDPOINT, SERVER_PORT);
+    /// <summary>
+    /// Must be called in a Coroutine.
+    /// Example StartCoroutine(NetworkManager.current.http.Get(onSuccess));
+    /// </summary>
     public readonly HTTPClient http = new HTTPClient($"http://{SERVER_ENDPOINT}:{SERVER_PORT}");
 
     string id;
@@ -16,14 +20,11 @@ public class NetworkManager : MonoBehaviour
     public void SetId(string id) => this.id = id;
     public string GetId => id;
 
-    private void Awake()
-    {
-        if (current == null)
-        {
+    private void Awake() {
+        if (current == null) {
             current = this;
             DontDestroyOnLoad(gameObject);
-        }
-        else
+        } else
             Destroy(gameObject);
     }
 }

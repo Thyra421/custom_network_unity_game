@@ -19,7 +19,9 @@ class TCPServer {
         console.log(`[TCP server] running`)
     }
 
-    private onClose = (reason: Buffer) => { }
+    private onClose = (reason: Buffer) => {
+
+    }
 
     private onMessage = (msg: RawData, socket: WebSocket) => {
         const jsonMessage = JSON.parse(msg.toString())

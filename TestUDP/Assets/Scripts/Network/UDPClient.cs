@@ -12,7 +12,7 @@ public class UDPClient
     private readonly int SERVER_PORT;
     private bool connected;
 
-    public OnServerMessagePositionHandler onServerMessagePosition;
+    public OnServerMessagePositionsHandler onServerMessagePositions;
 
     public UDPClient(string serverEndpoint, int serverPort) {
         SERVER_ENDPOINT = serverEndpoint;
@@ -37,15 +37,15 @@ public class UDPClient
     async void Listen() {
         while (true) {
             UdpReceiveResult result = await udp.ReceiveAsync();
-            Debug.Log(Encoding.UTF8.GetString(result.Buffer));
-            JObject json = JObject.Parse(Encoding.UTF8.GetString(result.Buffer));
+            string msg = Encoding.UTF8.GetString(result.Buffer);
+            Debug.Log(msg);
 
-            ServerMessage message = json.ToObject<ServerMessage>();
+            ServerMessage message = Utils.ParseJsonString<ServerMessage>(msg);
 
             switch (message.type) {
-                case ServerMessageType.position:
-                    ServerMessagePosition messagePosition = json.ToObject<ServerMessagePosition>();
-                    onServerMessagePosition(messagePosition);
+                case ServerMessageType.positions:
+                    ServerMessagePositions messagePositions = Utils.ParseJsonString<ServerMessagePositions>(msg);
+                    onServerMessagePositions(messagePositions);
                     break;
             }
         }

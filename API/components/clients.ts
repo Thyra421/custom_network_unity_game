@@ -2,6 +2,8 @@ import { players } from "../api";
 import { ServerMessage } from "../data/server_message";
 import { Client } from "./client";
 import { WebSocket } from "ws"
+import { v4 as uuidv4 } from 'uuid'
+
 
 class Clients {
     private readonly clients: Client[] = []
@@ -22,9 +24,12 @@ class Clients {
         return this.clients.find((c: Client) => c.id == id)
     }
 
-    add = (client: Client): void => {
-        this.clients.push(client)
+    create = (): Client => {
+        const id: string = uuidv4()
+        const newClient: Client = new Client(id)
+        this.clients.push(newClient)
         console.log("[CLIENTS] " + this.clients.map(c => c.id))
+        return newClient
     }
 
     sendToAllPlayersUDP = (udpMessage: ServerMessage): void => {

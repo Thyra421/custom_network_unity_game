@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEngine;
 
 public class Game : MonoBehaviour
@@ -6,19 +5,27 @@ public class Game : MonoBehaviour
     [SerializeField]
     GameObject playerPrefab;
 
-    void OnJoinedWorld(HTTPResponse response) {
-        Debug.Log(response.body);
-    }
-
-    void OnServerMessageJoinedGame(ServerMessageJoinedGame messageJoinedGame) {
+    void CreatePlayer(PlayerData player) {
         MainThreadWorker.current.AddJob(() => {
-            GameObject newPlayer = Instantiate(playerPrefab);
-            newPlayer.GetComponent<NetworkGameObject>().id = messageJoinedGame.player.id;
+            GameObject newPlayer = Instantiate(playerPrefab, player.position.ToVector3(), Quaternion.identity);
+            newPlayer.GetComponent<NetworkGameObject>().id = player.id;
         });
     }
 
-    void OnServerMessagePosition(ServerMessagePosition messagePosition) {
-        foreach (PlayerData p in messagePosition.players) {
+    void OnJoinedWorld(ServerMessagePositions messagePositions) {
+        foreach (PlayerData p in messagePositions.players) {
+            if (p.id == NetworkManager.current.GetId)
+                continue;
+            CreatePlayer(p);
+        }
+    }
+
+    void OnServerMessageJoinedGame(ServerMessageJoinedGame messageJoinedGame) {
+        CreatePlayer(messageJoinedGame.player);
+    }
+
+    void OnServerMessagePositions(ServerMessagePositions messagePositions) {
+        foreach (PlayerData p in messagePositions.players) {
             if (p.id == NetworkManager.current.GetId)
                 continue;
             NetworkGameObject networkGameObject = NetworkGameObject.Find(p.id);
@@ -27,8 +34,8 @@ public class Game : MonoBehaviour
     }
 
     void Start() {
-        StartCoroutine(NetworkManager.current.http.Get($"play?id={NetworkManager.current.GetId}", OnJoinedWorld));
+        StartCoroutine(NetworkManager.current.http.GetPlay(OnJoinedWorld));
         NetworkManager.current.tcp.onServerMessageJoinedGame += OnServerMessageJoinedGame;
-        NetworkManager.current.udp.onServerMessagePosition += OnServerMessagePosition;
+        NetworkManager.current.udp.onServerMessagePositions += OnServerMessagePositions;
     }
 }

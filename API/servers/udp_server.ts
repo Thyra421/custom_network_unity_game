@@ -5,8 +5,7 @@ import { SERVER_PORT, UPDATE_FREQUENCY } from '../config'
 import { clients, players } from '../api'
 import { ClientMessage, ClientMessagePosition, ClientMessageType } from '../data/client_message'
 import { Player } from '../components/player'
-import { PlayerData } from '../data/player_data'
-import { ServerMessagePosition } from '../data/server_message'
+import { ServerMessagePositions } from '../data/server_message'
 
 class UDPServer {
     readonly udpServer: dgram.Socket = dgram.createSocket('udp4')
@@ -48,8 +47,7 @@ class UDPServer {
     }
 
     private sync = () => {
-        const positions: PlayerData[] = players.getPlayers().map(p => p.data)
-        clients.sendToAllPlayersUDP(new ServerMessagePosition(positions))
+        clients.sendToAllPlayersUDP(new ServerMessagePositions())
     }
 }
 

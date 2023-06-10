@@ -10,68 +10,56 @@ public class Menu : MonoBehaviour
     [SerializeField] Button play;
     [SerializeField] Slider slider;
 
-    private void SetLoading()
-    {
+    private void SetLoading() {
         slider.gameObject.SetActive(true);
         connect.gameObject.SetActive(false);
         play.gameObject.SetActive(false);
     }
 
-    private void SetPlay()
-    {
+    private void SetPlay() {
         slider.gameObject.SetActive(false);
         connect.gameObject.SetActive(false);
         play.gameObject.SetActive(true);
     }
 
-    private void SetConnect()
-    {
+    private void SetConnect() {
         slider.gameObject.SetActive(false);
         connect.gameObject.SetActive(true);
         play.gameObject.SetActive(false);
     }
 
-    private void ConnectHTTP()
-    {
+    private void ConnectHTTP() {
         slider.value = 0;
-        StartCoroutine(NetworkManager.current.http.Get("connect", HTTPConnectCallback));
+        StartCoroutine(NetworkManager.current.http.GetConnect(OnConnectedHTTP, OnErrorHTTP));
     }
 
-    private void ConnectTCP()
-    {
+    private void ConnectTCP() {
         slider.value = 1;
         NetworkManager.current.tcp.Connect((object sender, EventArgs e) => ConnectUDP());
     }
 
-    private void ConnectUDP()
-    {
+    private void ConnectUDP() {
         slider.value = 2;
         NetworkManager.current.udp.Connect(SetPlay);
     }
 
-    void HTTPConnectCallback(HTTPResponse response)
-    {
-        if (response.status == HttpStatusCode.OK)
-        {
-            JObject jsonMessage = JObject.Parse(response.body);
-            string id = jsonMessage["id"].ToString();
-            NetworkManager.current.SetId(id);
-            ConnectTCP();
-        }
-        else
-            SetConnect();
+    void OnConnectedHTTP(ServerMessageMe messageMe) {
+        NetworkManager.current.SetId(messageMe.id);
+        ConnectTCP();
+    }
+
+    void OnErrorHTTP() {
+        SetConnect();
     }
 
     void Play() => StartCoroutine(Utils.LoadSceneAsync("Game"));
 
-    void Start()
-    {
-        SetLoading(); 
+    void Start() {
+        SetLoading();
         ConnectHTTP();
     }
 
-    private void Awake()
-    {
+    private void Awake() {
         slider.minValue = 0;
         slider.maxValue = 3;
         connect.onClick.AddListener(ConnectHTTP);

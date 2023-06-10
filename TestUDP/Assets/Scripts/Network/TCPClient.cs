@@ -28,16 +28,16 @@ public class TCPClient
     private void OnMessage(object sender, MessageEventArgs e) {
         try {
             Debug.Log(e.Data);
-            ServerMessage message = JObject.Parse(e.Data).ToObject<ServerMessage>();
+            ServerMessage message = Utils.ParseJsonString<ServerMessage>(e.Data);
 
             switch (message.type) {
                 case ServerMessageType.joinedGame:
-                    ServerMessageJoinedGame messageJoinedGame = JObject.Parse(e.Data).ToObject<ServerMessageJoinedGame>();
+                    ServerMessageJoinedGame messageJoinedGame = Utils.ParseJsonString<ServerMessageJoinedGame>(e.Data);
                     onServerMessageJoinedGame(messageJoinedGame);
                     break;
             }
         } catch (Exception ex) {
-            Debug.Log(ex.Message);
+            Debug.LogError(ex.Message);
         }
     }
 
@@ -60,7 +60,6 @@ public class TCPClient
     public void Authenticate() {
         Send(new ClientMessageAuthenticate());
     }
-
 
     public void Send(ClientMessage message) {
         if (!ws.IsAlive) {
