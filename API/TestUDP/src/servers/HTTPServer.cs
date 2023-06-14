@@ -22,7 +22,7 @@ public class HTTPServer
         ClientMessagePlay messagePlay = Utils.ParseJsonString<ClientMessagePlay>(obj.ToString());
         Client client = API.Clients.Find(messagePlay.secret);
         Player newPlayer = API.Players.Create(client);
-        API.Players.BroadcastTCP(new ServerMessageJoinedGame(newPlayer.Data));
+        API.Players.BroadcastTCP(new ServerMessageJoinedGame(newPlayer.Data), newPlayer);
         ServerMessageGameState messageGameState = new ServerMessageGameState(newPlayer.Data.id, API.Players.GetObjectDatas().ToArray());
         return Utils.ObjectToString(messageGameState);
     }

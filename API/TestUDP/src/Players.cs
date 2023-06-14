@@ -25,6 +25,13 @@ public class Players
         }
     }
 
+    public async void BroadcastTCP(ServerMessage message, Player except) {
+        foreach (Client client in GetClients()) {
+            if (client != except.Client)
+                await client.Tcp.Send(message);
+        }
+    }
+
     public void BroadcastUDP(ServerMessage message) {
         foreach (Client client in GetClients()) {
             client.Udp?.Send(message);

@@ -3,10 +3,14 @@ using UnityEngine;
 
 public class NetworkGameObject : MonoBehaviour
 {
+    private const int _frequency = 20;
     [SerializeField]
     private float _movementSpeed = 5f;
+    [SerializeField]
+    private bool _isMine;
     private Vector3 _destination;
     private string _id;
+    private float _elapsedTime = 0f;
 
     private void OnServerMessagePosition(ServerMessagePositions serverMessagePositions) {
         if (serverMessagePositions.players.Any((ObjectData o) => o.id == _id))
@@ -18,7 +22,7 @@ public class NetworkGameObject : MonoBehaviour
             Destroy(gameObject);
     }
 
-    private void MoveToDestination() {
+    private void MoveTowardsDestination() {
         Vector3 direction = (_destination - transform.position).normalized;
 
         float distance = Vector3.Distance(transform.position, _destination);
@@ -30,8 +34,22 @@ public class NetworkGameObject : MonoBehaviour
         }
     }
 
+    private void SendPosition() {
+        _elapsedTime += Time.deltaTime;
+        if (_elapsedTime >= 1 / _frequency) {
+            UDPClient.Send(new ClientMessagePosition(new Vector3Data(transform.position.x, transform.position.y, transform.position.z)));
+            _elapsedTime = 0f;
+        }
+    }
+
+    private void FixedUpdate() {
+        if (!_isMine)
+            MoveTowardsDestination();
+    }
+
     private void Update() {
-        MoveToDestination();
+        if (_isMine)
+            SendPosition();
     }
 
     private void Start() {
@@ -43,12 +61,4 @@ public class NetworkGameObject : MonoBehaviour
         get => _id;
         set => _id = value;
     }
-
-    //public static NetworkGameObject Find(string id) {
-    //    NetworkGameObject[] networkGameObjects = FindObjectsOfType<NetworkGameObject>();
-    //    if (!networkGameObjects.Any((NetworkGameObject g) => g.Id == id))
-    //        return null;
-    //    NetworkGameObject networkGameObject = networkGameObjects.First((NetworkGameObject g) => g.Id == id);
-    //    return networkGameObject;
-    //}
 }

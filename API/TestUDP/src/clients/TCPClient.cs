@@ -11,9 +11,9 @@ public class TCPClient
         Console.WriteLine($"[TCPClient] disconnected");
 
         if (API.Players.Any(this)) {
-            string id = API.Players.Find(this)!.Data.id;
+            Player player = API.Players.Find(this)!;
             API.Players.Remove(this);
-            API.Players.BroadcastTCP(new ServerMessageLeftGame(id));
+            API.Players.BroadcastTCP(new ServerMessageLeftGame(player.Data.id), player);
         }
         API.Clients.Remove(this);
     }
