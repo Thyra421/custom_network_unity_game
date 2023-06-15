@@ -9,7 +9,7 @@ public class Players
     private void Sync() {
         if (_players.Count < 2)
             return;
-        BroadcastUDP(new ServerMessagePositions(GetObjectDatas().ToArray()));
+        BroadcastUDP(new ServerMessageMovements(GetObjectDatas().ToArray()));
     }
 
     public void StartSyncing() {

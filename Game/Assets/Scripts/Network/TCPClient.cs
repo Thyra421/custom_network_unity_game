@@ -15,7 +15,7 @@ public class TCPClient
         OnListen();
         NetworkStream stream = _tcpClient!.GetStream();
 
-        byte[] bytes = new byte[256];
+        byte[] bytes = new byte[1024];
         int i;
 
         try {
@@ -24,7 +24,8 @@ public class TCPClient
                 OnMessage(message);
             }
             OnDisconnect();
-        } catch (Exception) {
+        } catch (Exception e) {
+            Debug.LogException(e);
             OnDisconnect();
         }
     }

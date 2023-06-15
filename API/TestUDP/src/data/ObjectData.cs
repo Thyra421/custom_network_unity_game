@@ -3,10 +3,10 @@
 public class ObjectData
 {
     public readonly string id;
-    public Vector3Data position;
+    public TransformData transform;
 
     public ObjectData() {
         id = id = Utils.GenerateUUID();
-        position = Vector3Data.Zero();
+        transform = TransformData.Zero();
     }
 }

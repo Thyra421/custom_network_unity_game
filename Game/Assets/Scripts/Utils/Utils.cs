@@ -2,7 +2,6 @@ using Newtonsoft.Json.Linq;
 
 public static class Utils
 {
-
     public static T ParseJsonString<T>(string s) {
         return JObject.Parse(s).ToObject<T>();
     }

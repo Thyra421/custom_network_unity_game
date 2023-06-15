@@ -4,7 +4,7 @@ public enum ServerMessageType
     gameState, // HTTP
     joinedGame, // TCP
     leftGame, // TCP
-    positions // UDP
+    movements // UDP
 }
 
 public class ServerMessage
@@ -34,11 +34,11 @@ public class ServerMessageJoinedGame : ServerMessage
     }
 }
 
-public class ServerMessagePositions : ServerMessage
+public class ServerMessageMovements : ServerMessage
 {
     public ObjectData[] players;
 
-    public ServerMessagePositions(ObjectData[] players) : base(ServerMessageType.positions) {
+    public ServerMessageMovements(ObjectData[] players) : base(ServerMessageType.movements) {
         this.players = players;
     }
 }
@@ -48,7 +48,7 @@ public class ServerMessageGameState : ServerMessage
     public string id;
     public ObjectData[] players;
 
-    public ServerMessageGameState(string id, ObjectData[] players) : base(ServerMessageType.secret) {
+    public ServerMessageGameState(string id, ObjectData[] players) : base(ServerMessageType.gameState) {
         this.id = id;
         this.players = players;
     }

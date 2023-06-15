@@ -5,12 +5,12 @@ public class Game : MonoBehaviour
     [SerializeField]
     private GameObject _playerPrefab;
     [SerializeField]
-    private NetworkGameObject _myPlayer;
+    private LocalPlayer _myPlayer;
 
     private void CreatePlayer(ObjectData player) {
         MainThreadWorker.Current.AddJob(() => {
-            GameObject newPlayer = Instantiate(_playerPrefab, player.position.ToVector3(), Quaternion.identity);
-            newPlayer.GetComponent<NetworkGameObject>().Id = player.id;
+            GameObject newPlayer = Instantiate(_playerPrefab, player.transform.position.ToVector3(), Quaternion.identity);
+            newPlayer.GetComponent<NetworkObject>().Id = player.id;
         });
     }
 

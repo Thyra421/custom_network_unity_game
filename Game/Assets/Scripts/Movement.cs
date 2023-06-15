@@ -1,15 +1,9 @@
 using UnityEngine;
 
-public class Movement : MonoBehaviour
+public abstract class Movement : MonoBehaviour
 {
-    public float moveSpeed = 5f;
-
-    private void FixedUpdate() {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-
-        Vector3 movement = new Vector3(horizontalInput, 0f, verticalInput);
-        movement.Normalize();
-        transform.Translate(moveSpeed * Time.deltaTime * movement);
-    }
+    [SerializeField]
+    protected float _movementSpeed = 5f;
+    [SerializeField]
+    protected Animator _animator;
 }

@@ -6,6 +6,9 @@ public class Vector3Data
     public float y;
     public float z;
 
+    public Vector3Data() {
+    }
+
     public Vector3Data(float x, float y, float z) {
         this.x = x;
         this.y = y;

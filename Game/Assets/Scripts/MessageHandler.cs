@@ -12,11 +12,11 @@ public class MessageHandler : MonoBehaviour
     }
 
     public delegate void OnServerMessageJoinedGameHandler(ServerMessageJoinedGame messageJoinedGame);
-    public delegate void OnServerMessagePositionsHandler(ServerMessagePositions messagePositions);
+    public delegate void OnServerMessageMovementsHandler(ServerMessageMovements messageMovements);
     public delegate void OnServerMessageLeftGameHandler(ServerMessageLeftGame messageLeftGame);
 
     public OnServerMessageJoinedGameHandler onServerMessageJoinedGame;
-    public OnServerMessagePositionsHandler onServerMessagePositions;
+    public OnServerMessageMovementsHandler onServerMessageMovements;
     public OnServerMessageLeftGameHandler onServerMessageLeftGame;
 
     public static MessageHandler Current => _current;

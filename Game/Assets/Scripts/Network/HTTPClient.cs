@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Net;
+using UnityEngine;
 using UnityEngine.Networking;
 
 public delegate void OnSuccessHandler<T>(T message) where T : ServerMessage;
@@ -25,8 +26,10 @@ public static class HTTPClient
         uwr.SendWebRequest();
         while (!uwr.isDone)
             yield return null;
+        string data = uwr.downloadHandler.text;
+        Debug.Log("[HTTPServer] received " + data);
         if ((HttpStatusCode)uwr.responseCode == HttpStatusCode.OK)
-            onSuccess(Utils.ParseJsonString<T>(uwr.downloadHandler.text));
+            onSuccess(Utils.ParseJsonString<T>(data));
         else
             onError?.Invoke();
     }

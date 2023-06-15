@@ -1,6 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Diagnostics;
 using System.Net.Sockets;
 using System.Text;
 
@@ -33,16 +31,16 @@ public class UDPServer
         ClientMessage clientMessage = Utils.ParseJsonString<ClientMessage>(message);
 
         switch (clientMessage.type) {
-            case ClientMessageType.position:
-                ClientMessagePosition messagePosition = Utils.ParseJsonString<ClientMessagePosition>(message);
-                OnClientMessagePosition(messagePosition, sender);
+            case ClientMessageType.movement:
+                ClientMessageMovement messageMovement = Utils.ParseJsonString<ClientMessageMovement>(message);
+                OnClientMessageMovement(messageMovement, sender);
                 break;
         }
     }
 
-    private static void OnClientMessagePosition(ClientMessagePosition messagePosition, Client sender) {
+    private static void OnClientMessageMovement(ClientMessageMovement messageMovement, Client sender) {
         Player player = API.Players.Find(sender);
-        player.Data.position = messagePosition.position;
+        player.Data.transform = messageMovement.transform;
     }
 
     private static void OnConnected() => Console.WriteLine($"[UDPServer] connected");

@@ -3,7 +3,7 @@ public enum ClientMessageType
     login, // HTTP
     authenticate, // TCP
     play, // HTTP
-    position // UDP
+    movement // UDP
 }
 
 public class ClientMessage
@@ -46,11 +46,11 @@ public class ClientMessagePlay : ClientMessage
     }
 }
 
-public class ClientMessagePosition : ClientMessage
+public class ClientMessageMovement : ClientMessage
 {
-    public Vector3Data position;
+    public TransformData transform;
 
-    public ClientMessagePosition(Vector3Data position) : base(ClientMessageType.position) {
-        this.position = position;
+    public ClientMessageMovement(TransformData transform) : base(ClientMessageType.movement) {
+        this.transform = transform;
     }
 }

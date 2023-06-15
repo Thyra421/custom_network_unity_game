@@ -47,7 +47,7 @@ public class TCPClient
     }
 
     public async void Listen() {
-        byte[] bytes = new byte[256];
+        byte[] bytes = new byte[1024];
         int i;
 
         try {

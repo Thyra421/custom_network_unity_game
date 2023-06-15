@@ -35,9 +35,9 @@ public class UDPClient
         ServerMessage serverMessage = Utils.ParseJsonString<ServerMessage>(message);
 
         switch (serverMessage.type) {
-            case ServerMessageType.positions:
-                ServerMessagePositions messagePositions = Utils.ParseJsonString<ServerMessagePositions>(message);
-                MessageHandler.Current.onServerMessagePositions(messagePositions);
+            case ServerMessageType.movements:
+                ServerMessageMovements messageMovements = Utils.ParseJsonString<ServerMessageMovements>(message);
+                MessageHandler.Current.onServerMessageMovements(messageMovements);
                 break;
         }
     }
@@ -46,7 +46,7 @@ public class UDPClient
 
     private static void OnConnected() => Debug.Log("[UDPClient] connected");
 
-    private static void OnListening() => Debug.Log("[UDPClient] listening");
+    private static void OnListening() => Debug.Log("[UDPClient] listening on port " + _port);
 
     private static void OnDisconnected() => Debug.Log("[UDPClient] disconnected");
 
@@ -59,7 +59,6 @@ public class UDPClient
             _udpClient = new UdpClient();
             _udpClient.Connect(Config.ServerAddress, Config.ServerPortUDP);
             _port = ((IPEndPoint)_udpClient.Client.LocalEndPoint).Port;
-            Debug.Log(_port);
             _connected = true;
             OnConnected();
             Listen();
