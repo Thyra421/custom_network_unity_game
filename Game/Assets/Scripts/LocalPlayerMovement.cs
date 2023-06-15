@@ -12,7 +12,7 @@ public class LocalPlayerMovement : Movement
         if (movement.magnitude > 0) {
             _animator.SetBool("Run", true);
             Quaternion targetRotation = Quaternion.LookRotation(movement);
-            transform.rotation = Quaternion.Lerp(transform.localRotation, targetRotation, Time.deltaTime * 100f);
+            transform.rotation = Quaternion.Lerp(transform.localRotation, targetRotation, Time.deltaTime * _rotationSpeed);
 
             transform.Translate(_movementSpeed * Time.deltaTime * Vector3.forward);
         } else

@@ -6,8 +6,8 @@ TerrainLayer:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: NewLayer
-  m_DiffuseTexture: {fileID: 2800000, guid: 9f5333bab671c3e4db0d4184a66588a8, type: 3}
+  m_Name: DarkDirt
+  m_DiffuseTexture: {fileID: 2800000, guid: 0f5e9d6d85382a84f9bbdd187ec43f87, type: 3}
   m_NormalMapTexture: {fileID: 0}
   m_MaskMapTexture: {fileID: 0}
   m_TileSize: {x: 2, y: 2}

@@ -9,7 +9,9 @@ public class Players
     private void Sync() {
         if (_players.Count < 2)
             return;
-        BroadcastUDP(new ServerMessageMovements(GetObjectDatas().ToArray()));
+        ObjectData[] objects = GetObjectDatas((Player p) => p.UpdateIfHasChanged());
+        if (objects.Length > 0)
+        BroadcastUDP(new ServerMessageMovements(objects));
     }
 
     public void StartSyncing() {
@@ -64,11 +66,15 @@ public class Players
         Console.WriteLine($"[Players] {_players.Count}");
     }
 
-    public List<ObjectData> GetObjectDatas() {
-        return _players.Select((Player player) => player.Data).ToList();
+    public ObjectData[] GetObjectDatas(Predicate<Player> condition) {
+        return _players.FindAll(condition).Select((Player player) => player.Data).ToArray();
     }
 
-    public List<Client> GetClients() {
-        return _players.Select((Player player) => player.Client).ToList();
+    public ObjectData[] GetObjectDatas() {
+        return _players.Select((Player player) => player.Data).ToArray();
+    }
+
+    public Client[] GetClients() {
+        return _players.Select((Player player) => player.Client).ToArray();
     }
 }
