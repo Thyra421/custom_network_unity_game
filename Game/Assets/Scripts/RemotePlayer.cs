@@ -4,15 +4,15 @@ using UnityEngine;
 [RequireComponent(typeof(RemotePlayerMovement))]
 public class RemotePlayer : NetworkObject
 {
-    
     [SerializeField]
     private RemotePlayerMovement _playerMovement;
 
     private void OnServerMessageMovements(ServerMessageMovements serverMessageMovements) {
         if (serverMessageMovements.players.Any((ObjectData o) => o.id == _id)) {
-            TransformData transformData = serverMessageMovements.players.First((ObjectData o) => o.id == _id).transform;
-            _playerMovement.DestinationPosition = transformData.position.ToVector3();
-            _playerMovement.DestinationRotation = transformData.rotation.ToVector3();
+            ObjectData obj = serverMessageMovements.players.First((ObjectData o) => o.id == _id);
+            _playerMovement.DestinationPosition = obj.transform.position.ToVector3();
+            _playerMovement.DestinationRotation = obj.transform.rotation.ToVector3();
+            _playerMovement.MovementData = obj.movement;
         }
     }
 

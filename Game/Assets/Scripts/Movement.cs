@@ -8,5 +8,4 @@ public abstract class Movement : MonoBehaviour
     protected float _rotationSpeed = 100f;
     [SerializeField]
     protected Animator _animator;
-
 }

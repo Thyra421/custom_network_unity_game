@@ -1,21 +1,58 @@
+using System.Collections;
 using UnityEngine;
 
 public class LocalPlayerMovement : Movement
 {
-    private void FixedUpdate() {
+    private float _currentRotation = 0f;
+    private bool _canTriggerAnimation = true;
+    public float _cooldownDuration = 0.05f;
+    private Vector3 _movement;
+
+      private void Move() {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
+        _movement = new Vector3(horizontalInput, 0f, verticalInput);
 
-        Vector3 movement = new Vector3(horizontalInput, 0f, verticalInput);
-        movement.Normalize();
+        if (_movement.magnitude > 0f) {
+            _canTriggerAnimation = false;
+            _movement.Normalize();
+            _animator.SetFloat("X", _movement.x);
+            _animator.SetFloat("Y", _movement.z);
+            _animator.SetBool("IsRunning", true);
 
-        if (movement.magnitude > 0) {
-            _animator.SetBool("Run", true);
-            Quaternion targetRotation = Quaternion.LookRotation(movement);
-            transform.rotation = Quaternion.Lerp(transform.localRotation, targetRotation, Time.deltaTime * _rotationSpeed);
+            transform.Translate(_movementSpeed * Time.deltaTime * _movement);
+        } else if (!_canTriggerAnimation)
+            StartCoroutine(StartCooldown());
+        else
+            _animator.SetBool("IsRunning", false);
+    }
 
-            transform.Translate(_movementSpeed * Time.deltaTime * Vector3.forward);
-        } else
-            _animator.SetBool("Run", false);
+    private void Rotate() {
+        if (Input.GetMouseButton(1)) {
+            float mouseX = Input.GetAxis("Mouse X");
+
+            _currentRotation += mouseX * _rotationSpeed * Time.deltaTime;
+            transform.rotation = Quaternion.Euler(0f, _currentRotation, 0f);
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Confined;
+        } else {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+    }
+
+    private IEnumerator StartCooldown() {
+        yield return new WaitForSeconds(_cooldownDuration);
+        _canTriggerAnimation = true;
+    }
+
+    private void FixedUpdate() {
+        Rotate();
+        Move();
+    }
+
+    public Vector3 Movement {
+        get => _movement;
+        set => _movement = value;
     }
 }

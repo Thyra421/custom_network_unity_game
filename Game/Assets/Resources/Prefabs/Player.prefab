@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _movementSpeed: 5
+  _rotationSpeed: 100
   _animator: {fileID: 4523460229716968065}
 --- !u!114 &5312262580301513134
 MonoBehaviour:
@@ -153,7 +154,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3649646078362595581}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: e230dcdb469f88a4b9fc3385b7d1d1a3, type: 3}
   m_Controller: {fileID: 9100000, guid: 6d709285d3ade2d45800ef19b99481ef, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0

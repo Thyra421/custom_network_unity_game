@@ -11,7 +11,7 @@ public class Players
             return;
         ObjectData[] objects = GetObjectDatas((Player p) => p.UpdateIfHasChanged());
         if (objects.Length > 0)
-        BroadcastUDP(new ServerMessageMovements(objects));
+            BroadcastUDP(new ServerMessageMovements(objects));
     }
 
     public void StartSyncing() {
@@ -53,6 +53,10 @@ public class Players
 
     public Player? Find(TCPClient tcp) {
         return _players.Find((Player p) => p.Client.Tcp == tcp);
+    }
+
+    public Player? Find(string address, int port) {
+        return _players.Find((Player p) => p.Client.Udp?.Address == address && p.Client.Udp.Port == port);
     }
 
     public bool Any(TCPClient tcp) {

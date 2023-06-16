@@ -18,29 +18,30 @@ public class UDPServer
             try {
                 UdpReceiveResult result = await _udpClient.ReceiveAsync();
                 string message = Encoding.UTF8.GetString(result.Buffer);
-                Client sender = API.Clients.Find(result.RemoteEndPoint.Address.ToString(), result.RemoteEndPoint.Port);
-                OnMessage(message, sender);
+                Player? player = API.Players.Find(result.RemoteEndPoint.Address.ToString(), result.RemoteEndPoint.Port);
+                if (player != null)
+                    OnMessage(message, player);
             } catch (Exception) {
                 OnDisconnected();
             }
         }
     }
 
-    private static void OnMessage(string message, Client sender) {
+    private static void OnMessage(string message, Player player) {
         Console.WriteLine($"[UDPServer] received {message}");
         ClientMessage clientMessage = Utils.ParseJsonString<ClientMessage>(message);
 
         switch (clientMessage.type) {
             case ClientMessageType.movement:
                 ClientMessageMovement messageMovement = Utils.ParseJsonString<ClientMessageMovement>(message);
-                OnClientMessageMovement(messageMovement, sender);
+                OnClientMessageMovement(messageMovement, player);
                 break;
         }
     }
 
-    private static void OnClientMessageMovement(ClientMessageMovement messageMovement, Client sender) {
-        Player player = API.Players.Find(sender);
+    private static void OnClientMessageMovement(ClientMessageMovement messageMovement, Player player) {
         player.Data.transform = messageMovement.transform;
+        player.Data.movement = messageMovement.movement;
     }
 
     private static void OnConnected() => Console.WriteLine($"[UDPServer] connected");

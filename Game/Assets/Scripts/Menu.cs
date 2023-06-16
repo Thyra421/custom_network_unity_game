@@ -73,6 +73,8 @@ public class Menu : MonoBehaviour
     private void Play() => SceneLoader.Current.LoadGameAsync();
 
     private void Awake() {
+        Application.targetFrameRate = 100;
+        QualitySettings.vSyncCount = 0;
         slider.minValue = 0;
         slider.maxValue = 3;
         login.onClick.AddListener(Login);

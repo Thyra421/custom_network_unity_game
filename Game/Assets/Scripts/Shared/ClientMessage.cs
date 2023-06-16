@@ -49,8 +49,10 @@ public class ClientMessagePlay : ClientMessage
 public class ClientMessageMovement : ClientMessage
 {
     public TransformData transform;
+    public MovementData movement;
 
-    public ClientMessageMovement(TransformData transform) : base(ClientMessageType.movement) {
+    public ClientMessageMovement(TransformData transform, MovementData movement) : base(ClientMessageType.movement) {
         this.transform = transform;
+        this.movement = movement;
     }
 }
