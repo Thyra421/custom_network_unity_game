@@ -10,9 +10,9 @@ public class TCPClient
     private void OnDisconnect() {
         Console.WriteLine($"[TCPClient] disconnected");
 
-        if (API.Players.Any(this)) {
-            Player player = API.Players.Find(this)!;
-            API.Players.Remove(this);
+        Player? player = API.Players.Find(this);
+        if (player != null) {
+            API.Players.Remove(player);
             API.Players.BroadcastTCP(new ServerMessageLeftGame(player.Data.id), player);
         }
         API.Clients.Remove(this);
@@ -32,8 +32,8 @@ public class TCPClient
     }
 
     private void OnMessageAuthenticate(ClientMessageAuthenticate clientMessageAuthenticate) {
-        Client client = API.Clients.Find(this);
-        client.Authenticate(new UDPClient(clientMessageAuthenticate.udpAddress, clientMessageAuthenticate.udpPort), clientMessageAuthenticate.secret);
+        Client? client = API.Clients.Find(this);
+        client?.Authenticate(new UDPClient(clientMessageAuthenticate.udpAddress, clientMessageAuthenticate.udpPort), clientMessageAuthenticate.secret);
     }
 
     public TCPClient(TcpClient tcpClient) {

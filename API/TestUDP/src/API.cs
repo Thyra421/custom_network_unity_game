@@ -6,13 +6,13 @@ static class API
     private static readonly TCPServer _tcpServer = new TCPServer();
     private static readonly UDPServer _udpServer = new UDPServer();
     private static readonly HTTPServer _httpServer = new HTTPServer();
-    private static readonly Players _players = new Players();
+    private static readonly IUpdatable _players = new Players();
 
     private static void Main(string[] args) {
         _httpServer.Start();
         _tcpServer.Start();
         _udpServer.Start();
-        _players.StartSyncing();
+        _players.Start(Config.SyncFrequency);
 
         while (Console.ReadKey(true).KeyChar != 'q') {
             Console.WriteLine("Press q to quit.");
@@ -27,5 +27,5 @@ static class API
 
     public static HTTPServer HttpServer => _httpServer;
 
-    public static Players Players => _players;
+    public static Players Players => _players as Players;
 }

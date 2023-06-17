@@ -1,12 +1,10 @@
-﻿using System.Timers;
+﻿namespace TestUDP;
 
-namespace TestUDP;
-
-public class Players
+public class Players : IUpdatable
 {
     private List<Player> _players = new List<Player>();
 
-    private void Sync() {
+    private void SyncMovement() {
         if (_players.Count < 2)
             return;
         ObjectData[] objects = GetObjectDatas((Player p) => p.UpdateIfHasChanged());
@@ -14,11 +12,8 @@ public class Players
             BroadcastUDP(new ServerMessageMovements(objects));
     }
 
-    public void StartSyncing() {
-        System.Timers.Timer timer = new System.Timers.Timer(1000 / Config.SyncFrequency);
-        timer.Elapsed += (object sender, ElapsedEventArgs e) => { Sync(); };
-        timer.AutoReset = true;
-        timer.Start();
+    public void Update() {
+        SyncMovement();
     }
 
     public async void BroadcastTCP(ServerMessage message) {
@@ -63,8 +58,18 @@ public class Players
         return _players.Any((Player p) => p.Client.Tcp == tcp);
     }
 
-    public void Remove(TCPClient tcp) {
+    public bool Remove(TCPClient tcp) {
         int index = _players.FindIndex((Player p) => p.Client.Tcp == tcp);
+        if (index != -1) {
+            _players.RemoveAt(index);
+            Console.WriteLine($"[Players] {_players.Count}");
+            return true;
+        }
+        return false;
+    }
+
+    public void Remove(Player player) {
+        int index = _players.FindIndex((Player p) => p == player);
         if (index != -1)
             _players.RemoveAt(index);
         Console.WriteLine($"[Players] {_players.Count}");
