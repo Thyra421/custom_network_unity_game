@@ -6,6 +6,7 @@ public class Client
     private bool _authenticated = false;
     private UDPClient _udp;
     private string _secret;
+    private Player _player;
 
     public Client(TCPClient tcp) {
         _tcp = tcp;
@@ -25,5 +26,10 @@ public class Client
     public string Secret => _secret;
 
     public bool Authenticated => _authenticated;
+
+    public Player Player {
+        get => _player;
+        set => _player = value;
+    }
 }
 

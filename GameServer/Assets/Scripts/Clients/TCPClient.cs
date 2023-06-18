@@ -35,6 +35,10 @@ public class TCPClient
                 ClientMessagePlay clientMessagePlay = Utils.ParseJsonString<ClientMessagePlay>(message);
                 OnMessagePlay(clientMessagePlay);
                 break;
+            case ClientMessageType.attack:
+                ClientMessageAttack clientMessageAttack = Utils.ParseJsonString<ClientMessageAttack>(message);
+                OnMessageAttack(clientMessageAttack);
+                break;
         }
     }
 
@@ -47,6 +51,10 @@ public class TCPClient
         API.Players.BroadcastTCP(new ServerMessageJoinedGame(newPlayer.Data), newPlayer);
         ServerMessageGameState messageGameState = new ServerMessageGameState(newPlayer.Data.id, API.Players.GetObjectDatas().ToArray());
         await Send(messageGameState);
+    }
+
+    private void OnMessageAttack(ClientMessageAttack clientMessageAttack) {
+        API.Players.BroadcastTCP(new ServerMessageAttack(_client.Player.Data.id));
     }
 
     public TCPClient(TcpClient tcpClient) {

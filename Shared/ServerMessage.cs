@@ -1,10 +1,13 @@
-﻿public enum ServerMessageType
+﻿using UnityEditor;
+
+public enum ServerMessageType
 {
     secret, // HTTP
     gameState, // TCP
     joinedGame, // TCP
     leftGame, // TCP
-    movements // UDP
+    movements, // UDP
+    attack // TCP
 }
 
 public class ServerMessage
@@ -59,6 +62,15 @@ public class ServerMessageLeftGame : ServerMessage
     public string id;
 
     public ServerMessageLeftGame(string id) : base(ServerMessageType.leftGame) {
+        this.id = id;
+    }
+}
+
+public class ServerMessageAttack : ServerMessage
+{
+    public string id;
+
+    public ServerMessageAttack(string id) : base(ServerMessageType.attack) {
         this.id = id;
     }
 }

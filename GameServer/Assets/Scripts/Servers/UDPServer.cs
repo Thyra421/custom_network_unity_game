@@ -21,7 +21,8 @@ public class UDPServer
                 Client client = API.Clients.Find(result.RemoteEndPoint.Address.ToString(), result.RemoteEndPoint.Port);
                 if (client != null)
                     OnMessage(message, client);
-            } catch (Exception) {
+            } catch (Exception e) {
+                Debug.LogException(e);
                 OnDisconnected();
             }
         }
@@ -41,8 +42,10 @@ public class UDPServer
 
     private static void OnClientMessageMovement(ClientMessageMovement messageMovement, Client client) {
         Player player = API.Players.Find(client);
-        player.Data.transform = messageMovement.transform;
+        player.Data.transform = messageMovement.newTransform;
         player.Data.movement = messageMovement.movement;
+        player.Avatar.position = messageMovement.newTransform.position.ToVector3();
+        player.Avatar.eulerAngles = messageMovement.newTransform.rotation.ToVector3();
     }
 
     private static void OnStarted() => Debug.Log($"[UDPServer] started");

@@ -25,6 +25,7 @@ public class TCPClient
             }
             OnDisconnect();
         } catch (Exception e) {
+            Debug.LogException(e);
             OnDisconnect();
         }
     }
@@ -68,13 +69,21 @@ public class TCPClient
                 ServerMessageGameState messageGameState = Utils.ParseJsonString<ServerMessageGameState>(message);
                 MessageHandler.Current.onServerMessageGameState(messageGameState);
                 break;
+            case ServerMessageType.attack:
+                ServerMessageAttack messageAttack = Utils.ParseJsonString<ServerMessageAttack>(message);
+                MessageHandler.Current.onServerMessageAttack(messageAttack);
+                break;
         }
     }
 
     public static void Connect() {
-        _tcpClient = new TcpClient(Config.ServerAddress, Config.ServerPortTCP);
-        OnConnected();
-        Listen();
+        try {
+            _tcpClient = new TcpClient(Config.ServerAddress, Config.ServerPortTCP);
+            OnConnected();
+            Listen();
+        } catch {
+            OnConnectionFailed();
+        }
     }
 
     public static async void Send(ClientMessage message) {

@@ -27,7 +27,7 @@ public static class HTTPClient
         while (!uwr.isDone)
             yield return null;
         string data = uwr.downloadHandler.text;
-        Debug.Log("[HTTPServer] received " + data);
+        Debug.Log("[HTTPClient] received " + data);
         if ((HttpStatusCode)uwr.responseCode == HttpStatusCode.OK)
             onSuccess(Utils.ParseJsonString<T>(data));
         else
@@ -37,8 +37,4 @@ public static class HTTPClient
     public static IEnumerator Login(ClientMessageLogin messageLogin, OnSuccessHandler<ServerMessageSecret> onSuccess, Action onError = null) {
         return Post("login", messageLogin, onSuccess, onError);
     }
-
-    //public static IEnumerator Play(ClientMessagePlay messagePlay, OnSuccessHandler<ServerMessageGameState> onSuccess, Action onError = null) {
-    //    return Post("play", messagePlay, onSuccess, onError);
-    //}
 }

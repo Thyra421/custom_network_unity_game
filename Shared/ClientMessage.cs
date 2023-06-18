@@ -3,7 +3,8 @@
     login, // HTTP
     authenticate, // TCP
     play, // HTTP
-    movement // UDP
+    movement, // UDP
+    attack // TCP
 }
 
 public class ClientMessage
@@ -45,11 +46,17 @@ public class ClientMessagePlay : ClientMessage
 
 public class ClientMessageMovement : ClientMessage
 {
-    public TransformData transform;
+    public TransformData newTransform;
     public MovementData movement;
 
-    public ClientMessageMovement(TransformData transform, MovementData movement) : base(ClientMessageType.movement) {
-        this.transform = transform;
+    public ClientMessageMovement(TransformData newTransform, MovementData movement) : base(ClientMessageType.movement) {
+        this.newTransform = newTransform;
         this.movement = movement;
+    }
+}
+
+public class ClientMessageAttack : ClientMessage
+{
+    public ClientMessageAttack() : base(ClientMessageType.attack) {
     }
 }
