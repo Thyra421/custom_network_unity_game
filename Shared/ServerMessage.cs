@@ -53,3 +53,14 @@ public struct MessagePlayerAttack
         this.id = id;
     }
 }
+
+public struct MessageDamage
+{
+    public string idFrom;
+    public string idTo;
+
+    public MessageDamage(string idFrom, string idTo) {
+        this.idFrom = idFrom;
+        this.idTo = idTo;
+    }
+}

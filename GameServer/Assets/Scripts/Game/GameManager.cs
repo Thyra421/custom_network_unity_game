@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -12,12 +11,12 @@ public class GameManager : MonoBehaviour
         set => _current = value;
     }
 
-    public void DestroyAvatar(Transform avatar) {
+    public void DestroyAvatar(Avatar avatar) {
         Destroy(avatar.gameObject);
     }
 
-    public Transform CreateAvatar() {
-        return Instantiate(_avatarPrefab).transform;
+    public Avatar CreateAvatar() {
+        return Instantiate(_avatarPrefab).GetComponent<Avatar>();
     }
 
     private void Awake() {

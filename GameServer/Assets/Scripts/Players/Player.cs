@@ -1,16 +1,15 @@
-﻿using UnityEngine;
-
-public class Player
+﻿public class Player
 {
     private readonly Client _client;
     private ObjectData _data;
     private TransformData _lastTransform;
-    private Transform _avatar;
+    private Avatar _avatar;
 
     public Player(Client client) {
         _data = new ObjectData();
         _client = client;
         _avatar = GameManager.Current.CreateAvatar();
+        _avatar.Player = this;
     }
 
     public bool UpdateIfHasChanged() {
@@ -30,5 +29,5 @@ public class Player
         get => _lastTransform;
         set => _lastTransform = value;
     }
-    public Transform Avatar => _avatar;
+    public Avatar Avatar => _avatar;
 }

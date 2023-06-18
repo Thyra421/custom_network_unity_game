@@ -59,18 +59,18 @@ public class TCPClient
         if (messageType.Equals(typeof(MessageJoinedGame))) {
             MessageJoinedGame messageJoinedGame = Utils.Deserialize<MessageJoinedGame>(message);
             MessageHandler.Current.onMessageJoinedGame(messageJoinedGame);
-        }
-        if (messageType.Equals(typeof(MessageLeftGame))) {
+        } else if (messageType.Equals(typeof(MessageLeftGame))) {
             MessageLeftGame messageLeftGame = Utils.Deserialize<MessageLeftGame>(message);
             MessageHandler.Current.onMessageLeftGame(messageLeftGame);
-        }
-        if (messageType.Equals(typeof(MessageGameState))) {
+        } else if (messageType.Equals(typeof(MessageGameState))) {
             MessageGameState messageGameState = Utils.Deserialize<MessageGameState>(message);
             MessageHandler.Current.onMessageGameState(messageGameState);
-        }
-        if (messageType.Equals(typeof(MessagePlayerAttack))) {
+        } else if (messageType.Equals(typeof(MessagePlayerAttack))) {
             MessagePlayerAttack messagePlayerAttack = Utils.Deserialize<MessagePlayerAttack>(message);
             MessageHandler.Current.onMessagePlayerAttack(messagePlayerAttack);
+        } else if (messageType.Equals(typeof(MessageDamage))) {
+            MessageDamage messageDamage = Utils.Deserialize<MessageDamage>(message);
+            MessageHandler.Current.onMessageDamage(messageDamage);
         }
     }
 

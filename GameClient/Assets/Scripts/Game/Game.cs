@@ -67,12 +67,24 @@ public class Game : MonoBehaviour
         }
     }
 
+    private void OnMessageDamage(MessageDamage messageDamage) {
+        if (messageDamage.idTo == _myPlayer.Id)
+            _myPlayer.Health.TakeDamage(10);
+        else {
+            RemotePlayer remotePlayer = _remotePlayers.Find((RemotePlayer rp) => rp.Id == messageDamage.idTo);
+            if (remotePlayer != null) {
+                remotePlayer.Health.TakeDamage(10);
+            }
+        }
+    }
+
     private void Start() {
         MessageHandler.Current.onMessageGameState += OnMessageGameState;
         MessageHandler.Current.onMessageJoinedGame += OnMessageJoinedGame;
         MessageHandler.Current.onMessageMovements += OnMessageMovements;
         MessageHandler.Current.onMessageLeftGame += OnMessageLeftGame;
         MessageHandler.Current.onMessagePlayerAttack += OnMessagePlayerAttack;
+        MessageHandler.Current.onMessageDamage += OnMessageDamage;
         TCPClient.Send(new MessagePlay());
     }
 }

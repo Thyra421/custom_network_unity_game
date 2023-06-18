@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class TCPClient
@@ -51,6 +52,7 @@ public class TCPClient
 
     private void OnMessageAttack(MessageAttack clientMessageAttack) {
         API.Players.BroadcastTCP(new MessagePlayerAttack(_client.Player.Data.id), _client.Player);
+        _client.Player.Avatar.Attack();
     }
 
     public TCPClient(TcpClient tcpClient) {

@@ -22,7 +22,7 @@ public class UDPServer
                     OnMessage(message, client);
             } catch (Exception e) {
                 Debug.LogException(e);
-                OnDisconnected();
+                //OnDisconnected();
             }
         }
     }
@@ -41,8 +41,8 @@ public class UDPServer
         Player player = API.Players.Find(client);
         player.Data.transform = messageMovement.newTransform;
         player.Data.movement = messageMovement.movement;
-        player.Avatar.position = messageMovement.newTransform.position.ToVector3();
-        player.Avatar.eulerAngles = messageMovement.newTransform.rotation.ToVector3();
+        player.Avatar.transform.position = messageMovement.newTransform.position.ToVector3();
+        player.Avatar.transform.eulerAngles = messageMovement.newTransform.rotation.ToVector3();
     }
 
     private static void OnStarted() => Debug.Log($"[UDPServer] started");

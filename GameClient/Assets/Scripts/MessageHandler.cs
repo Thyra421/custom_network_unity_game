@@ -16,12 +16,14 @@ public class MessageHandler : MonoBehaviour
     public delegate void OnMessageLeftGameHandler(MessageLeftGame messageLeftGame);
     public delegate void OnMessageGameStateHandler(MessageGameState messageGameState);
     public delegate void OnMessagePlayerAttackHandler(MessagePlayerAttack messageAttack);
+    public delegate void OnMessageDamageHandler(MessageDamage messageDamage);
 
     public OnMessageJoinedGameHandler onMessageJoinedGame;
     public OnMessageMovementsHandler onMessageMovements;
     public OnMessageLeftGameHandler onMessageLeftGame;
     public OnMessageGameStateHandler onMessageGameState;
     public OnMessagePlayerAttackHandler onMessagePlayerAttack;
+    public OnMessageDamageHandler onMessageDamage;
 
     public static MessageHandler Current => _current;
 }
