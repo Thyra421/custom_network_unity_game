@@ -18,7 +18,7 @@ public class Game : MonoBehaviour
         });
     }
 
-    private void OnServerMessageGameState(ServerMessageGameState messageGameState) {
+    private void OnMessageGameState(MessageGameState messageGameState) {
         _myPlayer.Id = messageGameState.id;
         foreach (ObjectData p in messageGameState.players) {
             if (p.id != _myPlayer.Id)
@@ -26,12 +26,12 @@ public class Game : MonoBehaviour
         }
     }
 
-    private void OnServerMessageJoinedGame(ServerMessageJoinedGame messageJoinedGame) {
+    private void OnMessageJoinedGame(MessageJoinedGame messageJoinedGame) {
         if (messageJoinedGame.player.id != _myPlayer.Id)
             CreatePlayer(messageJoinedGame.player);
     }
 
-    private void OnServerMessageMovements(ServerMessageMovements serverMessageMovements) {
+    private void OnMessageMovements(MessageMovements serverMessageMovements) {
         foreach (ObjectData p in serverMessageMovements.players) {
             if (p.id == _myPlayer.Id)
                 continue;
@@ -46,7 +46,7 @@ public class Game : MonoBehaviour
         }
     }
 
-    private void OnServerMessageLeftGame(ServerMessageLeftGame serverMessageLeftGame) {
+    private void OnMessageLeftGame(MessageLeftGame serverMessageLeftGame) {
         if (serverMessageLeftGame.id == _myPlayer.Id)
             return;
 
@@ -57,22 +57,22 @@ public class Game : MonoBehaviour
         }
     }
 
-    private void OnServerMessageAttack(ServerMessageAttack messageAttack) {
-        if (messageAttack.id == _myPlayer.Id)
+    private void OnMessagePlayerAttack(MessagePlayerAttack messagePlayerAttack) {
+        if (messagePlayerAttack.id == _myPlayer.Id)
             return;
 
-        RemotePlayer remotePlayer = _remotePlayers.Find((RemotePlayer rp) => rp.Id == messageAttack.id);
+        RemotePlayer remotePlayer = _remotePlayers.Find((RemotePlayer rp) => rp.Id == messagePlayerAttack.id);
         if (remotePlayer != null) {
             remotePlayer.Attack.Attack();
         }
     }
 
     private void Start() {
-        MessageHandler.Current.onServerMessageGameState += OnServerMessageGameState;
-        MessageHandler.Current.onServerMessageJoinedGame += OnServerMessageJoinedGame;
-        MessageHandler.Current.onServerMessageMovements += OnServerMessageMovements;
-        MessageHandler.Current.onServerMessageLeftGame += OnServerMessageLeftGame;
-        MessageHandler.Current.onServerMessageAttack += OnServerMessageAttack;
-        TCPClient.Send(new ClientMessagePlay());
+        MessageHandler.Current.onMessageGameState += OnMessageGameState;
+        MessageHandler.Current.onMessageJoinedGame += OnMessageJoinedGame;
+        MessageHandler.Current.onMessageMovements += OnMessageMovements;
+        MessageHandler.Current.onMessageLeftGame += OnMessageLeftGame;
+        MessageHandler.Current.onMessagePlayerAttack += OnMessagePlayerAttack;
+        TCPClient.Send(new MessagePlay());
     }
 }

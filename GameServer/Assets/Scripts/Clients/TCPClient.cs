@@ -16,7 +16,7 @@ public class TCPClient
         Player player = API.Players.Find(this);
         if (player != null) {
             API.Players.Remove(player);
-            API.Players.BroadcastTCP(new ServerMessageLeftGame(player.Data.id), player);
+            API.Players.BroadcastTCP(new MessageLeftGame(player.Data.id), player);
         }
         API.Clients.Remove(this);
     }
@@ -24,37 +24,33 @@ public class TCPClient
     private void OnMessage(string message) {
         Debug.Log($"[TCPClient] received {message}");
 
-        ClientMessage clientMessage = Utils.ParseJsonString<ClientMessage>(message);
+        Type messageType = Utils.GetMessageType(message);
 
-        switch (clientMessage.type) {
-            case ClientMessageType.authenticate:
-                ClientMessageAuthenticate clientMessageAuthenticate = Utils.ParseJsonString<ClientMessageAuthenticate>(message);
-                OnMessageAuthenticate(clientMessageAuthenticate);
-                break;
-            case ClientMessageType.play:
-                ClientMessagePlay clientMessagePlay = Utils.ParseJsonString<ClientMessagePlay>(message);
-                OnMessagePlay(clientMessagePlay);
-                break;
-            case ClientMessageType.attack:
-                ClientMessageAttack clientMessageAttack = Utils.ParseJsonString<ClientMessageAttack>(message);
-                OnMessageAttack(clientMessageAttack);
-                break;
+        if (messageType.Equals(typeof(MessageAuthenticate))) {
+            MessageAuthenticate clientMessageAuthenticate = Utils.Deserialize<MessageAuthenticate>(message);
+            OnMessageAuthenticate(clientMessageAuthenticate);
+        } else if (messageType.Equals(typeof(MessagePlay))) {
+            MessagePlay clientMessagePlay = Utils.Deserialize<MessagePlay>(message);
+            OnMessagePlay(clientMessagePlay);
+        } else if (messageType.Equals(typeof(MessageAttack))) {
+            MessageAttack clientMessageAttack = Utils.Deserialize<MessageAttack>(message);
+            OnMessageAttack(clientMessageAttack);
         }
     }
 
-    private void OnMessageAuthenticate(ClientMessageAuthenticate clientMessageAuthenticate) {
+    private void OnMessageAuthenticate(MessageAuthenticate clientMessageAuthenticate) {
         _client?.Authenticate(new UDPClient(clientMessageAuthenticate.udpAddress, clientMessageAuthenticate.udpPort), clientMessageAuthenticate.secret);
     }
 
-    private async void OnMessagePlay(ClientMessagePlay clientMessagePlay) {
+    private async void OnMessagePlay(MessagePlay clientMessagePlay) {
         Player newPlayer = API.Players.Create(_client);
-        API.Players.BroadcastTCP(new ServerMessageJoinedGame(newPlayer.Data), newPlayer);
-        ServerMessageGameState messageGameState = new ServerMessageGameState(newPlayer.Data.id, API.Players.GetObjectDatas().ToArray());
+        API.Players.BroadcastTCP(new MessageJoinedGame(newPlayer.Data), newPlayer);
+        MessageGameState messageGameState = new MessageGameState(newPlayer.Data.id, API.Players.GetObjectDatas().ToArray());
         await Send(messageGameState);
     }
 
-    private void OnMessageAttack(ClientMessageAttack clientMessageAttack) {
-        API.Players.BroadcastTCP(new ServerMessageAttack(_client.Player.Data.id));
+    private void OnMessageAttack(MessageAttack clientMessageAttack) {
+        API.Players.BroadcastTCP(new MessagePlayerAttack(_client.Player.Data.id), _client.Player);
     }
 
     public TCPClient(TcpClient tcpClient) {
@@ -62,8 +58,8 @@ public class TCPClient
         Listen();
     }
 
-    public async Task Send(ServerMessage message) {
-        byte[] msg = Encoding.ASCII.GetBytes(Utils.ObjectToString(message));
+    public async Task Send<T>(T message) {
+        byte[] msg = Encoding.ASCII.GetBytes(Utils.Serialize(message));
         await _stream.WriteAsync(msg, 0, msg.Length);
     }
 
@@ -77,7 +73,8 @@ public class TCPClient
                 OnMessage(message);
             }
             OnDisconnect();
-        } catch (Exception) {
+        } catch (Exception e) {
+            Debug.LogException(e);
             OnDisconnect();
         }
     }

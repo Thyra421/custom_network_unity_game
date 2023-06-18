@@ -11,17 +11,17 @@ public class MessageHandler : MonoBehaviour
             Destroy(gameObject);
     }
 
-    public delegate void OnServerMessageJoinedGameHandler(ServerMessageJoinedGame messageJoinedGame);
-    public delegate void OnServerMessageMovementsHandler(ServerMessageMovements messageMovements);
-    public delegate void OnServerMessageLeftGameHandler(ServerMessageLeftGame messageLeftGame);
-    public delegate void OnServerMessageGameStateHandler(ServerMessageGameState messageGameState);
-    public delegate void OnServerMessageAttackHandler(ServerMessageAttack messageAttack);
+    public delegate void OnMessageJoinedGameHandler(MessageJoinedGame messageJoinedGame);
+    public delegate void OnMessageMovementsHandler(MessageMovements messageMovements);
+    public delegate void OnMessageLeftGameHandler(MessageLeftGame messageLeftGame);
+    public delegate void OnMessageGameStateHandler(MessageGameState messageGameState);
+    public delegate void OnMessagePlayerAttackHandler(MessagePlayerAttack messageAttack);
 
-    public OnServerMessageJoinedGameHandler onServerMessageJoinedGame;
-    public OnServerMessageMovementsHandler onServerMessageMovements;
-    public OnServerMessageLeftGameHandler onServerMessageLeftGame;
-    public OnServerMessageGameStateHandler onServerMessageGameState;
-    public OnServerMessageAttackHandler onServerMessageAttack;
+    public OnMessageJoinedGameHandler onMessageJoinedGame;
+    public OnMessageMovementsHandler onMessageMovements;
+    public OnMessageLeftGameHandler onMessageLeftGame;
+    public OnMessageGameStateHandler onMessageGameState;
+    public OnMessagePlayerAttackHandler onMessagePlayerAttack;
 
     public static MessageHandler Current => _current;
 }

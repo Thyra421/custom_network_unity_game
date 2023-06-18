@@ -1,62 +1,40 @@
-﻿public enum ClientMessageType
-{
-    login, // HTTP
-    authenticate, // TCP
-    play, // HTTP
-    movement, // UDP
-    attack // TCP
-}
-
-public class ClientMessage
-{
-    public ClientMessageType type;
-
-    public ClientMessage(ClientMessageType type) {
-        this.type = type;
-    }
-}
-
-public class ClientMessageLogin : ClientMessage
+﻿public struct MessageLogin
 {
     public string username;
 
-    public ClientMessageLogin(string username) : base(ClientMessageType.login) {
+    public MessageLogin(string username) {
         this.username = username;
     }
 }
 
-public class ClientMessageAuthenticate : ClientMessage
+public struct MessageAuthenticate
 {
     public string secret;
     public string udpAddress;
     public int udpPort;
 
-    public ClientMessageAuthenticate(string secret, string udpAddress, int udpPort) : base(ClientMessageType.authenticate) {
+    public MessageAuthenticate(string secret, string udpAddress, int udpPort) {
         this.secret = secret;
         this.udpAddress = udpAddress;
         this.udpPort = udpPort;
     }
 }
 
-public class ClientMessagePlay : ClientMessage
+public struct MessagePlay
 {
-    public ClientMessagePlay() : base(ClientMessageType.play) {
-    }
 }
 
-public class ClientMessageMovement : ClientMessage
+public struct MessageMovement
 {
     public TransformData newTransform;
     public MovementData movement;
 
-    public ClientMessageMovement(TransformData newTransform, MovementData movement) : base(ClientMessageType.movement) {
+    public MessageMovement(TransformData newTransform, MovementData movement) {
         this.newTransform = newTransform;
         this.movement = movement;
     }
 }
 
-public class ClientMessageAttack : ClientMessage
+public struct MessageAttack
 {
-    public ClientMessageAttack() : base(ClientMessageType.attack) {
-    }
 }

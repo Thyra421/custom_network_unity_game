@@ -54,25 +54,23 @@ public class TCPClient
     private static void OnMessage(string message) {
         Debug.Log($"[TCP Client] received {message}");
 
-        ServerMessage serverMessage = Utils.ParseJsonString<ServerMessage>(message);
+        Type messageType = Utils.GetMessageType(message);
 
-        switch (serverMessage.type) {
-            case ServerMessageType.joinedGame:
-                ServerMessageJoinedGame messageJoinedGame = Utils.ParseJsonString<ServerMessageJoinedGame>(message);
-                MessageHandler.Current.onServerMessageJoinedGame(messageJoinedGame);
-                break;
-            case ServerMessageType.leftGame:
-                ServerMessageLeftGame messageLeftGame = Utils.ParseJsonString<ServerMessageLeftGame>(message);
-                MessageHandler.Current.onServerMessageLeftGame(messageLeftGame);
-                break;
-            case ServerMessageType.gameState:
-                ServerMessageGameState messageGameState = Utils.ParseJsonString<ServerMessageGameState>(message);
-                MessageHandler.Current.onServerMessageGameState(messageGameState);
-                break;
-            case ServerMessageType.attack:
-                ServerMessageAttack messageAttack = Utils.ParseJsonString<ServerMessageAttack>(message);
-                MessageHandler.Current.onServerMessageAttack(messageAttack);
-                break;
+        if (messageType.Equals(typeof(MessageJoinedGame))) {
+            MessageJoinedGame messageJoinedGame = Utils.Deserialize<MessageJoinedGame>(message);
+            MessageHandler.Current.onMessageJoinedGame(messageJoinedGame);
+        }
+        if (messageType.Equals(typeof(MessageLeftGame))) {
+            MessageLeftGame messageLeftGame = Utils.Deserialize<MessageLeftGame>(message);
+            MessageHandler.Current.onMessageLeftGame(messageLeftGame);
+        }
+        if (messageType.Equals(typeof(MessageGameState))) {
+            MessageGameState messageGameState = Utils.Deserialize<MessageGameState>(message);
+            MessageHandler.Current.onMessageGameState(messageGameState);
+        }
+        if (messageType.Equals(typeof(MessagePlayerAttack))) {
+            MessagePlayerAttack messagePlayerAttack = Utils.Deserialize<MessagePlayerAttack>(message);
+            MessageHandler.Current.onMessagePlayerAttack(messagePlayerAttack);
         }
     }
 
@@ -86,12 +84,12 @@ public class TCPClient
         }
     }
 
-    public static async void Send(ClientMessage message) {
+    public static async void Send<T>(T message) {
         if (_tcpClient == null || !_tcpClient.Connected) {
             OnError();
         } else {
-            JObject json = JObject.FromObject(message);
-            byte[] data = Encoding.ASCII.GetBytes(json.ToString());
+            string serializedMessage = Utils.Serialize(message);
+            byte[] data = Encoding.ASCII.GetBytes(serializedMessage);
             await _tcpClient!.GetStream().WriteAsync(data, 0, data.Length);
         }
     }

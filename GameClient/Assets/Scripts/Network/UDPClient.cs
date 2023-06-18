@@ -24,7 +24,8 @@ public class UDPClient
                 UdpReceiveResult result = await _udpClient.ReceiveAsync();
                 string message = Encoding.UTF8.GetString(result.Buffer);
                 OnMessage(message);
-            } catch (Exception) {
+            } catch (Exception e) {
+                Debug.LogException(e);
                 OnDisconnected();
             }
         }
@@ -32,13 +33,10 @@ public class UDPClient
 
     private static void OnMessage(string message) {
         Debug.Log($"[UDPServer] received {message}");
-        ServerMessage serverMessage = Utils.ParseJsonString<ServerMessage>(message);
-
-        switch (serverMessage.type) {
-            case ServerMessageType.movements:
-                ServerMessageMovements messageMovements = Utils.ParseJsonString<ServerMessageMovements>(message);
-                MessageHandler.Current.onServerMessageMovements(messageMovements);
-                break;
+        Type messageType = Utils.GetMessageType(message);
+        if (messageType.Equals(typeof(MessageMovements))) {
+            MessageMovements messageMovements = Utils.Deserialize<MessageMovements>(message);
+            MessageHandler.Current.onMessageMovements(messageMovements);
         }
     }
 
@@ -67,13 +65,13 @@ public class UDPClient
         }
     }
 
-    public static void Send(ClientMessage message) {
+    public static void Send<T>(T message) {
         if (!_connected) {
             OnError();
             return;
         }
-        JObject json = JObject.FromObject(message);
-        byte[] messageBytes = Encoding.UTF8.GetBytes(json.ToString());
+        string serializedMessage = Utils.Serialize(message);
+        byte[] messageBytes = Encoding.UTF8.GetBytes(serializedMessage);
         _udpClient.Send(messageBytes, messageBytes.Length);
     }
 }

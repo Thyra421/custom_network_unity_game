@@ -17,7 +17,7 @@ public class LocalPlayer : Player
             TransformData transformData = new TransformData(transform);
             if (!transformData.Equals(_lastTransform)) {
                 _lastTransform = transformData;
-                UDPClient.Send(new ClientMessageMovement(transformData, new MovementData(_movement.Movement.x, _movement.Movement.z)));
+                UDPClient.Send(new MessageMovement(transformData, new MovementData(_movement.Movement.x, _movement.Movement.z)));
             }
         }
     }

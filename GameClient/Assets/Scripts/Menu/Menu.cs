@@ -38,10 +38,10 @@ public class Menu : MonoBehaviour
     private void Login() {
         SetLoading();
         SetSliderValue(0);
-        StartCoroutine(HTTPClient.Login(new ClientMessageLogin(input.text), OnLoggedIn, OnError));
+        StartCoroutine(HTTPClient.Login(new MessageLogin(input.text), OnLoggedIn, OnError));
     }
 
-    private void OnLoggedIn(ServerMessageSecret messageSecret) {
+    private void OnLoggedIn(MessageSecret messageSecret) {
         SetSliderValue(1);
         NetworkManager.Secret = messageSecret.secret;
         Connect();
@@ -67,7 +67,7 @@ public class Menu : MonoBehaviour
         try {
             SetSliderValue(3);
             UDPClient.Connect();
-            TCPClient.Send(new ClientMessageAuthenticate(NetworkManager.Secret, UDPClient.Address, UDPClient.Port));
+            TCPClient.Send(new MessageAuthenticate(NetworkManager.Secret, UDPClient.Address, UDPClient.Port));
             SetPlay();
         } catch (Exception e) {
             Debug.LogException(e);

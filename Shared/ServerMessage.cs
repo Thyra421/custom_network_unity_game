@@ -1,76 +1,55 @@
-﻿using UnityEditor;
-
-public enum ServerMessageType
-{
-    secret, // HTTP
-    gameState, // TCP
-    joinedGame, // TCP
-    leftGame, // TCP
-    movements, // UDP
-    attack // TCP
-}
-
-public class ServerMessage
-{
-    public ServerMessageType type;
-
-    public ServerMessage(ServerMessageType type) {
-        this.type = type;
-    }
-}
-
-public class ServerMessageSecret : ServerMessage
+﻿public struct MessageSecret
 {
     public string secret;
 
-    public ServerMessageSecret(string secret) : base(ServerMessageType.secret) {
+    public MessageSecret(string secret) {
         this.secret = secret;
     }
 }
 
-public class ServerMessageJoinedGame : ServerMessage
+public struct MessageJoinedGame
 {
     public ObjectData player;
 
-    public ServerMessageJoinedGame(ObjectData player) : base(ServerMessageType.joinedGame) {
+    public MessageJoinedGame(ObjectData player) {
         this.player = player;
     }
 }
 
-public class ServerMessageMovements : ServerMessage
+public struct MessageMovements
 {
     public ObjectData[] players;
 
-    public ServerMessageMovements(ObjectData[] players) : base(ServerMessageType.movements) {
+    public MessageMovements(ObjectData[] players) {
         this.players = players;
     }
 }
 
-public class ServerMessageGameState : ServerMessage
+public struct MessageGameState
 {
     public string id;
     public ObjectData[] players;
 
-    public ServerMessageGameState(string id, ObjectData[] players) : base(ServerMessageType.gameState) {
+    public MessageGameState(string id, ObjectData[] players) {
         this.id = id;
         this.players = players;
     }
 }
 
-public class ServerMessageLeftGame : ServerMessage
+public struct MessageLeftGame
 {
     public string id;
 
-    public ServerMessageLeftGame(string id) : base(ServerMessageType.leftGame) {
+    public MessageLeftGame(string id) {
         this.id = id;
     }
 }
 
-public class ServerMessageAttack : ServerMessage
+public struct MessagePlayerAttack
 {
     public string id;
 
-    public ServerMessageAttack(string id) : base(ServerMessageType.attack) {
+    public MessagePlayerAttack(string id) {
         this.id = id;
     }
 }

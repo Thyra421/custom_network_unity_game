@@ -12,7 +12,7 @@
 
     public int Port => _port;
 
-    public void Send(ServerMessage message) {
+    public void Send<T>(T message) {
         API.UdpServer.Send(this, message);
     }
 }

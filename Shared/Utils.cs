@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using Palmmedia.ReportGenerator.Core;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -8,19 +7,21 @@ public static class Utils
 {
     public static string GenerateUUID() => Guid.NewGuid().ToString();
 
-    public static T ParseJsonString<T>(string s) {
+    public static T JsonDecode<T>(string s) {
         return JObject.Parse(s).ToObject<T>();
     }
 
-    public static string ObjectToString(object o) {
+    public static string JsonEncode(object o) {
         return JObject.FromObject(o).ToString();
     }
 
     private static string SerializeValue(object value, Type type) {
         string str = "";
 
-        if (type.IsValueType && !type.IsPrimitive) {
-            MethodInfo genericMethod = typeof(Program).GetMethod(nameof(SerializeObject))!.MakeGenericMethod(type);
+        if (type.IsEnum)
+            str += value;
+        else if (!type.IsPrimitive && !type.Equals(typeof(string))) {
+            MethodInfo genericMethod = typeof(Utils).GetMethod(nameof(SerializeStruct), BindingFlags.NonPublic | BindingFlags.Static)!.MakeGenericMethod(type);
             str += genericMethod.Invoke(null, new object[] { value });
         } else
             str += value;
@@ -49,8 +50,10 @@ public static class Utils
     }
 
     private static object DeserializeValue(object value, Type type) {
-        if (type.IsValueType && !type.IsPrimitive) {
-            MethodInfo genericMethod = typeof(Program).GetMethod(nameof(DeserializeSplitted))!.MakeGenericMethod(type);
+        if (type.IsEnum)
+            return Enum.Parse(type, (value as string)!);
+        if (!type.IsPrimitive && !type.Equals(typeof(string))) {
+            MethodInfo genericMethod = typeof(Utils).GetMethod(nameof(DeserializeSplitted), BindingFlags.Static | BindingFlags.NonPublic)!.MakeGenericMethod(type);
             return genericMethod.Invoke(null, new object[] { (value as List<object>)! })!;
         } else if (type.Equals(typeof(bool)))
             return bool.Parse((value as string)!);
@@ -123,13 +126,7 @@ public static class Utils
         return characters;
     }
 
-    public static T Deserialize<T>(string serializedObject) {
-        List<object> splittedSerializedObject = new List<object>();
-        Split(serializedObject, splittedSerializedObject);
-        return DeserializeSplitted<T>(splittedSerializedObject);
-    }
-
-    public static string SerializeObject<T>(T myStruct) {
+    private static string SerializeStruct<T>(T myStruct) {
         Type structType = typeof(T);
         FieldInfo[] fields = structType.GetFields();
         string str = "{";
@@ -156,5 +153,24 @@ public static class Utils
         }
         str += "}";
         return str;
+    }
+
+    public static T Deserialize<T>(string serializedObject) {
+        int i = serializedObject.IndexOf('{');
+        serializedObject = serializedObject[i..];
+        List<object> splittedSerializedObject = new List<object>();
+        Split(serializedObject, splittedSerializedObject);
+        return DeserializeSplitted<T>(splittedSerializedObject);
     }    
+
+    public static string Serialize<T>(T myStruct) {
+        Type structType = typeof(T);
+        return structType.Name + SerializeStruct(myStruct);
+    }
+
+    public static Type GetMessageType(string serializedObject) {
+        int i = serializedObject.IndexOf('{');
+        string messageTypeName = serializedObject[..i];
+        return Type.GetType(messageTypeName);
+    }
 }

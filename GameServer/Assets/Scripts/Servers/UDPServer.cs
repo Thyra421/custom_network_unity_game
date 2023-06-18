@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
@@ -30,17 +29,15 @@ public class UDPServer
 
     private static void OnMessage(string message, Client client) {
         Debug.Log($"[UDPServer] received {message}");
-        ClientMessage clientMessage = Utils.ParseJsonString<ClientMessage>(message);
+        Type messageType = Utils.GetMessageType(message);
 
-        switch (clientMessage.type) {
-            case ClientMessageType.movement:
-                ClientMessageMovement messageMovement = Utils.ParseJsonString<ClientMessageMovement>(message);
-                OnClientMessageMovement(messageMovement, client);
-                break;
+        if (messageType.Equals(typeof(MessageMovement))) {
+            MessageMovement messageMovement = Utils.Deserialize<MessageMovement>(message);
+            OnMessageMovement(messageMovement, client);
         }
     }
 
-    private static void OnClientMessageMovement(ClientMessageMovement messageMovement, Client client) {
+    private static void OnMessageMovement(MessageMovement messageMovement, Client client) {
         Player player = API.Players.Find(client);
         player.Data.transform = messageMovement.newTransform;
         player.Data.movement = messageMovement.movement;
@@ -70,13 +67,13 @@ public class UDPServer
         return true;
     }
 
-    public void Send(UDPClient recipient, ServerMessage serverMessage) {
+    public void Send<T>(UDPClient recipient, T message) {
         if (_udpClient == null) {
             OnError();
             return;
         }
-        JObject obj = JObject.FromObject(serverMessage);
-        byte[] messageBytes = Encoding.UTF8.GetBytes(obj.ToString());
+        string serializedMessage = Utils.Serialize(message);
+        byte[] messageBytes = Encoding.UTF8.GetBytes(serializedMessage);
         _udpClient.Send(messageBytes, messageBytes.Length, recipient.Address, recipient.Port);
     }
 }

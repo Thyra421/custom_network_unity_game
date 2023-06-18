@@ -12,29 +12,40 @@ public class Players : IUpdatable
             return;
         ObjectData[] objects = GetObjectDatas((Player p) => p.UpdateIfHasChanged());
         if (objects.Length > 0)
-            BroadcastUDP(new ServerMessageMovements(objects));
+            BroadcastUDP((Player player) => new MessageMovements(Array.FindAll(objects, (ObjectData data) => data != player.Data).ToArray()), (MessageMovements message) => message.players.Length > 0);
     }
 
     public void Update() {
         SyncMovement();
     }
 
-    public async void BroadcastTCP(ServerMessage message) {
+    public async void BroadcastTCP<T>(T message) {
         foreach (Client client in GetClients()) {
             await client.Tcp.Send(message);
         }
     }
 
-    public async void BroadcastTCP(ServerMessage message, Player except) {
+    public async void BroadcastTCP<T>(T message, Player except) {
         foreach (Client client in GetClients()) {
             if (client != except.Client)
                 await client.Tcp.Send(message);
         }
     }
 
-    public void BroadcastUDP(ServerMessage message) {
+    public void BroadcastUDP<T>(T message) {
         foreach (Client client in GetClients()) {
             client.Udp?.Send(message);
+        }
+    }
+
+    public delegate T CustomMessageHandler<T>(Player player);
+    public delegate bool SendConditionHandler<T>(T message);
+
+    public void BroadcastUDP<T>(CustomMessageHandler<T> customMessage, SendConditionHandler<T> condition) {
+        foreach (Client client in GetClients()) {
+            T message = customMessage(client.Player);
+            if (condition(message))
+                client.Udp?.Send(message);
         }
     }
 
