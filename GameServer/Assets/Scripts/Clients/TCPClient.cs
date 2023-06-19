@@ -3,7 +3,6 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class TCPClient
@@ -14,12 +13,12 @@ public class TCPClient
     private void OnDisconnect() {
         Debug.Log($"[TCPClient] disconnected");
 
-        Player player = API.Players.Find(this);
+        Player player = _client.Player;
         if (player != null) {
-            API.Players.Remove(player);
-            API.Players.BroadcastTCP(new MessageLeftGame(player.Data.id), player);
+            player.Room?.Remove(player);
+            player.Room?.BroadcastTCP(new MessageLeftGame(player.Id), player);
         }
-        API.Clients.Remove(this);
+        API.Clients.Remove(_client);
     }
 
     private void OnMessage(string message) {
@@ -36,23 +35,30 @@ public class TCPClient
         } else if (messageType.Equals(typeof(MessageAttack))) {
             MessageAttack clientMessageAttack = Utils.Deserialize<MessageAttack>(message);
             OnMessageAttack(clientMessageAttack);
+        } else if (messageType.Equals(typeof(MessagePickUp))) {
+            MessagePickUp clientMessagePickUp = Utils.Deserialize<MessagePickUp>(message);
+            OnMessagePickUp(clientMessagePickUp);
         }
     }
 
     private void OnMessageAuthenticate(MessageAuthenticate clientMessageAuthenticate) {
-        _client?.Authenticate(new UDPClient(clientMessageAuthenticate.udpAddress, clientMessageAuthenticate.udpPort), clientMessageAuthenticate.secret);
+        _client.Authenticate(new UDPClient(clientMessageAuthenticate.udpAddress, clientMessageAuthenticate.udpPort), clientMessageAuthenticate.secret);
     }
 
     private async void OnMessagePlay(MessagePlay clientMessagePlay) {
-        Player newPlayer = API.Players.Create(_client);
-        API.Players.BroadcastTCP(new MessageJoinedGame(newPlayer.Data), newPlayer);
-        MessageGameState messageGameState = new MessageGameState(newPlayer.Data.id, API.Players.GetObjectDatas().ToArray());
+        Player newPlayer = Reception.Current.JoinOrCreateRoom(_client);
+        newPlayer.Room.BroadcastTCP(new MessageJoinedGame(newPlayer.Data), newPlayer);
+        MessageGameState messageGameState = new MessageGameState(newPlayer.Id, newPlayer.Room.PlayerDatas);
         await Send(messageGameState);
     }
 
     private void OnMessageAttack(MessageAttack clientMessageAttack) {
-        API.Players.BroadcastTCP(new MessagePlayerAttack(_client.Player.Data.id), _client.Player);
-        _client.Player.Avatar.Attack();
+        _client.Player.Room.BroadcastTCP(new MessageAttacked(_client.Player.Id), _client.Player);
+        _client.Player.Attack();
+    }
+
+    private void OnMessagePickUp(MessagePickUp clientMessagePickUp) {
+        _client.Player.Room.BroadcastTCP(new MessagePickedUp(_client.Player.Id, clientMessagePickUp.id));
     }
 
     public TCPClient(TcpClient tcpClient) {
@@ -77,7 +83,6 @@ public class TCPClient
             OnDisconnect();
         } catch (Exception e) {
             Debug.LogException(e);
-            OnDisconnect();
         }
     }
 

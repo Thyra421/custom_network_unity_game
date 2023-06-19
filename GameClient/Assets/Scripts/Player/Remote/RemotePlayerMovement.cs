@@ -4,7 +4,7 @@ public class RemotePlayerMovement : PlayerMovement
 {
     private Vector3 _destinationPosition;
     private Vector3 _destinationRotation;
-    private MovementData _movementData;
+    private AnimationData _animationData;
 
     protected override void Move() {
         Vector3 direction = (_destinationPosition - transform.position).normalized;
@@ -16,8 +16,8 @@ public class RemotePlayerMovement : PlayerMovement
             transform.position = _destinationPosition;
         } else {
             _animator.SetBool("IsRunning", true);
-            _animator.SetFloat("X", _movementData.x);
-            _animator.SetFloat("Y", _movementData.y);
+            _animator.SetFloat("X", _animationData.x);
+            _animator.SetFloat("Y", _animationData.y);
             transform.position += direction * _movementSpeed * Time.deltaTime;
         }
     }
@@ -39,8 +39,8 @@ public class RemotePlayerMovement : PlayerMovement
         get => _destinationRotation;
         set => _destinationRotation = value;
     }
-    public MovementData MovementData {
-        get => _movementData;
-        set => _movementData = value;
+    public AnimationData AnimationData {
+        get => _animationData;
+        set => _animationData = value;
     }
 }

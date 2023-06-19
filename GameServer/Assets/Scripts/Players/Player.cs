@@ -1,33 +1,55 @@
-﻿public class Player
-{
-    private readonly Client _client;
-    private ObjectData _data;
-    private TransformData _lastTransform;
-    private Avatar _avatar;
+﻿using UnityEngine;
 
-    public Player(Client client) {
-        _data = new ObjectData();
+public class Player : MonoBehaviour
+{
+    private string _id;
+    private Client _client;
+    private Room _room;
+    private TransformData _transformData;
+    private AnimationData _animationData;
+    private TransformData _lastTransform;
+
+    public void Initialize(Client client, Room room) {
+        _id = Utils.GenerateUUID();
         _client = client;
-        _avatar = GameManager.Current.CreateAvatar();
-        _avatar.Player = this;
+        _room = room;
+        client.Player = this;
     }
 
-    public bool UpdateIfHasChanged() {
-        if (_lastTransform?.Equals(Data.transform) ?? false)
+    public void Attack() {
+        AttackHitbox attackHitbox = Instantiate(Resources.Load<GameObject>("Prefabs/AttackHitbox"), transform).GetComponent<AttackHitbox>();
+        attackHitbox.Player = this;
+    }
+
+    public bool UpdateTransformIfChanged() {
+        TransformData transformData = new TransformData(transform);
+        if (_lastTransform.Equals(transformData))
             return false;
         else {
-            _lastTransform = Data.transform;
+            _lastTransform = transformData;
             return true;
         }
     }
 
+    public string Id => _id;
+
     public Client Client => _client;
 
-    public ObjectData Data => _data;
+    public Room Room => _room;
 
-    public TransformData LastTransform {
-        get => _lastTransform;
-        set => _lastTransform = value;
+    public TransformData TransformData {
+        get => _transformData;
+        set {
+            _transformData = value;
+            transform.position = value.position.ToVector3;
+            transform.eulerAngles = value.rotation.ToVector3;
+        }
     }
-    public Avatar Avatar => _avatar;
+    public AnimationData AnimationData {
+        get => _animationData;
+        set => _animationData = value;
+    }
+
+    public PlayerData Data => new PlayerData(_id, _transformData, _animationData);
+
 }

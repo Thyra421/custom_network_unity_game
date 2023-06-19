@@ -3,7 +3,7 @@ using UnityEngine;
 
 class AttackHitbox : MonoBehaviour
 {
-    private Avatar _avatar;
+    private Player _player;
     private List<Collider> _collidersTouched = new List<Collider>();
 
     private void Start() {
@@ -13,15 +13,15 @@ class AttackHitbox : MonoBehaviour
     private void OnTriggerEnter(Collider other) {
         if (_collidersTouched.Contains(other))
             return;
-        Avatar otherAvatar = other.GetComponent<Avatar>();
-        if (otherAvatar != _avatar) {
+        Player otherPlayer = other.GetComponent<Player>();
+        if (otherPlayer != _player && otherPlayer.Room == _player.Room) {
             _collidersTouched.Add(other);
-            API.Players.BroadcastTCP(new MessageDamage(_avatar.Player.Data.id, otherAvatar.Player.Data.id));
+            _player.Room.BroadcastTCP(new MessageDamage(_player.Id, otherPlayer.Id));
         }
     }
 
-    public Avatar Avatar {
-        get => _avatar;
-        set => _avatar = value;
+    public Player Player {
+        get => _player;
+        set => _player = value;
     }
 }

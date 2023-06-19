@@ -7,7 +7,6 @@ public class Clients
 
     public Client Create(TCPClient tcpClient) {
         Client newClient = new Client(tcpClient);
-        tcpClient.Client = newClient;
         _clients.Add(newClient);
         Debug.Log($"[Clients] created. {_clients.Count} clients");
         return newClient;
@@ -19,10 +18,9 @@ public class Clients
     }
 
     public void Remove(TCPClient tcpClient) {
-        int index = _clients.FindIndex((Client c) => { return c.Tcp == tcpClient; });
-        if (index != -1)
-            _clients.RemoveAt(index);
-        Debug.Log($"[Clients] removed. {_clients.Count} clients");
+        Client client = _clients.Find((Client c) => c.Tcp == tcpClient);
+        if (client != null)
+            Remove(client);
     }
 
     public Client Find(string address, int port) {

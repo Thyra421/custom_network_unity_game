@@ -22,7 +22,6 @@ public class UDPServer
                     OnMessage(message, client);
             } catch (Exception e) {
                 Debug.LogException(e);
-                //OnDisconnected();
             }
         }
     }
@@ -38,11 +37,8 @@ public class UDPServer
     }
 
     private static void OnMessageMovement(MessageMovement messageMovement, Client client) {
-        Player player = API.Players.Find(client);
-        player.Data.transform = messageMovement.newTransform;
-        player.Data.movement = messageMovement.movement;
-        player.Avatar.transform.position = messageMovement.newTransform.position.ToVector3();
-        player.Avatar.transform.eulerAngles = messageMovement.newTransform.rotation.ToVector3();
+        client.Player.TransformData = messageMovement.newTransform;
+        client.Player.AnimationData = messageMovement.movement;
     }
 
     private static void OnStarted() => Debug.Log($"[UDPServer] started");
@@ -50,8 +46,6 @@ public class UDPServer
     private static void OnListening() => Debug.Log($"[UDPServer] listening");
 
     private static void OnError() => Debug.Log("[UDPServer] not connected");
-
-    private static void OnDisconnected() => Debug.Log("[UDPServer] disconnected");
 
     private static void OnConnectionFailed() => Debug.Log($"[UDPServer] connection failed");
 

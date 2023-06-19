@@ -27,9 +27,9 @@ public struct MessagePlay
 public struct MessageMovement
 {
     public TransformData newTransform;
-    public MovementData movement;
+    public AnimationData movement;
 
-    public MessageMovement(TransformData newTransform, MovementData movement) {
+    public MessageMovement(TransformData newTransform, AnimationData movement) {
         this.newTransform = newTransform;
         this.movement = movement;
     }
@@ -37,4 +37,13 @@ public struct MessageMovement
 
 public struct MessageAttack
 {
+}
+
+public struct MessagePickUp
+{
+    public string id;
+
+    public MessagePickUp(string id) {
+        this.id = id;
+    }
 }

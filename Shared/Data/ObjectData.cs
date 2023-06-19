@@ -1,12 +1,12 @@
-public class ObjectData
+public struct PlayerData
 {
     public string id;
     public TransformData transform;
-    public MovementData movement;
+    public AnimationData animation;
 
-    public ObjectData() {
-        id = id = Utils.GenerateUUID();
-        transform = TransformData.Zero();
-        movement = MovementData.Zero();
+    public PlayerData(string id, TransformData transform, AnimationData animation) {
+        this.id = id;
+        this.transform = transform;
+        this.animation = animation;
     }
 }

@@ -9,18 +9,18 @@
 
 public struct MessageJoinedGame
 {
-    public ObjectData player;
+    public PlayerData player;
 
-    public MessageJoinedGame(ObjectData player) {
+    public MessageJoinedGame(PlayerData player) {
         this.player = player;
     }
 }
 
 public struct MessageMovements
 {
-    public ObjectData[] players;
+    public PlayerData[] players;
 
-    public MessageMovements(ObjectData[] players) {
+    public MessageMovements(PlayerData[] players) {
         this.players = players;
     }
 }
@@ -28,9 +28,9 @@ public struct MessageMovements
 public struct MessageGameState
 {
     public string id;
-    public ObjectData[] players;
+    public PlayerData[] players;
 
-    public MessageGameState(string id, ObjectData[] players) {
+    public MessageGameState(string id, PlayerData[] players) {
         this.id = id;
         this.players = players;
     }
@@ -45,11 +45,11 @@ public struct MessageLeftGame
     }
 }
 
-public struct MessagePlayerAttack
+public struct MessageAttacked
 {
     public string id;
 
-    public MessagePlayerAttack(string id) {
+    public MessageAttacked(string id) {
         this.id = id;
     }
 }
@@ -63,4 +63,16 @@ public struct MessageDamage
         this.idFrom = idFrom;
         this.idTo = idTo;
     }
+}
+
+public struct MessagePickedUp
+{
+    public string playerId;
+    public string objectId;
+
+    public MessagePickedUp(string playerId, string objectId) : this() {
+        this.playerId = playerId;
+        this.objectId = objectId;
+    }
+
 }

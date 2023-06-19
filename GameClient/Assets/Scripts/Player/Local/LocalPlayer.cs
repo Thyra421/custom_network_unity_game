@@ -17,19 +17,12 @@ public class LocalPlayer : Player
             TransformData transformData = new TransformData(transform);
             if (!transformData.Equals(_lastTransform)) {
                 _lastTransform = transformData;
-                UDPClient.Send(new MessageMovement(transformData, new MovementData(_movement.Movement.x, _movement.Movement.z)));
+                UDPClient.Send(new MessageMovement(transformData, new AnimationData(_movement.Movement.x, _movement.Movement.z)));
             }
         }
-    }
-
-    private void Start() {
-        if (_movement == null)
-            _movement = GetComponent<LocalPlayerMovement>();
     }
 
     private void Update() {
         SendMovement();
     }
-
-
 }

@@ -4,20 +4,20 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager _current;
     [SerializeField]
-    private GameObject _avatarPrefab;
+    //private GameObject _roomPrefab;
 
     public static GameManager Current {
         get => _current;
         set => _current = value;
     }
 
-    public void DestroyAvatar(Avatar avatar) {
-        Destroy(avatar.gameObject);
-    }
+    //public void DestroyRoom(Room room) {
+    //    Destroy(room.gameObject);
+    //}
 
-    public Avatar CreateAvatar() {
-        return Instantiate(_avatarPrefab).GetComponent<Avatar>();
-    }
+    //public Room CreateRoom() {
+    //    return Instantiate(_roomPrefab).GetComponent<Room>();
+    //}
 
     private void Awake() {
         if (_current == null)

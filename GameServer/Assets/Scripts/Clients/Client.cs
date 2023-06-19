@@ -10,6 +10,7 @@ public class Client
 
     public Client(TCPClient tcp) {
         _tcp = tcp;
+        tcp.Client = this;
         Debug.Log($"[Client] created");
     }
 
