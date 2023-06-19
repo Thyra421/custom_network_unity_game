@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,8 +14,8 @@ public class TCPClient
 
         Player player = _client.Player;
         if (player != null) {
-            player.Room?.Remove(player);
-            player.Room?.BroadcastTCP(new MessageLeftGame(player.Id), player);
+            player.Room.RemovePlayer(player);
+            player.Room.BroadcastTCP(new MessageLeftGame(player.Id), player);
         }
         API.Clients.Remove(_client);
     }
@@ -48,7 +47,8 @@ public class TCPClient
     private async void OnMessagePlay(MessagePlay clientMessagePlay) {
         Player newPlayer = Reception.Current.JoinOrCreateRoom(_client);
         newPlayer.Room.BroadcastTCP(new MessageJoinedGame(newPlayer.Data), newPlayer);
-        MessageGameState messageGameState = new MessageGameState(newPlayer.Id, newPlayer.Room.PlayerDatas);
+        MessageGameState messageGameState = new MessageGameState(newPlayer.Id, newPlayer.Room.PlayerDatas, newPlayer.Room.ObjectDatas);
+        Debug.Log("send");
         await Send(messageGameState);
     }
 
@@ -58,7 +58,13 @@ public class TCPClient
     }
 
     private void OnMessagePickUp(MessagePickUp clientMessagePickUp) {
-        _client.Player.Room.BroadcastTCP(new MessagePickedUp(_client.Player.Id, clientMessagePickUp.id));
+        Mushroom mushroom = _client.Player.Room.FindMushroom(clientMessagePickUp.id);
+        Player player = _client.Player;
+
+        if (mushroom.GetComponent<Collider>().bounds.Intersects(player.GetComponent<Collider>().bounds)) {
+            _client.Player.Room.BroadcastTCP(new MessagePickedUp(_client.Player.Id, clientMessagePickUp.id));
+            player.Room.RemoveMushroom(mushroom);
+        }
     }
 
     public TCPClient(TcpClient tcpClient) {

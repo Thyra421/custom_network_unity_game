@@ -29,10 +29,12 @@ public struct MessageGameState
 {
     public string id;
     public PlayerData[] players;
+    public ObjectData[] mushrooms;
 
-    public MessageGameState(string id, PlayerData[] players) {
+    public MessageGameState(string id, PlayerData[] players, ObjectData[] mushrooms) {
         this.id = id;
         this.players = players;
+        this.mushrooms = mushrooms;
     }
 }
 

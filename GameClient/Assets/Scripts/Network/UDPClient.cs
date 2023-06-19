@@ -40,7 +40,7 @@ public class UDPClient
         }
     }
 
-    private static void OnError() => Debug.LogError("[UDPClient] not connected");
+    private static void OnError() => Debug.Log("[UDPClient] not connected");
 
     private static void OnConnected() => Debug.Log("[UDPClient] connected");
 

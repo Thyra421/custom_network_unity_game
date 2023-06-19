@@ -12,7 +12,7 @@ public class PlayerHealth : MonoBehaviour
         _slider.value = _health;
     }
 
-    private void Start() {
+    private void Awake() {
         _slider.maxValue = _health;
         _slider.value = _health;
     }

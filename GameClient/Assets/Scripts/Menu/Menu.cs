@@ -32,7 +32,7 @@ public class Menu : MonoBehaviour
     }
 
     private void SetSliderValue(int value) {
-        MainThreadWorker.Current.AddJob(() => slider.value = value);
+        slider.value = value;
     }
 
     private void Login() {

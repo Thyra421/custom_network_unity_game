@@ -2,15 +2,18 @@
 
 public class Player : MonoBehaviour
 {
-    private string _id;
+    private readonly string _id = Utils.GenerateUUID();
     private Client _client;
     private Room _room;
     private TransformData _transformData;
     private AnimationData _animationData;
     private TransformData _lastTransform;
 
+    private void Awake() {
+        _transformData = new TransformData(transform);
+    }
+
     public void Initialize(Client client, Room room) {
-        _id = Utils.GenerateUUID();
         _client = client;
         _room = room;
         client.Player = this;
@@ -22,11 +25,10 @@ public class Player : MonoBehaviour
     }
 
     public bool UpdateTransformIfChanged() {
-        TransformData transformData = new TransformData(transform);
-        if (_lastTransform.Equals(transformData))
+        if (_lastTransform.Equals(_transformData))
             return false;
         else {
-            _lastTransform = transformData;
+            _lastTransform = _transformData;
             return true;
         }
     }
@@ -51,5 +53,4 @@ public class Player : MonoBehaviour
     }
 
     public PlayerData Data => new PlayerData(_id, _transformData, _animationData);
-
 }

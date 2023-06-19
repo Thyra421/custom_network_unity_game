@@ -14,7 +14,7 @@ class Reception : MonoBehaviour
     }
 
     private Player CreateRoom(Client client) {
-        Room newRoom = Instantiate(_roomPrefab, transform).GetComponent<Room>();
+        Room newRoom = Instantiate(_roomPrefab).GetComponent<Room>();
         _rooms.Add(newRoom);
         Player newPlayer = newRoom.CreatePlayer(client);
         return newPlayer;
@@ -28,7 +28,7 @@ class Reception : MonoBehaviour
         }
     }
 
-    public void Remove(Room room) {
+    public void RemoveRoom(Room room) {
         Destroy(room.gameObject);
         _rooms.Remove(room);
     }

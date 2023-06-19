@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -8,14 +9,19 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private LocalPlayer _myPlayer;
     private readonly List<RemotePlayer> _remotePlayers = new List<RemotePlayer>();
+    private readonly List<Mushroom> _mushrooms = new List<Mushroom>();
 
-    private void CreatePlayer(PlayerData player) {
-        MainThreadWorker.Current.AddJob(() => {
-            GameObject newPlayer = Instantiate(_playerPrefab, player.transform.position.ToVector3, Quaternion.identity);
-            RemotePlayer remotePlayer = newPlayer.GetComponent<RemotePlayer>();
-            remotePlayer.Id = player.id;
-            _remotePlayers.Add(remotePlayer);
-        });
+    private void CreatePlayer(PlayerData data) {
+        GameObject newPlayer = Instantiate(_playerPrefab, data.transform.position.ToVector3, Quaternion.identity);
+        RemotePlayer remotePlayer = newPlayer.GetComponent<RemotePlayer>();
+        remotePlayer.Id = data.id;
+        _remotePlayers.Add(remotePlayer);
+    }
+
+    private void CreateMushroom(ObjectData data) {
+        Mushroom newMushroom = Instantiate(Resources.Load("Prefabs/" + data.assetName), data.transform.position.ToVector3, Quaternion.Euler(data.transform.rotation.ToVector3)).GetComponent<Mushroom>();
+        newMushroom.Id = data.id;
+        _mushrooms.Add(newMushroom);
     }
 
     private void OnMessageGameState(MessageGameState messageGameState) {
@@ -23,6 +29,9 @@ public class GameManager : MonoBehaviour
         foreach (PlayerData p in messageGameState.players) {
             if (p.id != _myPlayer.Id)
                 CreatePlayer(p);
+        }
+        foreach (ObjectData o in messageGameState.mushrooms) {
+            CreateMushroom(o);
         }
     }
 
@@ -78,6 +87,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void OnMessagePickedUp(MessagePickedUp messagePickedUp) {
+        Mushroom mushroom = _mushrooms.Find((Mushroom m) => m.Id == messagePickedUp.objectId);
+        _mushrooms.Remove(mushroom);
+        Destroy(mushroom.gameObject);
+    }
+
     private void Start() {
         MessageHandler.Current.onMessageGameState += OnMessageGameState;
         MessageHandler.Current.onMessageJoinedGame += OnMessageJoinedGame;
@@ -85,6 +100,7 @@ public class GameManager : MonoBehaviour
         MessageHandler.Current.onMessageLeftGame += OnMessageLeftGame;
         MessageHandler.Current.onMessageAttacked += OnMessageAttacked;
         MessageHandler.Current.onMessageDamage += OnMessageDamage;
+        MessageHandler.Current.onMessagePickedUp += OnMessagePickedUp;
         TCPClient.Send(new MessagePlay());
     }
 

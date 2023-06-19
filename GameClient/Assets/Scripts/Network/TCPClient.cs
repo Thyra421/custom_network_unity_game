@@ -26,7 +26,6 @@ public class TCPClient
             OnDisconnect();
         } catch (Exception e) {
             Debug.LogException(e);
-            OnDisconnect();
         }
     }
 

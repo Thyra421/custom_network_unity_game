@@ -26,7 +26,7 @@ public class RemotePlayerMovement : PlayerMovement
         transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, _destinationRotation, Time.deltaTime * _rotationSpeed);
     }
 
-    private void Start() {
+    private void Awake() {
         _destinationPosition = transform.position;
         _destinationRotation = transform.eulerAngles;
     }    

@@ -29,7 +29,7 @@ public class Mushroom : MonoBehaviour
 
     private void OnMouseUp() {
         if (_isOnRange)
-            Debug.Log("Picking up " + _id);
+            TCPClient.Send(new MessagePickUp(_id));
     }
 
     public string Id {

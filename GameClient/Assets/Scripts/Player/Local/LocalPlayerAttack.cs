@@ -8,7 +8,7 @@ public class LocalPlayerAttack : PlayerAttack
     }
 
     private void Update() {
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetKeyUp(KeyCode.Alpha1))
             Attack();
     }
 }

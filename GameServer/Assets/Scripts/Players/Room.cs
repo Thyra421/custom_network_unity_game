@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Room : MonoBehaviour
 {
-    private int _maxPlayers = 2;
-    private List<Player> _players = new List<Player>();
+    private const int _maxPlayers = 2;
+    private readonly List<Player> _players = new List<Player>();
+    private readonly List<Mushroom> _mushrooms = new List<Mushroom>();
     private float _elapsedTime = 0f;
 
     private delegate T CustomMessageHandler<T>(Player player);
@@ -37,6 +39,23 @@ public class Room : MonoBehaviour
         }
     }
 
+    private void PrepareGame() {
+        List<Transform> spawned = new List<Transform>();
+
+        for (int i = 0; i < 5; i++) {
+            Transform randomTransform = GameManager.Current.RandomMusroomSpawn;
+            while (spawned.Contains(randomTransform))
+                randomTransform = GameManager.Current.RandomMusroomSpawn;
+            spawned.Add(randomTransform);
+            Mushroom newMushroom = Instantiate(Resources.Load("Prefabs/Mushroom"), randomTransform.position, randomTransform.rotation, transform).GetComponent<Mushroom>();
+            _mushrooms.Add(newMushroom);
+        }
+    }
+
+    private void Awake() {
+        PrepareGame();
+    }
+
     private void Update() {
         SyncMovement();
     }
@@ -64,32 +83,28 @@ public class Room : MonoBehaviour
         return newPlayer;
     }
 
-    public Player Find(Client client) {
-        return _players.Find((Player p) => p.Client == client);
-    }
-
-    public Player Find(TCPClient tcp) {
-        return _players.Find((Player p) => p.Client.Tcp == tcp);
-    }
-
-    public Player Find(string address, int port) {
-        return _players.Find((Player p) => p.Client.Udp?.Address == address && p.Client.Udp.Port == port);
-    }
-
-    public void Remove(TCPClient tcp) {
-        Player player = _players.Find((Player p) => p.Client.Tcp == tcp);
-        Remove(player);
-    }
-
-    public void Remove(Player player) {
+    public void RemovePlayer(Player player) {
         Destroy(player.gameObject);
         _players.Remove(player);
         Debug.Log($"[Players] removed. {_players.Count} players");
         if (_players.Count == 0)
-            Reception.Current.Remove(this);
+            Reception.Current.RemoveRoom(this);
+    }
+
+    public void RemoveMushroom(Mushroom mushroom) {
+        Destroy(mushroom.gameObject);
+        _mushrooms.Remove(mushroom);
+    }
+
+    public Mushroom FindMushroom(string id) {
+        return _mushrooms.Find((Mushroom m) => m.Id == id);
     }
 
     public PlayerData[] PlayerDatas => _players.Select((Player player) => player.Data).ToArray();
 
+    public ObjectData[] ObjectDatas => _mushrooms.Select((Mushroom mushroom) => mushroom.Data).ToArray();
+
     public bool IsFull => _players.Count == _maxPlayers;
+
+    public List<Mushroom> Mushrooms => _mushrooms;
 }
