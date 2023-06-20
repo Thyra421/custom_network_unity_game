@@ -58,12 +58,12 @@ public class TCPClient
     }
 
     private void OnMessagePickUp(MessagePickUp clientMessagePickUp) {
-        Mushroom mushroom = _client.Player.Room.FindMushroom(clientMessagePickUp.id);
+        Node node = _client.Player.Room.FindNode(clientMessagePickUp.id);
         Player player = _client.Player;
 
-        if (mushroom.GetComponent<Collider>().bounds.Intersects(player.GetComponent<Collider>().bounds)) {
+        if (node.GetComponentInChildren<Collider>().bounds.Intersects(player.GetComponent<Collider>().bounds)) {
             _client.Player.Room.BroadcastTCP(new MessagePickedUp(_client.Player.Id, clientMessagePickUp.id));
-            player.Room.RemoveMushroom(mushroom);
+            player.Room.RemoveNode(node);
         }
     }
 

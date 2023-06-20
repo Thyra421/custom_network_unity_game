@@ -8,7 +8,7 @@ public class Room : MonoBehaviour
 {
     private const int _maxPlayers = 2;
     private readonly List<Player> _players = new List<Player>();
-    private readonly List<Mushroom> _mushrooms = new List<Mushroom>();
+    private readonly List<Node> _nodes = new List<Node>();
     private float _elapsedTime = 0f;
 
     private delegate T CustomMessageHandler<T>(Player player);
@@ -39,17 +39,26 @@ public class Room : MonoBehaviour
         }
     }
 
-    private void PrepareGame() {
-        List<Transform> spawned = new List<Transform>();
+    private void PrepareBiome(RawMaterial[] materials, int amount, List<Transform> occupied) {
+        for (int i = 0; i < amount; i++) {
+            Transform randomTransform = GameManager.Current.RandomPlainSpawn;
+            while (occupied.Contains(randomTransform))
+                randomTransform = GameManager.Current.RandomPlainSpawn;
+            occupied.Add(randomTransform);
 
-        for (int i = 0; i < 5; i++) {
-            Transform randomTransform = GameManager.Current.RandomMusroomSpawn;
-            while (spawned.Contains(randomTransform))
-                randomTransform = GameManager.Current.RandomMusroomSpawn;
-            spawned.Add(randomTransform);
-            Mushroom newMushroom = Instantiate(Resources.Load("Prefabs/Mushroom"), randomTransform.position, randomTransform.rotation, transform).GetComponent<Mushroom>();
-            _mushrooms.Add(newMushroom);
+            RawMaterial rawMaterial = materials[UnityEngine.Random.Range(0, materials.Length)];
+            Node newNode = Instantiate(Resources.Load("Prefabs/Node"), randomTransform.position, randomTransform.rotation, transform).GetComponent<Node>();
+            Instantiate(Resources.Load<GameObject>("Shared/Prefabs/" + rawMaterial.Prefab.name), newNode.transform);
+            newNode.Material = rawMaterial;
+            _nodes.Add(newNode);
         }
+    }
+
+    private void PrepareGame() {
+        List<Transform> occupied = new List<Transform>();
+       
+        PrepareBiome(Resources.LoadAll<RawMaterial>("Shared/RawMaterials/Plains/Common"), 20, occupied);
+        PrepareBiome(Resources.LoadAll<RawMaterial>("Shared/RawMaterials/Plains/Rare"), 5, occupied);
     }
 
     private void Awake() {
@@ -91,20 +100,20 @@ public class Room : MonoBehaviour
             Reception.Current.RemoveRoom(this);
     }
 
-    public void RemoveMushroom(Mushroom mushroom) {
+    public void RemoveNode(Node mushroom) {
         Destroy(mushroom.gameObject);
-        _mushrooms.Remove(mushroom);
+        _nodes.Remove(mushroom);
     }
 
-    public Mushroom FindMushroom(string id) {
-        return _mushrooms.Find((Mushroom m) => m.Id == id);
+    public Node FindNode(string id) {
+        return _nodes.Find((Node m) => m.Id == id);
     }
 
     public PlayerData[] PlayerDatas => _players.Select((Player player) => player.Data).ToArray();
 
-    public ObjectData[] ObjectDatas => _mushrooms.Select((Mushroom mushroom) => mushroom.Data).ToArray();
+    public ObjectData[] ObjectDatas => _nodes.Select((Node mushroom) => mushroom.Data).ToArray();
 
     public bool IsFull => _players.Count == _maxPlayers;
 
-    public List<Mushroom> Mushrooms => _mushrooms;
+    public List<Node> Nodes => _nodes;
 }

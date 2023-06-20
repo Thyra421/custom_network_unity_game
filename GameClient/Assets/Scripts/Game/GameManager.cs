@@ -7,9 +7,11 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject _playerPrefab;
     [SerializeField]
+    private GameObject _nodePrefab;
+    [SerializeField]
     private LocalPlayer _myPlayer;
     private readonly List<RemotePlayer> _remotePlayers = new List<RemotePlayer>();
-    private readonly List<Mushroom> _mushrooms = new List<Mushroom>();
+    private readonly List<Node> _nodes = new List<Node>();
 
     private void CreatePlayer(PlayerData data) {
         GameObject newPlayer = Instantiate(_playerPrefab, data.transform.position.ToVector3, Quaternion.identity);
@@ -18,10 +20,11 @@ public class GameManager : MonoBehaviour
         _remotePlayers.Add(remotePlayer);
     }
 
-    private void CreateMushroom(ObjectData data) {
-        Mushroom newMushroom = Instantiate(Resources.Load("Prefabs/" + data.assetName), data.transform.position.ToVector3, Quaternion.Euler(data.transform.rotation.ToVector3)).GetComponent<Mushroom>();
-        newMushroom.Id = data.id;
-        _mushrooms.Add(newMushroom);
+    private void CreateNode(ObjectData data) {
+        Node newNode = Instantiate(_nodePrefab, data.transform.position.ToVector3, Quaternion.Euler(data.transform.rotation.ToVector3)).GetComponent<Node>();
+        Instantiate(Resources.Load("Shared/Prefabs/" + data.assetName), newNode.transform);
+        newNode.Id = data.id;
+        _nodes.Add(newNode);
     }
 
     private void OnMessageGameState(MessageGameState messageGameState) {
@@ -30,8 +33,8 @@ public class GameManager : MonoBehaviour
             if (p.id != _myPlayer.Id)
                 CreatePlayer(p);
         }
-        foreach (ObjectData o in messageGameState.mushrooms) {
-            CreateMushroom(o);
+        foreach (ObjectData o in messageGameState.nodes) {
+            CreateNode(o);
         }
     }
 
@@ -88,9 +91,9 @@ public class GameManager : MonoBehaviour
     }
 
     private void OnMessagePickedUp(MessagePickedUp messagePickedUp) {
-        Mushroom mushroom = _mushrooms.Find((Mushroom m) => m.Id == messagePickedUp.objectId);
-        _mushrooms.Remove(mushroom);
-        Destroy(mushroom.gameObject);
+        Node node = _nodes.Find((Node m) => m.Id == messagePickedUp.objectId);
+        _nodes.Remove(node);
+        Destroy(node.gameObject);
     }
 
     private void Start() {

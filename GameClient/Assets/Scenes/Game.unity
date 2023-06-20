@@ -467,7 +467,7 @@ GameObject:
   - component: {fileID: 365963024}
   - component: {fileID: 365963025}
   m_Layer: 0
-  m_Name: Game
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -501,6 +501,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerPrefab: {fileID: 655985096810179583, guid: 6fd6f9e4f0bcbb14cb1e700ae153467d,
+    type: 3}
+  _nodePrefab: {fileID: 3764471834310299792, guid: d3f32dcc016206d4aaef804ffdf5fa2b,
     type: 3}
   _myPlayer: {fileID: 553488120}
 --- !u!1 &410087039

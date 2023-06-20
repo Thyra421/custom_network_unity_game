@@ -1,12 +1,12 @@
-public struct PlayerData
+public struct ObjectData
 {
     public string id;
     public TransformData transform;
-    public AnimationData animation;
+    public string assetName;
 
-    public PlayerData(string id, TransformData transform, AnimationData animation) {
+    public ObjectData(string id, TransformData transform, string assetName) {
         this.id = id;
         this.transform = transform;
-        this.animation = animation;
+        this.assetName = assetName;
     }
 }
