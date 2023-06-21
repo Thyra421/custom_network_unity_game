@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f9a4f0252ce1be48a57962d8e38aa82, type: 3}
   m_Name: Wildcap
   m_EditorClassIdentifier: 
+  _id: b01c387a-e1b3-4d93-8e18-f734f0a38c26
   _displayName: Wildcap
   _description: Tasty plain mushroom.
   _rarity: 0
   _price: 5
   _stackable: 1
   _unique: 0
-  _prefab: {fileID: 4206233252210163344, guid: dec3680fd0062e44f80fd0b1ce50557d, type: 3}
+  _icon: {fileID: 21300000, guid: 8a3addd306fca83498a7903f8c4a74a9, type: 3}
   _region: 0

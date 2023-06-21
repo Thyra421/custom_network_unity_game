@@ -44,8 +44,8 @@ public class GameManager : MonoBehaviour
             CreatePlayer(messageJoinedGame.player);
     }
 
-    private void OnMessageMovements(MessageMovements serverMessageMovements) {
-        foreach (PlayerData p in serverMessageMovements.players) {
+    private void OnMessageMoved(MessageMoved serverMessageMoved) {
+        foreach (PlayerData p in serverMessageMoved.players) {
             if (p.id == _myPlayer.Id)
                 continue;
 
@@ -100,7 +100,7 @@ public class GameManager : MonoBehaviour
     private void Start() {
         MessageHandler.Current.onMessageGameState += OnMessageGameState;
         MessageHandler.Current.onMessageJoinedGame += OnMessageJoinedGame;
-        MessageHandler.Current.onMessageMovements += OnMessageMovements;
+        MessageHandler.Current.onMessageMoved += OnMessageMoved;
         MessageHandler.Current.onMessageLeftGame += OnMessageLeftGame;
         MessageHandler.Current.onMessageAttacked += OnMessageAttacked;
         MessageHandler.Current.onMessageDamage += OnMessageDamage;

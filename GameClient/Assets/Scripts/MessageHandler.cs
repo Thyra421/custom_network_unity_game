@@ -12,7 +12,7 @@ public class MessageHandler : MonoBehaviour
     }
 
     public delegate void OnMessageJoinedGameHandler(MessageJoinedGame messageJoinedGame);
-    public delegate void OnMessageMovementsHandler(MessageMovements messageMovements);
+    public delegate void OnMessageMovedHandler(MessageMoved messageMoved);
     public delegate void OnMessageLeftGameHandler(MessageLeftGame messageLeftGame);
     public delegate void OnMessageGameStateHandler(MessageGameState messageGameState);
     public delegate void OnMessageAttackedHandler(MessageAttacked messageAttacked);
@@ -21,7 +21,7 @@ public class MessageHandler : MonoBehaviour
     public delegate void OnMessageSpawnObjects(MessageSpawnObjects messageSpawnObjects);
 
     public OnMessageJoinedGameHandler onMessageJoinedGame;
-    public OnMessageMovementsHandler onMessageMovements;
+    public OnMessageMovedHandler onMessageMoved;
     public OnMessageLeftGameHandler onMessageLeftGame;
     public OnMessageGameStateHandler onMessageGameState;
     public OnMessageAttackedHandler onMessageAttacked;

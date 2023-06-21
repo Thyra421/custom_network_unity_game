@@ -34,9 +34,9 @@ public class UDPClient
     private static void OnMessage(string message) {
         Debug.Log($"[UDPServer] received {message}");
         Type messageType = Utils.GetMessageType(message);
-        if (messageType.Equals(typeof(MessageMovements))) {
-            MessageMovements messageMovements = Utils.Deserialize<MessageMovements>(message);
-            MessageHandler.Current.onMessageMovements(messageMovements);
+        if (messageType.Equals(typeof(MessageMoved))) {
+            MessageMoved messageMoved = Utils.Deserialize<MessageMoved>(message);
+            MessageHandler.Current.onMessageMoved(messageMoved);
         }
     }
 

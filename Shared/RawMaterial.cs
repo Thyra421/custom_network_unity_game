@@ -5,7 +5,7 @@ public enum RawMaterialRegion
     Plains
 }
 
-[CreateAssetMenu(menuName = "Raw material")]
+[CreateAssetMenu(menuName = "Raw Material")]
 public class RawMaterial : Item
 {
     [SerializeField]

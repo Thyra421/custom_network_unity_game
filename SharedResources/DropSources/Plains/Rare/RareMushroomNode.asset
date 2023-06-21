@@ -10,9 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f283e647c60dcf747a682927ee254e16, type: 3}
-  m_Name: RareMushroom
+  m_Name: RareMushroomNode
   m_EditorClassIdentifier: 
-  _drops:
-  - {fileID: 11400000, guid: 14ee3cb9a22e6a34e88d64fb6305464d, type: 2}
-  - {fileID: 11400000, guid: f3ca670d50f04e34f81669a3ca8621ec, type: 2}
+  _lootTable:
+    _entries:
+    - _item: {fileID: 11400000, guid: f3ca670d50f04e34f81669a3ca8621ec, type: 2}
+      _dropChance: 5
+    - _item: {fileID: 11400000, guid: 14ee3cb9a22e6a34e88d64fb6305464d, type: 2}
+      _dropChance: 2
   _prefab: {fileID: 4206233252210163344, guid: 9a7af83f8442d1846b1bfd9f9944ce98, type: 3}

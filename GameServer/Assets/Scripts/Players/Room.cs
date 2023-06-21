@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Room : MonoBehaviour
@@ -22,7 +21,7 @@ public class Room : MonoBehaviour
                 return;
             PlayerData[] playerDatas = GetPlayerDatas((Player p) => p.UpdateTransformIfChanged());
             if (playerDatas.Length > 0)
-                BroadcastUDP((Player player) => new MessageMovements(Array.FindAll(playerDatas, (PlayerData data) => data.id != player.Id).ToArray()), (MessageMovements message) => message.players.Length > 0);
+                BroadcastUDP((Player player) => new MessageMoved(Array.FindAll(playerDatas, (PlayerData data) => data.id != player.Id).ToArray()), (MessageMoved message) => message.players.Length > 0);
         }
     }
 

@@ -9,6 +9,7 @@ public abstract class Item : ScriptableObject
 {
     [SerializeField]
     protected string _displayName;
+    [TextArea(minLines: 1, maxLines: 10)]
     [SerializeField]
     protected string _description;
     [SerializeField]
@@ -19,4 +20,6 @@ public abstract class Item : ScriptableObject
     protected bool _stackable;
     [SerializeField]
     protected bool _unique;
+    [SerializeField]
+    protected Sprite _icon;
 }

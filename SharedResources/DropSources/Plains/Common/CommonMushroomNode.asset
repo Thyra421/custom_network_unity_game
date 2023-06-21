@@ -10,8 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f283e647c60dcf747a682927ee254e16, type: 3}
-  m_Name: CommonMushroom
+  m_Name: CommonMushroomNode
   m_EditorClassIdentifier: 
-  _drops:
-  - {fileID: 11400000, guid: 14ee3cb9a22e6a34e88d64fb6305464d, type: 2}
+  _lootTable:
+    _entries:
+    - _item: {fileID: 11400000, guid: 14ee3cb9a22e6a34e88d64fb6305464d, type: 2}
+      _dropChance: 1
   _prefab: {fileID: 4206233252210163344, guid: dec3680fd0062e44f80fd0b1ce50557d, type: 3}

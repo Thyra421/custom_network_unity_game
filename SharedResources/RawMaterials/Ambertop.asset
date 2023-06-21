@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f9a4f0252ce1be48a57962d8e38aa82, type: 3}
-  m_Name: Amber_Top
+  m_Name: Ambertop
   m_EditorClassIdentifier: 
   _displayName: Amber Top
   _description: Bitter mushroom from the forest. It is know for its magic properties.
@@ -18,5 +18,5 @@ MonoBehaviour:
   _price: 22
   _stackable: 1
   _unique: 0
-  _prefab: {fileID: 4206233252210163344, guid: dec3680fd0062e44f80fd0b1ce50557d, type: 3}
+  _icon: {fileID: 21300000, guid: 76a8af5d0ba96594db56d5e508bdc8f1, type: 3}
   _region: 0

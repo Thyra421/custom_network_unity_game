@@ -16,11 +16,11 @@ public struct MessageJoinedGame
     }
 }
 
-public struct MessageMovements
+public struct MessageMoved
 {
     public PlayerData[] players;
 
-    public MessageMovements(PlayerData[] players) {
+    public MessageMoved(PlayerData[] players) {
         this.players = players;
     }
 }

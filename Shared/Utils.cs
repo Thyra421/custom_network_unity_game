@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 public static class Utils
@@ -161,7 +162,7 @@ public static class Utils
         List<object> splittedSerializedObject = new List<object>();
         Split(serializedObject, splittedSerializedObject);
         return DeserializeSplitted<T>(splittedSerializedObject);
-    }    
+    }
 
     public static string Serialize<T>(T myStruct) {
         Type structType = typeof(T);
@@ -172,5 +173,19 @@ public static class Utils
         int i = serializedObject.IndexOf('{');
         string messageTypeName = serializedObject[..i];
         return Type.GetType(messageTypeName);
+    }
+
+    public static Item PickRandomItem(LootTable lootTable) {
+        int totalDropChance = lootTable.Entries.Select((LootTableEntry e) => e.DropChance).Sum();
+        int randomValue = UnityEngine.Random.Range(0, totalDropChance);
+
+        int cpt = 0;
+        foreach (LootTableEntry e in lootTable.Entries) {
+            if (randomValue >= cpt && randomValue < cpt + e.DropChance)
+                return e.Item;
+            cpt += e.DropChance;
+        }
+
+        return null;
     }
 }
