@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,8 +48,19 @@ public class TCPClient
     private async void OnMessagePlay(MessagePlay clientMessagePlay) {
         Player newPlayer = Reception.Current.JoinOrCreateRoom(_client);
         newPlayer.Room.BroadcastTCP(new MessageJoinedGame(newPlayer.Data), newPlayer);
-        MessageGameState messageGameState = new MessageGameState(newPlayer.Id, newPlayer.Room.PlayerDatas, newPlayer.Room.ObjectDatas);
-        Debug.Log("send");
+        MessageGameState messageGameState = new MessageGameState(newPlayer.Id, newPlayer.Room.PlayerDatas);
+        ObjectData[] objectDatas = newPlayer.Room.ObjectDatas;
+        int i = 0;
+        int batchSize = 5;
+        while (i < objectDatas.Length) {
+            if (i + batchSize > objectDatas.Length) {
+                newPlayer.Room.BroadcastTCP(new MessageSpawnObjects(objectDatas[i..]));
+                i = objectDatas.Length;
+            } else {
+                newPlayer.Room.BroadcastTCP(new MessageSpawnObjects(objectDatas[i..(i + batchSize)]));
+                i += batchSize;
+            }
+        }
         await Send(messageGameState);
     }
 
@@ -73,19 +85,42 @@ public class TCPClient
     }
 
     public async Task Send<T>(T message) {
-        byte[] msg = Encoding.ASCII.GetBytes(Utils.Serialize(message));
-        await _stream.WriteAsync(msg, 0, msg.Length);
+        string serializedMessage = Utils.Serialize(message);
+        serializedMessage += '#';
+        byte[] bytes = Encoding.ASCII.GetBytes(serializedMessage);
+
+        int batchSize = Config.TCPBatchSize;
+        int i = 0;
+
+        while (i < bytes.Length) {
+            if (i + batchSize > bytes.Length) {
+                await _stream.WriteAsync(bytes, i, bytes.Length);
+                i = bytes.Length;
+            } else {
+                await _stream.WriteAsync(bytes, i, batchSize + i);
+                i += batchSize;
+            }
+        }
     }
 
     public async void Listen() {
-        byte[] bytes = new byte[2048];
+        byte[] bytes = new byte[Config.TCPBatchSize];
         int i;
+        string buffer = "";
 
         try {
             while ((i = await _stream.ReadAsync(bytes, 0, bytes.Length)) != 0) {
                 string message = Encoding.ASCII.GetString(bytes, 0, i);
-                OnMessage(message);
-            }
+                while (message.Contains('#')) {
+                    int endIndex = message.IndexOf('#');
+                    buffer += message[..endIndex];
+                    OnMessage(buffer);
+                    buffer = "";
+                    if (endIndex < message.Length)
+                        message = message[(endIndex + 1)..];
+                }
+                buffer += message;
+            }            
             OnDisconnect();
         } catch (Exception e) {
             Debug.LogException(e);

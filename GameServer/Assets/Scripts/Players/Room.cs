@@ -39,26 +39,29 @@ public class Room : MonoBehaviour
         }
     }
 
-    private void PrepareBiome(RawMaterial[] materials, int amount, List<Transform> occupied) {
+    private void PrepareBiome(DropSource[] dropSources, int amount, List<Transform> occupied) {
         for (int i = 0; i < amount; i++) {
             Transform randomTransform = GameManager.Current.RandomPlainSpawn;
             while (occupied.Contains(randomTransform))
                 randomTransform = GameManager.Current.RandomPlainSpawn;
             occupied.Add(randomTransform);
 
-            RawMaterial rawMaterial = materials[UnityEngine.Random.Range(0, materials.Length)];
-            Node newNode = Instantiate(Resources.Load("Prefabs/Node"), randomTransform.position, randomTransform.rotation, transform).GetComponent<Node>();
-            Instantiate(Resources.Load<GameObject>("Shared/Prefabs/" + rawMaterial.Prefab.name), newNode.transform);
-            newNode.Material = rawMaterial;
+            DropSource dropSource = dropSources[UnityEngine.Random.Range(0, dropSources.Length)];
+
+            GameObject newObject = Instantiate(Resources.Load<GameObject>("Shared/Prefabs/" + dropSource.Prefab.name), randomTransform.position, randomTransform.rotation, transform);
+
+            Node newNode = newObject.AddComponent<Node>();
+
+            newNode.DropSource = dropSource;
             _nodes.Add(newNode);
         }
     }
 
     private void PrepareGame() {
         List<Transform> occupied = new List<Transform>();
-       
-        PrepareBiome(Resources.LoadAll<RawMaterial>("Shared/RawMaterials/Plains/Common"), 20, occupied);
-        PrepareBiome(Resources.LoadAll<RawMaterial>("Shared/RawMaterials/Plains/Rare"), 5, occupied);
+
+        PrepareBiome(Resources.LoadAll<DropSource>("Shared/DropSources/Plains/Common"), 20, occupied);
+        PrepareBiome(Resources.LoadAll<DropSource>("Shared/DropSources/Plains/Rare"), 5, occupied);
     }
 
     private void Awake() {

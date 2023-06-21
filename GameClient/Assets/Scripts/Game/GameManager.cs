@@ -1,13 +1,10 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject _playerPrefab;
-    [SerializeField]
-    private GameObject _nodePrefab;
     [SerializeField]
     private LocalPlayer _myPlayer;
     private readonly List<RemotePlayer> _remotePlayers = new List<RemotePlayer>();
@@ -21,8 +18,9 @@ public class GameManager : MonoBehaviour
     }
 
     private void CreateNode(ObjectData data) {
-        Node newNode = Instantiate(_nodePrefab, data.transform.position.ToVector3, Quaternion.Euler(data.transform.rotation.ToVector3)).GetComponent<Node>();
-        Instantiate(Resources.Load("Shared/Prefabs/" + data.assetName), newNode.transform);
+        GameObject newObject = Instantiate(Resources.Load<GameObject>("Shared/Prefabs/" + data.assetName), data.transform.position.ToVector3, Quaternion.Euler(data.transform.rotation.ToVector3));
+
+        Node newNode = newObject.AddComponent<Node>();
         newNode.Id = data.id;
         _nodes.Add(newNode);
     }
@@ -33,7 +31,10 @@ public class GameManager : MonoBehaviour
             if (p.id != _myPlayer.Id)
                 CreatePlayer(p);
         }
-        foreach (ObjectData o in messageGameState.nodes) {
+    }
+
+    private void OnMessageSpawnObjects(MessageSpawnObjects messageSpawnObjects) {
+        foreach (ObjectData o in messageSpawnObjects.nodes) {
             CreateNode(o);
         }
     }
@@ -104,6 +105,7 @@ public class GameManager : MonoBehaviour
         MessageHandler.Current.onMessageAttacked += OnMessageAttacked;
         MessageHandler.Current.onMessageDamage += OnMessageDamage;
         MessageHandler.Current.onMessagePickedUp += OnMessagePickedUp;
+        MessageHandler.Current.onMessageSpawnObjects += OnMessageSpawnObjects;
         TCPClient.Send(new MessagePlay());
     }
 

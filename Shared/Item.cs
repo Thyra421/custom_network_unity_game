@@ -19,8 +19,4 @@ public abstract class Item : ScriptableObject
     protected bool _stackable;
     [SerializeField]
     protected bool _unique;
-    [SerializeField]
-    private GameObject _prefab;
-
-    public GameObject Prefab => _prefab;
 }

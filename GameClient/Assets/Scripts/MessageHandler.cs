@@ -18,6 +18,7 @@ public class MessageHandler : MonoBehaviour
     public delegate void OnMessageAttackedHandler(MessageAttacked messageAttacked);
     public delegate void OnMessageDamageHandler(MessageDamage messageDamage);
     public delegate void OnMessagePickedUpHandler(MessagePickedUp messagePickedUp);
+    public delegate void OnMessageSpawnObjects(MessageSpawnObjects messageSpawnObjects);
 
     public OnMessageJoinedGameHandler onMessageJoinedGame;
     public OnMessageMovementsHandler onMessageMovements;
@@ -26,6 +27,7 @@ public class MessageHandler : MonoBehaviour
     public OnMessageAttackedHandler onMessageAttacked;
     public OnMessageDamageHandler onMessageDamage;
     public OnMessagePickedUpHandler onMessagePickedUp;
+    public OnMessageSpawnObjects onMessageSpawnObjects;
 
     public static MessageHandler Current => _current;
 }

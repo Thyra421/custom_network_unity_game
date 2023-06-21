@@ -4,7 +4,6 @@ public class Node : MonoBehaviour
 {
     private string _id;
     private bool _isOnRange;
-    [SerializeField]
     private Outline _outline;
 
     private void OnTriggerEnter(Collider other) {
@@ -30,6 +29,13 @@ public class Node : MonoBehaviour
     private void OnMouseUp() {
         if (_isOnRange)
             TCPClient.Send(new MessagePickUp(_id));
+    }
+
+    private void Start() {
+        if (_outline == null) {
+            _outline = gameObject.AddComponent<Outline>();
+            _outline.enabled = false;
+        }
     }
 
     public string Id {

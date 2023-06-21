@@ -29,11 +29,18 @@ public struct MessageGameState
 {
     public string id;
     public PlayerData[] players;
-    public ObjectData[] nodes;
 
-    public MessageGameState(string id, PlayerData[] players, ObjectData[] nodes) {
+    public MessageGameState(string id, PlayerData[] players) {
         this.id = id;
         this.players = players;
+    }
+}
+
+public struct MessageSpawnObjects
+{
+    public ObjectData[] nodes;
+
+    public MessageSpawnObjects(ObjectData[] nodes) {
         this.nodes = nodes;
     }
 }

@@ -15,13 +15,22 @@ public class TCPClient
         OnListen();
         NetworkStream stream = _tcpClient!.GetStream();
 
-        byte[] bytes = new byte[2048];
+        byte[] bytes = new byte[Config.TCPBatchSize];
         int i;
+        string buffer = "";
 
         try {
             while ((i = await stream.ReadAsync(bytes, 0, bytes.Length)) != 0) {
                 string message = Encoding.ASCII.GetString(bytes, 0, i);
-                OnMessage(message);
+                while (message.Contains('#')) {
+                    int endIndex = message.IndexOf('#');
+                    buffer += message[..endIndex];
+                    OnMessage(buffer);
+                    buffer = "";
+                    if (endIndex < message.Length)
+                        message = message[(endIndex + 1)..];
+                }
+                buffer += message;
             }
             OnDisconnect();
         } catch (Exception e) {
@@ -64,6 +73,9 @@ public class TCPClient
         } else if (messageType.Equals(typeof(MessageGameState))) {
             MessageGameState messageGameState = Utils.Deserialize<MessageGameState>(message);
             MessageHandler.Current.onMessageGameState(messageGameState);
+        } else if (messageType.Equals(typeof(MessageSpawnObjects))) {
+            MessageSpawnObjects messageSpawnObjects = Utils.Deserialize<MessageSpawnObjects>(message);
+            MessageHandler.Current.onMessageSpawnObjects(messageSpawnObjects);
         } else if (messageType.Equals(typeof(MessageAttacked))) {
             MessageAttacked messageAttacked = Utils.Deserialize<MessageAttacked>(message);
             MessageHandler.Current.onMessageAttacked(messageAttacked);
@@ -91,8 +103,22 @@ public class TCPClient
             OnError();
         } else {
             string serializedMessage = Utils.Serialize(message);
-            byte[] data = Encoding.ASCII.GetBytes(serializedMessage);
-            await _tcpClient!.GetStream().WriteAsync(data, 0, data.Length);
+            serializedMessage += '#';
+            byte[] bytes = Encoding.ASCII.GetBytes(serializedMessage);
+
+            int batchSize = Config.TCPBatchSize;
+            int i = 0;
+
+            while (i < bytes.Length) {
+                if (i + batchSize > bytes.Length) {
+                    await _tcpClient!.GetStream().WriteAsync(bytes, i, bytes.Length);
+                    i = bytes.Length;
+                } else {
+                    await _tcpClient!.GetStream().WriteAsync(bytes, i, batchSize + i);
+                    i += batchSize;
+                }
+            }
+
         }
     }
 }
