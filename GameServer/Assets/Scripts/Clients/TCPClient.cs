@@ -50,18 +50,9 @@ public class TCPClient
         newPlayer.Room.BroadcastTCP(new MessageJoinedGame(newPlayer.Data), newPlayer);
         MessageGameState messageGameState = new MessageGameState(newPlayer.Id, newPlayer.Room.PlayerDatas);
         ObjectData[] objectDatas = newPlayer.Room.ObjectDatas;
-        int i = 0;
-        int batchSize = 5;
-        while (i < objectDatas.Length) {
-            if (i + batchSize > objectDatas.Length) {
-                newPlayer.Room.BroadcastTCP(new MessageSpawnObjects(objectDatas[i..]));
-                i = objectDatas.Length;
-            } else {
-                newPlayer.Room.BroadcastTCP(new MessageSpawnObjects(objectDatas[i..(i + batchSize)]));
-                i += batchSize;
-            }
-        }
+        MessageSpawnObjects messageSpawnObjects = new MessageSpawnObjects(objectDatas);
         await Send(messageGameState);
+        await Send(messageSpawnObjects);
     }
 
     private void OnMessageAttack(MessageAttack clientMessageAttack) {
@@ -93,11 +84,11 @@ public class TCPClient
         int i = 0;
 
         while (i < bytes.Length) {
-            if (i + batchSize > bytes.Length) {
-                await _stream.WriteAsync(bytes, i, bytes.Length);
+            if (i + batchSize >= bytes.Length) {
+                await _stream.WriteAsync(bytes, i, bytes.Length - i);
                 i = bytes.Length;
             } else {
-                await _stream.WriteAsync(bytes, i, batchSize + i);
+                await _stream.WriteAsync(bytes, i, batchSize);
                 i += batchSize;
             }
         }
@@ -120,7 +111,7 @@ public class TCPClient
                         message = message[(endIndex + 1)..];
                 }
                 buffer += message;
-            }            
+            }
             OnDisconnect();
         } catch (Exception e) {
             Debug.LogException(e);

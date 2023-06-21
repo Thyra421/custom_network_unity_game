@@ -15,4 +15,4 @@ MonoBehaviour:
   _drops:
   - {fileID: 11400000, guid: 14ee3cb9a22e6a34e88d64fb6305464d, type: 2}
   - {fileID: 11400000, guid: f3ca670d50f04e34f81669a3ca8621ec, type: 2}
-  _prefab: {fileID: 919132149155446097, guid: 0a89e56b6df24824b9021e0be58c2541, type: 3}
+  _prefab: {fileID: 4206233252210163344, guid: 9a7af83f8442d1846b1bfd9f9944ce98, type: 3}

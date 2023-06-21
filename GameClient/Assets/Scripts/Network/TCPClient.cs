@@ -111,10 +111,10 @@ public class TCPClient
 
             while (i < bytes.Length) {
                 if (i + batchSize > bytes.Length) {
-                    await _tcpClient!.GetStream().WriteAsync(bytes, i, bytes.Length);
+                    await _tcpClient!.GetStream().WriteAsync(bytes, i, bytes.Length - i);
                     i = bytes.Length;
                 } else {
-                    await _tcpClient!.GetStream().WriteAsync(bytes, i, batchSize + i);
+                    await _tcpClient!.GetStream().WriteAsync(bytes, i, batchSize);
                     i += batchSize;
                 }
             }
