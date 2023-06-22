@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,10 +48,9 @@ public class TCPClient
         Player newPlayer = Reception.Current.JoinOrCreateRoom(_client);
         newPlayer.Room.BroadcastTCP(new MessageJoinedGame(newPlayer.Data), newPlayer);
         MessageGameState messageGameState = new MessageGameState(newPlayer.Id, newPlayer.Room.PlayerDatas);
-        ObjectData[] objectDatas = newPlayer.Room.ObjectDatas;
-        MessageSpawnObjects messageSpawnObjects = new MessageSpawnObjects(objectDatas);
+        MessageSpawnNodes messageSpawnNodes = new MessageSpawnNodes(newPlayer.Room.NodeDatas);
         await Send(messageGameState);
-        await Send(messageSpawnObjects);
+        await Send(messageSpawnNodes);
     }
 
     private void OnMessageAttack(MessageAttack clientMessageAttack) {
@@ -60,13 +58,26 @@ public class TCPClient
         _client.Player.Attack();
     }
 
-    private void OnMessagePickUp(MessagePickUp clientMessagePickUp) {
+    private async void OnMessagePickUp(MessagePickUp clientMessagePickUp) {
         Node node = _client.Player.Room.FindNode(clientMessagePickUp.id);
+        if (node == null || node.RemainingLoots <= 0) {
+            await Send(new MessageError(MessageErrorType.objectNotFound));
+            return;
+        }
         Player player = _client.Player;
 
         if (node.GetComponentInChildren<Collider>().bounds.Intersects(player.GetComponent<Collider>().bounds)) {
-            _client.Player.Room.BroadcastTCP(new MessagePickedUp(_client.Player.Id, clientMessagePickUp.id));
-            player.Room.RemoveNode(node);
+            Item item = node.Loot;
+            bool result = await _client.Player.Inventory.Add(item, 1);
+            if (result) {
+                node.RemoveOne();
+                if (node.RemainingLoots <= 0) {
+                    player.Room.RemoveNode(node);
+                    _client.Player.Room.BroadcastTCP(new MessageDespawnObject(node.Id));
+                } else
+                    _client.Player.Room.BroadcastTCP(new MessageLooted(node.Id));
+
+            }
         }
     }
 
@@ -80,7 +91,7 @@ public class TCPClient
         serializedMessage += '#';
         byte[] bytes = Encoding.ASCII.GetBytes(serializedMessage);
 
-        int batchSize = Config.TCPBatchSize;
+        int batchSize = SharedConfig.TCP_BATCH_SIZE;
         int i = 0;
 
         while (i < bytes.Length) {
@@ -95,7 +106,7 @@ public class TCPClient
     }
 
     public async void Listen() {
-        byte[] bytes = new byte[Config.TCPBatchSize];
+        byte[] bytes = new byte[SharedConfig.TCP_BATCH_SIZE];
         int i;
         string buffer = "";
 

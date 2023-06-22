@@ -66,25 +66,31 @@ public class TCPClient
 
         if (messageType.Equals(typeof(MessageJoinedGame))) {
             MessageJoinedGame messageJoinedGame = Utils.Deserialize<MessageJoinedGame>(message);
-            MessageHandler.Current.onMessageJoinedGame(messageJoinedGame);
+            MessageHandler.onMessageJoinedGame(messageJoinedGame);
         } else if (messageType.Equals(typeof(MessageLeftGame))) {
             MessageLeftGame messageLeftGame = Utils.Deserialize<MessageLeftGame>(message);
-            MessageHandler.Current.onMessageLeftGame(messageLeftGame);
+            MessageHandler.onMessageLeftGame(messageLeftGame);
         } else if (messageType.Equals(typeof(MessageGameState))) {
             MessageGameState messageGameState = Utils.Deserialize<MessageGameState>(message);
-            MessageHandler.Current.onMessageGameState(messageGameState);
-        } else if (messageType.Equals(typeof(MessageSpawnObjects))) {
-            MessageSpawnObjects messageSpawnObjects = Utils.Deserialize<MessageSpawnObjects>(message);
-            MessageHandler.Current.onMessageSpawnObjects(messageSpawnObjects);
+            MessageHandler.onMessageGameState(messageGameState);
+        } else if (messageType.Equals(typeof(MessageSpawnNodes))) {
+            MessageSpawnNodes messageSpawnNodes = Utils.Deserialize<MessageSpawnNodes>(message);
+            MessageHandler.onMessageSpawnNodes(messageSpawnNodes);
         } else if (messageType.Equals(typeof(MessageAttacked))) {
             MessageAttacked messageAttacked = Utils.Deserialize<MessageAttacked>(message);
-            MessageHandler.Current.onMessageAttacked(messageAttacked);
+            MessageHandler.onMessageAttacked(messageAttacked);
         } else if (messageType.Equals(typeof(MessageDamage))) {
             MessageDamage messageDamage = Utils.Deserialize<MessageDamage>(message);
-            MessageHandler.Current.onMessageDamage(messageDamage);
-        } else if (messageType.Equals(typeof(MessagePickedUp))) {
-            MessagePickedUp messagePickedUp = Utils.Deserialize<MessagePickedUp>(message);
-            MessageHandler.Current.onMessagePickedUp(messagePickedUp);
+            MessageHandler.onMessageDamage(messageDamage);
+        } else if (messageType.Equals(typeof(MessageDespawnObject))) {
+            MessageDespawnObject messageDespawnObject = Utils.Deserialize<MessageDespawnObject>(message);
+            MessageHandler.onMessageDespawnObject(messageDespawnObject);
+        } else if (messageType.Equals(typeof(MessageInventoryAdd))) {
+            MessageInventoryAdd messageInventoryAdd = Utils.Deserialize<MessageInventoryAdd>(message);
+            MessageHandler.onMessageInventoryAdd(messageInventoryAdd);
+        } else if (messageType.Equals(typeof(MessageLooted))) {
+            MessageLooted messageLooted = Utils.Deserialize<MessageLooted>(message);
+            MessageHandler.onMessageLooted(messageLooted);
         }
     }
 

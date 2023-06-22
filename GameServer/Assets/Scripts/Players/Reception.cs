@@ -6,7 +6,7 @@ class Reception : MonoBehaviour
     private static Reception _current;
     [SerializeField]
     private GameObject _roomPrefab;
-    private List<Room> _rooms = new List<Room>();
+    private readonly List<Room> _rooms = new List<Room>();
 
     private Player JoinRoom(Client client, Room room) {
         Player newPlayer = room.CreatePlayer(client);

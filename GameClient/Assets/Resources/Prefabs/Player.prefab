@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15409c0042fc7d648a7619bb3b7acb1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _movementSpeed: 5
+  _movementSpeed: 7
   _rotationSpeed: 100
   _animator: {fileID: 5415735394079458567}
 --- !u!114 &3661310118314621544
@@ -217,7 +217,7 @@ GameObject:
   - component: {fileID: 3637680605414256800}
   - component: {fileID: 4016818414305218396}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: Health
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

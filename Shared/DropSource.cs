@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -18,9 +17,9 @@ public class LootTableEntry
 public class LootTable
 {
     [SerializeField]
-    private List<LootTableEntry> _entries;
+    private LootTableEntry[] _entries;
 
-    public List<LootTableEntry> Entries => _entries;
+    public LootTableEntry[] Entries => _entries;
 }
 
 [CreateAssetMenu(menuName = "Drop Source")]
@@ -30,8 +29,18 @@ public class DropSource : ScriptableObject
     private LootTable _lootTable;
     [SerializeField]
     private GameObject _prefab;
+    [SerializeField]
+    private int _minInclusive;
+    [SerializeField]
+    private int _minExclusive;
+
+    public Item RandomLoot => Utils.PickRandomItem(_lootTable);
 
     public GameObject Prefab => _prefab;
 
     public LootTable Drops => _lootTable;
+
+    public int MinInclusive=> _minInclusive;
+
+    public int MaxExclusive => _minExclusive;
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Room : MonoBehaviour
 {
-    private const int _maxPlayers = 2;
+    private const int MAX_PLAYERS = 2;
     private readonly List<Player> _players = new List<Player>();
     private readonly List<Node> _nodes = new List<Node>();
     private float _elapsedTime = 0f;
@@ -15,7 +15,7 @@ public class Room : MonoBehaviour
 
     private void SyncMovement() {
         _elapsedTime += Time.deltaTime;
-        if (_elapsedTime >= (1f / Config.SyncFrequency)) {
+        if (_elapsedTime >= (1f / SharedConfig.SYNC_FREQUENCY)) {
             _elapsedTime = 0f;
             if (_players.Count < 2)
                 return;
@@ -48,10 +48,8 @@ public class Room : MonoBehaviour
             DropSource dropSource = dropSources[UnityEngine.Random.Range(0, dropSources.Length)];
 
             GameObject newObject = Instantiate(Resources.Load<GameObject>("Shared/Prefabs/" + dropSource.Prefab.name), randomTransform.position, randomTransform.rotation, transform);
-
             Node newNode = newObject.AddComponent<Node>();
-
-            newNode.DropSource = dropSource;
+            newNode.GenerateDrops(dropSource);
             _nodes.Add(newNode);
         }
     }
@@ -102,9 +100,9 @@ public class Room : MonoBehaviour
             Reception.Current.RemoveRoom(this);
     }
 
-    public void RemoveNode(Node mushroom) {
-        Destroy(mushroom.gameObject);
-        _nodes.Remove(mushroom);
+    public void RemoveNode(Node node) {
+        Destroy(node.gameObject);
+        _nodes.Remove(node);
     }
 
     public Node FindNode(string id) {
@@ -113,9 +111,9 @@ public class Room : MonoBehaviour
 
     public PlayerData[] PlayerDatas => _players.Select((Player player) => player.Data).ToArray();
 
-    public ObjectData[] ObjectDatas => _nodes.Select((Node mushroom) => mushroom.Data).ToArray();
+    public NodeData[] NodeDatas => _nodes.Select((Node node) => node.Data).ToArray();
 
-    public bool IsFull => _players.Count == _maxPlayers;
+    public bool IsFull => _players.Count == MAX_PLAYERS;
 
     public List<Node> Nodes => _nodes;
 }

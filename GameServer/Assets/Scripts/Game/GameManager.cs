@@ -5,11 +5,11 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager _current;
     [SerializeField]
-    private List<Transform> _plainsSpawn;
+    private Transform[] _plainsSpawn;
 
     public static GameManager Current => _current;
 
-    public Transform RandomPlainSpawn => _plainsSpawn[Random.Range(0, _plainsSpawn.Count)];
+    public Transform RandomPlainSpawn => _plainsSpawn[Random.Range(0, _plainsSpawn.Length)];
 
     private void Awake() {
         if (_current == null)

@@ -3,11 +3,16 @@
 public class Player : MonoBehaviour
 {
     private readonly string _id = Utils.GenerateUUID();
+    private readonly Inventory _inventory;
     private Client _client;
     private Room _room;
     private TransformData _transformData;
     private AnimationData _animationData;
     private TransformData _lastTransform;
+
+    private Player() {
+        _inventory = new Inventory(this);
+    }
 
     private void Awake() {
         _transformData = new TransformData(transform);
@@ -53,4 +58,6 @@ public class Player : MonoBehaviour
     }
 
     public PlayerData Data => new PlayerData(_id, _transformData, _animationData);
+
+    public Inventory Inventory => _inventory;
 }

@@ -7,6 +7,15 @@
     }
 }
 
+public struct MessageLooted
+{
+    public string id;
+
+    public MessageLooted(string id) {
+        this.id = id;
+    }
+}
+
 public struct MessageJoinedGame
 {
     public PlayerData player;
@@ -36,12 +45,21 @@ public struct MessageGameState
     }
 }
 
-public struct MessageSpawnObjects
+public struct MessageSpawnNodes
 {
-    public ObjectData[] nodes;
+    public NodeData[] nodes;
 
-    public MessageSpawnObjects(ObjectData[] nodes) {
+    public MessageSpawnNodes(NodeData[] nodes) {
         this.nodes = nodes;
+    }
+}
+
+public struct MessageDespawnObject
+{
+    public string id;
+
+    public MessageDespawnObject(string id) {
+        this.id = id;
     }
 }
 
@@ -74,14 +92,49 @@ public struct MessageDamage
     }
 }
 
-public struct MessagePickedUp
+public struct MessageInventoryAdd
 {
-    public string playerId;
-    public string objectId;
+    public string itemName;
+    public int amount;
 
-    public MessagePickedUp(string playerId, string objectId) : this() {
-        this.playerId = playerId;
-        this.objectId = objectId;
+    public MessageInventoryAdd(string itemName, int amount) {
+        this.itemName = itemName;
+        this.amount = amount;
     }
+}
 
+public struct MessageInventoryRemove
+{
+    public string itemName;
+    public int amount;
+
+    public MessageInventoryRemove(string itemName, int amount) {
+        this.itemName = itemName;
+        this.amount = amount;
+    }
+}
+
+public enum MessageErrorType
+{
+    inventoryFull, uniqueItem, objectNotFound
+}
+
+public struct MessageError
+{
+    public MessageErrorType type;
+
+    public MessageError(MessageErrorType type) {
+        this.type = type;
+    }
+}
+
+public struct MessageCraft
+{
+    public ItemStackData[] reagents;
+    public ItemStackData[] outcomes;
+
+    public MessageCraft(ItemStackData[] reagents, ItemStackData[] outcomes) {
+        this.reagents = reagents;
+        this.outcomes = outcomes;
+    }
 }

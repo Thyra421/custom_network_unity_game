@@ -43,7 +43,7 @@ class TCPServer
 
     public bool Start() {
         try {
-            _tcpListener = new TcpListener(IPAddress.Parse(Config.Address), Config.TCPPort);
+            _tcpListener = new TcpListener(IPAddress.Parse(Config.ADDRESS), Config.TCP_PORT);
             _tcpListener.Start();
             OnStarted();
             Listen();

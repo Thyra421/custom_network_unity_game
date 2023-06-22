@@ -51,7 +51,7 @@ public class UDPServer
 
     public bool Start() {
         try {
-            _udpClient = new UdpClient(Config.UDPPort);
+            _udpClient = new UdpClient(Config.UDP_PORT);
             OnStarted();
             Listen();
         } catch (Exception) {

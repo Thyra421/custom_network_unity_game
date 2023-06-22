@@ -16,7 +16,7 @@ MonoBehaviour:
   _description: Bitter mushroom from the forest. It is know for its magic properties.
   _rarity: 1
   _price: 22
-  _stackable: 1
+  _stackable: 0
   _unique: 0
   _icon: {fileID: 21300000, guid: 76a8af5d0ba96594db56d5e508bdc8f1, type: 3}
   _region: 0

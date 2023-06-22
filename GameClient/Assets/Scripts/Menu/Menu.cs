@@ -5,10 +5,14 @@ using UnityEngine.UI;
 
 public class Menu : MonoBehaviour
 {
-    [SerializeField] Button login;
-    [SerializeField] Button play;
-    [SerializeField] Slider slider;
-    [SerializeField] TMP_InputField input;
+    [SerializeField]
+    private Button login;
+    [SerializeField]
+    private Button play;
+    [SerializeField]
+    private Slider slider;
+    [SerializeField]
+    private TMP_InputField input;
 
     private void SetLoading() {
         input.gameObject.SetActive(false);

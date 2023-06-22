@@ -17,3 +17,5 @@ MonoBehaviour:
     - _item: {fileID: 11400000, guid: 14ee3cb9a22e6a34e88d64fb6305464d, type: 2}
       _dropChance: 1
   _prefab: {fileID: 4206233252210163344, guid: dec3680fd0062e44f80fd0b1ce50557d, type: 3}
+  _minInclusive: 1
+  _minExclusive: 4

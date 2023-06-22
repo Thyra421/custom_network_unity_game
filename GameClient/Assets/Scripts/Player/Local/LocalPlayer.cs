@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(LocalPlayerAttack))]
 public class LocalPlayer : Player
 {
+    private readonly Inventory _inventory = new Inventory();
     [SerializeField]
     private LocalPlayerMovement _movement;
     private float _elapsedTime = 0f;
@@ -24,4 +25,6 @@ public class LocalPlayer : Player
     private void Update() {
         SendMovement();
     }
+
+    public Inventory Inventory => _inventory;
 }

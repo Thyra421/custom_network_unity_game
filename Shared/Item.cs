@@ -5,6 +5,11 @@ public enum ItemRarity
     Common, Rare
 }
 
+public enum ItemProperty
+{
+    Stackable, NonStackable, Unique
+}
+
 public abstract class Item : ScriptableObject
 {
     [SerializeField]
@@ -17,9 +22,11 @@ public abstract class Item : ScriptableObject
     [SerializeField]
     protected int _price;
     [SerializeField]
-    protected bool _stackable;
+    private ItemProperty _property;
     [SerializeField]
-    protected bool _unique;
-    [SerializeField]
-    protected Sprite _icon;
+    private Sprite _icon;
+
+    public Sprite Icon => _icon;
+
+    public ItemProperty Property => _property;
 }
