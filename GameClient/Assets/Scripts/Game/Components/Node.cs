@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.AI;
 
 public class Node : MonoBehaviour
 {
@@ -7,6 +6,7 @@ public class Node : MonoBehaviour
     private bool _isOnRange;
     private Outline _outline;
     private int _remainingLoots;
+    private event OnChangedHandler _onChanged;
 
     private void OnTriggerEnter(Collider other) {
         ColorUtility.TryParseHtmlString("#DEA805", out Color color);
@@ -27,34 +27,34 @@ public class Node : MonoBehaviour
         _outline.enabled = false;
     }
 
-    private void OnMouseUp() {
-        if (_isOnRange)
+    private void OnMouseOver() {
+        if (Input.GetMouseButtonUp(1) && _isOnRange)
             TCPClient.Send(new MessagePickUp(_id));
     }
 
-    private void Start() {
-        if (_outline == null) {
-            _outline = gameObject.AddComponent<Outline>();
-            _outline.enabled = false;
-        }
+    private void Awake() {
+        _outline = gameObject.AddComponent<Outline>();
+        _outline.enabled = false;
     }
 
     public void RemoveLoot() {
         _remainingLoots--;
-        onChanged(_remainingLoots);
+        _onChanged(_remainingLoots);
+    }
+
+    public void Initialize(string id, int remainingDrops) {
+        _id = id;
+        _remainingLoots = remainingDrops;
     }
 
     public delegate void OnChangedHandler(int remainingLoots);
 
-    public string Id {
-        get => _id;
-        set => _id = value;
-    }
+    public string Id => _id;
 
-    public int RemainingLoots {
-        get => _remainingLoots;
-        set => _remainingLoots = value;
-    }
+    public int RemainingLoots => _remainingLoots;
 
-    public OnChangedHandler onChanged;
+    public event OnChangedHandler OnChangedEvent {
+        add => _onChanged += value;
+        remove => _onChanged -= value;
+    }
 }

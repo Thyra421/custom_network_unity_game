@@ -36,7 +36,7 @@ public class UDPClient
         Type messageType = Utils.GetMessageType(message);
         if (messageType.Equals(typeof(MessageMoved))) {
             MessageMoved messageMoved = Utils.Deserialize<MessageMoved>(message);
-            MessageHandler.onMessageMoved(messageMoved);
+            MessageHandler.OnMessageMoved(messageMoved);            
         }
     }
 

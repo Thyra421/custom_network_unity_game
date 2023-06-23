@@ -1,4 +1,3 @@
-using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Sockets;
 using System.Text;
@@ -66,31 +65,34 @@ public class TCPClient
 
         if (messageType.Equals(typeof(MessageJoinedGame))) {
             MessageJoinedGame messageJoinedGame = Utils.Deserialize<MessageJoinedGame>(message);
-            MessageHandler.onMessageJoinedGame(messageJoinedGame);
+            MessageHandler.OnMessageJoinedGame(messageJoinedGame);
         } else if (messageType.Equals(typeof(MessageLeftGame))) {
             MessageLeftGame messageLeftGame = Utils.Deserialize<MessageLeftGame>(message);
-            MessageHandler.onMessageLeftGame(messageLeftGame);
+            MessageHandler.OnMessageLeftGame(messageLeftGame);
         } else if (messageType.Equals(typeof(MessageGameState))) {
             MessageGameState messageGameState = Utils.Deserialize<MessageGameState>(message);
-            MessageHandler.onMessageGameState(messageGameState);
+            MessageHandler.OnMessageGameState(messageGameState);
         } else if (messageType.Equals(typeof(MessageSpawnNodes))) {
             MessageSpawnNodes messageSpawnNodes = Utils.Deserialize<MessageSpawnNodes>(message);
-            MessageHandler.onMessageSpawnNodes(messageSpawnNodes);
+            MessageHandler.OnMessageSpawnNodes(messageSpawnNodes);
         } else if (messageType.Equals(typeof(MessageAttacked))) {
             MessageAttacked messageAttacked = Utils.Deserialize<MessageAttacked>(message);
-            MessageHandler.onMessageAttacked(messageAttacked);
+            MessageHandler.OnMessageAttacked(messageAttacked);
         } else if (messageType.Equals(typeof(MessageDamage))) {
             MessageDamage messageDamage = Utils.Deserialize<MessageDamage>(message);
-            MessageHandler.onMessageDamage(messageDamage);
+            MessageHandler.OnMessageDamage(messageDamage);
         } else if (messageType.Equals(typeof(MessageDespawnObject))) {
             MessageDespawnObject messageDespawnObject = Utils.Deserialize<MessageDespawnObject>(message);
-            MessageHandler.onMessageDespawnObject(messageDespawnObject);
+            MessageHandler.OnMessageDespawnObject(messageDespawnObject);
         } else if (messageType.Equals(typeof(MessageInventoryAdd))) {
             MessageInventoryAdd messageInventoryAdd = Utils.Deserialize<MessageInventoryAdd>(message);
-            MessageHandler.onMessageInventoryAdd(messageInventoryAdd);
+            MessageHandler.OnMessageInventoryAdd(messageInventoryAdd);
+        } else if (messageType.Equals(typeof(MessageInventoryRemove))) {
+            MessageInventoryRemove messageInventoryRemove = Utils.Deserialize<MessageInventoryRemove>(message);
+            MessageHandler.OnMessageInventoryRemove(messageInventoryRemove);
         } else if (messageType.Equals(typeof(MessageLooted))) {
             MessageLooted messageLooted = Utils.Deserialize<MessageLooted>(message);
-            MessageHandler.onMessageLooted(messageLooted);
+            MessageHandler.OnMessageLooted(messageLooted);
         }
     }
 
@@ -124,7 +126,6 @@ public class TCPClient
                     i += batchSize;
                 }
             }
-
         }
     }
 }

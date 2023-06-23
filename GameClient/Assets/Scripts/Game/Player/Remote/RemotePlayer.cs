@@ -9,12 +9,13 @@ public class RemotePlayer : Player
     [SerializeField]
     private RemotePlayerAttack _attack;
 
+    public void Initialize(PlayerData data) {
+        _id = data.id;
+    }
+
     public RemotePlayerMovement Movement {
         get => _movement;
         set => _movement = value;
     }
-    public RemotePlayerAttack Attack {
-        get => _attack;
-        set => _attack = value;
-    }
+    public RemotePlayerAttack Attack => _attack;
 }
