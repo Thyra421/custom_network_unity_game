@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
 
     public void Attack() {
         AttackHitbox attackHitbox = Instantiate(Resources.Load<GameObject>("Prefabs/AttackHitbox"), transform).GetComponent<AttackHitbox>();
-        attackHitbox.Player = this;
+        attackHitbox.Initialize(this);
     }
 
     public bool UpdateTransformIfChanged() {

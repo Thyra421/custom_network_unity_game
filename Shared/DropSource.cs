@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 [System.Serializable]
@@ -20,6 +21,22 @@ public class LootTable
     private LootTableEntry[] _entries;
 
     public LootTableEntry[] Entries => _entries;
+
+    public Item RandomLoot {
+        get {
+            int totalDropChance = _entries.Select((LootTableEntry e) => e.DropChance).Sum();
+            int randomValue = Random.Range(0, totalDropChance);
+
+            int cpt = 0;
+            foreach (LootTableEntry e in _entries) {
+                if (randomValue >= cpt && randomValue < cpt + e.DropChance)
+                    return e.Item;
+                cpt += e.DropChance;
+            }
+
+            return null;
+        }
+    }
 }
 
 [CreateAssetMenu(menuName = "Drop Source")]
@@ -34,13 +51,13 @@ public class DropSource : ScriptableObject
     [SerializeField]
     private int _minExclusive;
 
-    public Item RandomLoot => Utils.PickRandomItem(_lootTable);
+    public Item RandomLoot => _lootTable.RandomLoot;
 
     public GameObject Prefab => _prefab;
 
     public LootTable Drops => _lootTable;
 
-    public int MinInclusive=> _minInclusive;
+    public int MinInclusive => _minInclusive;
 
     public int MaxExclusive => _minExclusive;
 }

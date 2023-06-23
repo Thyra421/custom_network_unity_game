@@ -27,11 +27,11 @@ public struct MessagePlay
 public struct MessageMovement
 {
     public TransformData newTransform;
-    public AnimationData movement;
+    public AnimationData animation;
 
-    public MessageMovement(TransformData newTransform, AnimationData movement) {
+    public MessageMovement(TransformData newTransform, AnimationData animation) {
         this.newTransform = newTransform;
-        this.movement = movement;
+        this.animation = animation;
     }
 }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 class AttackHitbox : MonoBehaviour
 {
     private Player _player;
-    private List<Collider> _collidersTouched = new List<Collider>();
+    private readonly List<Collider> _collidersTouched = new List<Collider>();
 
     private void Start() {
         Destroy(gameObject, .5f);
@@ -14,14 +14,15 @@ class AttackHitbox : MonoBehaviour
         if (_collidersTouched.Contains(other))
             return;
         Player otherPlayer = other.GetComponent<Player>();
-        if (otherPlayer != _player && otherPlayer.Room == _player.Room) {
+        if (otherPlayer != null && otherPlayer != _player && otherPlayer.Room == _player.Room) {
             _collidersTouched.Add(other);
             _player.Room.BroadcastTCP(new MessageDamage(_player.Id, otherPlayer.Id));
         }
     }
 
-    public Player Player {
-        get => _player;
-        set => _player = value;
+    public void Initialize(Player player) {
+        _player = player;
     }
+
+    public Player Player => _player;
 }

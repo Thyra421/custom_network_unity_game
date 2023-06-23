@@ -14,7 +14,7 @@ public class TCPClient
         OnListen();
         NetworkStream stream = _tcpClient!.GetStream();
 
-        byte[] bytes = new byte[Config.TCPBatchSize];
+        byte[] bytes = new byte[SharedConfig.TCP_BATCH_SIZE];
         int i;
         string buffer = "";
 
@@ -98,7 +98,7 @@ public class TCPClient
 
     public static void Connect() {
         try {
-            _tcpClient = new TcpClient(Config.ServerAddress, Config.ServerPortTCP);
+            _tcpClient = new TcpClient(Config.SERVER_ADDRESS, Config.SERVER_PORT_TCP);
             OnConnected();
             Listen();
         } catch {
@@ -114,7 +114,7 @@ public class TCPClient
             serializedMessage += '#';
             byte[] bytes = Encoding.ASCII.GetBytes(serializedMessage);
 
-            int batchSize = Config.TCPBatchSize;
+            int batchSize = SharedConfig.TCP_BATCH_SIZE;
             int i = 0;
 
             while (i < bytes.Length) {

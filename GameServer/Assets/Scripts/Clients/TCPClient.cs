@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class TCPClient
 {
-    private NetworkStream _stream;
+    private readonly NetworkStream _stream;
     private Client _client;
 
     private void OnDisconnect() {
@@ -76,7 +76,6 @@ public class TCPClient
                     _client.Player.Room.BroadcastTCP(new MessageDespawnObject(node.Id));
                 } else
                     _client.Player.Room.BroadcastTCP(new MessageLooted(node.Id));
-
             }
         }
     }

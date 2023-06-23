@@ -1,4 +1,4 @@
-public class ItemStackData
+public struct ItemStackData
 {
     public string itemName;
     public int amount;

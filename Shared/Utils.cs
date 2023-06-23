@@ -8,13 +8,9 @@ public static class Utils
 {
     public static string GenerateUUID() => Guid.NewGuid().ToString();
 
-    public static T JsonDecode<T>(string s) {
-        return JObject.Parse(s).ToObject<T>();
-    }
+    public static T JsonDecode<T>(string s) => JObject.Parse(s).ToObject<T>();
 
-    public static string JsonEncode(object o) {
-        return JObject.FromObject(o).ToString();
-    }
+    public static string JsonEncode(object o) => JObject.FromObject(o).ToString();
 
     private static string SerializeValue(object value, Type type) {
         string str = "";
@@ -173,19 +169,5 @@ public static class Utils
         int i = serializedObject.IndexOf('{');
         string messageTypeName = serializedObject[..i];
         return Type.GetType(messageTypeName);
-    }
-
-    public static Item PickRandomItem(LootTable lootTable) {
-        int totalDropChance = lootTable.Entries.Select((LootTableEntry e) => e.DropChance).Sum();
-        int randomValue = UnityEngine.Random.Range(0, totalDropChance);
-
-        int cpt = 0;
-        foreach (LootTableEntry e in lootTable.Entries) {
-            if (randomValue >= cpt && randomValue < cpt + e.DropChance)
-                return e.Item;
-            cpt += e.DropChance;
-        }
-
-        return null;
     }
 }

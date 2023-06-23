@@ -36,7 +36,7 @@ public class UDPClient
         Type messageType = Utils.GetMessageType(message);
         if (messageType.Equals(typeof(MessageMoved))) {
             MessageMoved messageMoved = Utils.Deserialize<MessageMoved>(message);
-            MessageHandler.OnMessageMoved(messageMoved);            
+            MessageHandler.OnMessageMoved(messageMoved);
         }
     }
 
@@ -55,7 +55,7 @@ public class UDPClient
     public static void Connect() {
         try {
             _udpClient = new UdpClient();
-            _udpClient.Connect(Config.ServerAddress, Config.ServerPortUDP);
+            _udpClient.Connect(Config.SERVER_ADDRESS, Config.SERVER_PORT_UDP);
             _port = ((IPEndPoint)_udpClient.Client.LocalEndPoint).Port;
             _connected = true;
             OnConnected();

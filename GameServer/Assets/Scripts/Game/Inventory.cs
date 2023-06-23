@@ -27,17 +27,17 @@ public class ItemStack
 
 public class Inventory
 {
-    private Player _player;
-
-    public Inventory(Player player) {
-        _player = player;
-    }
+    private Player _player;    
 
     private readonly List<ItemStack> _stacks = new List<ItemStack>();
 
     private bool Any(Item item) => _stacks.Any((ItemStack i) => i.Item == item);
 
     private ItemStack Find(Item item) => _stacks.Find((ItemStack i) => i.Item == item);
+
+    public Inventory(Player player) {
+        _player = player;
+    }
 
     public async Task<bool> Add(Item item, int amount) {
         // inventory full?

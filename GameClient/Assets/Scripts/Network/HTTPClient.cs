@@ -9,7 +9,7 @@ public delegate void OnSuccessHandler<T>(T message);
 public static class HTTPClient
 {
     private static IEnumerator Get<T>(string route, OnSuccessHandler<T> onSuccess, Action onError = null) {
-        string url = $"{Config.ServerAddress}:{Config.ServerPortHTTP}/{route}";
+        string url = $"{Config.SERVER_ADDRESS}:{Config.SERVER_PORT_HTTP}/{route}";
         UnityWebRequest uwr = UnityWebRequest.Get(url);
         uwr.SendWebRequest();
         while (!uwr.isDone)
@@ -21,7 +21,7 @@ public static class HTTPClient
     }
 
     private static IEnumerator Post<T1, T2>(string route, T1 message, OnSuccessHandler<T2> onSuccess, Action onError = null) {
-        string url = $"http://{Config.ServerAddress}:{Config.ServerPortHTTP}/{route}";
+        string url = $"http://{Config.SERVER_ADDRESS}:{Config.SERVER_PORT_HTTP}/{route}";
         UnityWebRequest uwr = UnityWebRequest.Post(url, Utils.JsonEncode(message), "application/json");
         uwr.SendWebRequest();
         while (!uwr.isDone)

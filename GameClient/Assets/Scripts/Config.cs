@@ -1,9 +1,7 @@
 public static class Config
 {
-    public const int ServerPortTCP = 8080;
-    public const int ServerPortUDP = 8080;
-    public const int ServerPortHTTP = 80;
-    public const string ServerAddress = "127.0.0.1";
-    public const int SyncFrequency = 20;
-    public const int TCPBatchSize = 1024;
+    public const int SERVER_PORT_TCP = 8080;
+    public const int SERVER_PORT_UDP = 8080;
+    public const int SERVER_PORT_HTTP = 80;
+    public const string SERVER_ADDRESS = "127.0.0.1";
 }
