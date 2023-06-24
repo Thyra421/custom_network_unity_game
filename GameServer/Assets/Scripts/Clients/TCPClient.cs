@@ -41,6 +41,9 @@ public class TCPClient
         } else if (messageType.Equals(typeof(MessageCraft))) {
             MessageCraft clientMessageCraft = Utils.Deserialize<MessageCraft>(message);
             OnMessageCraft(clientMessageCraft);
+        } else if (messageType.Equals(typeof(MessageUseItem))) {
+            MessageUseItem clientMessageUseItem = Utils.Deserialize<MessageUseItem>(message);
+            OnMessageUseItem(clientMessageUseItem);
         }
     }
 
@@ -110,6 +113,12 @@ public class TCPClient
                 await _client.Player.Inventory.Add(itemStack.Item, itemStack.Amount, false);
             await Send(new MessageError(MessageErrorType.notEnoughInventorySpace));
         }
+    }
+
+
+    private void OnMessageUseItem(MessageUseItem clientMessageUseItem) {
+        UsableItem item = Resources.Load<UsableItem>($"{SharedConfig.CRAFTED_ITEMS_PATH}/{clientMessageUseItem.itemName}");
+        item.Use(_client.Player);
     }
 
     public TCPClient(TcpClient tcpClient) {

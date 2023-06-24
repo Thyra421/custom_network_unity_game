@@ -56,3 +56,12 @@ public struct MessageCraft
         this.patternName = patternName;
     }
 }
+
+public struct MessageUseItem
+{
+    public string itemName;
+
+    public MessageUseItem(string itemName) {
+        this.itemName = itemName;
+    }
+}
