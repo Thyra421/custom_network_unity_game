@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class OnUses
+public class ItemActionController
 {
     private readonly Player _player;
 
-    public OnUses(Player player) {
+    public ItemActionController(Player player) {
         _player = player;
     }
 
