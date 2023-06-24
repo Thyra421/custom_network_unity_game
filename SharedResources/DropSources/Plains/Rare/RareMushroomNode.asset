@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f283e647c60dcf747a682927ee254e16, type: 3}
+  m_Script: {fileID: 11500000, guid: 479f781f10bdce34b90e8d9dcdc215d3, type: 3}
   m_Name: RareMushroomNode
   m_EditorClassIdentifier: 
   _lootTable:

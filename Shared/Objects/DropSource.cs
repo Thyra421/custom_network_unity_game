@@ -33,13 +33,12 @@ public class LootTable
                     return e.Item;
                 cpt += e.DropChance;
             }
-
             return null;
         }
     }
 }
 
-[CreateAssetMenu(menuName = "Drop Source")]
+[CreateAssetMenu]
 public class DropSource : ScriptableObject
 {
     [SerializeField]

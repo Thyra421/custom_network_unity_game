@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UnityEngine;
 
-public class ItemStack
+public class InventoryItemStack
 {
     private readonly Item _item;
     private int _amount;
 
-    public ItemStack(Item item, int amount) {
+    public InventoryItemStack(Item item, int amount) {
         _item = item;
         _amount = amount;
     }
@@ -27,61 +28,64 @@ public class ItemStack
 
 public class Inventory
 {
-    private Player _player;    
+    private readonly Player _player;
+    private readonly List<InventoryItemStack> _stacks = new List<InventoryItemStack>();
 
-    private readonly List<ItemStack> _stacks = new List<ItemStack>();
+    private bool Any(Item item) => _stacks.Any((InventoryItemStack i) => i.Item == item);
 
-    private bool Any(Item item) => _stacks.Any((ItemStack i) => i.Item == item);
-
-    private ItemStack Find(Item item) => _stacks.Find((ItemStack i) => i.Item == item);
+    private InventoryItemStack Find(Item item) => _stacks.Find((InventoryItemStack i) => i.Item == item);
 
     public Inventory(Player player) {
         _player = player;
     }
 
-    public async Task<bool> Add(Item item, int amount) {
-        // inventory full?
-        if (_stacks.Count >= SharedConfig.INVENTORY_SPACE) {
-            await _player.Client.Tcp.Send(new MessageError(MessageErrorType.inventoryFull));
-            return false;
-        }
+    public async Task<bool> Add(Item item, int amount, bool send) {
+        Debug.Assert(amount >= 1, "Amount must be greater than 1.");
+        Debug.Assert(!(item.Property != ItemProperty.Stackable && amount != 1), "Can't add more than 1 item if it's not stackable.");
+
         // already has unique item?
-        else if (item.Property == ItemProperty.Unique && Any(item)) {
-            await _player.Client.Tcp.Send(new MessageError(MessageErrorType.uniqueItem));
+        if (item.Property == ItemProperty.Unique && Any(item)) {
+            if (send)
+                await _player.Client.Tcp.Send(new MessageError(MessageErrorType.uniqueItem));
             return false;
         }
         // is stackable and already has a stack?
         else if (item.Property == ItemProperty.Stackable && Any(item)) {
-            ItemStack stack = Find(item);
-            stack.Add(amount);
-            await _player.Client.Tcp.Send(new MessageInventoryAdd(item.name, amount));
+            Find(item).Add(amount);
+            if (send)
+                await _player.Client.Tcp.Send(new MessageInventoryAdd(new ItemStackData(item.name, amount)));
             return true;
         }
-        // is stackable and doesn't have any?
-        else if (item.Property == ItemProperty.Stackable) {
-            _stacks.Add(new ItemStack(item, amount));
-            await _player.Client.Tcp.Send(new MessageInventoryAdd(item.name, amount));
-            return true;
+        // => not stackable
+        // inventory full?
+        else if (_stacks.Count >= SharedConfig.INVENTORY_SPACE) {
+            if (send)
+                await _player.Client.Tcp.Send(new MessageError(MessageErrorType.inventoryFull));
+            return false;
         }
-        // is not stackable?
+        // doesn't have any?
         else {
-            _stacks.Add(new ItemStack(item, 1));
-            await _player.Client.Tcp.Send(new MessageInventoryAdd(item.name, 1));
-
-            if (amount > 1)
-                return await Add(item, amount - 1);
+            _stacks.Add(new InventoryItemStack(item, amount));
+            if (send)
+                await _player.Client.Tcp.Send(new MessageInventoryAdd(new ItemStackData(item.name, amount)));
             return true;
         }
     }
 
-    public async void Remove(Item item, int amount) {
-        ItemStack stack = Find(item);
+    public async void Remove(Item item, int amount, bool send) {
+        Debug.Assert(amount >= 1, "Amount must be greater than 1.");
+        Debug.Assert(!(item.Property != ItemProperty.Stackable && amount != 1), "Can't remove more than 1 item if it's not stackable.");
 
-        if (stack != null && stack.Amount >= amount) {
+        InventoryItemStack stack = Find(item);
+
+        if (stack?.Amount >= amount) {
             stack.Remove(amount);
             if (stack.Amount <= 0)
                 _stacks.Remove(stack);
-            await _player.Client.Tcp.Send(new MessageInventoryRemove(item.name, amount));
+            if (send)
+                await _player.Client.Tcp.Send(new MessageInventoryRemove(new ItemStackData(item.name, amount)));
         }
     }
+
+    public bool Contains(Item item, int amount) => Find(item)?.Amount >= amount;
 }

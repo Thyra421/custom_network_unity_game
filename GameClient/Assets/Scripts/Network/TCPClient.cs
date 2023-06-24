@@ -93,6 +93,9 @@ public class TCPClient
         } else if (messageType.Equals(typeof(MessageLooted))) {
             MessageLooted messageLooted = Utils.Deserialize<MessageLooted>(message);
             MessageHandler.OnMessageLooted(messageLooted);
+        } else if (messageType.Equals(typeof(MessageCrafted))) {
+            MessageCrafted messageCrafted = Utils.Deserialize<MessageCrafted>(message);
+            MessageHandler.OnMessageCrafted(messageCrafted);
         }
     }
 

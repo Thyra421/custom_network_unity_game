@@ -1,5 +1,5 @@
-using System.Linq;
 using System;
+using System.Linq;
 using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
@@ -24,13 +24,22 @@ public class InventoryManager : MonoBehaviour
     }
 
     private void OnMessageInventoryAdd(MessageInventoryAdd messageInventoryAdd) {
-        Item item = Resources.Load<Item>("Shared/RawMaterials/" + messageInventoryAdd.itemName);
-        Add(item, messageInventoryAdd.amount);
+        Item item = Resources.Load<Item>($"{SharedConfig.RAW_MATERIALS_PATH}/{messageInventoryAdd.data.itemName}");
+        Add(item, messageInventoryAdd.data.amount);
     }
 
     private void OnMessageInventoryRemove(MessageInventoryRemove messageInventoryRemove) {
-        Item item = Resources.Load<Item>("Shared/RawMaterials/" + messageInventoryRemove.itemName);
-        Remove(item, messageInventoryRemove.amount);
+        Item item = Resources.Load<Item>($"{SharedConfig.RAW_MATERIALS_PATH}/{messageInventoryRemove.data.itemName}");
+        Remove(item, messageInventoryRemove.data.amount);
+    }
+
+    private void OnMessageCrafted(MessageCrafted messageCrafted) {
+        foreach (ItemStackData r in messageCrafted.reagents) {
+            Item reagent = Resources.Load<Item>($"{SharedConfig.RAW_MATERIALS_PATH}/{r.itemName}");
+            Remove(reagent, r.amount);
+        }
+        Item outcome = Resources.Load<Item>($"{SharedConfig.CRAFTED_ITEMS_PATH}/{messageCrafted.outcome.itemName}");
+        Add(outcome, messageCrafted.outcome.amount);
     }
 
     private void Awake() {
@@ -38,6 +47,7 @@ public class InventoryManager : MonoBehaviour
             _slots[i] = new InventorySlot();
         MessageHandler.OnMessageInventoryAddEvent += OnMessageInventoryAdd;
         MessageHandler.OnMessageInventoryRemoveEvent += OnMessageInventoryRemove;
+        MessageHandler.OnMessageCraftedEvent += OnMessageCrafted;
     }
 
     public InventorySlot[] Slots => _slots;

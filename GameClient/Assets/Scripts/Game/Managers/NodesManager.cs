@@ -10,7 +10,7 @@ public class NodesManager : MonoBehaviour
     private Node FindNode(string id) => _nodes.Find((Node n) => n.Id == id);
 
     private void CreateNode(NodeData data) {
-        GameObject newObject = Instantiate(Resources.Load<GameObject>("Shared/Prefabs/" + data.assetName), data.transform.position.ToVector3, Quaternion.Euler(data.transform.rotation.ToVector3));
+        GameObject newObject = Instantiate(Resources.Load<GameObject>($"{SharedConfig.PREFABS_PATH}/{data.prefabName}"), data.transform.position.ToVector3, Quaternion.Euler(data.transform.rotation.ToVector3));
         Node newNode = newObject.AddComponent<Node>();
         newNode.Initialize(data.id, data.remainingLoots);
         _nodes.Add(newNode);

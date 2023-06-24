@@ -21,16 +21,16 @@ class Reception : MonoBehaviour
     }
 
     private void Awake() {
-        if (_current == null) {
+        if (_current == null)
             _current = this;
-        } else {
+        else
             Destroy(gameObject);
-        }
+
     }
 
     public void RemoveRoom(Room room) {
-        Destroy(room.gameObject);
         _rooms.Remove(room);
+        Destroy(room.gameObject);
     }
 
     public Player JoinOrCreateRoom(Client client) {

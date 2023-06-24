@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     }
 
     public void Attack() {
-        AttackHitbox attackHitbox = Instantiate(Resources.Load<GameObject>("Prefabs/AttackHitbox"), transform).GetComponent<AttackHitbox>();
+        AttackHitbox attackHitbox = Instantiate(Resources.Load<GameObject>($"{Config.PREFABS_PATH}/AttackHitbox"), transform).GetComponent<AttackHitbox>();
         attackHitbox.Initialize(this);
     }
 

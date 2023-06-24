@@ -47,3 +47,12 @@ public struct MessagePickUp
         this.id = id;
     }
 }
+
+public struct MessageCraft
+{
+    public string patternName;
+
+    public MessageCraft(string patternName) {
+        this.patternName = patternName;
+    }
+}

@@ -9,14 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f9a4f0252ce1be48a57962d8e38aa82, type: 3}
+  m_Script: {fileID: 11500000, guid: 756b8728bd712af4b9786122fd070201, type: 3}
   m_Name: Ambertop
   m_EditorClassIdentifier: 
-  _displayName: Amber Top
-  _description: Bitter mushroom from the forest. It is know for its magic properties.
+  _displayName: Ambertop
+  _description: Bitter mushroom from the forest
   _rarity: 1
-  _price: 22
-  _stackable: 0
-  _unique: 0
+  _price: 12
+  _property: 0
   _icon: {fileID: 21300000, guid: 76a8af5d0ba96594db56d5e508bdc8f1, type: 3}
   _region: 0

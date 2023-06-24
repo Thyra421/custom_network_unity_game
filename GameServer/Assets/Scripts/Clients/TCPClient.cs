@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,6 +38,9 @@ public class TCPClient
         } else if (messageType.Equals(typeof(MessagePickUp))) {
             MessagePickUp clientMessagePickUp = Utils.Deserialize<MessagePickUp>(message);
             OnMessagePickUp(clientMessagePickUp);
+        } else if (messageType.Equals(typeof(MessageCraft))) {
+            MessageCraft clientMessageCraft = Utils.Deserialize<MessageCraft>(message);
+            OnMessageCraft(clientMessageCraft);
         }
     }
 
@@ -68,7 +72,7 @@ public class TCPClient
 
         if (node.GetComponentInChildren<Collider>().bounds.Intersects(player.GetComponent<Collider>().bounds)) {
             Item item = node.Loot;
-            bool result = await _client.Player.Inventory.Add(item, 1);
+            bool result = await _client.Player.Inventory.Add(item, 1, true);
             if (result) {
                 node.RemoveOne();
                 if (node.RemainingLoots <= 0) {
@@ -77,6 +81,34 @@ public class TCPClient
                 } else
                     _client.Player.Room.BroadcastTCP(new MessageLooted(node.Id));
             }
+        }
+    }
+
+    private async void OnMessageCraft(MessageCraft messageCraft) {
+        CraftingPattern pattern = Resources.Load<CraftingPattern>($"{SharedConfig.CRAFTING_PATTERNS_PATH}/{messageCraft.patternName}");
+
+        // pattern exists?
+        if (pattern == null) {
+            await Send(new MessageError(MessageErrorType.objectNotFound));
+            return;
+        }
+        // has all reagents?
+        foreach (ItemStack itemStack in pattern.Reagents)
+            if (!_client.Player.Inventory.Contains(itemStack.Item, itemStack.Amount)) {
+                await Send(new MessageError(MessageErrorType.notEnoughResources));
+                return;
+            }
+        foreach (ItemStack itemStack in pattern.Reagents)
+            _client.Player.Inventory.Remove(itemStack.Item, itemStack.Amount, false);
+        // has enough space?
+        if (await _client.Player.Inventory.Add(pattern.Outcome.Item, pattern.Outcome.Amount, false)) {
+            await Send(new MessageCrafted(pattern.Reagents.Select((ItemStack stack) => new ItemStackData(stack.Item.name, stack.Amount)).ToArray(), new ItemStackData(pattern.Outcome.Item.name, pattern.Outcome.Amount)));
+        }
+        // put the reagents back in the inventory
+        else {
+            foreach (ItemStack itemStack in pattern.Reagents)
+                await _client.Player.Inventory.Add(itemStack.Item, itemStack.Amount, false);
+            await Send(new MessageError(MessageErrorType.notEnoughInventorySpace));
         }
     }
 

@@ -47,7 +47,7 @@ public class Room : MonoBehaviour
 
             DropSource dropSource = dropSources[UnityEngine.Random.Range(0, dropSources.Length)];
 
-            GameObject newObject = Instantiate(Resources.Load<GameObject>("Shared/Prefabs/" + dropSource.Prefab.name), randomTransform.position, randomTransform.rotation, transform);
+            GameObject newObject = Instantiate(Resources.Load<GameObject>($"{SharedConfig.PREFABS_PATH}/{dropSource.Prefab.name}"), randomTransform.position, randomTransform.rotation, transform);
             Node newNode = newObject.AddComponent<Node>();
             newNode.GenerateDrops(dropSource);
             _nodes.Add(newNode);
@@ -57,8 +57,8 @@ public class Room : MonoBehaviour
     private void PrepareGame() {
         List<Transform> occupied = new List<Transform>();
 
-        PrepareBiome(Resources.LoadAll<DropSource>("Shared/DropSources/Plains/Common"), 20, occupied);
-        PrepareBiome(Resources.LoadAll<DropSource>("Shared/DropSources/Plains/Rare"), 5, occupied);
+        PrepareBiome(Resources.LoadAll<DropSource>($"{SharedConfig.DROP_SOURCES_PATH}/Plains/Common"), 20, occupied);
+        PrepareBiome(Resources.LoadAll<DropSource>($"{SharedConfig.DROP_SOURCES_PATH}/Plains/Rare"), 5, occupied);
     }
 
     private void Awake() {
@@ -81,7 +81,7 @@ public class Room : MonoBehaviour
     }
 
     public Player CreatePlayer(Client client) {
-        GameObject newGameObject = Instantiate(Resources.Load<GameObject>("Prefabs/Player"), transform);
+        GameObject newGameObject = Instantiate(Resources.Load<GameObject>($"{Config.PREFABS_PATH}/Player"), transform);
         Player newPlayer = newGameObject.GetComponent<Player>();
         newGameObject.name = "Player " + newPlayer.Id;
         newPlayer.Initialize(client, this);
@@ -91,16 +91,16 @@ public class Room : MonoBehaviour
     }
 
     public void RemovePlayer(Player player) {
-        Destroy(player.gameObject);
         _players.Remove(player);
+        Destroy(player.gameObject);
         Debug.Log($"[Players] removed. {_players.Count} players");
         if (_players.Count == 0)
             Reception.Current.RemoveRoom(this);
     }
 
     public void RemoveNode(Node node) {
-        Destroy(node.gameObject);
         _nodes.Remove(node);
+        Destroy(node.gameObject);
     }
 
     public Node FindNode(string id) {

@@ -22,11 +22,17 @@ public abstract class Item : ScriptableObject
     [SerializeField]
     protected int _price;
     [SerializeField]
-    private ItemProperty _property;
+    protected ItemProperty _property;
     [SerializeField]
-    private Sprite _icon;
+    protected Sprite _icon;
 
     public Sprite Icon => _icon;
 
     public ItemProperty Property => _property;
+
+    public string DisplayName => _displayName;
+
+    public string Description => _description;
+
+    public ItemRarity Rarity => _rarity;
 }

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 756b8728bd712af4b9786122fd070201, type: 3}
+  m_Name: Wildcap
+  m_EditorClassIdentifier: 
+  _displayName: Wildcap
+  _description: Tasty plains mushroom.
+  _rarity: 0
+  _price: 5
+  _property: 0
+  _icon: {fileID: 21300000, guid: 8a3addd306fca83498a7903f8c4a74a9, type: 3}
+  _region: 0

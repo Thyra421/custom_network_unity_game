@@ -94,29 +94,25 @@ public struct MessageDamage
 
 public struct MessageInventoryAdd
 {
-    public string itemName;
-    public int amount;
+    public ItemStackData data;
 
-    public MessageInventoryAdd(string itemName, int amount) {
-        this.itemName = itemName;
-        this.amount = amount;
+    public MessageInventoryAdd(ItemStackData data) {
+        this.data = data;
     }
 }
 
 public struct MessageInventoryRemove
 {
-    public string itemName;
-    public int amount;
+    public ItemStackData data;
 
-    public MessageInventoryRemove(string itemName, int amount) {
-        this.itemName = itemName;
-        this.amount = amount;
+    public MessageInventoryRemove(ItemStackData data) {
+        this.data = data;
     }
 }
 
 public enum MessageErrorType
 {
-    inventoryFull, uniqueItem, objectNotFound
+    inventoryFull, notEnoughInventorySpace, uniqueItem, objectNotFound, notEnoughResources
 }
 
 public struct MessageError
@@ -128,13 +124,13 @@ public struct MessageError
     }
 }
 
-public struct MessageCraft
+public struct MessageCrafted
 {
     public ItemStackData[] reagents;
-    public ItemStackData[] outcomes;
+    public ItemStackData outcome;
 
-    public MessageCraft(ItemStackData[] reagents, ItemStackData[] outcomes) {
+    public MessageCrafted(ItemStackData[] reagents, ItemStackData outcome) {
         this.reagents = reagents;
-        this.outcomes = outcomes;
+        this.outcome = outcome;
     }
 }

@@ -13,6 +13,7 @@ public class MessageHandler : MonoBehaviour
     public delegate void OnMessageInventoryAddHandler(MessageInventoryAdd messageInventoryAdd);
     public delegate void OnMessageInventoryRemoveHandler(MessageInventoryRemove messageInventoryRemove);
     public delegate void OnMessageLootedHandler(MessageLooted messageLooted);
+    public delegate void OnMessageCraftedHandler(MessageCrafted messageCrafted);
 
     private static event OnMessageJoinedGameHandler _onMessageJoinedGame;
     private static event OnMessageMovedHandler _onMessageMoved;
@@ -25,6 +26,7 @@ public class MessageHandler : MonoBehaviour
     private static event OnMessageInventoryAddHandler _onMessageInventoryAdd;
     private static event OnMessageInventoryRemoveHandler _onMessageInventoryRemove;
     private static event OnMessageLootedHandler _onMessageLooted;
+    private static event OnMessageCraftedHandler _onMessageCrafted;
 
     public static event OnMessageJoinedGameHandler OnMessageJoinedGameEvent {
         add => _onMessageJoinedGame += value;
@@ -81,6 +83,11 @@ public class MessageHandler : MonoBehaviour
         remove => _onMessageLooted -= value;
     }
 
+    public static event OnMessageCraftedHandler OnMessageCraftedEvent {
+        add => _onMessageCrafted += value;
+        remove => _onMessageCrafted -= value;
+    }
+
     public static OnMessageJoinedGameHandler OnMessageJoinedGame => _onMessageJoinedGame;
 
     public static OnMessageMovedHandler OnMessageMoved => _onMessageMoved;
@@ -103,4 +110,5 @@ public class MessageHandler : MonoBehaviour
 
     public static OnMessageLootedHandler OnMessageLooted => _onMessageLooted;
 
+    public static OnMessageCraftedHandler OnMessageCrafted => _onMessageCrafted;
 }
