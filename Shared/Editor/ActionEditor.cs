@@ -15,6 +15,8 @@ public class ActionEditor : PropertyDrawer
         // get selected method name or first if none selected
         SerializedProperty methodNameProperty = property.FindPropertyRelative("_methodName");
         int selected = string.IsNullOrEmpty(methodNameProperty.stringValue) ? 0 : Array.IndexOf(methodNames, methodNameProperty.stringValue);
+        if (selected == -1)
+            selected = 0;
         // show popup to select method name
         selected = EditorGUILayout.Popup(selected, methodNames);
         methodNameProperty.stringValue = methodNames[selected];

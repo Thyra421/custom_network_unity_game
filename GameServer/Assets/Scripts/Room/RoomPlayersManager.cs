@@ -1,13 +1,14 @@
-﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System;
 using UnityEngine;
+using System.Linq;
 
-public class Room : MonoBehaviour
+public class RoomPlayersManager : MonoBehaviour
 {
     private const int MAX_PLAYERS = 2;
+    [SerializeField]
+    private Room _room;
     private readonly List<Player> _players = new List<Player>();
-    private readonly List<Node> _nodes = new List<Node>();
     private float _elapsedTime = 0f;
 
     private delegate T CustomMessageHandler<T>(Player player);
@@ -38,33 +39,6 @@ public class Room : MonoBehaviour
         }
     }
 
-    private void PrepareBiome(DropSource[] dropSources, int amount, List<Transform> occupied) {
-        for (int i = 0; i < amount; i++) {
-            Transform randomTransform = GameManager.Current.RandomPlainSpawn;
-            while (occupied.Contains(randomTransform))
-                randomTransform = GameManager.Current.RandomPlainSpawn;
-            occupied.Add(randomTransform);
-
-            DropSource dropSource = dropSources[UnityEngine.Random.Range(0, dropSources.Length)];
-
-            GameObject newObject = Instantiate(Resources.Load<GameObject>($"{SharedConfig.PREFABS_PATH}/{dropSource.Prefab.name}"), randomTransform.position, randomTransform.rotation, transform);
-            Node newNode = newObject.AddComponent<Node>();
-            newNode.GenerateDrops(dropSource);
-            _nodes.Add(newNode);
-        }
-    }
-
-    private void PrepareGame() {
-        List<Transform> occupied = new List<Transform>();
-
-        PrepareBiome(Resources.LoadAll<DropSource>($"{SharedConfig.DROP_SOURCES_PATH}/Plains/Common"), 20, occupied);
-        PrepareBiome(Resources.LoadAll<DropSource>($"{SharedConfig.DROP_SOURCES_PATH}/Plains/Rare"), 5, occupied);
-    }
-
-    private void Awake() {
-        PrepareGame();
-    }
-
     private void Update() {
         SyncMovement();
     }
@@ -84,34 +58,21 @@ public class Room : MonoBehaviour
         GameObject newGameObject = Instantiate(Resources.Load<GameObject>($"{Config.PREFABS_PATH}/Player"), transform);
         Player newPlayer = newGameObject.GetComponent<Player>();
         newGameObject.name = "Player " + newPlayer.Id;
-        newPlayer.Initialize(client, this);
+        newPlayer.Initialize(client, _room);
         _players.Add(newPlayer);
-        Debug.Log($"[Players] created. {_players.Count} players");
+        Debug.Log($"[Players] created => {_players.Count} players");
         return newPlayer;
     }
 
     public void RemovePlayer(Player player) {
         _players.Remove(player);
         Destroy(player.gameObject);
-        Debug.Log($"[Players] removed. {_players.Count} players");
+        Debug.Log($"[Players] removed => {_players.Count} players");
         if (_players.Count == 0)
-            Reception.Current.RemoveRoom(this);
-    }
-
-    public void RemoveNode(Node node) {
-        _nodes.Remove(node);
-        Destroy(node.gameObject);
-    }
-
-    public Node FindNode(string id) {
-        return _nodes.Find((Node m) => m.Id == id);
+            Reception.Current.RemoveRoom(_room);
     }
 
     public PlayerData[] PlayerDatas => _players.Select((Player player) => player.Data).ToArray();
 
-    public NodeData[] NodeDatas => _nodes.Select((Node node) => node.Data).ToArray();
-
     public bool IsFull => _players.Count == MAX_PLAYERS;
-
-    public List<Node> Nodes => _nodes;
 }

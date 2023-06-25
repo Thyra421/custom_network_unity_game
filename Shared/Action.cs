@@ -20,11 +20,6 @@ public class ActionParameter
 
     public object ToObject {
         get {
-
-
-
-
-
             Type type = Type.GetType(_typeName);
 
             if (type == typeof(int)) {

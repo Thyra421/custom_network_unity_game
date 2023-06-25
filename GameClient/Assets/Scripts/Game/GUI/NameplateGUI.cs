@@ -7,15 +7,16 @@ public class NameplateGUI : MonoBehaviour
     private Slider _slider;
     private Player _player;
 
-    private void OnChanged(int amount) {
-        _slider.value = amount;
+    private void OnChanged(int currentHealth, int maxHealth) {
+        _slider.maxValue = maxHealth;
+        _slider.value = currentHealth;
     }
 
     public void Initialize(Player player) {
-        _slider.maxValue = player.Health.Health;
-        _slider.value = player.Health.Health;
+        _slider.maxValue = player.Statistics.MaxHealth;
+        _slider.value = player.Statistics.CurrentHealth;
         _player = player;
-        player.Health.OnChangedEvent += OnChanged;
+        player.Statistics.OnChangedEvent += OnChanged;
     }
 
     public Player Player => _player;

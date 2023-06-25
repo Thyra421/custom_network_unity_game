@@ -9,14 +9,14 @@ class Reception : MonoBehaviour
     private readonly List<Room> _rooms = new List<Room>();
 
     private Player JoinRoom(Client client, Room room) {
-        Player newPlayer = room.CreatePlayer(client);
+        Player newPlayer = room.PlayersManager.CreatePlayer(client);
         return newPlayer;
     }
 
     private Player CreateRoom(Client client) {
         Room newRoom = Instantiate(_roomPrefab).GetComponent<Room>();
         _rooms.Add(newRoom);
-        Player newPlayer = newRoom.CreatePlayer(client);
+        Player newPlayer = newRoom.PlayersManager.CreatePlayer(client);
         return newPlayer;
     }
 
@@ -34,7 +34,7 @@ class Reception : MonoBehaviour
     }
 
     public Player JoinOrCreateRoom(Client client) {
-        Room room = _rooms.Find((Room r) => !r.IsFull);
+        Room room = _rooms.Find((Room r) => !r.PlayersManager.IsFull);
         if (room == null)
             return CreateRoom(client);
         return JoinRoom(client, room);

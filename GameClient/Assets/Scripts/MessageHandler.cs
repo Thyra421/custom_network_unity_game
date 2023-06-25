@@ -7,26 +7,26 @@ public class MessageHandler : MonoBehaviour
     public delegate void OnMessageLeftGameHandler(MessageLeftGame messageLeftGame);
     public delegate void OnMessageGameStateHandler(MessageGameState messageGameState);
     public delegate void OnMessageAttackedHandler(MessageAttacked messageAttacked);
-    public delegate void OnMessageDamageHandler(MessageDamage messageDamage);
     public delegate void OnMessageDespawnObjectHandler(MessageDespawnObject messageDespawnObject);
     public delegate void OnMessageSpawnNodesHandler(MessageSpawnNodes messageSpawnNodes);
     public delegate void OnMessageInventoryAddHandler(MessageInventoryAdd messageInventoryAdd);
     public delegate void OnMessageInventoryRemoveHandler(MessageInventoryRemove messageInventoryRemove);
     public delegate void OnMessageLootedHandler(MessageLooted messageLooted);
     public delegate void OnMessageCraftedHandler(MessageCrafted messageCrafted);
+    public delegate void OnMessageHealthChangedHandler(MessageHealthChanged messageHealthChanged);   
 
     private static event OnMessageJoinedGameHandler _onMessageJoinedGame;
     private static event OnMessageMovedHandler _onMessageMoved;
     private static event OnMessageLeftGameHandler _onMessageLeftGame;
     private static event OnMessageGameStateHandler _onMessageGameState;
     private static event OnMessageAttackedHandler _onMessageAttacked;
-    private static event OnMessageDamageHandler _onMessageDamage;
     private static event OnMessageDespawnObjectHandler _onMessageDespawnObject;
     private static event OnMessageSpawnNodesHandler _onMessageSpawnNodes;
     private static event OnMessageInventoryAddHandler _onMessageInventoryAdd;
     private static event OnMessageInventoryRemoveHandler _onMessageInventoryRemove;
     private static event OnMessageLootedHandler _onMessageLooted;
     private static event OnMessageCraftedHandler _onMessageCrafted;
+    private static event OnMessageHealthChangedHandler _onMessageHealthChanged;
 
     public static event OnMessageJoinedGameHandler OnMessageJoinedGameEvent {
         add => _onMessageJoinedGame += value;
@@ -51,11 +51,6 @@ public class MessageHandler : MonoBehaviour
     public static event OnMessageAttackedHandler OnMessageAttackedEvent {
         add => _onMessageAttacked += value;
         remove => _onMessageAttacked -= value;
-    }
-
-    public static event OnMessageDamageHandler OnMessageDamageEvent {
-        add => _onMessageDamage += value;
-        remove => _onMessageDamage -= value;
     }
 
     public static event OnMessageDespawnObjectHandler OnMessageDespawnObjectEvent {
@@ -88,6 +83,11 @@ public class MessageHandler : MonoBehaviour
         remove => _onMessageCrafted -= value;
     }
 
+    public static event OnMessageHealthChangedHandler OnMessageHealthChangedEvent {
+        add => _onMessageHealthChanged += value;
+        remove => _onMessageHealthChanged -= value;
+    }
+
     public static OnMessageJoinedGameHandler OnMessageJoinedGame => _onMessageJoinedGame;
 
     public static OnMessageMovedHandler OnMessageMoved => _onMessageMoved;
@@ -97,8 +97,6 @@ public class MessageHandler : MonoBehaviour
     public static OnMessageGameStateHandler OnMessageGameState => _onMessageGameState;
 
     public static OnMessageAttackedHandler OnMessageAttacked => _onMessageAttacked;
-
-    public static OnMessageDamageHandler OnMessageDamage => _onMessageDamage;
 
     public static OnMessageDespawnObjectHandler OnMessageDespawnObject => _onMessageDespawnObject;
 
@@ -111,4 +109,6 @@ public class MessageHandler : MonoBehaviour
     public static OnMessageLootedHandler OnMessageLooted => _onMessageLooted;
 
     public static OnMessageCraftedHandler OnMessageCrafted => _onMessageCrafted;
+
+    public static OnMessageHealthChangedHandler OnMessageHealthChanged => _onMessageHealthChanged;
 }

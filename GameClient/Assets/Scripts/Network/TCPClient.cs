@@ -78,9 +78,6 @@ public class TCPClient
         } else if (messageType.Equals(typeof(MessageAttacked))) {
             MessageAttacked messageAttacked = Utils.Deserialize<MessageAttacked>(message);
             MessageHandler.OnMessageAttacked(messageAttacked);
-        } else if (messageType.Equals(typeof(MessageDamage))) {
-            MessageDamage messageDamage = Utils.Deserialize<MessageDamage>(message);
-            MessageHandler.OnMessageDamage(messageDamage);
         } else if (messageType.Equals(typeof(MessageDespawnObject))) {
             MessageDespawnObject messageDespawnObject = Utils.Deserialize<MessageDespawnObject>(message);
             MessageHandler.OnMessageDespawnObject(messageDespawnObject);
@@ -96,6 +93,9 @@ public class TCPClient
         } else if (messageType.Equals(typeof(MessageCrafted))) {
             MessageCrafted messageCrafted = Utils.Deserialize<MessageCrafted>(message);
             MessageHandler.OnMessageCrafted(messageCrafted);
+        } else if (messageType.Equals(typeof(MessageHealthChanged))) {
+            MessageHealthChanged messageHealthChanged = Utils.Deserialize<MessageHealthChanged>(message);
+            MessageHandler.OnMessageHealthChanged(messageHealthChanged);
         }
     }
 

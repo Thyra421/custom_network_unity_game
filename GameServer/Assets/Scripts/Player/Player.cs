@@ -4,6 +4,8 @@ public class Player : MonoBehaviour
 {
     private readonly string _id = Utils.GenerateUUID();
     private readonly Inventory _inventory;
+    private readonly ServerItemActionController _itemActionController;
+    private readonly Statistics _statistics;
     private Client _client;
     private Room _room;
     private TransformData _transformData;
@@ -12,6 +14,8 @@ public class Player : MonoBehaviour
 
     private Player() {
         _inventory = new Inventory(this);
+        _itemActionController = new ServerItemActionController(this);
+        _statistics = new Statistics(this);
     }
 
     private void Awake() {
@@ -38,11 +42,19 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void Use(UsableItem item) {
+        _itemActionController.Use(item);
+    }
+
     public string Id => _id;
 
     public Client Client => _client;
 
     public Room Room => _room;
+
+    public Inventory Inventory => _inventory;
+
+    public Statistics Statistics => _statistics;
 
     public TransformData TransformData {
         get => _transformData;
@@ -57,7 +69,5 @@ public class Player : MonoBehaviour
         set => _animationData = value;
     }
 
-    public PlayerData Data => new PlayerData(_id, _transformData, _animationData);
-
-    public Inventory Inventory => _inventory;
+    public PlayerData Data => new PlayerData(_id, _transformData, _animationData);   
 }

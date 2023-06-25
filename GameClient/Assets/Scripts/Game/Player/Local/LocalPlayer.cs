@@ -2,10 +2,13 @@ using UnityEngine;
 
 [RequireComponent(typeof(LocalPlayerMovement))]
 [RequireComponent(typeof(LocalPlayerAttack))]
+[RequireComponent(typeof(LocalPlayerStatistics))]
 public class LocalPlayer : Player
 {
     [SerializeField]
     private LocalPlayerMovement _movement;
+    [SerializeField]
+    private LocalPlayerStatistics _statistics;
     private float _elapsedTime = 0f;
     private TransformData _lastTransform;
 
@@ -28,4 +31,6 @@ public class LocalPlayer : Player
     public void Initialize(string id) {
         _id = id;
     }
+
+    public override PlayerStatistics Statistics => _statistics;
 }

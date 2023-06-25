@@ -81,17 +81,6 @@ public struct MessageAttacked
     }
 }
 
-public struct MessageDamage
-{
-    public string idFrom;
-    public string idTo;
-
-    public MessageDamage(string idFrom, string idTo) {
-        this.idFrom = idFrom;
-        this.idTo = idTo;
-    }
-}
-
 public struct MessageInventoryAdd
 {
     public ItemStackData data;
@@ -110,17 +99,17 @@ public struct MessageInventoryRemove
     }
 }
 
-public enum MessageErrorType
-{
-    inventoryFull, notEnoughInventorySpace, uniqueItem, objectNotFound, notEnoughResources
-}
-
 public struct MessageError
 {
     public MessageErrorType type;
 
     public MessageError(MessageErrorType type) {
         this.type = type;
+    }
+
+    public enum MessageErrorType
+    {
+        inventoryFull, notEnoughInventorySpace, uniqueItem, objectNotFound, notEnoughResources
     }
 }
 
@@ -132,5 +121,43 @@ public struct MessageCrafted
     public MessageCrafted(ItemStackData[] reagents, ItemStackData outcome) {
         this.reagents = reagents;
         this.outcome = outcome;
+    }
+}
+
+//public struct MessageStatsChanged
+//{
+//    public StatEntry[] entries;
+
+//    public MessageStatsChanged(StatEntry[] entries) {
+//        this.entries = entries;
+//    }
+
+//    public enum Stat
+//    {
+//        Health, MaxHealth
+//    }
+
+//    public struct StatEntry
+//    {
+//        public Stat stat;
+//        public int value;
+
+//        public StatEntry(Stat stat, int value) {
+//            this.stat = stat;
+//            this.value = value;
+//        }
+//    }
+//}
+
+public struct MessageHealthChanged
+{
+    public string id;
+    public int currentHealth;
+    public int maxHealth;
+
+    public MessageHealthChanged(string id, int currentHealth, int maxHealth) {
+        this.id = id;
+        this.currentHealth = currentHealth;
+        this.maxHealth = maxHealth;
     }
 }

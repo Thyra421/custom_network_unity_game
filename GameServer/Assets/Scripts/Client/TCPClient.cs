@@ -15,8 +15,8 @@ public class TCPClient
 
         Player player = _client.Player;
         if (player != null) {
-            player.Room.RemovePlayer(player);
-            player.Room.BroadcastTCP(new MessageLeftGame(player.Id), player);
+            player.Room.PlayersManager.RemovePlayer(player);
+            player.Room.PlayersManager.BroadcastTCP(new MessageLeftGame(player.Id), player);
         }
         API.Clients.Remove(_client);
     }
@@ -53,22 +53,22 @@ public class TCPClient
 
     private async void OnMessagePlay(MessagePlay clientMessagePlay) {
         Player newPlayer = Reception.Current.JoinOrCreateRoom(_client);
-        newPlayer.Room.BroadcastTCP(new MessageJoinedGame(newPlayer.Data), newPlayer);
-        MessageGameState messageGameState = new MessageGameState(newPlayer.Id, newPlayer.Room.PlayerDatas);
-        MessageSpawnNodes messageSpawnNodes = new MessageSpawnNodes(newPlayer.Room.NodeDatas);
+        newPlayer.Room.PlayersManager.BroadcastTCP(new MessageJoinedGame(newPlayer.Data), newPlayer);
+        MessageGameState messageGameState = new MessageGameState(newPlayer.Id, newPlayer.Room.PlayersManager.PlayerDatas);
+        MessageSpawnNodes messageSpawnNodes = new MessageSpawnNodes(newPlayer.Room.NodesManager.NodeDatas);
         await Send(messageGameState);
         await Send(messageSpawnNodes);
     }
 
     private void OnMessageAttack(MessageAttack clientMessageAttack) {
-        _client.Player.Room.BroadcastTCP(new MessageAttacked(_client.Player.Id), _client.Player);
+        _client.Player.Room.PlayersManager.BroadcastTCP(new MessageAttacked(_client.Player.Id), _client.Player);
         _client.Player.Attack();
     }
 
     private async void OnMessagePickUp(MessagePickUp clientMessagePickUp) {
-        Node node = _client.Player.Room.FindNode(clientMessagePickUp.id);
+        Node node = _client.Player.Room.NodesManager.FindNode(clientMessagePickUp.id);
         if (node == null || node.RemainingLoots <= 0) {
-            await Send(new MessageError(MessageErrorType.objectNotFound));
+            await Send(new MessageError(MessageError.MessageErrorType.objectNotFound));
             return;
         }
         Player player = _client.Player;
@@ -79,10 +79,10 @@ public class TCPClient
             if (result) {
                 node.RemoveOne();
                 if (node.RemainingLoots <= 0) {
-                    player.Room.RemoveNode(node);
-                    _client.Player.Room.BroadcastTCP(new MessageDespawnObject(node.Id));
+                    player.Room.NodesManager.RemoveNode(node);
+                    _client.Player.Room.PlayersManager.BroadcastTCP(new MessageDespawnObject(node.Id));
                 } else
-                    _client.Player.Room.BroadcastTCP(new MessageLooted(node.Id));
+                    _client.Player.Room.PlayersManager.BroadcastTCP(new MessageLooted(node.Id));
             }
         }
     }
@@ -92,13 +92,13 @@ public class TCPClient
 
         // pattern exists?
         if (pattern == null) {
-            await Send(new MessageError(MessageErrorType.objectNotFound));
+            await Send(new MessageError(MessageError.MessageErrorType.objectNotFound));
             return;
         }
         // has all reagents?
         foreach (ItemStack itemStack in pattern.Reagents)
             if (!_client.Player.Inventory.Contains(itemStack.Item, itemStack.Amount)) {
-                await Send(new MessageError(MessageErrorType.notEnoughResources));
+                await Send(new MessageError(MessageError.MessageErrorType.notEnoughResources));
                 return;
             }
         foreach (ItemStack itemStack in pattern.Reagents)
@@ -111,14 +111,14 @@ public class TCPClient
         else {
             foreach (ItemStack itemStack in pattern.Reagents)
                 await _client.Player.Inventory.Add(itemStack.Item, itemStack.Amount, false);
-            await Send(new MessageError(MessageErrorType.notEnoughInventorySpace));
+            await Send(new MessageError(MessageError.MessageErrorType.notEnoughInventorySpace));
         }
     }
 
 
     private void OnMessageUseItem(MessageUseItem clientMessageUseItem) {
         UsableItem item = Resources.Load<UsableItem>($"{SharedConfig.CRAFTED_ITEMS_PATH}/{clientMessageUseItem.itemName}");
-        item.Use(_client.Player);
+        _client.Player.Use(item);
     }
 
     public TCPClient(TcpClient tcpClient) {

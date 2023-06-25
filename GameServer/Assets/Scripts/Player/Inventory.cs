@@ -46,7 +46,7 @@ public class Inventory
         // already has unique item?
         if (item.Property == ItemProperty.Unique && Any(item)) {
             if (send)
-                await _player.Client.Tcp.Send(new MessageError(MessageErrorType.uniqueItem));
+                await _player.Client.Tcp.Send(new MessageError(MessageError.MessageErrorType.uniqueItem));
             return false;
         }
         // is stackable and already has a stack?
@@ -60,7 +60,7 @@ public class Inventory
         // inventory full?
         else if (_stacks.Count >= SharedConfig.INVENTORY_SPACE) {
             if (send)
-                await _player.Client.Tcp.Send(new MessageError(MessageErrorType.inventoryFull));
+                await _player.Client.Tcp.Send(new MessageError(MessageError.MessageErrorType.inventoryFull));
             return false;
         }
         // doesn't have any?

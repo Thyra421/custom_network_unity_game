@@ -73,13 +73,16 @@ public class PlayersManager : MonoBehaviour
 
     }
 
-    private void OnMessageDamage(MessageDamage messageDamage) {
-        if (messageDamage.idTo == _myPlayer.Id)
-            _myPlayer.Health.TakeDamage(10);
-        else {
-            RemotePlayer remotePlayer = FindPlayer(messageDamage.idTo);
-            if (remotePlayer != null)
-                remotePlayer.Health.TakeDamage(10);
+    private void OnMessageHealthChanged(MessageHealthChanged messageHealthChanged) {
+        if (messageHealthChanged.id == _myPlayer.Id) {
+            _myPlayer.Statistics.MaxHealth = messageHealthChanged.maxHealth;
+            _myPlayer.Statistics.CurrentHealth = messageHealthChanged.currentHealth;
+        } else {
+            RemotePlayer remotePlayer = FindPlayer(messageHealthChanged.id);
+            if (remotePlayer != null) {
+                remotePlayer.Statistics.MaxHealth = messageHealthChanged.maxHealth;
+                remotePlayer.Statistics.CurrentHealth = messageHealthChanged.currentHealth;
+            }
         }
     }
 
@@ -89,7 +92,7 @@ public class PlayersManager : MonoBehaviour
         MessageHandler.OnMessageLeftGameEvent += OnMessageLeftGame;
         MessageHandler.OnMessageMovedEvent += OnMessageMoved;
         MessageHandler.OnMessageAttackedEvent += OnMessageAttacked;
-        MessageHandler.OnMessageDamageEvent += OnMessageDamage;
+        MessageHandler.OnMessageHealthChangedEvent += OnMessageHealthChanged;
     }
 
     public delegate void OnAddedPlayerHandler(Player player);
