@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class TCPClient
@@ -66,12 +65,13 @@ public class TCPClient
     }
 
     private void OnMessagePickUp(MessagePickUp clientMessagePickUp) {
-        Node node = _client.Player.Room.NodesManager.FindNode(clientMessagePickUp.id);
+        Player player = _client.Player;
+        Node node = player.Room.NodesManager.FindNode(clientMessagePickUp.id);
+
         if (node == null || node.RemainingLoots <= 0) {
             Send(new MessageError(MessageError.MessageErrorType.objectNotFound));
             return;
         }
-        Player player = _client.Player;
 
         if (!node.GetComponentInChildren<Collider>().bounds.Intersects(player.GetComponent<Collider>().bounds)) {
             Send(new MessageError(MessageError.MessageErrorType.tooFarAway));
@@ -84,11 +84,11 @@ public class TCPClient
             if (result) {
                 node.RemoveOne();
                 if (node.RemainingLoots <= 0) {
-                    player.Room.NodesManager.RemoveNode(node);
                     _client.Player.Room.PlayersManager.BroadcastTCP(new MessageDespawnObject(node.Id));
-                } else
-                    _client.Player.Room.PlayersManager.BroadcastTCP(new MessageLooted(node.Id));
-            }
+                    player.Room.NodesManager.RemoveNode(node);
+                }
+            } else
+                _client.Player.Room.PlayersManager.BroadcastTCP(new MessageStopActivity(player.Id));
         }, "Picking up", node.RemainingLoots, .5f);
     }
 
@@ -106,20 +106,23 @@ public class TCPClient
                 Send(new MessageError(MessageError.MessageErrorType.notEnoughResources));
                 return;
             }
-        foreach (ItemStack itemStack in pattern.Reagents)
-            _client.Player.Inventory.Remove(itemStack.Item, itemStack.Amount, false);
-        // has enough space?
-        if (_client.Player.Inventory.Add(pattern.Outcome.Item, pattern.Outcome.Amount, false)) {
-            Send(new MessageCrafted(pattern.Reagents.Select((ItemStack stack) => new ItemStackData(stack.Item.name, stack.Amount)).ToArray(), new ItemStackData(pattern.Outcome.Item.name, pattern.Outcome.Amount)));
-        }
-        // put the reagents back in the inventory
-        else {
+        //start casting
+        _client.Player.Activity.Cast(() => {
+            // remove reagents from inventory
             foreach (ItemStack itemStack in pattern.Reagents)
-                _client.Player.Inventory.Add(itemStack.Item, itemStack.Amount, false);
-            Send(new MessageError(MessageError.MessageErrorType.notEnoughInventorySpace));
-        }
+                _client.Player.Inventory.Remove(itemStack.Item, itemStack.Amount, false);
+            // has enough space?
+            if (_client.Player.Inventory.Add(pattern.Outcome.Item, pattern.Outcome.Amount, false)) {
+                Send(new MessageCrafted(pattern.Reagents.Select((ItemStack stack) => new ItemStackData(stack.Item.name, stack.Amount)).ToArray(), new ItemStackData(pattern.Outcome.Item.name, pattern.Outcome.Amount)));
+            }
+            // put the reagents back in the inventory
+            else {
+                foreach (ItemStack itemStack in pattern.Reagents)
+                    _client.Player.Inventory.Add(itemStack.Item, itemStack.Amount, false);
+                Send(new MessageError(MessageError.MessageErrorType.notEnoughInventorySpace));
+            }
+        }, "Crafting", 1);
     }
-
 
     private void OnMessageUseItem(MessageUseItem clientMessageUseItem) {
         UsableItem item = Resources.Load<UsableItem>($"{SharedConfig.CRAFTED_ITEMS_PATH}/{clientMessageUseItem.itemName}");

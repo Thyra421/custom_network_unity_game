@@ -1,4 +1,4 @@
-static class API
+public static class API
 {
     private static readonly ClientsManager _clients = new ClientsManager();
     private static readonly TCPServer _tcpServer = new TCPServer();
@@ -10,8 +10,6 @@ static class API
     }
 
     public static ClientsManager Clients => _clients;
-
-    public static TCPServer TcpServer => _tcpServer;
 
     public static UDPServer UdpServer => _udpServer;
 }

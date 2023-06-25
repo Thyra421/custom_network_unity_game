@@ -87,10 +87,7 @@ public static class TCPClient
         } else if (messageType.Equals(typeof(MessageInventoryRemove))) {
             MessageInventoryRemove messageInventoryRemove = Utils.Deserialize<MessageInventoryRemove>(message);
             MessageHandler.Current.OnMessageInventoryRemove?.Invoke(messageInventoryRemove);
-        } else if (messageType.Equals(typeof(MessageLooted))) {
-            MessageLooted messageLooted = Utils.Deserialize<MessageLooted>(message);
-            MessageHandler.Current.OnMessageLooted?.Invoke(messageLooted);
-        } else if (messageType.Equals(typeof(MessageCrafted))) {
+        }  else if (messageType.Equals(typeof(MessageCrafted))) {
             MessageCrafted messageCrafted = Utils.Deserialize<MessageCrafted>(message);
             MessageHandler.Current.OnMessageCrafted?.Invoke(messageCrafted);
         } else if (messageType.Equals(typeof(MessageHealthChanged))) {

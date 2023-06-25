@@ -20,7 +20,6 @@ public class MessageHandler : MonoBehaviour
     public delegate void OnMessageSpawnNodesHandler(MessageSpawnNodes messageSpawnNodes);
     public delegate void OnMessageInventoryAddHandler(MessageInventoryAdd messageInventoryAdd);
     public delegate void OnMessageInventoryRemoveHandler(MessageInventoryRemove messageInventoryRemove);
-    public delegate void OnMessageLootedHandler(MessageLooted messageLooted);
     public delegate void OnMessageCraftedHandler(MessageCrafted messageCrafted);
     public delegate void OnMessageHealthChangedHandler(MessageHealthChanged messageHealthChanged);
     public delegate void OnMessageChannelHandler(MessageChannel messageChannel);
@@ -36,7 +35,6 @@ public class MessageHandler : MonoBehaviour
     private event OnMessageSpawnNodesHandler _onMessageSpawnNodes;
     private event OnMessageInventoryAddHandler _onMessageInventoryAdd;
     private event OnMessageInventoryRemoveHandler _onMessageInventoryRemove;
-    private event OnMessageLootedHandler _onMessageLooted;
     private event OnMessageCraftedHandler _onMessageCrafted;
     private event OnMessageHealthChangedHandler _onMessageHealthChanged;
     private event OnMessageChannelHandler _onMessageChannel;
@@ -88,11 +86,6 @@ public class MessageHandler : MonoBehaviour
         remove => _onMessageInventoryRemove -= value;
     }
 
-    public event OnMessageLootedHandler OnMessageLootedEvent {
-        add => _onMessageLooted += value;
-        remove => _onMessageLooted -= value;
-    }
-
     public event OnMessageCraftedHandler OnMessageCraftedEvent {
         add => _onMessageCrafted += value;
         remove => _onMessageCrafted -= value;
@@ -137,8 +130,6 @@ public class MessageHandler : MonoBehaviour
     public OnMessageInventoryAddHandler OnMessageInventoryAdd => _onMessageInventoryAdd;
 
     public OnMessageInventoryRemoveHandler OnMessageInventoryRemove => _onMessageInventoryRemove;
-
-    public OnMessageLootedHandler OnMessageLooted => _onMessageLooted;
 
     public OnMessageCraftedHandler OnMessageCrafted => _onMessageCrafted;
 

@@ -25,7 +25,6 @@ class Reception : MonoBehaviour
             _current = this;
         else
             Destroy(gameObject);
-
     }
 
     public void RemoveRoom(Room room) {

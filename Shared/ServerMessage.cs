@@ -7,15 +7,6 @@
     }
 }
 
-public struct MessageLooted
-{
-    public string id;
-
-    public MessageLooted(string id) {
-        this.id = id;
-    }
-}
-
 public struct MessageJoinedGame
 {
     public PlayerData player;

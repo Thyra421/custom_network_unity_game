@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
 
-class TCPServer
+public class TCPServer
 {
     private TcpListener _tcpListener;
 

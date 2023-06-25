@@ -13,7 +13,7 @@ public class NodesManager : MonoBehaviour
     private void CreateNode(NodeData data) {
         GameObject newObject = Instantiate(Resources.Load<GameObject>($"{SharedConfig.PREFABS_PATH}/{data.prefabName}"), data.transform.position.ToVector3, Quaternion.Euler(data.transform.rotation.ToVector3));
         Node newNode = newObject.AddComponent<Node>();
-        newNode.Initialize(data.id, data.remainingLoots);
+        newNode.Initialize(data.id);
         _nodes.Add(newNode);
         _onAddedNode?.Invoke(newNode);
     }
@@ -31,10 +31,6 @@ public class NodesManager : MonoBehaviour
         }
     }
 
-    private void OnMessageLooted(MessageLooted messageLooted) {
-        FindNode(messageLooted.id).RemoveLoot();
-    }
-
     private void OnMessageDespawnObject(MessageDespawnObject messageDespawnObject) {
         RemoveNode(messageDespawnObject.id);
     }
@@ -46,7 +42,6 @@ public class NodesManager : MonoBehaviour
             Destroy(gameObject);
         MessageHandler.Current.OnMessageDespawnObjectEvent += OnMessageDespawnObject;
         MessageHandler.Current.OnMessageSpawnNodesEvent += OnMessageSpawnNodes;
-        MessageHandler.Current.OnMessageLootedEvent += OnMessageLooted;
     }
 
     public delegate void OnAddedNodeHandler(Node node);

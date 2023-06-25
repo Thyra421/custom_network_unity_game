@@ -10,16 +10,26 @@ public class Activity : MonoBehaviour
     private float _currentActivityTimeInSeconds;
 
     private void Process() {
-        if (_currentActivity != null && (_elapsedTime += Time.deltaTime) >= _currentActivityTimeInSeconds) {
-            _currentActivity();
+        _elapsedTime += Time.deltaTime;
+        if (_elapsedTime >= _currentActivityTimeInSeconds) {
+            _currentActivity?.Invoke();
             _elapsedTime = 0;
-            if (--_remainingTicks == 0)
-                Stop();
+            _remainingTicks--;
+            if (_remainingTicks <= 0)
+                Clear();
         }
     }
 
+    private void Clear() {
+        _currentActivity = null;
+        _remainingTicks = 0;
+        _currentActivityTimeInSeconds = 0;
+        _elapsedTime = 0;
+    }
+
     private void FixedUpdate() {
-        Process();
+        if (_currentActivity != null)
+            Process();
     }
 
     public void Cast(System.Action activity, string activityName, float castTimeInSeconds) {
@@ -32,6 +42,7 @@ public class Activity : MonoBehaviour
             return;
         }
 
+        Clear();
         _currentActivity = activity;
         _remainingTicks = 1;
         _currentActivityTimeInSeconds = castTimeInSeconds;
@@ -48,6 +59,7 @@ public class Activity : MonoBehaviour
             return;
         }
 
+        Clear();
         _currentActivity = activity;
         _remainingTicks = ticks;
         _currentActivityTimeInSeconds = intervalTimeInSeconds;
@@ -55,10 +67,7 @@ public class Activity : MonoBehaviour
     }
 
     public void Stop() {
-        _currentActivity = null;
-        _remainingTicks = 0;
-        _currentActivityTimeInSeconds = 0;
-        _elapsedTime = 0;
+        Clear();
         _player.Room.PlayersManager.BroadcastTCP(new MessageStopActivity(_player.Id));
     }
 

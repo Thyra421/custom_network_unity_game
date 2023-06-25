@@ -5,8 +5,6 @@ public class Node : MonoBehaviour
     private string _id;
     private bool _isOnRange;
     private Outline _outline;
-    private int _remainingLoots;
-    private event OnChangedHandler _onChanged;
 
     private void OnTriggerEnter(Collider other) {
         ColorUtility.TryParseHtmlString("#DEA805", out Color color);
@@ -37,24 +35,11 @@ public class Node : MonoBehaviour
         _outline.enabled = false;
     }
 
-    public void RemoveLoot() {
-        _remainingLoots--;
-        _onChanged?.Invoke(_remainingLoots);
-    }
-
-    public void Initialize(string id, int remainingDrops) {
+    public void Initialize(string id) {
         _id = id;
-        _remainingLoots = remainingDrops;
     }
 
     public delegate void OnChangedHandler(int remainingLoots);
 
     public string Id => _id;
-
-    public int RemainingLoots => _remainingLoots;
-
-    public event OnChangedHandler OnChangedEvent {
-        add => _onChanged += value;
-        remove => _onChanged -= value;
-    }
 }
