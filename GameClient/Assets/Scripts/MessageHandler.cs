@@ -2,6 +2,15 @@ using UnityEngine;
 
 public class MessageHandler : MonoBehaviour
 {
+    private static MessageHandler _current;
+
+    private void Awake() {
+        if (_current == null)
+            _current = this;
+        else
+            Destroy(gameObject);
+    }
+
     public delegate void OnMessageJoinedGameHandler(MessageJoinedGame messageJoinedGame);
     public delegate void OnMessageMovedHandler(MessageMoved messageMoved);
     public delegate void OnMessageLeftGameHandler(MessageLeftGame messageLeftGame);
@@ -18,124 +27,126 @@ public class MessageHandler : MonoBehaviour
     public delegate void OnMessageCastHandler(MessageCast messageCast);
     public delegate void OnMessageStopActivityHandler(MessageStopActivity messageStopActivity);
 
-    private static event OnMessageJoinedGameHandler _onMessageJoinedGame;
-    private static event OnMessageMovedHandler _onMessageMoved;
-    private static event OnMessageLeftGameHandler _onMessageLeftGame;
-    private static event OnMessageGameStateHandler _onMessageGameState;
-    private static event OnMessageAttackedHandler _onMessageAttacked;
-    private static event OnMessageDespawnObjectHandler _onMessageDespawnObject;
-    private static event OnMessageSpawnNodesHandler _onMessageSpawnNodes;
-    private static event OnMessageInventoryAddHandler _onMessageInventoryAdd;
-    private static event OnMessageInventoryRemoveHandler _onMessageInventoryRemove;
-    private static event OnMessageLootedHandler _onMessageLooted;
-    private static event OnMessageCraftedHandler _onMessageCrafted;
-    private static event OnMessageHealthChangedHandler _onMessageHealthChanged;
-    private static event OnMessageChannelHandler _onMessageChannel;
-    private static event OnMessageCastHandler _onMessageCast;
-    private static event OnMessageStopActivityHandler _onMessageStopActivity;
+    private event OnMessageJoinedGameHandler _onMessageJoinedGame;
+    private event OnMessageMovedHandler _onMessageMoved;
+    private event OnMessageLeftGameHandler _onMessageLeftGame;
+    private event OnMessageGameStateHandler _onMessageGameState;
+    private event OnMessageAttackedHandler _onMessageAttacked;
+    private event OnMessageDespawnObjectHandler _onMessageDespawnObject;
+    private event OnMessageSpawnNodesHandler _onMessageSpawnNodes;
+    private event OnMessageInventoryAddHandler _onMessageInventoryAdd;
+    private event OnMessageInventoryRemoveHandler _onMessageInventoryRemove;
+    private event OnMessageLootedHandler _onMessageLooted;
+    private event OnMessageCraftedHandler _onMessageCrafted;
+    private event OnMessageHealthChangedHandler _onMessageHealthChanged;
+    private event OnMessageChannelHandler _onMessageChannel;
+    private event OnMessageCastHandler _onMessageCast;
+    private event OnMessageStopActivityHandler _onMessageStopActivity;
 
-    public static event OnMessageJoinedGameHandler OnMessageJoinedGameEvent {
+    public event OnMessageJoinedGameHandler OnMessageJoinedGameEvent {
         add => _onMessageJoinedGame += value;
         remove => _onMessageJoinedGame -= value;
     }
 
-    public static event OnMessageMovedHandler OnMessageMovedEvent {
+    public event OnMessageMovedHandler OnMessageMovedEvent {
         add => _onMessageMoved += value;
         remove => _onMessageMoved -= value;
     }
 
-    public static event OnMessageLeftGameHandler OnMessageLeftGameEvent {
+    public event OnMessageLeftGameHandler OnMessageLeftGameEvent {
         add => _onMessageLeftGame += value;
         remove => _onMessageLeftGame -= value;
     }
 
-    public static event OnMessageGameStateHandler OnMessageGameStateEvent {
+    public event OnMessageGameStateHandler OnMessageGameStateEvent {
         add => _onMessageGameState += value;
         remove => _onMessageGameState -= value;
     }
 
-    public static event OnMessageAttackedHandler OnMessageAttackedEvent {
+    public event OnMessageAttackedHandler OnMessageAttackedEvent {
         add => _onMessageAttacked += value;
         remove => _onMessageAttacked -= value;
     }
 
-    public static event OnMessageDespawnObjectHandler OnMessageDespawnObjectEvent {
+    public event OnMessageDespawnObjectHandler OnMessageDespawnObjectEvent {
         add => _onMessageDespawnObject += value;
         remove => _onMessageDespawnObject -= value;
     }
 
-    public static event OnMessageSpawnNodesHandler OnMessageSpawnNodesEvent {
+    public event OnMessageSpawnNodesHandler OnMessageSpawnNodesEvent {
         add => _onMessageSpawnNodes += value;
         remove => _onMessageSpawnNodes -= value;
     }
 
-    public static event OnMessageInventoryAddHandler OnMessageInventoryAddEvent {
+    public event OnMessageInventoryAddHandler OnMessageInventoryAddEvent {
         add => _onMessageInventoryAdd += value;
         remove => _onMessageInventoryAdd -= value;
     }
 
-    public static event OnMessageInventoryRemoveHandler OnMessageInventoryRemoveEvent {
+    public event OnMessageInventoryRemoveHandler OnMessageInventoryRemoveEvent {
         add => _onMessageInventoryRemove += value;
         remove => _onMessageInventoryRemove -= value;
     }
 
-    public static event OnMessageLootedHandler OnMessageLootedEvent {
+    public event OnMessageLootedHandler OnMessageLootedEvent {
         add => _onMessageLooted += value;
         remove => _onMessageLooted -= value;
     }
 
-    public static event OnMessageCraftedHandler OnMessageCraftedEvent {
+    public event OnMessageCraftedHandler OnMessageCraftedEvent {
         add => _onMessageCrafted += value;
         remove => _onMessageCrafted -= value;
     }
 
-    public static event OnMessageHealthChangedHandler OnMessageHealthChangedEvent {
+    public event OnMessageHealthChangedHandler OnMessageHealthChangedEvent {
         add => _onMessageHealthChanged += value;
         remove => _onMessageHealthChanged -= value;
     }
 
-    public static event OnMessageChannelHandler OnMessageChannelEvent {
+    public event OnMessageChannelHandler OnMessageChannelEvent {
         add => _onMessageChannel += value;
         remove => _onMessageChannel -= value;
     }
 
-    public static event OnMessageCastHandler OnMessageCastEvent {
+    public event OnMessageCastHandler OnMessageCastEvent {
         add => _onMessageCast += value;
         remove => _onMessageCast -= value;
     }
 
-    public static event OnMessageStopActivityHandler OnMessageStopActivityEvent {
+    public event OnMessageStopActivityHandler OnMessageStopActivityEvent {
         add => _onMessageStopActivity += value;
         remove => _onMessageStopActivity -= value;
     }
 
-    public static OnMessageJoinedGameHandler OnMessageJoinedGame => _onMessageJoinedGame;
+    public static MessageHandler Current => _current;
 
-    public static OnMessageMovedHandler OnMessageMoved => _onMessageMoved;
+    public OnMessageJoinedGameHandler OnMessageJoinedGame => _onMessageJoinedGame;
 
-    public static OnMessageLeftGameHandler OnMessageLeftGame => _onMessageLeftGame;
+    public OnMessageMovedHandler OnMessageMoved => _onMessageMoved;
 
-    public static OnMessageGameStateHandler OnMessageGameState => _onMessageGameState;
+    public OnMessageLeftGameHandler OnMessageLeftGame => _onMessageLeftGame;
 
-    public static OnMessageAttackedHandler OnMessageAttacked => _onMessageAttacked;
+    public OnMessageGameStateHandler OnMessageGameState => _onMessageGameState;
 
-    public static OnMessageDespawnObjectHandler OnMessageDespawnObject => _onMessageDespawnObject;
+    public OnMessageAttackedHandler OnMessageAttacked => _onMessageAttacked;
 
-    public static OnMessageSpawnNodesHandler OnMessageSpawnNodes => _onMessageSpawnNodes;
+    public OnMessageDespawnObjectHandler OnMessageDespawnObject => _onMessageDespawnObject;
 
-    public static OnMessageInventoryAddHandler OnMessageInventoryAdd => _onMessageInventoryAdd;
+    public OnMessageSpawnNodesHandler OnMessageSpawnNodes => _onMessageSpawnNodes;
 
-    public static OnMessageInventoryRemoveHandler OnMessageInventoryRemove => _onMessageInventoryRemove;
+    public OnMessageInventoryAddHandler OnMessageInventoryAdd => _onMessageInventoryAdd;
 
-    public static OnMessageLootedHandler OnMessageLooted => _onMessageLooted;
+    public OnMessageInventoryRemoveHandler OnMessageInventoryRemove => _onMessageInventoryRemove;
 
-    public static OnMessageCraftedHandler OnMessageCrafted => _onMessageCrafted;
+    public OnMessageLootedHandler OnMessageLooted => _onMessageLooted;
 
-    public static OnMessageHealthChangedHandler OnMessageHealthChanged => _onMessageHealthChanged;
+    public OnMessageCraftedHandler OnMessageCrafted => _onMessageCrafted;
 
-    public static OnMessageChannelHandler OnMessageChannel => _onMessageChannel;
+    public OnMessageHealthChangedHandler OnMessageHealthChanged => _onMessageHealthChanged;
 
-    public static OnMessageCastHandler OnMessageCast => _onMessageCast;
+    public OnMessageChannelHandler OnMessageChannel => _onMessageChannel;
 
-    public static OnMessageStopActivityHandler OnMessageStopActivity => _onMessageStopActivity;
+    public OnMessageCastHandler OnMessageCast => _onMessageCast;
+
+    public OnMessageStopActivityHandler OnMessageStopActivity => _onMessageStopActivity;
 }

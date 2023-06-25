@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
+    private static InventoryManager _current;
     private readonly InventorySlot[] _slots = new InventorySlot[SharedConfig.INVENTORY_SPACE];
 
     private InventorySlot Find(Item item) => Array.Find(_slots, (InventorySlot i) => i.Item == item);
@@ -43,12 +44,18 @@ public class InventoryManager : MonoBehaviour
     }
 
     private void Awake() {
+        if (_current == null)
+            _current = this;
+        else
+            Destroy(gameObject);
         for (int i = 0; i < _slots.Length; i++)
             _slots[i] = new InventorySlot();
-        MessageHandler.OnMessageInventoryAddEvent += OnMessageInventoryAdd;
-        MessageHandler.OnMessageInventoryRemoveEvent += OnMessageInventoryRemove;
-        MessageHandler.OnMessageCraftedEvent += OnMessageCrafted;
+        MessageHandler.Current.OnMessageInventoryAddEvent += OnMessageInventoryAdd;
+        MessageHandler.Current.OnMessageInventoryRemoveEvent += OnMessageInventoryRemove;
+        MessageHandler.Current.OnMessageCraftedEvent += OnMessageCrafted;
     }
 
     public InventorySlot[] Slots => _slots;
+
+    public static InventoryManager Current => _current;
 }

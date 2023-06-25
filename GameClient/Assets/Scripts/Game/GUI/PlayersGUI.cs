@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class PlayersGUI : MonoBehaviour
 {
-    [SerializeField]
-    private PlayersManager _playersManager;
+    private static PlayersGUI _current;
+
+    public static PlayersGUI Current => _current;
 
     private void OnAddedPlayer(Player player) {
 
@@ -14,7 +15,11 @@ public class PlayersGUI : MonoBehaviour
     }
 
     private void Awake() {
-        _playersManager.OnAddedPlayerEvent += OnAddedPlayer;
-        _playersManager.OnRemovedPlayerEvent += OnRemovedPlayer;
+        if (_current == null)
+            _current = this;
+        else
+            Destroy(gameObject);
+        PlayersManager.Current.OnAddedPlayerEvent += OnAddedPlayer;
+        PlayersManager.Current.OnRemovedPlayerEvent += OnRemovedPlayer;
     }
 }

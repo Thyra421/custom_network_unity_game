@@ -1,4 +1,4 @@
-public class NetworkManager
+public static class NetworkManager
 {
     private static string _secret;
 

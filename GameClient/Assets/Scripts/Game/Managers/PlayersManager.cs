@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class PlayersManager : MonoBehaviour
 {
+    private static PlayersManager _current;
     [SerializeField]
     private GameObject _playerPrefab;
     [SerializeField]
     private LocalPlayer _myPlayer;
     private readonly List<RemotePlayer> _remotePlayers = new List<RemotePlayer>();
-
     private event OnAddedPlayerHandler _onAddedPlayer;
     private event OnRemovedPlayerHandler _onRemovedPlayer;
 
@@ -18,11 +18,11 @@ public class PlayersManager : MonoBehaviour
         RemotePlayer newRemotePlayer = Instantiate(_playerPrefab, data.transform.position.ToVector3, Quaternion.identity).GetComponent<RemotePlayer>();
         newRemotePlayer.Initialize(data);
         _remotePlayers.Add(newRemotePlayer);
-        _onAddedPlayer(newRemotePlayer);
+        _onAddedPlayer?.Invoke(newRemotePlayer);
     }
 
     private void RemovePlayer(RemotePlayer remotePlayer) {
-        _onRemovedPlayer(remotePlayer);
+        _onRemovedPlayer?.Invoke(remotePlayer);
         _remotePlayers.Remove(remotePlayer);
         Destroy(remotePlayer.gameObject);
     }
@@ -105,19 +105,25 @@ public class PlayersManager : MonoBehaviour
     }
 
     private void Awake() {
-        MessageHandler.OnMessageGameStateEvent += OnMessageGameState;
-        MessageHandler.OnMessageJoinedGameEvent += OnMessageJoinedGame;
-        MessageHandler.OnMessageLeftGameEvent += OnMessageLeftGame;
-        MessageHandler.OnMessageMovedEvent += OnMessageMoved;
-        MessageHandler.OnMessageAttackedEvent += OnMessageAttacked;
-        MessageHandler.OnMessageHealthChangedEvent += OnMessageHealthChanged;
-        MessageHandler.OnMessageChannelEvent += OnMessageChannel;
-        MessageHandler.OnMessageCastEvent += OnMessageCast;
-        MessageHandler.OnMessageStopActivityEvent += OnMessageStopActivity;
+        if (_current == null)
+            _current = this;
+        else
+            Destroy(gameObject);
+        MessageHandler.Current.OnMessageGameStateEvent += OnMessageGameState;
+        MessageHandler.Current.OnMessageJoinedGameEvent += OnMessageJoinedGame;
+        MessageHandler.Current.OnMessageLeftGameEvent += OnMessageLeftGame;
+        MessageHandler.Current.OnMessageMovedEvent += OnMessageMoved;
+        MessageHandler.Current.OnMessageAttackedEvent += OnMessageAttacked;
+        MessageHandler.Current.OnMessageHealthChangedEvent += OnMessageHealthChanged;
+        MessageHandler.Current.OnMessageChannelEvent += OnMessageChannel;
+        MessageHandler.Current.OnMessageCastEvent += OnMessageCast;
+        MessageHandler.Current.OnMessageStopActivityEvent += OnMessageStopActivity;
     }
 
     public delegate void OnAddedPlayerHandler(Player player);
     public delegate void OnRemovedPlayerHandler(Player player);
+
+    public static PlayersManager Current => _current;
 
     public event OnAddedPlayerHandler OnAddedPlayerEvent {
         add => _onAddedPlayer += value;
@@ -128,6 +134,4 @@ public class PlayersManager : MonoBehaviour
         add => _onRemovedPlayer += value;
         remove => _onRemovedPlayer -= value;
     }
-
-    public LocalPlayer MyPlayer => _myPlayer;
 }

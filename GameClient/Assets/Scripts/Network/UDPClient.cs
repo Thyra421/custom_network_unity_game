@@ -1,11 +1,10 @@
-using Newtonsoft.Json.Linq;
 using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
 
-public class UDPClient
+public static class UDPClient
 {
     private static UdpClient _udpClient;
     private static bool _connected;
@@ -36,7 +35,7 @@ public class UDPClient
         Type messageType = Utils.GetMessageType(message);
         if (messageType.Equals(typeof(MessageMoved))) {
             MessageMoved messageMoved = Utils.Deserialize<MessageMoved>(message);
-            MessageHandler.OnMessageMoved?.Invoke(messageMoved);
+            MessageHandler.Current.OnMessageMoved?.Invoke(messageMoved);
         }
     }
 

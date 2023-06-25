@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class NodesManager : MonoBehaviour
 {
+    private static NodesManager _current;
     private readonly List<Node> _nodes = new List<Node>();
     private event OnAddedNodeHandler _onAddedNode;
     private event OnRemovedNodeHandler _onRemovedNode;
@@ -39,13 +40,19 @@ public class NodesManager : MonoBehaviour
     }
 
     private void Awake() {
-        MessageHandler.OnMessageDespawnObjectEvent += OnMessageDespawnObject;
-        MessageHandler.OnMessageSpawnNodesEvent += OnMessageSpawnNodes;
-        MessageHandler.OnMessageLootedEvent += OnMessageLooted;
+        if (_current == null)
+            _current = this;
+        else
+            Destroy(gameObject);
+        MessageHandler.Current.OnMessageDespawnObjectEvent += OnMessageDespawnObject;
+        MessageHandler.Current.OnMessageSpawnNodesEvent += OnMessageSpawnNodes;
+        MessageHandler.Current.OnMessageLootedEvent += OnMessageLooted;
     }
 
     public delegate void OnAddedNodeHandler(Node node);
     public delegate void OnRemovedNodeHandler(Node node);
+
+    public static NodesManager Current => _current;
 
     public event OnAddedNodeHandler OnAddedNodeEvent {
         add => _onAddedNode += value;
