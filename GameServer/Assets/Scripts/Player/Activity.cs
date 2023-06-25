@@ -23,6 +23,15 @@ public class Activity : MonoBehaviour
     }
 
     public void Cast(System.Action activity, string activityName, float castTimeInSeconds) {
+        if (_player.Movement.IsMoving) {
+            _player.Client.Tcp.Send(new MessageError(MessageError.MessageErrorType.cantWhileMoving));
+            return;
+        }
+        if (IsBusy) {
+            _player.Client.Tcp.Send(new MessageError(MessageError.MessageErrorType.busy));
+            return;
+        }
+
         _currentActivity = activity;
         _remainingTicks = 1;
         _currentActivityTimeInSeconds = castTimeInSeconds;
@@ -30,6 +39,15 @@ public class Activity : MonoBehaviour
     }
 
     public void Channel(System.Action activity, string activityName, int ticks, float intervalTimeInSeconds) {
+        if (_player.Movement.IsMoving) {
+            _player.Client.Tcp.Send(new MessageError(MessageError.MessageErrorType.cantWhileMoving));
+            return;
+        }
+        if (IsBusy) {
+            _player.Client.Tcp.Send(new MessageError(MessageError.MessageErrorType.busy));
+            return;
+        }
+
         _currentActivity = activity;
         _remainingTicks = ticks;
         _currentActivityTimeInSeconds = intervalTimeInSeconds;

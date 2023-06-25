@@ -7,25 +7,25 @@ public class InventorySlot
     public void Clear() {
         _item = null;
         _amount = 0;
-        _onChanged(_item, _amount);
+        _onChanged?.Invoke(_item, _amount);
     }
 
     public void Set(Item item, int amount) {
         _item = item;
         _amount = amount;
-        _onChanged(_item, _amount);
+        _onChanged?.Invoke(_item, _amount);
     }
 
     public void Remove(int amount) {
         _amount -= amount;
         if (_amount == 0)
             _item = null;
-        _onChanged(_item, _amount);
+        _onChanged?.Invoke(_item, _amount);
     }
 
     public void Add(int amount) {
         _amount += amount;
-        _onChanged(_item, _amount);
+        _onChanged?.Invoke(_item, _amount);
     }
 
     public Item Item => _item;

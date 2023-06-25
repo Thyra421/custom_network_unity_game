@@ -16,7 +16,7 @@ public abstract class PlayerStatistics : MonoBehaviour
         get => _currentHealth;
         set {
             _currentHealth = value;
-            _onChanged(_currentHealth, _maxHealth);
+            _onChanged?.Invoke(_currentHealth, _maxHealth);
         }
     }
 
@@ -24,7 +24,7 @@ public abstract class PlayerStatistics : MonoBehaviour
         get => _maxHealth;
         set {
             _maxHealth = value;
-            _onChanged(_currentHealth, _maxHealth);
+            _onChanged?.Invoke(_currentHealth, _maxHealth);
         }
     }
 

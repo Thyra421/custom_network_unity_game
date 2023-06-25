@@ -43,15 +43,15 @@ public class RoomPlayersManager : MonoBehaviour
         SyncMovement();
     }
 
-    public async void BroadcastTCP<T>(T message) {
+    public void BroadcastTCP<T>(T message) {
         foreach (Client client in Clients)
-            await client.Tcp.Send(message);
+            client.Tcp.Send(message);
     }
 
-    public async void BroadcastTCP<T>(T message, Player except) {
+    public void BroadcastTCP<T>(T message, Player except) {
         foreach (Client client in Clients)
             if (client != except.Client)
-                await client.Tcp.Send(message);
+                client.Tcp.Send(message);
     }
 
     public Player CreatePlayer(Client client) {

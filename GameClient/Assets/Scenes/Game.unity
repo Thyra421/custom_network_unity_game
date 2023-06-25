@@ -2016,7 +2016,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1215654916}
-  - component: {fileID: 1215654915}
   - component: {fileID: 1215654914}
   - component: {fileID: 1215654918}
   - component: {fileID: 1215654917}
@@ -2045,21 +2044,6 @@ MonoBehaviour:
   _parent: {fileID: 1088758987}
   _inventoryManager: {fileID: 365963028}
   _slotGUITemplate: {fileID: 4487267272638026577, guid: a8b73326650607e45bd7762dc59d8198,
-    type: 3}
---- !u!114 &1215654915
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1215654913}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad7a80b38f3323c418ae562b4b98e1a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _nodesManager: {fileID: 365963029}
-  _nodeGUITemplate: {fileID: 6173648417448619365, guid: 3df464ab26dca9b4eb558a7d7174f9fb,
     type: 3}
 --- !u!4 &1215654916
 Transform:

@@ -15,7 +15,7 @@ public static class HTTPClient
         while (!uwr.isDone)
             yield return null;
         if ((HttpStatusCode)uwr.responseCode == HttpStatusCode.OK)
-            onSuccess(Utils.Deserialize<T>(uwr.downloadHandler.text));
+            onSuccess?.Invoke(Utils.Deserialize<T>(uwr.downloadHandler.text));
         else
             onError?.Invoke();
     }
@@ -29,7 +29,7 @@ public static class HTTPClient
         string data = uwr.downloadHandler.text;
         Debug.Log("[HTTPClient] received " + data);
         if ((HttpStatusCode)uwr.responseCode == HttpStatusCode.OK)
-            onSuccess(Utils.JsonDecode<T2>(data));
+            onSuccess?.Invoke(Utils.JsonDecode<T2>(data));
         else
             onError?.Invoke();
     }

@@ -65,46 +65,46 @@ public class TCPClient
 
         if (messageType.Equals(typeof(MessageJoinedGame))) {
             MessageJoinedGame messageJoinedGame = Utils.Deserialize<MessageJoinedGame>(message);
-            MessageHandler.OnMessageJoinedGame(messageJoinedGame);
+            MessageHandler.OnMessageJoinedGame?.Invoke(messageJoinedGame);
         } else if (messageType.Equals(typeof(MessageLeftGame))) {
             MessageLeftGame messageLeftGame = Utils.Deserialize<MessageLeftGame>(message);
-            MessageHandler.OnMessageLeftGame(messageLeftGame);
+            MessageHandler.OnMessageLeftGame?.Invoke(messageLeftGame);
         } else if (messageType.Equals(typeof(MessageGameState))) {
             MessageGameState messageGameState = Utils.Deserialize<MessageGameState>(message);
-            MessageHandler.OnMessageGameState(messageGameState);
+            MessageHandler.OnMessageGameState?.Invoke(messageGameState);
         } else if (messageType.Equals(typeof(MessageSpawnNodes))) {
             MessageSpawnNodes messageSpawnNodes = Utils.Deserialize<MessageSpawnNodes>(message);
-            MessageHandler.OnMessageSpawnNodes(messageSpawnNodes);
+            MessageHandler.OnMessageSpawnNodes?.Invoke(messageSpawnNodes);
         } else if (messageType.Equals(typeof(MessageAttacked))) {
             MessageAttacked messageAttacked = Utils.Deserialize<MessageAttacked>(message);
-            MessageHandler.OnMessageAttacked(messageAttacked);
+            MessageHandler.OnMessageAttacked?.Invoke(messageAttacked);
         } else if (messageType.Equals(typeof(MessageDespawnObject))) {
             MessageDespawnObject messageDespawnObject = Utils.Deserialize<MessageDespawnObject>(message);
-            MessageHandler.OnMessageDespawnObject(messageDespawnObject);
+            MessageHandler.OnMessageDespawnObject?.Invoke(messageDespawnObject);
         } else if (messageType.Equals(typeof(MessageInventoryAdd))) {
             MessageInventoryAdd messageInventoryAdd = Utils.Deserialize<MessageInventoryAdd>(message);
-            MessageHandler.OnMessageInventoryAdd(messageInventoryAdd);
+            MessageHandler.OnMessageInventoryAdd?.Invoke(messageInventoryAdd);
         } else if (messageType.Equals(typeof(MessageInventoryRemove))) {
             MessageInventoryRemove messageInventoryRemove = Utils.Deserialize<MessageInventoryRemove>(message);
-            MessageHandler.OnMessageInventoryRemove(messageInventoryRemove);
+            MessageHandler.OnMessageInventoryRemove?.Invoke(messageInventoryRemove);
         } else if (messageType.Equals(typeof(MessageLooted))) {
             MessageLooted messageLooted = Utils.Deserialize<MessageLooted>(message);
-            MessageHandler.OnMessageLooted(messageLooted);
+            MessageHandler.OnMessageLooted?.Invoke(messageLooted);
         } else if (messageType.Equals(typeof(MessageCrafted))) {
             MessageCrafted messageCrafted = Utils.Deserialize<MessageCrafted>(message);
-            MessageHandler.OnMessageCrafted(messageCrafted);
+            MessageHandler.OnMessageCrafted?.Invoke(messageCrafted);
         } else if (messageType.Equals(typeof(MessageHealthChanged))) {
             MessageHealthChanged messageHealthChanged = Utils.Deserialize<MessageHealthChanged>(message);
-            MessageHandler.OnMessageHealthChanged(messageHealthChanged);
+            MessageHandler.OnMessageHealthChanged?.Invoke(messageHealthChanged);
         } else if (messageType.Equals(typeof(MessageChannel))) {
             MessageChannel messageChannel = Utils.Deserialize<MessageChannel>(message);
-            MessageHandler.OnMessageChannel(messageChannel);
+            MessageHandler.OnMessageChannel?.Invoke(messageChannel);
         } else if (messageType.Equals(typeof(MessageCast))) {
             MessageCast messageCast = Utils.Deserialize<MessageCast>(message);
-            MessageHandler.OnMessageCast(messageCast);
+            MessageHandler.OnMessageCast?.Invoke(messageCast);
         } else if (messageType.Equals(typeof(MessageStopActivity))) {
             MessageStopActivity messageStopActivity = Utils.Deserialize<MessageStopActivity>(message);
-            MessageHandler.OnMessageStopActivity(messageStopActivity);
+            MessageHandler.OnMessageStopActivity?.Invoke(messageStopActivity);
         }
     }
 

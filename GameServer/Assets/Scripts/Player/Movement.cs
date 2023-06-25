@@ -5,14 +5,22 @@ public class Movement : MonoBehaviour
     private TransformData _transformData;
     private AnimationData _animationData;
     private TransformData _lastTransform;
+    private float _elapsedTime;
 
     private void Awake() {
         _transformData = new TransformData(transform);
     }
 
-    public void SetMovement(TransformData transform, AnimationData animation) {
-        TransformData = transform;
+    private void Update() {
+        _elapsedTime += Time.deltaTime;
+    }
+
+    public void SetMovement(TransformData transformData, AnimationData animation) {
+        _transformData = transformData;
+        transform.position = transformData.position.ToVector3;
+        transform.eulerAngles = transformData.rotation.ToVector3;
         _animationData = animation;
+        _elapsedTime = 0;
     }
 
     public bool UpdateTransformIfChanged() {
@@ -24,16 +32,9 @@ public class Movement : MonoBehaviour
         }
     }
 
-    public TransformData TransformData {
-        get => _transformData;
-        set {
-            _transformData = value;
-            transform.position = value.position.ToVector3;
-            transform.eulerAngles = value.rotation.ToVector3;
-        }
-    }
-    public AnimationData AnimationData {
-        get => _animationData;
-        set => _animationData = value;
-    }    
+    public TransformData TransformData => _transformData;
+
+    public AnimationData AnimationData => _animationData;
+
+    public bool IsMoving => _elapsedTime <= .1f;
 }

@@ -109,7 +109,7 @@ public struct MessageError
 
     public enum MessageErrorType
     {
-        inventoryFull, notEnoughInventorySpace, uniqueItem, objectNotFound, notEnoughResources, tooFarAway
+        inventoryFull, notEnoughInventorySpace, uniqueItem, objectNotFound, notEnoughResources, tooFarAway, cantWhileMoving, busy
     }
 }
 

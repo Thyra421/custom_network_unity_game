@@ -9,15 +9,15 @@ public abstract class Player : NetworkObject
     public delegate void OnStopActivityHandler();
 
     public void Cast(string activityName, float castTimeInSeconds) {
-        _onCastEvent(activityName, castTimeInSeconds);
+        _onCastEvent?.Invoke(activityName, castTimeInSeconds);
     }
 
     public void Channel(string activityName, int ticks, float intervalTimeInSeconds) {
-        _onChannelEvent(activityName, ticks, intervalTimeInSeconds);
+        _onChannelEvent?.Invoke(activityName, ticks, intervalTimeInSeconds);
     }
 
     public void StopActivity() {
-        _onStopActivityEvent();
+        _onStopActivityEvent?.Invoke();
     }
 
     public abstract PlayerStatistics Statistics {

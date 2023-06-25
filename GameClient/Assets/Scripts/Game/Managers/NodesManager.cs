@@ -14,12 +14,12 @@ public class NodesManager : MonoBehaviour
         Node newNode = newObject.AddComponent<Node>();
         newNode.Initialize(data.id, data.remainingLoots);
         _nodes.Add(newNode);
-        _onAddedNode(newNode);
+        _onAddedNode?.Invoke(newNode);
     }
 
     private void RemoveNode(string id) {
         Node node = FindNode(id);
-        _onRemovedNode(node);
+        _onRemovedNode?.Invoke(node);
         _nodes.Remove(node);
         Destroy(node.gameObject);
     }

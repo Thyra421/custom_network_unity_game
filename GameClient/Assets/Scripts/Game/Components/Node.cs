@@ -39,7 +39,7 @@ public class Node : MonoBehaviour
 
     public void RemoveLoot() {
         _remainingLoots--;
-        _onChanged(_remainingLoots);
+        _onChanged?.Invoke(_remainingLoots);
     }
 
     public void Initialize(string id, int remainingDrops) {
