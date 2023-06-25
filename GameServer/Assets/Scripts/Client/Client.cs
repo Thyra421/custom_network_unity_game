@@ -15,6 +15,7 @@
         _secret = secret;
     }
 
+
     public TCPClient Tcp => _tcp;
 
     public UDPClient Udp => _udp;

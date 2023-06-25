@@ -20,7 +20,7 @@ public class RoomPlayersManager : MonoBehaviour
             _elapsedTime = 0f;
             if (_players.Count < 2)
                 return;
-            PlayerData[] playerDatas = GetPlayerDatas((Player p) => p.UpdateTransformIfChanged());
+            PlayerData[] playerDatas = GetPlayerDatas((Player p) => p.Movement.UpdateTransformIfChanged());
             if (playerDatas.Length > 0)
                 BroadcastUDP((Player player) => new MessageMoved(Array.FindAll(playerDatas, (PlayerData data) => data.id != player.Id).ToArray()), (MessageMoved message) => message.players.Length > 0);
         }

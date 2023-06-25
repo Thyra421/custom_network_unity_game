@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NameplateGUI : MonoBehaviour
-{    
+public class HealthBarGUI : MonoBehaviour
+{
     [SerializeField]
     private Slider _slider;
     [SerializeField]

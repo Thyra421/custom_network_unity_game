@@ -96,6 +96,15 @@ public class TCPClient
         } else if (messageType.Equals(typeof(MessageHealthChanged))) {
             MessageHealthChanged messageHealthChanged = Utils.Deserialize<MessageHealthChanged>(message);
             MessageHandler.OnMessageHealthChanged(messageHealthChanged);
+        } else if (messageType.Equals(typeof(MessageChannel))) {
+            MessageChannel messageChannel = Utils.Deserialize<MessageChannel>(message);
+            MessageHandler.OnMessageChannel(messageChannel);
+        } else if (messageType.Equals(typeof(MessageCast))) {
+            MessageCast messageCast = Utils.Deserialize<MessageCast>(message);
+            MessageHandler.OnMessageCast(messageCast);
+        } else if (messageType.Equals(typeof(MessageStopActivity))) {
+            MessageStopActivity messageStopActivity = Utils.Deserialize<MessageStopActivity>(message);
+            MessageHandler.OnMessageStopActivity(messageStopActivity);
         }
     }
 

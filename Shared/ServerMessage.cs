@@ -109,7 +109,7 @@ public struct MessageError
 
     public enum MessageErrorType
     {
-        inventoryFull, notEnoughInventorySpace, uniqueItem, objectNotFound, notEnoughResources
+        inventoryFull, notEnoughInventorySpace, uniqueItem, objectNotFound, notEnoughResources, tooFarAway
     }
 }
 
@@ -159,5 +159,42 @@ public struct MessageHealthChanged
         this.id = id;
         this.currentHealth = currentHealth;
         this.maxHealth = maxHealth;
+    }
+}
+
+public struct MessageCast
+{
+    public string id;
+    public string activityName;
+    public float castTimeInSeconds;
+
+    public MessageCast(string id, string activityName, float castTimeInSeconds) {
+        this.id = id;
+        this.castTimeInSeconds = castTimeInSeconds;
+        this.activityName = activityName;
+    }
+}
+
+public struct MessageChannel
+{
+    public string id;
+    public float intervalTimeInSeconds;
+    public int ticks;
+    public string activityName;
+
+    public MessageChannel(string id, string activityName, int ticks, float intervalTimeInSeconds) {
+        this.id = id;
+        this.activityName = activityName;
+        this.ticks = ticks;
+        this.intervalTimeInSeconds = intervalTimeInSeconds;
+    }
+}
+
+public struct MessageStopActivity
+{
+    public string id;
+
+    public MessageStopActivity(string id) {
+        this.id = id;
     }
 }

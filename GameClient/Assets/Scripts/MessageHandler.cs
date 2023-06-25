@@ -13,7 +13,10 @@ public class MessageHandler : MonoBehaviour
     public delegate void OnMessageInventoryRemoveHandler(MessageInventoryRemove messageInventoryRemove);
     public delegate void OnMessageLootedHandler(MessageLooted messageLooted);
     public delegate void OnMessageCraftedHandler(MessageCrafted messageCrafted);
-    public delegate void OnMessageHealthChangedHandler(MessageHealthChanged messageHealthChanged);   
+    public delegate void OnMessageHealthChangedHandler(MessageHealthChanged messageHealthChanged);
+    public delegate void OnMessageChannelHandler(MessageChannel messageChannel);
+    public delegate void OnMessageCastHandler(MessageCast messageCast);
+    public delegate void OnMessageStopActivityHandler(MessageStopActivity messageStopActivity);
 
     private static event OnMessageJoinedGameHandler _onMessageJoinedGame;
     private static event OnMessageMovedHandler _onMessageMoved;
@@ -27,6 +30,9 @@ public class MessageHandler : MonoBehaviour
     private static event OnMessageLootedHandler _onMessageLooted;
     private static event OnMessageCraftedHandler _onMessageCrafted;
     private static event OnMessageHealthChangedHandler _onMessageHealthChanged;
+    private static event OnMessageChannelHandler _onMessageChannel;
+    private static event OnMessageCastHandler _onMessageCast;
+    private static event OnMessageStopActivityHandler _onMessageStopActivity;
 
     public static event OnMessageJoinedGameHandler OnMessageJoinedGameEvent {
         add => _onMessageJoinedGame += value;
@@ -88,6 +94,21 @@ public class MessageHandler : MonoBehaviour
         remove => _onMessageHealthChanged -= value;
     }
 
+    public static event OnMessageChannelHandler OnMessageChannelEvent {
+        add => _onMessageChannel += value;
+        remove => _onMessageChannel -= value;
+    }
+
+    public static event OnMessageCastHandler OnMessageCastEvent {
+        add => _onMessageCast += value;
+        remove => _onMessageCast -= value;
+    }
+
+    public static event OnMessageStopActivityHandler OnMessageStopActivityEvent {
+        add => _onMessageStopActivity += value;
+        remove => _onMessageStopActivity -= value;
+    }
+
     public static OnMessageJoinedGameHandler OnMessageJoinedGame => _onMessageJoinedGame;
 
     public static OnMessageMovedHandler OnMessageMoved => _onMessageMoved;
@@ -111,4 +132,10 @@ public class MessageHandler : MonoBehaviour
     public static OnMessageCraftedHandler OnMessageCrafted => _onMessageCrafted;
 
     public static OnMessageHealthChangedHandler OnMessageHealthChanged => _onMessageHealthChanged;
+
+    public static OnMessageChannelHandler OnMessageChannel => _onMessageChannel;
+
+    public static OnMessageCastHandler OnMessageCast => _onMessageCast;
+
+    public static OnMessageStopActivityHandler OnMessageStopActivity => _onMessageStopActivity;
 }

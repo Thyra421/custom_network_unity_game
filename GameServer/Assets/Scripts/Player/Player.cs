@@ -1,49 +1,32 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(Movement))]
+[RequireComponent(typeof(PlayerAttack))]
 public class Player : MonoBehaviour
 {
     private readonly string _id = Utils.GenerateUUID();
     private readonly Inventory _inventory;
     private readonly ServerItemActionController _itemActionController;
     private readonly Statistics _statistics;
+    [SerializeField]
+    private Movement _movement;
+    [SerializeField]
+    private PlayerAttack _attack;
+    [SerializeField]
+    private Activity _activity;
     private Client _client;
     private Room _room;
-    private TransformData _transformData;
-    private AnimationData _animationData;
-    private TransformData _lastTransform;
 
     private Player() {
         _inventory = new Inventory(this);
         _itemActionController = new ServerItemActionController(this);
-        _statistics = new Statistics(this);
-    }
-
-    private void Awake() {
-        _transformData = new TransformData(transform);
+        _statistics = new Statistics();
     }
 
     public void Initialize(Client client, Room room) {
         _client = client;
         _room = room;
         client.Player = this;
-    }
-
-    public void Attack() {
-        AttackHitbox attackHitbox = Instantiate(Resources.Load<GameObject>($"{Config.PREFABS_PATH}/AttackHitbox"), transform).GetComponent<AttackHitbox>();
-        attackHitbox.Initialize(this);
-    }
-
-    public bool UpdateTransformIfChanged() {
-        if (_lastTransform.Equals(_transformData))
-            return false;
-        else {
-            _lastTransform = _transformData;
-            return true;
-        }
-    }
-
-    public void Use(UsableItem item) {
-        _itemActionController.Use(item);
     }
 
     public string Id => _id;
@@ -56,18 +39,13 @@ public class Player : MonoBehaviour
 
     public Statistics Statistics => _statistics;
 
-    public TransformData TransformData {
-        get => _transformData;
-        set {
-            _transformData = value;
-            transform.position = value.position.ToVector3;
-            transform.eulerAngles = value.rotation.ToVector3;
-        }
-    }
-    public AnimationData AnimationData {
-        get => _animationData;
-        set => _animationData = value;
-    }
+    public ServerItemActionController ItemActionController => _itemActionController;
 
-    public PlayerData Data => new PlayerData(_id, _transformData, _animationData);   
+    public PlayerAttack Attack => _attack;
+
+    public Movement Movement => _movement;
+
+    public Activity Activity => _activity;
+
+    public PlayerData Data => new PlayerData(_id, Movement.TransformData, Movement.AnimationData);
 }

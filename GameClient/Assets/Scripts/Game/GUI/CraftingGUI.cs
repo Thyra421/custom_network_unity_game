@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,11 +14,11 @@ public class CraftingGUI : MonoBehaviour
     [SerializeField]
     private GameObject _reagentTemplate;
     [SerializeField]
-    private ItemGUI _itemGUI;
+    private ItemGUI _selectedItemGUI;
     [SerializeField]
-    private TMP_Text _titleText;
+    private TMP_Text _selectedItemTitleText;
     [SerializeField]
-    private TMP_Text _descriptionText;
+    private TMP_Text _selectedItemDescriptionText;
     [SerializeField]
     private Button _craftButton;
     private CraftingPattern _selectedPattern;
@@ -48,9 +47,9 @@ public class CraftingGUI : MonoBehaviour
     public void SelectPattern(CraftingPattern pattern) {
         if (pattern == _selectedPattern)
             return;
-        _titleText.text = pattern.Outcome.Item.DisplayName;
-        _descriptionText.text = pattern.Outcome.Item.Description;
-        _itemGUI.Initialize(pattern.Outcome.Item, pattern.Outcome.Amount);
+        _selectedItemTitleText.text = pattern.Outcome.Item.DisplayName;
+        _selectedItemDescriptionText.text = pattern.Outcome.Item.Description;
+        _selectedItemGUI.Initialize(pattern.Outcome.Item, pattern.Outcome.Amount);
         foreach (Transform child in _reagentsParent)
             Destroy(child.gameObject);
         foreach (ItemStack reagent in pattern.Reagents) {

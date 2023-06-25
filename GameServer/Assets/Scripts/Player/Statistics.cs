@@ -2,12 +2,10 @@ using UnityEngine;
 
 public class Statistics
 {
-    private readonly Player _player;
     private int _maxHealth = 100;
     private int _currentHealth;
 
-    public Statistics(Player player) {
-        _player = player;
+    public Statistics() {
         _currentHealth = _maxHealth;
     }
 

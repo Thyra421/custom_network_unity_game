@@ -67,10 +67,7 @@ public class PlayersManager : MonoBehaviour
         if (messageAttacked.id == _myPlayer.Id)
             return;
 
-        RemotePlayer remotePlayer = FindPlayer(messageAttacked.id);
-        if (remotePlayer != null)
-            remotePlayer.Attack.Attack();
-
+        FindPlayer(messageAttacked.id)?.Attack.Attack();
     }
 
     private void OnMessageHealthChanged(MessageHealthChanged messageHealthChanged) {
@@ -86,6 +83,27 @@ public class PlayersManager : MonoBehaviour
         }
     }
 
+    private void OnMessageChannel(MessageChannel messageChannel) {
+        if (messageChannel.id == _myPlayer.Id)
+            _myPlayer.Channel(messageChannel.activityName, messageChannel.ticks, messageChannel.intervalTimeInSeconds);
+        else
+            FindPlayer(messageChannel.id)?.Channel(messageChannel.activityName, messageChannel.ticks, messageChannel.intervalTimeInSeconds);
+    }
+
+    private void OnMessageCast(MessageCast messageCast) {
+        if (messageCast.id == _myPlayer.Id)
+            _myPlayer.Cast(messageCast.activityName, messageCast.castTimeInSeconds);
+        else
+            FindPlayer(messageCast.id)?.Cast(messageCast.activityName, messageCast.castTimeInSeconds);
+    }
+
+    private void OnMessageStopActivity(MessageStopActivity messageStopActivity) {
+        if (messageStopActivity.id == _myPlayer.Id)
+            _myPlayer.StopActivity();
+        else
+            FindPlayer(messageStopActivity.id)?.StopActivity();
+    }
+
     private void Awake() {
         MessageHandler.OnMessageGameStateEvent += OnMessageGameState;
         MessageHandler.OnMessageJoinedGameEvent += OnMessageJoinedGame;
@@ -93,6 +111,9 @@ public class PlayersManager : MonoBehaviour
         MessageHandler.OnMessageMovedEvent += OnMessageMoved;
         MessageHandler.OnMessageAttackedEvent += OnMessageAttacked;
         MessageHandler.OnMessageHealthChangedEvent += OnMessageHealthChanged;
+        MessageHandler.OnMessageChannelEvent += OnMessageChannel;
+        MessageHandler.OnMessageCastEvent += OnMessageCast;
+        MessageHandler.OnMessageStopActivityEvent += OnMessageStopActivity;
     }
 
     public delegate void OnAddedPlayerHandler(Player player);

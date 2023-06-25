@@ -62,7 +62,7 @@ public class TCPClient
 
     private void OnMessageAttack(MessageAttack clientMessageAttack) {
         _client.Player.Room.PlayersManager.BroadcastTCP(new MessageAttacked(_client.Player.Id), _client.Player);
-        _client.Player.Attack();
+        _client.Player.Attack.Attack();
     }
 
     private async void OnMessagePickUp(MessagePickUp clientMessagePickUp) {
@@ -73,7 +73,12 @@ public class TCPClient
         }
         Player player = _client.Player;
 
-        if (node.GetComponentInChildren<Collider>().bounds.Intersects(player.GetComponent<Collider>().bounds)) {
+        if (!node.GetComponentInChildren<Collider>().bounds.Intersects(player.GetComponent<Collider>().bounds)) {
+            await Send(new MessageError(MessageError.MessageErrorType.tooFarAway));
+            return;
+        }
+
+        player.Activity.Channel(async () => {
             Item item = node.Loot;
             bool result = await _client.Player.Inventory.Add(item, 1, true);
             if (result) {
@@ -84,7 +89,7 @@ public class TCPClient
                 } else
                     _client.Player.Room.PlayersManager.BroadcastTCP(new MessageLooted(node.Id));
             }
-        }
+        }, "Picking up", node.RemainingLoots, .5f);
     }
 
     private async void OnMessageCraft(MessageCraft messageCraft) {
@@ -118,7 +123,7 @@ public class TCPClient
 
     private void OnMessageUseItem(MessageUseItem clientMessageUseItem) {
         UsableItem item = Resources.Load<UsableItem>($"{SharedConfig.CRAFTED_ITEMS_PATH}/{clientMessageUseItem.itemName}");
-        _client.Player.Use(item);
+        _client.Player.ItemActionController.Use(item);
     }
 
     public TCPClient(TcpClient tcpClient) {
