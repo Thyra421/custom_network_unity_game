@@ -28,17 +28,7 @@ public class LocalPlayerMovement : PlayerMovement
     }
 
     protected override void Rotate() {
-        if (Input.GetMouseButton(1)) {
-            float mouseX = Input.GetAxis("Mouse X");
-
-            _currentRotation += mouseX * _rotationSpeed * Time.deltaTime;
-            transform.rotation = Quaternion.Euler(0f, _currentRotation, 0f);
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Confined;
-        } else {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-        }
+        //handled by camera       
     }
 
     private IEnumerator StartCooldown() {
