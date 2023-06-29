@@ -6,7 +6,7 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private Transform _target;
     [SerializeField]
-    private Transform _player;
+    private LocalPlayerMovement _player;
     [SerializeField]
     private float _zoomSpeed = 5f;
     [SerializeField]
@@ -43,7 +43,7 @@ public class CameraController : MonoBehaviour
             _xRotation += Input.GetAxis("Mouse X") * _rotationSpeed;
             _yRotation -= Input.GetAxis("Mouse Y") * _rotationSpeed;
             _yRotation = Mathf.Clamp(_yRotation, -60f, 60f);
-            _player.rotation = Quaternion.Euler(0f, _xRotation, 0f);
+            _player.transform.rotation = Quaternion.Euler(0f, _xRotation, 0f);
         }
 
         Quaternion rotation = Quaternion.Euler(_yRotation, _xRotation, 0f);
@@ -51,7 +51,7 @@ public class CameraController : MonoBehaviour
 
 
         if (Physics.Linecast(_target.position, desiredPosition, out RaycastHit hit, _collisionLayers))
-            desiredPosition = hit.point;
+            desiredPosition = hit.point + Vector3.up *.1f;
 
         transform.SetPositionAndRotation(desiredPosition, rotation);
     }
