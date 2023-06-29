@@ -21,10 +21,6 @@ public class LocalPlayerMovement : PlayerMovement
     [SerializeField]
     private LayerMask _walkableLayer;
 
-    [Header("Debug")]
-    public TMP_Text grounded;
-    public TMP_Text force;
-
     private Vector3 _direction;
     private float _verticalVelocity;
     private float _currentSpeed;
@@ -38,14 +34,12 @@ public class LocalPlayerMovement : PlayerMovement
 
         if (IsOnSlope) {
             Vector3 perpendicular = Vector3.Cross(_hitNormal, Vector3.up);
-            movingDirection = perpendicular.normalized * movingDirection.magnitude * (Vector3.Dot(perpendicular, movingDirection) > 0 ? 1 : -1) /2;
+            movingDirection = perpendicular.normalized * movingDirection.magnitude * (Vector3.Dot(perpendicular, movingDirection) > 0 ? 1 : -1) / 2;
             Quaternion slopeRotation = Quaternion.AngleAxis(90, perpendicular);
             Vector3 slopeDirection = slopeRotation * _hitNormal;
             Debug.DrawRay(transform.position, slopeDirection);
             verticalDirection += slopeDirection * _verticalVelocity;
         }
-
-        force.text = movingDirection + verticalDirection + "";
 
         _characterController.Move((movingDirection + verticalDirection) * Time.deltaTime);
     }
@@ -83,8 +77,6 @@ public class LocalPlayerMovement : PlayerMovement
                 _direction = Vector3.zero;
         }
 
-        grounded.text = IsGrounded.ToString() + "  | " + (!IsOnSlope).ToString();
-
         _animator.SetBool("IsGrounded", IsGrounded);
         _animator.SetBool("IsRunning", input.magnitude > 0);
         _animator.SetFloat("X", _direction.x);
@@ -108,4 +100,6 @@ public class LocalPlayerMovement : PlayerMovement
     public bool IsOnSlope => Vector3.Angle(Vector3.up, _hitNormal) >= _characterController.slopeLimit;
 
     public bool IsGrounded => Physics.CheckSphere(transform.position, .2f, _walkableLayer);
+
+    public AnimationData Animation => new AnimationData(_animator.GetFloat("X"), _animator.GetFloat("Y"), _animator.GetBool("IsRunning"), _animator.GetBool("IsGrounded"));
 }

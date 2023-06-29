@@ -65,3 +65,12 @@ public struct MessageUseItem
         this.itemName = itemName;
     }
 }
+
+public struct MessageTriggerAnimation
+{
+    public string animationName;
+
+    public MessageTriggerAnimation(string animationName) {
+        this.animationName = animationName;
+    }
+}

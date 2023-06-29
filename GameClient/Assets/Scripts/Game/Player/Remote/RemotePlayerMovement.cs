@@ -10,15 +10,14 @@ public class RemotePlayerMovement : PlayerMovement
         Vector3 direction = (_destinationPosition - transform.position).normalized;
         float distance = Vector3.Distance(transform.position, _destinationPosition);
 
-        if (distance == 0) {
-            _animator.SetBool("IsRunning", false);
-        } else if (distance <= _movementSpeed * Time.deltaTime) {
+        _animator.SetBool("IsRunning", _animationData.isRunning);
+        _animator.SetBool("IsGrounded", _animationData.isGrounded);
+        _animator.SetFloat("X", _animationData.x);
+        _animator.SetFloat("Y", _animationData.y);
+        if (distance <= _movementSpeed * Time.deltaTime) {
             transform.position = _destinationPosition;
         } else {
-            _animator.SetBool("IsRunning", true);
-            _animator.SetFloat("X", _animationData.x);
-            _animator.SetFloat("Y", _animationData.y);
-            transform.position += direction * _movementSpeed * Time.deltaTime;
+            transform.position += _movementSpeed * Time.deltaTime * direction;
         }
     }
 
@@ -29,7 +28,7 @@ public class RemotePlayerMovement : PlayerMovement
     private void Awake() {
         _destinationPosition = transform.position;
         _destinationRotation = transform.eulerAngles;
-    }    
+    }
 
     public Vector3 DestinationPosition {
         get => _destinationPosition;
