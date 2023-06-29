@@ -25,4 +25,6 @@ public struct Vector3Data
     public readonly bool Equals(Vector3Data other) {
         return other.x == x && other.y == y && other.z == z;
     }
+
+    public float Distance(Vector3Data other) => Vector3.Distance(ToVector3, other.ToVector3);
 }

@@ -12,7 +12,7 @@ public class Node : MonoBehaviour
         _transformData = new TransformData(transform);
     }
 
-    public void GenerateDrops(DropSource dropSource) {
+    public void Initialize(DropSource dropSource) {
         _dropSource = dropSource;
         int amount = Random.Range(_dropSource.MinInclusive, _dropSource.MaxExclusive);
         for (int i = 0; i < amount; i++)
@@ -21,11 +21,13 @@ public class Node : MonoBehaviour
 
     public void RemoveOne() => _loots.Dequeue();
 
-    public NodeData Data => new NodeData(_id, _transformData, _dropSource.Prefab.name, _loots.Count);
+    public NodeData Data => new NodeData(_id, _transformData, _dropSource.Prefab.name);
 
     public string Id => _id;
 
     public Item Loot => _loots.Peek();
 
     public int RemainingLoots => _loots.Count;
+
+    public DropSource DropSource => _dropSource;
 }

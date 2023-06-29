@@ -1,4 +1,5 @@
 using System;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -23,9 +24,11 @@ public static class UDPClient
                 UdpReceiveResult result = await _udpClient.ReceiveAsync();
                 string message = Encoding.UTF8.GetString(result.Buffer);
                 OnMessage(message);
-            } catch (Exception e) {
+            } catch (SocketException e) {
                 Debug.LogException(e);
                 OnDisconnected();
+            } catch (Exception e) {
+                Debug.LogException(e);
             }
         }
     }
@@ -45,7 +48,10 @@ public static class UDPClient
 
     private static void OnListening() => Debug.Log("[UDPClient] listening on port " + _port);
 
-    private static void OnDisconnected() => Debug.Log("[UDPClient] disconnected");
+    private static void OnDisconnected() {
+        Debug.Log("[UDPClient] disconnected");
+        SceneLoader.Current.LoadMenuAsync();
+    }
 
     public static int Port => _port;
 

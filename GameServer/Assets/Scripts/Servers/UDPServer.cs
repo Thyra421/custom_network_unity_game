@@ -37,9 +37,9 @@ public class UDPServer
     }
 
     private static void OnMessageMovement(MessageMovement messageMovement, Client client) {
-        client.Player.Movement.SetMovement(messageMovement.newTransform, messageMovement.animation);
-        if (client.Player.Activity.IsBusy)
+        if (client.Player.Activity.IsBusy && messageMovement.newTransform.position.Distance(messageMovement.newTransform.position) > .1f)
             client.Player.Activity.Stop();
+        client.Player.Movement.SetMovement(messageMovement.newTransform, messageMovement.animation);
     }
 
     private static void OnStarted() => Debug.Log($"[UDPServer] started");

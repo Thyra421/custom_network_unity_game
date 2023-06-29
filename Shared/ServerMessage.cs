@@ -115,31 +115,6 @@ public struct MessageCrafted
     }
 }
 
-//public struct MessageStatsChanged
-//{
-//    public StatEntry[] entries;
-
-//    public MessageStatsChanged(StatEntry[] entries) {
-//        this.entries = entries;
-//    }
-
-//    public enum Stat
-//    {
-//        Health, MaxHealth
-//    }
-
-//    public struct StatEntry
-//    {
-//        public Stat stat;
-//        public int value;
-
-//        public StatEntry(Stat stat, int value) {
-//            this.stat = stat;
-//            this.value = value;
-//        }
-//    }
-//}
-
 public struct MessageHealthChanged
 {
     public string id;

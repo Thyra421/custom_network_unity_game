@@ -49,6 +49,11 @@ public class DropSource : ScriptableObject
     private int _minInclusive;
     [SerializeField]
     private int _minExclusive;
+    /// <summary>
+    /// Set to -1 if never respawn.
+    /// </summary>
+    [SerializeField]
+    private float _respawnTimerInSeconds;
 
     public Item RandomLoot => _lootTable.RandomLoot;
 
@@ -59,4 +64,6 @@ public class DropSource : ScriptableObject
     public int MinInclusive => _minInclusive;
 
     public int MaxExclusive => _minExclusive;
+
+    public float RespawnTimerInSeconds => _respawnTimerInSeconds;
 }

@@ -9,7 +9,7 @@ public class LootTableDrawer : PropertyDrawer
         SerializedProperty entries = property.FindPropertyRelative("_entries");
         LootTable lootTable = property.boxedValue as LootTable;
         int totalWeight = lootTable.Entries.Select((LootTableEntry e) => e.DropChance).Sum();
-        EditorGUILayout.LabelField(label);
+        EditorGUI.PrefixLabel(position, label);
         EditorGUILayout.PropertyField(entries.FindPropertyRelative("Array.size"));
         for (int i = 0; i < entries.arraySize; i++) {
             SerializedProperty entry = entries.GetArrayElementAtIndex(i);

@@ -19,3 +19,4 @@ MonoBehaviour:
   _prefab: {fileID: 4206233252210163344, guid: dec3680fd0062e44f80fd0b1ce50557d, type: 3}
   _minInclusive: 1
   _minExclusive: 4
+  _respawnTimerInSeconds: 120
