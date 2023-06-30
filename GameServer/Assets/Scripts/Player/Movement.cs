@@ -16,11 +16,12 @@ public class Movement : MonoBehaviour
     }
 
     public void SetMovement(TransformData transformData, AnimationData animation) {
+        if (!transformData.position.Equals(_transformData.position))
+            _elapsedTime = 0;
         _transformData = transformData;
         transform.position = transformData.position.ToVector3;
         transform.eulerAngles = transformData.rotation.ToVector3;
         _animationData = animation;
-        _elapsedTime = 0;
     }
 
     public bool UpdateTransformIfChanged() {
@@ -36,5 +37,5 @@ public class Movement : MonoBehaviour
 
     public AnimationData AnimationData => _animationData;
 
-    public bool IsMoving => _elapsedTime <= .1f;
+    public bool IsMoving => _elapsedTime <= .05f;
 }

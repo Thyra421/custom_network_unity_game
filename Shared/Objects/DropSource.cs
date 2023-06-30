@@ -54,6 +54,10 @@ public class DropSource : ScriptableObject
     /// </summary>
     [SerializeField]
     private float _respawnTimerInSeconds;
+    [SerializeField]
+    private SkillType _skillType;
+    [SerializeField]
+    private int _requiredLevel;
 
     public Item RandomLoot => _lootTable.RandomLoot;
 
@@ -66,4 +70,6 @@ public class DropSource : ScriptableObject
     public int MaxExclusive => _minExclusive;
 
     public float RespawnTimerInSeconds => _respawnTimerInSeconds;
+
+    public SkillType SkillType => _skillType;
 }

@@ -1,62 +1,76 @@
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CraftingGUI : MonoBehaviour
 {
     private static CraftingGUI _current;
     [SerializeField]
-    private Transform _selectionParent;
+    private GameObject _engineeringPanel;
     [SerializeField]
-    private Transform _reagentsParent;
+    private GameObject _alchemyPanel;
     [SerializeField]
-    private GameObject _itemSelectionTemplate;
+    private GameObject _forgingPanel;
     [SerializeField]
-    private GameObject _reagentTemplate;
+    private GameObject _cookingPanel;
     [SerializeField]
-    private ItemGUI _selectedItemGUI;
-    [SerializeField]
-    private TMP_Text _selectedItemTitleText;
-    [SerializeField]
-    private TMP_Text _selectedItemDescriptionText;
-    [SerializeField]
-    private Button _craftButton;
-    private CraftingPattern _selectedPattern;
-
-    private void OnClickCraft() {
-        TCPClient.Send(new MessageCraft(_selectedPattern.name));
-    }
-
-    private void Start() {
-        CraftingPattern[] patterns = Resources.LoadAll<CraftingPattern>(SharedConfig.CRAFTING_PATTERNS_PATH);
-        foreach (CraftingPattern pattern in patterns) {
-            CraftingItemSelectionGUI craftingItemSelectionGUI = Instantiate(_itemSelectionTemplate, _selectionParent).GetComponent<CraftingItemSelectionGUI>();
-            craftingItemSelectionGUI.Initialize(pattern);
-        }
-        SelectPattern(patterns[0]);
-    }
+    private GameObject _craftingPanel;
 
     private void Awake() {
         if (_current == null)
             _current = this;
         else
             Destroy(gameObject);
-        _craftButton.onClick.AddListener(OnClickCraft);
     }
 
-    public void SelectPattern(CraftingPattern pattern) {
-        if (pattern == _selectedPattern)
+    public void ToggleEngineering() {
+        if (_engineeringPanel.activeSelf && _craftingPanel.activeSelf) {
+            _craftingPanel.SetActive(false);
             return;
-        _selectedItemTitleText.text = pattern.Outcome.Item.DisplayName;
-        _selectedItemDescriptionText.text = pattern.Outcome.Item.Description;
-        _selectedItemGUI.Initialize(pattern.Outcome.Item, pattern.Outcome.Amount);
-        foreach (Transform child in _reagentsParent)
-            Destroy(child.gameObject);
-        foreach (ItemStack reagent in pattern.Reagents) {
-            CraftingReagentGUI craftingReagentGUI = Instantiate(_reagentTemplate, _reagentsParent).GetComponent<CraftingReagentGUI>();
-            craftingReagentGUI.Initialize(reagent.Item, reagent.Amount);
         }
-        _selectedPattern = pattern;
+        _craftingPanel.SetActive(true);
+        _engineeringPanel.SetActive(true);
+        _alchemyPanel.SetActive(false);
+        _forgingPanel.SetActive(false);
+        _cookingPanel.SetActive(false);
+    }
+
+    public void ToggleAlchemy() {
+        if (_alchemyPanel.activeSelf && _craftingPanel.activeSelf) {
+            _craftingPanel.SetActive(false);
+            return;
+        }
+        _craftingPanel.SetActive(true);
+        _engineeringPanel.SetActive(false);
+        _alchemyPanel.SetActive(true);
+        _forgingPanel.SetActive(false);
+        _cookingPanel.SetActive(false);
+    }
+
+    public void ToggleForging() {
+        if (_forgingPanel.activeSelf && _craftingPanel.activeSelf) {
+            _craftingPanel.SetActive(false);
+            return;
+        }
+        _craftingPanel.SetActive(true);
+        _engineeringPanel.SetActive(false);
+        _alchemyPanel.SetActive(false);
+        _forgingPanel.SetActive(true);
+        _cookingPanel.SetActive(false);
+    }
+
+    public void ToggleCooking() {
+        if (_cookingPanel.activeSelf && _craftingPanel.activeSelf) {
+            _craftingPanel.SetActive(false);
+            return;
+        }
+        _craftingPanel.SetActive(true);
+        _engineeringPanel.SetActive(false);
+        _alchemyPanel.SetActive(false);
+        _forgingPanel.SetActive(false);
+        _cookingPanel.SetActive(true);
+    }
+
+    public void CloseCrafting() {
+        _craftingPanel.SetActive(false);
     }
 
     public static CraftingGUI Current => _current;

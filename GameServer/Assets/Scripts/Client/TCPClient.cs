@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
+using static PlayerExperience;
 
 public class TCPClient
 {
@@ -87,13 +88,16 @@ public class TCPClient
                     _client.Player.Room.PlayersManager.BroadcastTCP(new MessageDespawnObject(node.Id));
                     player.Room.NodesManager.RemoveNode(node);
                 }
+                PlayerSkillExperience skillExperience = player.Experience.GetSkillExperience(node.DropSource.SkillType);
+                skillExperience.AddExperience(5);
+                Send(new MessageExperienceChanged(node.DropSource.SkillType, skillExperience.CurrentLevel, skillExperience.Ratio));
             } else
                 _client.Player.Room.PlayersManager.BroadcastTCP(new MessageStopActivity(player.Id));
         }, "Picking up", node.RemainingLoots, .5f);
     }
 
     private void OnMessageCraft(MessageCraft messageCraft) {
-        CraftingPattern pattern = Resources.Load<CraftingPattern>($"{SharedConfig.CRAFTING_PATTERNS_PATH}/{messageCraft.patternName}");
+        CraftingPattern pattern = Resources.Load<CraftingPattern>($"{SharedConfig.CRAFTING_PATTERNS_PATH}/{messageCraft.directoryName}/{messageCraft.patternName}");
 
         // pattern exists?
         if (pattern == null) {

@@ -50,10 +50,12 @@ public struct MessagePickUp
 
 public struct MessageCraft
 {
+    public string directoryName;
     public string patternName;
 
-    public MessageCraft(string patternName) {
+    public MessageCraft(string patternName, string directoryName) {
         this.patternName = patternName;
+        this.directoryName = directoryName;
     }
 }
 

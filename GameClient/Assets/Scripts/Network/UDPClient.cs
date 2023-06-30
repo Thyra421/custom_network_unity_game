@@ -24,10 +24,7 @@ public static class UDPClient
                 UdpReceiveResult result = await _udpClient.ReceiveAsync();
                 string message = Encoding.UTF8.GetString(result.Buffer);
                 OnMessage(message);
-            } catch (SocketException e) {
-                Debug.LogException(e);
-                OnDisconnected();
-            } catch (Exception e) {
+            }  catch (Exception e) {
                 Debug.LogException(e);
             }
         }

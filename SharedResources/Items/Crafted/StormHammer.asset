@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e3e2bf53d4eaa41b4a0b3d5093ffbe, type: 3}
+  m_Name: StormHammer
+  m_EditorClassIdentifier: 
+  _displayName: Storm hammer
+  _description: Storm hammer bzz bzz
+  _rarity: 0
+  _price: 0
+  _property: 1
+  _icon: {fileID: 21300000, guid: cc5d0d6a5acb9514f9b3815a621e9138, type: 3}
+  _abilities:
+  - _actions:
+    - _methodName: GroundEffect
+      _parameters:
+      - _parameterValue: 
+        _typeName: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        _parameterName: colliderPrefab
+      - _parameterValue: 0
+        _typeName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+        _parameterName: minRange
+      - _parameterValue: 0
+        _typeName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+        _parameterName: maxRange

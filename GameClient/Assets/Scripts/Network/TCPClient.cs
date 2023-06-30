@@ -31,7 +31,10 @@ public static class TCPClient
                 }
                 buffer += message;
             }
-            OnDisconnect();
+            OnDisconnected();
+        } catch (SocketException e) {
+            Debug.LogException(e);
+            OnDisconnected();
         } catch (Exception e) {
             Debug.LogException(e);
         }
@@ -45,7 +48,7 @@ public static class TCPClient
         Debug.Log($"[TCP Client] listening");
     }
 
-    private static void OnDisconnect() {
+    private static void OnDisconnected() {
         Debug.Log($"[TCP Client] client disconnected");
         SceneLoader.Current.LoadMenuAsync();
     }
@@ -87,7 +90,7 @@ public static class TCPClient
         } else if (messageType.Equals(typeof(MessageInventoryRemove))) {
             MessageInventoryRemove messageInventoryRemove = Utils.Deserialize<MessageInventoryRemove>(message);
             MessageHandler.Current.OnMessageInventoryRemove?.Invoke(messageInventoryRemove);
-        }  else if (messageType.Equals(typeof(MessageCrafted))) {
+        } else if (messageType.Equals(typeof(MessageCrafted))) {
             MessageCrafted messageCrafted = Utils.Deserialize<MessageCrafted>(message);
             MessageHandler.Current.OnMessageCrafted?.Invoke(messageCrafted);
         } else if (messageType.Equals(typeof(MessageHealthChanged))) {
@@ -102,6 +105,9 @@ public static class TCPClient
         } else if (messageType.Equals(typeof(MessageStopActivity))) {
             MessageStopActivity messageStopActivity = Utils.Deserialize<MessageStopActivity>(message);
             MessageHandler.Current.OnMessageStopActivity?.Invoke(messageStopActivity);
+        } else if (messageType.Equals(typeof(MessageExperienceChanged))) {
+            MessageExperienceChanged messageExperienceChanged = Utils.Deserialize<MessageExperienceChanged>(message);
+            MessageHandler.Current.OnMessageExperienceChanged?.Invoke(messageExperienceChanged);
         }
     }
 

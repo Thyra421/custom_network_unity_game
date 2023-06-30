@@ -6,8 +6,9 @@ public class Player : MonoBehaviour
 {
     private readonly string _id = Utils.GenerateUUID();
     private readonly Inventory _inventory;
-    private readonly ServerItemActionController _itemActionController;
-    private readonly Statistics _statistics;
+    private readonly PlayerItemActionController _itemActionController;
+    private readonly Statistics _statistics = new Statistics();
+    private readonly PlayerExperience _experience = new PlayerExperience();
     [SerializeField]
     private Movement _movement;
     [SerializeField]
@@ -19,8 +20,7 @@ public class Player : MonoBehaviour
 
     private Player() {
         _inventory = new Inventory(this);
-        _itemActionController = new ServerItemActionController(this);
-        _statistics = new Statistics();
+        _itemActionController = new PlayerItemActionController(this);
     }
 
     public void Initialize(Client client, Room room) {
@@ -39,13 +39,15 @@ public class Player : MonoBehaviour
 
     public Statistics Statistics => _statistics;
 
-    public ServerItemActionController ItemActionController => _itemActionController;
+    public PlayerItemActionController ItemActionController => _itemActionController;
 
     public PlayerAttack Attack => _attack;
 
     public Movement Movement => _movement;
 
     public Activity Activity => _activity;
+
+    public PlayerExperience Experience => _experience;
 
     public PlayerData Data => new PlayerData(_id, Movement.TransformData, Movement.AnimationData);
 }

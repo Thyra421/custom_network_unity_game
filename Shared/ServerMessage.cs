@@ -164,3 +164,29 @@ public struct MessageStopActivity
         this.id = id;
     }
 }
+
+public struct MessageExperienceChanged
+{
+    public SkillType type;
+    public int currentLevel;
+    public float currentRatio;
+
+    public MessageExperienceChanged(SkillType type, int currentLevel, float currentRatio) {
+        this.type = type;
+        this.currentLevel = currentLevel;
+        this.currentRatio = currentRatio;
+    }
+}
+
+public struct MessageWeaponExperienceChanged
+{
+    public string weaponName;
+    public int currentLevel;
+    public float currentRatio;
+
+    public MessageWeaponExperienceChanged(string weaponName, int currentLevel, float currentRatio) {
+        this.weaponName = weaponName;
+        this.currentLevel = currentLevel;
+        this.currentRatio = currentRatio;
+    }
+}

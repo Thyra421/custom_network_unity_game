@@ -25,6 +25,7 @@ public class MessageHandler : MonoBehaviour
     public delegate void OnMessageChannelHandler(MessageChannel messageChannel);
     public delegate void OnMessageCastHandler(MessageCast messageCast);
     public delegate void OnMessageStopActivityHandler(MessageStopActivity messageStopActivity);
+    public delegate void OnMessageExperienceChangedHandler(MessageExperienceChanged messageExperienceChanged);
 
     private event OnMessageJoinedGameHandler _onMessageJoinedGame;
     private event OnMessageMovedHandler _onMessageMoved;
@@ -40,6 +41,7 @@ public class MessageHandler : MonoBehaviour
     private event OnMessageChannelHandler _onMessageChannel;
     private event OnMessageCastHandler _onMessageCast;
     private event OnMessageStopActivityHandler _onMessageStopActivity;
+    private event OnMessageExperienceChangedHandler _onMessageExperienceChanged;
 
     public event OnMessageJoinedGameHandler OnMessageJoinedGameEvent {
         add => _onMessageJoinedGame += value;
@@ -111,6 +113,11 @@ public class MessageHandler : MonoBehaviour
         remove => _onMessageStopActivity -= value;
     }
 
+    public event OnMessageExperienceChangedHandler OnMessageExperienceChangedEvent {
+        add => _onMessageExperienceChanged += value;
+        remove => _onMessageExperienceChanged -= value;
+    }
+
     public static MessageHandler Current => _current;
 
     public OnMessageJoinedGameHandler OnMessageJoinedGame => _onMessageJoinedGame;
@@ -140,4 +147,6 @@ public class MessageHandler : MonoBehaviour
     public OnMessageCastHandler OnMessageCast => _onMessageCast;
 
     public OnMessageStopActivityHandler OnMessageStopActivity => _onMessageStopActivity;
+
+    public OnMessageExperienceChangedHandler OnMessageExperienceChanged => _onMessageExperienceChanged;
 }

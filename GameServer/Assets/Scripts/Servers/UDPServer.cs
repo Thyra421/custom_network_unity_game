@@ -37,7 +37,7 @@ public class UDPServer
     }
 
     private static void OnMessageMovement(MessageMovement messageMovement, Client client) {
-        if (client.Player.Activity.IsBusy && messageMovement.newTransform.position.Distance(messageMovement.newTransform.position) > .1f)
+        if (client.Player.Activity.IsBusy && client.Player.Movement.TransformData.position.Distance(messageMovement.newTransform.position) > .1f)
             client.Player.Activity.Stop();
         client.Player.Movement.SetMovement(messageMovement.newTransform, messageMovement.animation);
     }

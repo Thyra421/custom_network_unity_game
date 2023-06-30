@@ -11,16 +11,18 @@ public class CraftingItemSelectionGUI : MonoBehaviour
     [SerializeField]
     private TMP_Text _nameText;
     private CraftingPattern _craftingPattern;
+    private CraftingPanelGUI _craftingGUI;
 
     private void OnClickSelectItem() {
-        CraftingGUI.Current.SelectPattern(_craftingPattern);
+        _craftingGUI.SelectPattern(_craftingPattern);
     }
 
     private void Awake() {
         _selectButton.onClick.AddListener(OnClickSelectItem);
     }
 
-    public void Initialize(CraftingPattern pattern) {
+    public void Initialize(CraftingPanelGUI craftingGUI, CraftingPattern pattern) {
+        _craftingGUI = craftingGUI;
         _itemGUI.Initialize(pattern.Outcome.Item, pattern.Outcome.Amount);
         _nameText.text = pattern.Outcome.Item.name;
         _craftingPattern = pattern;
