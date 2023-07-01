@@ -27,9 +27,9 @@ public struct MessagePlay
 public struct MessageMovement
 {
     public TransformData newTransform;
-    public AnimationData animation;
+    public PlayerAnimationData animation;
 
-    public MessageMovement(TransformData newTransform, AnimationData animation) {
+    public MessageMovement(TransformData newTransform, PlayerAnimationData animation) {
         this.newTransform = newTransform;
         this.animation = animation;
     }

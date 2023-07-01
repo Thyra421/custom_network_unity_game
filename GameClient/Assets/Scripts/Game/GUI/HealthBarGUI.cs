@@ -4,20 +4,20 @@ using UnityEngine.UI;
 public class HealthBarGUI : MonoBehaviour
 {
     [SerializeField]
-    private Slider _slider;
+    private Slider _healthSlider;
     [SerializeField]
-    private Player _player;
+    private Character _character;
 
     private void OnChanged(int currentHealth, int maxHealth) {
-        _slider.maxValue = maxHealth;
-        _slider.value = currentHealth;
+        _healthSlider.maxValue = maxHealth;
+        _healthSlider.value = currentHealth;
     }
 
     public void Awake() {
-        _slider.maxValue = _player.Statistics.MaxHealth;
-        _slider.value = _player.Statistics.CurrentHealth;
-        _player.Statistics.OnChangedEvent += OnChanged;
+        _healthSlider.maxValue = _character.Statistics.MaxHealth;
+        _healthSlider.value = _character.Statistics.CurrentHealth;
+        _character.Statistics.OnChangedEvent += OnChanged;
     }
 
-    public Player Player => _player;
+    public Character Character => _character;
 }

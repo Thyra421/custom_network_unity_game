@@ -12,7 +12,7 @@ public class MessageHandler : MonoBehaviour
     }
 
     public delegate void OnMessageJoinedGameHandler(MessageJoinedGame messageJoinedGame);
-    public delegate void OnMessageMovedHandler(MessageMoved messageMoved);
+    public delegate void OnMessagePlayerMovedHandler(MessagePlayerMoved messagePlayerMoved);
     public delegate void OnMessageLeftGameHandler(MessageLeftGame messageLeftGame);
     public delegate void OnMessageGameStateHandler(MessageGameState messageGameState);
     public delegate void OnMessageAttackedHandler(MessageAttacked messageAttacked);
@@ -28,7 +28,7 @@ public class MessageHandler : MonoBehaviour
     public delegate void OnMessageExperienceChangedHandler(MessageExperienceChanged messageExperienceChanged);
 
     private event OnMessageJoinedGameHandler _onMessageJoinedGame;
-    private event OnMessageMovedHandler _onMessageMoved;
+    private event OnMessagePlayerMovedHandler _onMessagePlayerMoved;
     private event OnMessageLeftGameHandler _onMessageLeftGame;
     private event OnMessageGameStateHandler _onMessageGameState;
     private event OnMessageAttackedHandler _onMessageAttacked;
@@ -48,9 +48,9 @@ public class MessageHandler : MonoBehaviour
         remove => _onMessageJoinedGame -= value;
     }
 
-    public event OnMessageMovedHandler OnMessageMovedEvent {
-        add => _onMessageMoved += value;
-        remove => _onMessageMoved -= value;
+    public event OnMessagePlayerMovedHandler OnMessagePlayerMovedEvent {
+        add => _onMessagePlayerMoved += value;
+        remove => _onMessagePlayerMoved -= value;
     }
 
     public event OnMessageLeftGameHandler OnMessageLeftGameEvent {
@@ -122,7 +122,7 @@ public class MessageHandler : MonoBehaviour
 
     public OnMessageJoinedGameHandler OnMessageJoinedGame => _onMessageJoinedGame;
 
-    public OnMessageMovedHandler OnMessageMoved => _onMessageMoved;
+    public OnMessagePlayerMovedHandler OnMessagePlayerMoved => _onMessagePlayerMoved;
 
     public OnMessageLeftGameHandler OnMessageLeftGame => _onMessageLeftGame;
 

@@ -21,7 +21,7 @@ public class Node : MonoBehaviour
 
     public void RemoveOne() => _loots.Dequeue();
 
-    public NodeData Data => new NodeData(_id, _transformData, _dropSource.Prefab.name);
+    public NetworkObjectData Data => new NetworkObjectData(_id, _transformData, _dropSource.Prefab.name);
 
     public string Id => _id;
 

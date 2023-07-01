@@ -16,12 +16,21 @@ public struct MessageJoinedGame
     }
 }
 
-public struct MessageMoved
+public struct MessagePlayerMoved
 {
     public PlayerData[] players;
 
-    public MessageMoved(PlayerData[] players) {
+    public MessagePlayerMoved(PlayerData[] players) {
         this.players = players;
+    }
+}
+
+public struct MessageNPCMoved
+{
+    public NPCData[] NPCs;
+
+    public MessageNPCMoved(NPCData[] NPCs) {
+        this.NPCs = NPCs;
     }
 }
 
@@ -38,10 +47,19 @@ public struct MessageGameState
 
 public struct MessageSpawnNodes
 {
-    public NodeData[] nodes;
+    public NetworkObjectData[] nodes;
 
-    public MessageSpawnNodes(NodeData[] nodes) {
+    public MessageSpawnNodes(NetworkObjectData[] nodes) {
         this.nodes = nodes;
+    }
+}
+
+public struct MessageSpawnNPCs
+{
+    public NetworkObjectData[] NPCs;
+
+    public MessageSpawnNPCs(NetworkObjectData[] NPCs) {
+        this.NPCs = NPCs;
     }
 }
 
@@ -90,17 +108,17 @@ public struct MessageInventoryRemove
     }
 }
 
+public enum MessageErrorType
+{
+    inventoryFull, notEnoughInventorySpace, uniqueItem, objectNotFound, notEnoughResources, tooFarAway, cantWhileMoving, busy
+}
+
 public struct MessageError
 {
     public MessageErrorType type;
 
     public MessageError(MessageErrorType type) {
         this.type = type;
-    }
-
-    public enum MessageErrorType
-    {
-        inventoryFull, notEnoughInventorySpace, uniqueItem, objectNotFound, notEnoughResources, tooFarAway, cantWhileMoving, busy
     }
 }
 

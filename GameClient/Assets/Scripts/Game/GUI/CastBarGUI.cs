@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class CastBarGUI : MonoBehaviour
 {
     [SerializeField]
-    private Player _player;
+    private Character _character;
     [SerializeField]
     private Slider _timeSlider;
     [SerializeField]
@@ -34,9 +34,9 @@ public class CastBarGUI : MonoBehaviour
     }
 
     private void Awake() {
-        _player.OnCastEvent += InitializeCast;
-        _player.OnChannelEvent += InitializeChannel;
-        _player.OnStopActivityEvent += Stop;
+        _character.OnCastEvent += InitializeCast;
+        _character.OnChannelEvent += InitializeChannel;
+        _character.OnStopActivityEvent += Stop;
     }
 
     public void InitializeChannel(string activityName, int ticks, float intervalTimeInSeconds) {

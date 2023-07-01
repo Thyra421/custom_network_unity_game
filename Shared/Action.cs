@@ -48,7 +48,6 @@ public abstract class Action
     private ActionParameter[] _parameters;
     private readonly string _classAssemblyQualifiedName;
 
-
     public Action(string classAssemblyQualifiedName) {
         _classAssemblyQualifiedName = classAssemblyQualifiedName;
     }

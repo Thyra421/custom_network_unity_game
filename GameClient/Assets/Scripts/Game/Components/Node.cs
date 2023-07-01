@@ -1,8 +1,7 @@
 using UnityEngine;
 
-public class Node : MonoBehaviour
+public class Node : NetworkObject
 {
-    private string _id;
     private bool _isOnRange;
     private Outline _outline;
 
@@ -18,7 +17,7 @@ public class Node : MonoBehaviour
     }
 
     private void Update() {
-        LayerMask allLayersExceptPlayer = ~(1 << LayerMask.NameToLayer("Player"));
+        LayerMask allLayersExceptPlayer = ~(1 << LayerMask.NameToLayer("Character"));
         if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 100, allLayersExceptPlayer) && hit.transform == transform) {
             _outline.enabled = true;
 
@@ -34,11 +33,5 @@ public class Node : MonoBehaviour
         _outline.enabled = false;
     }
 
-    public void Initialize(string id) {
-        _id = id;
-    }
-
     public delegate void OnChangedHandler(int remainingLoots);
-
-    public string Id => _id;
 }

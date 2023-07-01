@@ -25,5 +25,4 @@ public class GameManager : MonoBehaviour
     public Transform RandomPlainSpawn => _plainsSpawn[UnityEngine.Random.Range(0, _plainsSpawn.Length)];
 
     public static GameManager Current => _current;
-
 }

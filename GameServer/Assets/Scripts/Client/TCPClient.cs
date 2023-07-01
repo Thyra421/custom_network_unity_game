@@ -3,7 +3,6 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
-using static PlayerExperience;
 
 public class TCPClient
 {
@@ -54,6 +53,7 @@ public class TCPClient
     private void OnMessagePlay(MessagePlay clientMessagePlay) {
         Player newPlayer = Reception.Current.JoinOrCreateRoom(_client);
         newPlayer.Room.PlayersManager.BroadcastTCP(new MessageJoinedGame(newPlayer.Data), newPlayer);
+
         MessageGameState messageGameState = new MessageGameState(newPlayer.Id, newPlayer.Room.PlayersManager.PlayerDatas);
         MessageSpawnNodes messageSpawnNodes = new MessageSpawnNodes(newPlayer.Room.NodesManager.NodeDatas);
         Send(messageGameState);
@@ -69,30 +69,32 @@ public class TCPClient
         Player player = _client.Player;
         Node node = player.Room.NodesManager.FindNode(clientMessagePickUp.id);
 
+        // node doesn't exist?
         if (node == null || node.RemainingLoots <= 0) {
-            Send(new MessageError(MessageError.MessageErrorType.objectNotFound));
+            Send(new MessageError(MessageErrorType.objectNotFound));
             return;
         }
-
+        // player too far away?
         if (!node.GetComponentInChildren<Collider>().bounds.Intersects(player.GetComponent<Collider>().bounds)) {
-            Send(new MessageError(MessageError.MessageErrorType.tooFarAway));
+            Send(new MessageError(MessageErrorType.tooFarAway));
             return;
         }
-
+        // start channel
         player.Activity.Channel(() => {
             Item item = node.Loot;
-            bool result = _client.Player.Inventory.Add(item, 1, true);
-            if (result) {
+            // can add to inventory?
+            if (player.Inventory.Add(item, 1, true)) {
                 node.RemoveOne();
-                if (node.RemainingLoots <= 0) {
-                    _client.Player.Room.PlayersManager.BroadcastTCP(new MessageDespawnObject(node.Id));
+                // node depleted?
+                if (node.RemainingLoots <= 0)
                     player.Room.NodesManager.RemoveNode(node);
-                }
+                // gain experience
                 PlayerSkillExperience skillExperience = player.Experience.GetSkillExperience(node.DropSource.SkillType);
                 skillExperience.AddExperience(5);
-                Send(new MessageExperienceChanged(node.DropSource.SkillType, skillExperience.CurrentLevel, skillExperience.Ratio));
-            } else
-                _client.Player.Room.PlayersManager.BroadcastTCP(new MessageStopActivity(player.Id));
+            }
+            // else cancel channeling
+            else
+                player.Activity.Stop();
         }, "Picking up", node.RemainingLoots, .5f);
     }
 
@@ -101,13 +103,13 @@ public class TCPClient
 
         // pattern exists?
         if (pattern == null) {
-            Send(new MessageError(MessageError.MessageErrorType.objectNotFound));
+            Send(new MessageError(MessageErrorType.objectNotFound));
             return;
         }
         // has all reagents?
         foreach (ItemStack itemStack in pattern.Reagents)
             if (!_client.Player.Inventory.Contains(itemStack.Item, itemStack.Amount)) {
-                Send(new MessageError(MessageError.MessageErrorType.notEnoughResources));
+                Send(new MessageError(MessageErrorType.notEnoughResources));
                 return;
             }
         //start casting
@@ -119,11 +121,11 @@ public class TCPClient
             if (_client.Player.Inventory.Add(pattern.Outcome.Item, pattern.Outcome.Amount, false)) {
                 Send(new MessageCrafted(pattern.Reagents.Select((ItemStack stack) => new ItemStackData(stack.Item.name, stack.Amount)).ToArray(), new ItemStackData(pattern.Outcome.Item.name, pattern.Outcome.Amount)));
             }
-            // put the reagents back in the inventory
+            // else put the reagents back in the inventory
             else {
                 foreach (ItemStack itemStack in pattern.Reagents)
                     _client.Player.Inventory.Add(itemStack.Item, itemStack.Amount, false);
-                Send(new MessageError(MessageError.MessageErrorType.notEnoughInventorySpace));
+                Send(new MessageError(MessageErrorType.notEnoughInventorySpace));
             }
         }, "Crafting", 1);
     }

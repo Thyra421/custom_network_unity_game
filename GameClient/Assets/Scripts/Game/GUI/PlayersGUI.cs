@@ -6,11 +6,11 @@ public class PlayersGUI : MonoBehaviour
 
     public static PlayersGUI Current => _current;
 
-    private void OnAddedPlayer(Player player) {
+    private void OnAddedPlayer(Character player) {
 
     }
 
-    private void OnRemovedPlayer(Player player) {
+    private void OnRemovedPlayer(Character player) {
 
     }
 

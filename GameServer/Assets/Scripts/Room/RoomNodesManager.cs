@@ -38,7 +38,7 @@ public class RoomNodesManager : MonoBehaviour
     private IEnumerator Respawn(DropSource dropSource) {
         yield return new WaitForSeconds(dropSource.RespawnTimerInSeconds);
         Node newNode = CreateNode(dropSource);
-        _room.PlayersManager.BroadcastTCP(new MessageSpawnNodes(new NodeData[] { newNode.Data }));
+        _room.PlayersManager.BroadcastTCP(new MessageSpawnNodes(new NetworkObjectData[] { newNode.Data }));
     }
 
     private void SpawnNodes() {
@@ -51,6 +51,7 @@ public class RoomNodesManager : MonoBehaviour
     }
 
     public void RemoveNode(Node node) {
+        _room.PlayersManager.BroadcastTCP(new MessageDespawnObject(node.Id));
         _occupied.Remove(GameManager.Current.FindSpawn(node.transform.position));
         if (node.DropSource.RespawnTimerInSeconds != -1)
             StartCoroutine(Respawn(node.DropSource));
@@ -62,6 +63,6 @@ public class RoomNodesManager : MonoBehaviour
         return _nodes.Find((Node m) => m.Id == id);
     }
 
-    public NodeData[] NodeDatas => _nodes.Select((Node node) => node.Data).ToArray();
+    public NetworkObjectData[] NodeDatas => _nodes.Select((Node node) => node.Data).ToArray();
     public List<Node> Nodes => _nodes;
 }

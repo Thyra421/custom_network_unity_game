@@ -1,68 +1,89 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerExperience
+public class PlayerSkillExperience
 {
-    private readonly PlayerSkillExperience _generalExperience = new PlayerSkillExperience(60);
-    private readonly PlayerSkillExperience _gatheringExperience = new PlayerSkillExperience(20);
-    private readonly PlayerSkillExperience _miningExperience = new PlayerSkillExperience(20);
-    private readonly PlayerSkillExperience _cookingExperience = new PlayerSkillExperience(20);
-    private readonly PlayerSkillExperience _alchemyExperience = new PlayerSkillExperience(20);
-    private readonly PlayerSkillExperience _forgingExperience = new PlayerSkillExperience(20);
-    private readonly PlayerSkillExperience _lumberjackingExperience = new PlayerSkillExperience(20);
-    private readonly PlayerSkillExperience _engineeringExperience = new PlayerSkillExperience(20);
-    private readonly PlayerSkillExperience _huntingExperience = new PlayerSkillExperience(20);
-    private readonly List<WeaponSkillExperience> _weaponsExperience = new List<WeaponSkillExperience>();
+    private readonly Player _player;
+    private readonly SkillType _skillType;
+    private int _currentExperience;
+    private int _experienceToLevel;
+    private int _currentLevel = 1;
 
-    public class WeaponSkillExperience
-    {
-        private readonly Weapon _weapon;
-        private readonly PlayerSkillExperience _experience = new PlayerSkillExperience(20);
-
-        public WeaponSkillExperience(Weapon weapon) {
-            _weapon = weapon;
-        }
-
-        public Weapon Weapon => _weapon;
-
-        public PlayerSkillExperience Experience => _experience;
+    private void LevelUp() {
+        _currentLevel++;
+        _currentExperience = 0;
+        _experienceToLevel = Mathf.RoundToInt(_experienceToLevel * Config.LEVEL_EXPERIENCE_INCREASE_MULTIPLICATOR);
     }
 
-    public class PlayerSkillExperience
-    {
-        private int _currentExperience;
-        private int _experienceToLevel;
-        private int _currentLevel = 1;
-
-        private void LevelUp() {
-            _currentLevel++;
-            _currentExperience = 0;
-            _experienceToLevel = Mathf.RoundToInt(_experienceToLevel * 1.3f);
+    public void AddExperience(int amount) {
+        _currentExperience += amount;
+        if (_currentExperience > _experienceToLevel) {
+            int excess = _currentExperience - _experienceToLevel;
+            LevelUp();
+            AddExperience(excess);
+            return;
         }
+        _player.Client.Tcp.Send(new MessageExperienceChanged(_skillType, _currentLevel, Ratio));
+    }
 
-        public void AddExperience(int amount) {
-            _currentExperience += amount;
-            if (_currentExperience > _experienceToLevel) {
-                int excess = _currentExperience - _experienceToLevel;
-                LevelUp();
-                AddExperience(excess);
-            }
-        }
+    public PlayerSkillExperience(Player player, int experienceToLevel, SkillType skillType) {
+        _player = player;
+        _experienceToLevel = experienceToLevel;
+        _skillType = skillType;
+    }
 
-        public PlayerSkillExperience(int experienceToLevel) {
-            _experienceToLevel = experienceToLevel;
-        }
+    public float Ratio => (float)_currentExperience / _experienceToLevel;
 
-        public float Ratio => (float)_currentExperience / _experienceToLevel;
+    public int CurrentLevel => _currentLevel;
+}
 
-        public int CurrentLevel => _currentLevel;
+public class WeaponSkillExperience
+{
+    private readonly Weapon _weapon;
+    private readonly PlayerSkillExperience _experience;
+
+    public WeaponSkillExperience(Player player, Weapon weapon) {
+        _weapon = weapon;
+        _experience = new PlayerSkillExperience(player, 20, SkillType.Weapon);
+    }
+
+    public Weapon Weapon => _weapon;
+
+    public PlayerSkillExperience Experience => _experience;
+}
+
+public class PlayerExperience
+{
+    private readonly Player _player;
+    private readonly PlayerSkillExperience _generalExperience;
+    private readonly PlayerSkillExperience _gatheringExperience;
+    private readonly PlayerSkillExperience _miningExperience;
+    private readonly PlayerSkillExperience _cookingExperience;
+    private readonly PlayerSkillExperience _alchemyExperience;
+    private readonly PlayerSkillExperience _forgingExperience;
+    private readonly PlayerSkillExperience _lumberjackingExperience;
+    private readonly PlayerSkillExperience _engineeringExperience;
+    private readonly PlayerSkillExperience _huntingExperience;
+    private readonly List<WeaponSkillExperience> _weaponsExperience = new List<WeaponSkillExperience>();
+
+    public PlayerExperience(Player player) {
+        _player = player;
+        _generalExperience = new PlayerSkillExperience(player, 60, SkillType.General);
+        _gatheringExperience = new PlayerSkillExperience(_player, 20, SkillType.Gathering);
+        _miningExperience = new PlayerSkillExperience(_player, 20, SkillType.Mining);
+        _cookingExperience = new PlayerSkillExperience(_player, 20, SkillType.Cooking);
+        _alchemyExperience = new PlayerSkillExperience(_player, 20, SkillType.Alchemy);
+        _forgingExperience = new PlayerSkillExperience(_player, 20, SkillType.Forging);
+        _lumberjackingExperience = new PlayerSkillExperience(_player, 20, SkillType.Lumberjacking);
+        _engineeringExperience = new PlayerSkillExperience(_player, 20, SkillType.Engineering);
+        _huntingExperience = new PlayerSkillExperience(_player, 20, SkillType.Hunting);
     }
 
     public void AddWeaponExperience(Weapon weapon, int amount) {
         WeaponSkillExperience skillExperience = FindWeaponExperience(weapon);
 
         if (skillExperience == null) {
-            skillExperience = new WeaponSkillExperience(weapon);
+            skillExperience = new WeaponSkillExperience(_player, weapon);
             _weaponsExperience.Add(skillExperience);
         }
 

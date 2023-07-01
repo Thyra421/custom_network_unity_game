@@ -16,7 +16,7 @@ public class PlayersManager : MonoBehaviour
 
     private void CreatePlayer(PlayerData data) {
         RemotePlayer newRemotePlayer = Instantiate(_playerPrefab, data.transform.position.ToVector3, Quaternion.identity).GetComponent<RemotePlayer>();
-        newRemotePlayer.Initialize(data);
+        newRemotePlayer.Initialize(data.id);
         _remotePlayers.Add(newRemotePlayer);
         _onAddedPlayer?.Invoke(newRemotePlayer);
     }
@@ -40,8 +40,8 @@ public class PlayersManager : MonoBehaviour
             CreatePlayer(messageJoinedGame.player);
     }
 
-    private void OnMessageMoved(MessageMoved serverMessageMoved) {
-        foreach (PlayerData p in serverMessageMoved.players) {
+    private void OnMessagePlayerMoved(MessagePlayerMoved serverMessagePlayerMoved) {
+        foreach (PlayerData p in serverMessagePlayerMoved.players) {
             if (p.id == _myPlayer.Id)
                 continue;
 
@@ -49,7 +49,7 @@ public class PlayersManager : MonoBehaviour
             if (remotePlayer != null) {
                 remotePlayer.Movement.DestinationPosition = p.transform.position.ToVector3;
                 remotePlayer.Movement.DestinationRotation = p.transform.rotation.ToVector3;
-                remotePlayer.Movement.AnimationData = p.animation;
+                remotePlayer.Movement.PlayerAnimationData = p.animation;
             }
         }
     }
@@ -67,7 +67,7 @@ public class PlayersManager : MonoBehaviour
         if (messageAttacked.id == _myPlayer.Id)
             return;
 
-        FindPlayer(messageAttacked.id)?.Attack.Attack();
+        FindPlayer(messageAttacked.id)?.TriggerAnimation("Attack");
     }
 
     private void OnMessageHealthChanged(MessageHealthChanged messageHealthChanged) {
@@ -112,7 +112,7 @@ public class PlayersManager : MonoBehaviour
         MessageHandler.Current.OnMessageGameStateEvent += OnMessageGameState;
         MessageHandler.Current.OnMessageJoinedGameEvent += OnMessageJoinedGame;
         MessageHandler.Current.OnMessageLeftGameEvent += OnMessageLeftGame;
-        MessageHandler.Current.OnMessageMovedEvent += OnMessageMoved;
+        MessageHandler.Current.OnMessagePlayerMovedEvent += OnMessagePlayerMoved;
         MessageHandler.Current.OnMessageAttackedEvent += OnMessageAttacked;
         MessageHandler.Current.OnMessageHealthChangedEvent += OnMessageHealthChanged;
         MessageHandler.Current.OnMessageChannelEvent += OnMessageChannel;
@@ -120,8 +120,8 @@ public class PlayersManager : MonoBehaviour
         MessageHandler.Current.OnMessageStopActivityEvent += OnMessageStopActivity;
     }
 
-    public delegate void OnAddedPlayerHandler(Player player);
-    public delegate void OnRemovedPlayerHandler(Player player);
+    public delegate void OnAddedPlayerHandler(Character player);
+    public delegate void OnRemovedPlayerHandler(Character player);
 
     public static PlayersManager Current => _current;
 

@@ -1,5 +1,4 @@
 using System;
-using System.Linq.Expressions;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -33,9 +32,9 @@ public static class UDPClient
     private static void OnMessage(string message) {
         Debug.Log($"[UDPServer] received {message}");
         Type messageType = Utils.GetMessageType(message);
-        if (messageType.Equals(typeof(MessageMoved))) {
-            MessageMoved messageMoved = Utils.Deserialize<MessageMoved>(message);
-            MessageHandler.Current.OnMessageMoved?.Invoke(messageMoved);
+        if (messageType.Equals(typeof(MessagePlayerMoved))) {
+            MessagePlayerMoved messagePlayerMoved = Utils.Deserialize<MessagePlayerMoved>(message);
+            MessageHandler.Current.OnMessagePlayerMoved?.Invoke(messagePlayerMoved);
         }
     }
 
