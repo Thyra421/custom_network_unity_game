@@ -17,17 +17,16 @@ public class Node : MonoBehaviour
         _isOnRange = false;
     }
 
-    private void OnMouseEnter() {
-        _outline.enabled = true;
-    }
+    private void Update() {
+        LayerMask allLayersExceptPlayer = ~(1 << LayerMask.NameToLayer("Player"));
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 100, allLayersExceptPlayer) && hit.transform == transform) {
+            _outline.enabled = true;
 
-    private void OnMouseExit() {
-        _outline.enabled = false;
-    }
-
-    private void OnMouseOver() {
-        if (Input.GetMouseButtonUp(1) && _isOnRange)
-            TCPClient.Send(new MessagePickUp(_id));
+            if (Input.GetMouseButtonUp(1) && _isOnRange)
+                TCPClient.Send(new MessagePickUp(_id));
+        }
+        else
+            _outline.enabled = false;
     }
 
     private void Awake() {

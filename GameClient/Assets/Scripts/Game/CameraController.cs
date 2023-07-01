@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CameraController : MonoBehaviour
 {
@@ -29,28 +30,29 @@ public class CameraController : MonoBehaviour
     }
 
     private void LateUpdate() {
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-        _currentDistance -= scroll * _zoomSpeed;
-        _currentDistance = Mathf.Clamp(_currentDistance, _minDistance, _maxDistance);
+        if (!EventSystem.current.IsPointerOverGameObject() && EventSystem.current.currentSelectedGameObject == null) {
+            float scroll = Input.GetAxis("Mouse ScrollWheel");
+            _currentDistance -= scroll * _zoomSpeed;
+            _currentDistance = Mathf.Clamp(_currentDistance, _minDistance, _maxDistance);
 
-        if (Input.GetMouseButton(0)) {
-            _xRotation += Input.GetAxis("Mouse X") * _rotationSpeed;
-            _yRotation -= Input.GetAxis("Mouse Y") * _rotationSpeed;
-            _yRotation = Mathf.Clamp(_yRotation, -60f, 60f);
-        }
-        if (Input.GetMouseButton(1)) {
-            _xRotation += Input.GetAxis("Mouse X") * _rotationSpeed;
-            _yRotation -= Input.GetAxis("Mouse Y") * _rotationSpeed;
-            _yRotation = Mathf.Clamp(_yRotation, -60f, 60f);
-            _player.transform.rotation = Quaternion.Euler(0f, _xRotation, 0f);
+            if (Input.GetMouseButton(0)) {
+                _xRotation += Input.GetAxis("Mouse X") * _rotationSpeed;
+                _yRotation -= Input.GetAxis("Mouse Y") * _rotationSpeed;
+                _yRotation = Mathf.Clamp(_yRotation, -60f, 60f);
+            }
+            if (Input.GetMouseButton(1)) {
+                _xRotation += Input.GetAxis("Mouse X") * _rotationSpeed;
+                _yRotation -= Input.GetAxis("Mouse Y") * _rotationSpeed;
+                _yRotation = Mathf.Clamp(_yRotation, -60f, 60f);
+                _player.transform.rotation = Quaternion.Euler(0f, _xRotation, 0f);
+            }
         }
 
         Quaternion rotation = Quaternion.Euler(_yRotation, _xRotation, 0f);
         Vector3 desiredPosition = _target.position + rotation * _offset * _currentDistance;
 
-
         if (Physics.Linecast(_target.position, desiredPosition, out RaycastHit hit, _collisionLayers))
-            desiredPosition = hit.point + Vector3.up *.1f;
+            desiredPosition = hit.point + Vector3.up * .1f;
 
         transform.SetPositionAndRotation(desiredPosition, rotation);
     }
