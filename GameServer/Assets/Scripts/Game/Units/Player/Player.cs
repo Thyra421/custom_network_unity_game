@@ -2,9 +2,8 @@
 
 [RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(PlayerAttack))]
-public class Player : MonoBehaviour
+public class Player : Unit
 {
-    private readonly string _id = Utils.GenerateUUID();
     private readonly PlayerInventory _inventory;
     private readonly PlayerItemActionController _itemActionController;
     private readonly PlayerExperience _experience;
@@ -29,8 +28,6 @@ public class Player : MonoBehaviour
         _room = room;
         client.Player = this;
     }
-
-    public string Id => _id;
 
     public Client Client => _client;
 

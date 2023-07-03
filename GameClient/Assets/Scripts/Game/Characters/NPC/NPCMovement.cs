@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class NPCMovement : Movement
 {
-    [SerializeField]
     protected float _rotationSpeed = 100f;
     private Vector3 _destinationPosition;
     private Vector3 _destinationRotation;
@@ -25,10 +24,13 @@ public class NPCMovement : Movement
     }
 
     private void Awake() {
-        _movementSpeed = 2.5f;
         _animator = GetComponent<Animator>();
         _destinationPosition = transform.position;
         _destinationRotation = transform.eulerAngles;
+    }
+
+    public void Initialize(Animal animal) {
+        _movementSpeed = animal.MovementSpeed;
     }
 
     public Vector3 DestinationPosition {

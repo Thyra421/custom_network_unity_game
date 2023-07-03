@@ -8,4 +8,5 @@ public static class SharedConfig
     public const string CRAFTED_ITEMS_PATH = "Shared/Items/Crafted";
     public const string DROP_SOURCES_PATH = "Shared/DropSources";
     public const string CRAFTING_PATTERNS_PATH = "Shared/CraftingPatterns";
+    public const string NPCS_PATH = "Shared/NPCs";
 }

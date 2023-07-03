@@ -47,9 +47,9 @@ public struct MessageGameState
 
 public struct MessageSpawnNodes
 {
-    public NetworkObjectData[] nodes;
+    public NodeData[] nodes;
 
-    public MessageSpawnNodes(NetworkObjectData[] nodes) {
+    public MessageSpawnNodes(NodeData[] nodes) {
         this.nodes = nodes;
     }
 }

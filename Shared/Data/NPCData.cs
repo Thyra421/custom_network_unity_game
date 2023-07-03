@@ -1,14 +1,14 @@
 public struct NPCData
 {
     public string id;
-    public TransformData transform;
-    public NPCAnimationData animation;
-    public string prefabName;
+    public TransformData transformData;
+    public NPCAnimationData NPCAnimationData;
+    public string animalName;
 
-    public NPCData(string id, TransformData transform, NPCAnimationData animation, string prefabName) {
+    public NPCData(string id, TransformData transformData, NPCAnimationData NPCAnimationData, string animalName) {
         this.id = id;
-        this.transform = transform;
-        this.animation = animation;
-        this.prefabName = prefabName;
+        this.transformData = transformData;
+        this.NPCAnimationData = NPCAnimationData;
+        this.animalName = animalName;
     }
 }

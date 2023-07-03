@@ -1365,21 +1365,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4674828005568757660, guid: a700f5532e721604c98efdf8be444b46, type: 3}
-      propertyPath: m_DrawInstanced
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4754003907703663407, guid: a700f5532e721604c98efdf8be444b46, type: 3}
       propertyPath: m_Name
-      value: Map_1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4754003907703663407, guid: a700f5532e721604c98efdf8be444b46, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5076050658030626290, guid: a700f5532e721604c98efdf8be444b46, type: 3}
-      propertyPath: m_ProvidesContacts
-      value: 0
+      value: Map
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3636,52 +3624,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34517a4150b402d4eb72d71c4d6a211d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _plainsSpawn:
-  - {fileID: 1932258258}
-  - {fileID: 1549018879}
-  - {fileID: 815909180}
-  - {fileID: 276096191}
-  - {fileID: 827669127}
-  - {fileID: 249317547}
-  - {fileID: 468148827}
-  - {fileID: 893556830}
-  - {fileID: 1134527790}
-  - {fileID: 1621405389}
-  - {fileID: 838887903}
-  - {fileID: 1858367}
-  - {fileID: 210418477}
-  - {fileID: 973938534}
-  - {fileID: 1561195632}
-  - {fileID: 96549753}
-  - {fileID: 950125083}
-  - {fileID: 811268029}
-  - {fileID: 63663077}
-  - {fileID: 25660246}
-  - {fileID: 229681262}
-  - {fileID: 630375968}
-  - {fileID: 1560004288}
-  - {fileID: 901198216}
-  - {fileID: 1469051057}
-  - {fileID: 340638629}
-  - {fileID: 1896027339}
-  - {fileID: 1200925144}
-  - {fileID: 2022142150}
-  - {fileID: 217922261}
-  - {fileID: 608324732}
-  - {fileID: 793765840}
-  - {fileID: 1042302212}
-  - {fileID: 569696543}
-  - {fileID: 1941100258}
-  - {fileID: 862212932}
-  - {fileID: 303151961}
-  - {fileID: 1056804133}
-  - {fileID: 654105932}
-  - {fileID: 971183864}
   _NPCAreas:
   - {fileID: 1913980706}
   - {fileID: 1654411860}
   - {fileID: 4423439}
   _playerTemplate: {fileID: 5084082204494938559, guid: b45595c11d2b97f44b6163dfb7ddca8b, type: 3}
+  _nodeAreas:
+  - _spawns:
+    - {fileID: 1932258258}
+    - {fileID: 1549018879}
+    - {fileID: 815909180}
+    - {fileID: 276096191}
+    - {fileID: 827669127}
+    - {fileID: 249317547}
+    - {fileID: 468148827}
+    - {fileID: 893556830}
+    - {fileID: 1134527790}
+    - {fileID: 1621405389}
+    - {fileID: 838887903}
+    - {fileID: 1858367}
+    - {fileID: 210418477}
+    - {fileID: 973938534}
+    - {fileID: 1561195632}
+    - {fileID: 96549753}
+    - {fileID: 950125083}
+    - {fileID: 811268029}
+    - {fileID: 63663077}
+    - {fileID: 25660246}
+    - {fileID: 229681262}
+    - {fileID: 630375968}
+    - {fileID: 1560004288}
+    - {fileID: 901198216}
+    - {fileID: 1469051057}
+    - {fileID: 340638629}
+    - {fileID: 1896027339}
+    - {fileID: 1200925144}
+    - {fileID: 2022142150}
+    - {fileID: 217922261}
+    - {fileID: 608324732}
+    - {fileID: 793765840}
+    - {fileID: 1042302212}
+    - {fileID: 569696543}
+    - {fileID: 1941100258}
+    - {fileID: 862212932}
+    - {fileID: 303151961}
+    - {fileID: 1056804133}
+    - {fileID: 654105932}
+    - {fileID: 971183864}
+    _entries:
+    - _amount: 20
+      _dropSource: {fileID: 11400000, guid: ffcd7bf58351d314b8a4489256ee173f, type: 2}
+    - _amount: 5
+      _dropSource: {fileID: 11400000, guid: 250d949adc923e648bc9786a593b4b28, type: 2}
   debugText: {fileID: 1679977755}
 --- !u!1 &1469051056
 GameObject:

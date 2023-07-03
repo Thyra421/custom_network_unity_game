@@ -11,10 +11,11 @@ public class NPCsManager : MonoBehaviour
     private NPC FindNPC(string id) => _NPCs.Find((NPC n) => n.Id == id);
 
     private void CreateNPC(NPCData data) {
-        GameObject newObject = Instantiate(Resources.Load<GameObject>($"{SharedConfig.PREFABS_PATH}/{data.prefabName}"), data.transform.position.ToVector3, Quaternion.Euler(data.transform.rotation.ToVector3));
+        Animal animal = Resources.Load<Animal>($"{SharedConfig.NPCS_PATH}/{data.animalName}");
+        GameObject newObject = Instantiate(animal.Prefab, data.transformData.position.ToVector3, Quaternion.Euler(data.transformData.rotation.ToVector3));
         NPC newNPC = newObject.AddComponent<NPC>();
         newNPC.Initialize(data.id);
-        newNPC.Movement.NPCAnimationData = data.animation;
+        newNPC.Movement.Initialize(animal);
         _NPCs.Add(newNPC);
         _onAddedNPC?.Invoke(newNPC);
     }
@@ -40,9 +41,9 @@ public class NPCsManager : MonoBehaviour
         foreach (NPCData n in serverMessageNPCMoved.NPCs) {
             NPC NPC = FindNPC(n.id);
             if (NPC != null) {
-                NPC.Movement.DestinationPosition = n.transform.position.ToVector3;
-                NPC.Movement.DestinationRotation = n.transform.rotation.ToVector3;
-                NPC.Movement.NPCAnimationData = n.animation;
+                NPC.Movement.DestinationPosition = n.transformData.position.ToVector3;
+                NPC.Movement.DestinationRotation = n.transformData.rotation.ToVector3;
+                NPC.Movement.NPCAnimationData = n.NPCAnimationData;
             }
         }
     }

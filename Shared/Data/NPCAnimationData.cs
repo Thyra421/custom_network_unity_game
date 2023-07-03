@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public struct NPCAnimationData
+﻿public struct NPCAnimationData
 {
     public bool isRunning;
 

@@ -52,6 +52,7 @@ public class DropSource : ScriptableObject
     /// <summary>
     /// Set to -1 if never respawn.
     /// </summary>
+    [Tooltip("Set to -1 if never respawn.")]
     [SerializeField]
     private float _respawnTimerInSeconds;
     [SerializeField]

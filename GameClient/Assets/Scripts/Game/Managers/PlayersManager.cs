@@ -15,7 +15,7 @@ public class PlayersManager : MonoBehaviour
     private RemotePlayer FindPlayer(string id) => _remotePlayers.Find((RemotePlayer p) => p.Id == id);
 
     private void CreatePlayer(PlayerData data) {
-        RemotePlayer newRemotePlayer = Instantiate(_playerPrefab, data.transform.position.ToVector3, Quaternion.identity).GetComponent<RemotePlayer>();
+        RemotePlayer newRemotePlayer = Instantiate(_playerPrefab, data.transformData.position.ToVector3, Quaternion.identity).GetComponent<RemotePlayer>();
         newRemotePlayer.Initialize(data.id);
         _remotePlayers.Add(newRemotePlayer);
         _onAddedPlayer?.Invoke(newRemotePlayer);
@@ -47,9 +47,9 @@ public class PlayersManager : MonoBehaviour
 
             RemotePlayer remotePlayer = FindPlayer(p.id);
             if (remotePlayer != null) {
-                remotePlayer.Movement.DestinationPosition = p.transform.position.ToVector3;
-                remotePlayer.Movement.DestinationRotation = p.transform.rotation.ToVector3;
-                remotePlayer.Movement.PlayerAnimationData = p.animation;
+                remotePlayer.Movement.DestinationPosition = p.transformData.position.ToVector3;
+                remotePlayer.Movement.DestinationRotation = p.transformData.rotation.ToVector3;
+                remotePlayer.Movement.PlayerAnimationData = p.animationData;
             }
         }
     }

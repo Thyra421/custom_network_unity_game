@@ -10,8 +10,9 @@ public class NodesManager : MonoBehaviour
 
     private Node FindNode(string id) => _nodes.Find((Node n) => n.Id == id);
 
-    private void CreateNode(NetworkObjectData data) {
-        GameObject newObject = Instantiate(Resources.Load<GameObject>($"{SharedConfig.PREFABS_PATH}/{data.prefabName}"), data.transform.position.ToVector3, Quaternion.Euler(data.transform.rotation.ToVector3));
+    private void CreateNode(NodeData data) {
+        DropSource dropSource = Resources.Load<DropSource>($"{SharedConfig.DROP_SOURCES_PATH}/{data.dropSourceName}");
+        GameObject newObject = Instantiate(dropSource.Prefab, data.transformData.position.ToVector3, Quaternion.Euler(data.transformData.rotation.ToVector3));
         Node newNode = newObject.AddComponent<Node>();
         newNode.Initialize(data.id);
         _nodes.Add(newNode);
@@ -26,7 +27,7 @@ public class NodesManager : MonoBehaviour
     }
 
     private void OnMessageSpawnNodes(MessageSpawnNodes messageSpawnNodes) {
-        foreach (NetworkObjectData o in messageSpawnNodes.nodes) {
+        foreach (NodeData o in messageSpawnNodes.nodes) {
             CreateNode(o);
         }
     }

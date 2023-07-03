@@ -10,51 +10,47 @@ public class RoomNodesManager : MonoBehaviour
     [SerializeField]
     private Room _room;
 
-    private Transform FindFreeSpawn() {
-        Transform randomTransform = GameManager.Current.RandomPlainSpawn;
+    private Transform FindFreeSpawn(NodeArea area) {
+        Transform randomTransform = area.RandomSpawn;
         while (_occupied.Contains(randomTransform))
-            randomTransform = GameManager.Current.RandomPlainSpawn;
+            randomTransform = area.RandomSpawn;
         _occupied.Add(randomTransform);
         return randomTransform;
     }
 
-    private Node CreateNode(DropSource dropSource) {
-        Transform spawn = FindFreeSpawn();
+    private Node CreateNode(DropSource dropSource, NodeArea area) {
+        Transform spawn = FindFreeSpawn(area);
 
         GameObject newObject = Instantiate(dropSource.Prefab, spawn.position, spawn.rotation, transform);
         Node newNode = newObject.AddComponent<Node>();
-        newNode.Initialize(dropSource);
+        newObject.name = $"{dropSource.name} {newNode.Id}";
+        newNode.Initialize(dropSource, area);
         _nodes.Add(newNode);
         return newNode;
     }
 
-    private void PrepareBiome(DropSource[] dropSources, int amount) {
-        for (int i = 0; i < amount; i++) {
-            DropSource dropSource = dropSources[Random.Range(0, dropSources.Length)];
-            CreateNode(dropSource);
-        }
+    private void PrepareNodes() {
+        foreach (NodeArea area in GameManager.Current.NodeAreas)
+            foreach (NodeAreaEntry entry in area.Entries)
+                for (int i = 0; i < entry.Amount; i++)
+                    CreateNode(entry.DropSource, area);
     }
 
-    private IEnumerator Respawn(DropSource dropSource) {
+    private IEnumerator Respawn(DropSource dropSource, NodeArea area) {
         yield return new WaitForSeconds(dropSource.RespawnTimerInSeconds);
-        Node newNode = CreateNode(dropSource);
-        _room.PlayersManager.BroadcastTCP(new MessageSpawnNodes(new NetworkObjectData[] { newNode.Data }));
-    }
-
-    private void SpawnNodes() {
-        PrepareBiome(Resources.LoadAll<DropSource>($"{SharedConfig.DROP_SOURCES_PATH}/Plains/Common"), 20);
-        PrepareBiome(Resources.LoadAll<DropSource>($"{SharedConfig.DROP_SOURCES_PATH}/Plains/Rare"), 5);
+        Node newNode = CreateNode(dropSource, area);
+        _room.PlayersManager.BroadcastTCP(new MessageSpawnNodes(new NodeData[] { newNode.Data }));
     }
 
     private void Awake() {
-        SpawnNodes();
+        PrepareNodes();
     }
 
     public void RemoveNode(Node node) {
         _room.PlayersManager.BroadcastTCP(new MessageDespawnObject(node.Id));
-        _occupied.Remove(GameManager.Current.FindSpawn(node.transform.position));
+        _occupied.Remove(node.NodeArea.FindSpawn(node.transform.position));
         if (node.DropSource.RespawnTimerInSeconds != -1)
-            StartCoroutine(Respawn(node.DropSource));
+            StartCoroutine(Respawn(node.DropSource, node.NodeArea));
         _nodes.Remove(node);
         Destroy(node.gameObject);
     }
@@ -63,7 +59,7 @@ public class RoomNodesManager : MonoBehaviour
         return _nodes.Find((Node m) => m.Id == id);
     }
 
-    public NetworkObjectData[] NodeDatas => _nodes.Select((Node node) => node.Data).ToArray();
+    public NodeData[] NodeDatas => _nodes.Select((Node node) => node.Data).ToArray();
 
     public List<Node> Nodes => _nodes;
 }
