@@ -21,4 +21,4 @@ MonoBehaviour:
   _minExclusive: 4
   _respawnTimerInSeconds: 120
   _skillType: 1
-  _requiredLevel: 0
+  _requiredLevel: 1

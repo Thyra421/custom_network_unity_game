@@ -23,7 +23,7 @@ public static class UDPClient
                 UdpReceiveResult result = await _udpClient.ReceiveAsync();
                 string message = Encoding.UTF8.GetString(result.Buffer);
                 OnMessage(message);
-            }  catch (Exception e) {
+            } catch (Exception e) {
                 Debug.LogException(e);
             }
         }
@@ -32,9 +32,13 @@ public static class UDPClient
     private static void OnMessage(string message) {
         Debug.Log($"[UDPServer] received {message}");
         Type messageType = Utils.GetMessageType(message);
+
         if (messageType.Equals(typeof(MessagePlayerMoved))) {
             MessagePlayerMoved messagePlayerMoved = Utils.Deserialize<MessagePlayerMoved>(message);
             MessageHandler.Current.OnMessagePlayerMoved?.Invoke(messagePlayerMoved);
+        } else if (messageType.Equals(typeof(MessageNPCMoved))) {
+            MessageNPCMoved messageNPCMoved = Utils.Deserialize<MessageNPCMoved>(message);
+            MessageHandler.Current.OnMessageNPCMoved?.Invoke(messageNPCMoved);
         }
     }
 

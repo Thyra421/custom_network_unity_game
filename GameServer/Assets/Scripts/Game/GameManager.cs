@@ -1,4 +1,5 @@
 using System;
+using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,10 @@ public class GameManager : MonoBehaviour
     private static GameManager _current;
     [SerializeField]
     private Transform[] _plainsSpawn;
+    [SerializeField]
+    private NPCArea[] _NPCAreas;
+    [SerializeField]
+    private GameObject _playerTemplate;
     public Text debugText;
 
     private void Awake() {
@@ -25,4 +30,8 @@ public class GameManager : MonoBehaviour
     public Transform RandomPlainSpawn => _plainsSpawn[UnityEngine.Random.Range(0, _plainsSpawn.Length)];
 
     public static GameManager Current => _current;
+
+    public NPCArea[] NPCAreas => _NPCAreas;
+
+    public GameObject PlayerTemplate => _playerTemplate;
 }

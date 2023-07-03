@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class TCPClient
@@ -56,8 +57,10 @@ public class TCPClient
 
         MessageGameState messageGameState = new MessageGameState(newPlayer.Id, newPlayer.Room.PlayersManager.PlayerDatas);
         MessageSpawnNodes messageSpawnNodes = new MessageSpawnNodes(newPlayer.Room.NodesManager.NodeDatas);
+        MessageSpawnNPCs messageSpawnNPCs = new MessageSpawnNPCs(newPlayer.Room.NPCsManager.NPCDatas);
         Send(messageGameState);
         Send(messageSpawnNodes);
+        Send(messageSpawnNPCs);
     }
 
     private void OnMessageAttack(MessageAttack clientMessageAttack) {
@@ -140,7 +143,7 @@ public class TCPClient
         Listen();
     }
 
-    public async void Send<T>(T message) {
+    public void Send<T>(T message) {
         string serializedMessage = Utils.Serialize(message);
         serializedMessage += '#';
         byte[] bytes = Encoding.ASCII.GetBytes(serializedMessage);
@@ -150,10 +153,10 @@ public class TCPClient
 
         while (i < bytes.Length) {
             if (i + batchSize >= bytes.Length) {
-                await _stream.WriteAsync(bytes, i, bytes.Length - i);
+                _stream.Write(bytes, i, bytes.Length - i);
                 i = bytes.Length;
             } else {
-                await _stream.WriteAsync(bytes, i, batchSize);
+                _stream.Write(bytes, i, batchSize);
                 i += batchSize;
             }
         }

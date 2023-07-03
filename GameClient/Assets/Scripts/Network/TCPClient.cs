@@ -78,7 +78,10 @@ public static class TCPClient
         } else if (messageType.Equals(typeof(MessageSpawnNodes))) {
             MessageSpawnNodes messageSpawnNodes = Utils.Deserialize<MessageSpawnNodes>(message);
             MessageHandler.Current.OnMessageSpawnNodes?.Invoke(messageSpawnNodes);
-        } else if (messageType.Equals(typeof(MessageAttacked))) {
+        } else if (messageType.Equals(typeof(MessageSpawnNPCs))) {
+            MessageSpawnNPCs messageSpawnNPCs = Utils.Deserialize<MessageSpawnNPCs>(message);
+            MessageHandler.Current.OnMessageSpawnNPCs?.Invoke(messageSpawnNPCs);
+        }  else if (messageType.Equals(typeof(MessageAttacked))) {
             MessageAttacked messageAttacked = Utils.Deserialize<MessageAttacked>(message);
             MessageHandler.Current.OnMessageAttacked?.Invoke(messageAttacked);
         } else if (messageType.Equals(typeof(MessageDespawnObject))) {

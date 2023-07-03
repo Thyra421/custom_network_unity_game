@@ -18,6 +18,8 @@ public class MessageHandler : MonoBehaviour
     public delegate void OnMessageAttackedHandler(MessageAttacked messageAttacked);
     public delegate void OnMessageDespawnObjectHandler(MessageDespawnObject messageDespawnObject);
     public delegate void OnMessageSpawnNodesHandler(MessageSpawnNodes messageSpawnNodes);
+    public delegate void OnMessageNPCMovedHandler(MessageNPCMoved messageNPCMoved);
+    public delegate void OnMessageSpawnNPCsHandler(MessageSpawnNPCs messageSpawnNPCs);
     public delegate void OnMessageInventoryAddHandler(MessageInventoryAdd messageInventoryAdd);
     public delegate void OnMessageInventoryRemoveHandler(MessageInventoryRemove messageInventoryRemove);
     public delegate void OnMessageCraftedHandler(MessageCrafted messageCrafted);
@@ -34,6 +36,8 @@ public class MessageHandler : MonoBehaviour
     private event OnMessageAttackedHandler _onMessageAttacked;
     private event OnMessageDespawnObjectHandler _onMessageDespawnObject;
     private event OnMessageSpawnNodesHandler _onMessageSpawnNodes;
+    private event OnMessageNPCMovedHandler _onMessageNPCMoved;
+    private event OnMessageSpawnNPCsHandler _onMessageSpawnNPCs;
     private event OnMessageInventoryAddHandler _onMessageInventoryAdd;
     private event OnMessageInventoryRemoveHandler _onMessageInventoryRemove;
     private event OnMessageCraftedHandler _onMessageCrafted;
@@ -76,6 +80,16 @@ public class MessageHandler : MonoBehaviour
     public event OnMessageSpawnNodesHandler OnMessageSpawnNodesEvent {
         add => _onMessageSpawnNodes += value;
         remove => _onMessageSpawnNodes -= value;
+    }
+
+    public event OnMessageSpawnNPCsHandler OnMessageSpawnNPCsEvent {
+        add => _onMessageSpawnNPCs += value;
+        remove => _onMessageSpawnNPCs -= value;
+    }
+
+    public event OnMessageNPCMovedHandler OnMessageNPCMovedEvent {
+        add => _onMessageNPCMoved += value;
+        remove => _onMessageNPCMoved -= value;
     }
 
     public event OnMessageInventoryAddHandler OnMessageInventoryAddEvent {
@@ -133,6 +147,10 @@ public class MessageHandler : MonoBehaviour
     public OnMessageDespawnObjectHandler OnMessageDespawnObject => _onMessageDespawnObject;
 
     public OnMessageSpawnNodesHandler OnMessageSpawnNodes => _onMessageSpawnNodes;
+
+    public OnMessageSpawnNPCsHandler OnMessageSpawnNPCs => _onMessageSpawnNPCs;
+
+    public OnMessageNPCMovedHandler OnMessageNPCMoved => _onMessageNPCMoved;
 
     public OnMessageInventoryAddHandler OnMessageInventoryAdd => _onMessageInventoryAdd;
 

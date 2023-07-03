@@ -4,35 +4,47 @@ using UnityEngine;
 public class NPCsManager : MonoBehaviour
 {
     private static NPCsManager _current;
-    private readonly List<Node> _nodes = new List<Node>();
-    private event OnAddedNodeHandler _onAddedNode;
-    private event OnRemovedNodeHandler _onRemovedNode;
+    private readonly List<NPC> _NPCs = new List<NPC>();
+    private event OnAddedNPCHandler _onAddedNPC;
+    private event OnRemovedNPCHandler _onRemovedNPC;
 
-    private Node FindNode(string id) => _nodes.Find((Node n) => n.Id == id);
+    private NPC FindNPC(string id) => _NPCs.Find((NPC n) => n.Id == id);
 
-    private void CreateNode(NetworkObjectData data) {
+    private void CreateNPC(NPCData data) {
         GameObject newObject = Instantiate(Resources.Load<GameObject>($"{SharedConfig.PREFABS_PATH}/{data.prefabName}"), data.transform.position.ToVector3, Quaternion.Euler(data.transform.rotation.ToVector3));
-        Node newNode = newObject.AddComponent<Node>();
-        newNode.Initialize(data.id);
-        _nodes.Add(newNode);
-        _onAddedNode?.Invoke(newNode);
+        NPC newNPC = newObject.AddComponent<NPC>();
+        newNPC.Initialize(data.id);
+        newNPC.Movement.NPCAnimationData = data.animation;
+        _NPCs.Add(newNPC);
+        _onAddedNPC?.Invoke(newNPC);
     }
 
-    private void RemoveNode(string id) {
-        Node node = FindNode(id);
-        _onRemovedNode?.Invoke(node);
-        _nodes.Remove(node);
-        Destroy(node.gameObject);
+    private void RemoveNPC(string id) {
+        NPC NPC = FindNPC(id);
+        _onRemovedNPC?.Invoke(NPC);
+        _NPCs.Remove(NPC);
+        Destroy(NPC.gameObject);
     }
 
-    private void OnMessageSpawnNodes(MessageSpawnNodes messageSpawnNodes) {
-        foreach (NetworkObjectData o in messageSpawnNodes.nodes) {
-            CreateNode(o);
+    private void OnMessageSpawnNPCs(MessageSpawnNPCs messageSpawnNPCs) {
+        foreach (NPCData n in messageSpawnNPCs.NPCs) {
+            CreateNPC(n);
         }
     }
 
-    private void OnMessageDespawnObject(MessageDespawnObject messageDespawnObject) {
-        RemoveNode(messageDespawnObject.id);
+    //private void OnMessageDespawnObject(MessageDespawnObject messageDespawnObject) {
+    //    RemoveNPC(messageDespawnObject.id);
+    //}
+
+    private void OnMessageNPCMoved(MessageNPCMoved serverMessageNPCMoved) {
+        foreach (NPCData n in serverMessageNPCMoved.NPCs) {
+            NPC NPC = FindNPC(n.id);
+            if (NPC != null) {
+                NPC.Movement.DestinationPosition = n.transform.position.ToVector3;
+                NPC.Movement.DestinationRotation = n.transform.rotation.ToVector3;
+                NPC.Movement.NPCAnimationData = n.animation;
+            }
+        }
     }
 
     private void Awake() {
@@ -40,22 +52,23 @@ public class NPCsManager : MonoBehaviour
             _current = this;
         else
             Destroy(gameObject);
-        MessageHandler.Current.OnMessageDespawnObjectEvent += OnMessageDespawnObject;
-        MessageHandler.Current.OnMessageSpawnNodesEvent += OnMessageSpawnNodes;
+        //MessageHandler.Current.OnMessageDespawnObjectEvent += OnMessageDespawnObject;
+        MessageHandler.Current.OnMessageSpawnNPCsEvent += OnMessageSpawnNPCs;
+        MessageHandler.Current.OnMessageNPCMovedEvent += OnMessageNPCMoved;
     }
 
-    public delegate void OnAddedNodeHandler(Node node);
-    public delegate void OnRemovedNodeHandler(Node node);
+    public delegate void OnAddedNPCHandler(NPC NPC);
+    public delegate void OnRemovedNPCHandler(NPC NPC);
 
     public static NPCsManager Current => _current;
 
-    public event OnAddedNodeHandler OnAddedNodeEvent {
-        add => _onAddedNode += value;
-        remove => _onAddedNode -= value;
+    public event OnAddedNPCHandler OnAddedNPCEvent {
+        add => _onAddedNPC += value;
+        remove => _onAddedNPC -= value;
     }
 
-    public event OnRemovedNodeHandler OnRemovedNodeEvent {
-        add => _onRemovedNode += value;
-        remove => _onRemovedNode -= value;
+    public event OnRemovedNPCHandler OnRemovedNPCEvent {
+        add => _onRemovedNPC += value;
+        remove => _onRemovedNPC -= value;
     }
 }

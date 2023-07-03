@@ -26,11 +26,6 @@ public class RoomPlayersManager : MonoBehaviour
         }
     }
 
-    private PlayerData[] GetPlayerDatas(Predicate<Player> condition) =>
-        _players.FindAll(condition).Select((Player player) => player.Data).ToArray();
-
-    private Client[] Clients => _players.Select((Player player) => player.Client).ToArray();
-
     private void BroadcastUDP<T>(CustomMessageHandler<T> customMessage, SendConditionHandler<T> condition) {
         foreach (Client client in Clients) {
             T message = customMessage(client.Player);
@@ -39,8 +34,19 @@ public class RoomPlayersManager : MonoBehaviour
         }
     }
 
+    private PlayerData[] GetPlayerDatas(Predicate<Player> condition) =>
+        _players.FindAll(condition).Select((Player player) => player.Data).ToArray();
+
+    private Client[] Clients => _players.Select((Player player) => player.Client).ToArray();
+
     private void Update() {
         SyncMovement();
+    }
+
+    public void BroadcastUDP<T>(T message) {
+        foreach (Client client in Clients) {
+            client.Udp?.Send(message);
+        }
     }
 
     public void BroadcastTCP<T>(T message) {
@@ -55,7 +61,7 @@ public class RoomPlayersManager : MonoBehaviour
     }
 
     public Player CreatePlayer(Client client) {
-        GameObject newGameObject = Instantiate(Resources.Load<GameObject>($"{Config.PREFABS_PATH}/Player"), transform);
+        GameObject newGameObject = Instantiate(GameManager.Current.PlayerTemplate, transform);
         Player newPlayer = newGameObject.GetComponent<Player>();
         newGameObject.name = "Player " + newPlayer.Id;
         newPlayer.Initialize(client, _room);

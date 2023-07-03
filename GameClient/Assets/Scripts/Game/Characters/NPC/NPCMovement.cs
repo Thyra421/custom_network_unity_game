@@ -25,6 +25,8 @@ public class NPCMovement : Movement
     }
 
     private void Awake() {
+        _movementSpeed = 2.5f;
+        _animator = GetComponent<Animator>();
         _destinationPosition = transform.position;
         _destinationRotation = transform.eulerAngles;
     }
@@ -33,10 +35,12 @@ public class NPCMovement : Movement
         get => _destinationPosition;
         set => _destinationPosition = value;
     }
+
     public Vector3 DestinationRotation {
         get => _destinationRotation;
         set => _destinationRotation = value;
     }
+
     public NPCAnimationData NPCAnimationData {
         get => _NPCAnimationData;
         set => _NPCAnimationData = value;

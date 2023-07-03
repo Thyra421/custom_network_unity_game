@@ -56,9 +56,9 @@ public struct MessageSpawnNodes
 
 public struct MessageSpawnNPCs
 {
-    public NetworkObjectData[] NPCs;
+    public NPCData[] NPCs;
 
-    public MessageSpawnNPCs(NetworkObjectData[] NPCs) {
+    public MessageSpawnNPCs(NPCData[] NPCs) {
         this.NPCs = NPCs;
     }
 }

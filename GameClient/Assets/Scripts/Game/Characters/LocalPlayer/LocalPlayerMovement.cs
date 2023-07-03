@@ -18,7 +18,7 @@ public class LocalPlayerMovement : Movement
     [SerializeField]
     private float _gravityStrength = -10;
     [SerializeField]
-    private LayerMask _walkableLayer;
+    private LayerMask _whatIsGround;
 
     private Vector3 _direction;
     private float _verticalVelocity;
@@ -98,7 +98,7 @@ public class LocalPlayerMovement : Movement
 
     public bool IsOnSlope => Vector3.Angle(Vector3.up, _hitNormal) >= _characterController.slopeLimit;
 
-    public bool IsGrounded => Physics.CheckSphere(transform.position, .2f, _walkableLayer);
+    public bool IsGrounded => Physics.CheckSphere(transform.position, .2f, _whatIsGround);
 
     public PlayerAnimationData Animation => new PlayerAnimationData(_animator.GetFloat("X"), _animator.GetFloat("Y"), _animator.GetBool("IsRunning"), _animator.GetBool("IsGrounded"));
 }

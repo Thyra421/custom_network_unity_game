@@ -36,10 +36,12 @@ public class RemotePlayerMovement : Movement
         get => _destinationPosition;
         set => _destinationPosition = value;
     }
+
     public Vector3 DestinationRotation {
         get => _destinationRotation;
         set => _destinationRotation = value;
     }
+
     public PlayerAnimationData PlayerAnimationData {
         get => _playerAnimationData;
         set => _playerAnimationData = value;

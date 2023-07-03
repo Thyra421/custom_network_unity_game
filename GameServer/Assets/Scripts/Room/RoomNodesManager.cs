@@ -21,7 +21,7 @@ public class RoomNodesManager : MonoBehaviour
     private Node CreateNode(DropSource dropSource) {
         Transform spawn = FindFreeSpawn();
 
-        GameObject newObject = Instantiate(Resources.Load<GameObject>($"{SharedConfig.PREFABS_PATH}/{dropSource.Prefab.name}"), spawn.position, spawn.rotation, transform);
+        GameObject newObject = Instantiate(dropSource.Prefab, spawn.position, spawn.rotation, transform);
         Node newNode = newObject.AddComponent<Node>();
         newNode.Initialize(dropSource);
         _nodes.Add(newNode);
@@ -64,5 +64,6 @@ public class RoomNodesManager : MonoBehaviour
     }
 
     public NetworkObjectData[] NodeDatas => _nodes.Select((Node node) => node.Data).ToArray();
+
     public List<Node> Nodes => _nodes;
 }

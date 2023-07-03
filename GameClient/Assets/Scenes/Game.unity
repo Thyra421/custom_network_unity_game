@@ -3231,6 +3231,7 @@ GameObject:
   - component: {fileID: 365963030}
   - component: {fileID: 365963031}
   - component: {fileID: 365963032}
+  - component: {fileID: 365963033}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -3343,6 +3344,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aea24b35f1da12246821480fc3bfa745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &365963033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 365963023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec2d342aa1ff4f34aaf46b0b50d899a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &399527543
@@ -9207,7 +9220,7 @@ MonoBehaviour:
   _deceleration: 40
   _jumpHeight: 1
   _gravityStrength: -10
-  _walkableLayer:
+  _whatIsGround:
     serializedVersion: 2
     m_Bits: 64
 --- !u!114 &1084622875
@@ -10545,7 +10558,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6031e5da56707e44db191ad8cd5d83d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 1084622875}
+  _character: {fileID: 1084622875}
   _timeSlider: {fileID: 8411110401218532210}
   _nameText: {fileID: 3181013231664974991}
 --- !u!114 &1215654921
@@ -10561,7 +10574,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _healthSlider: {fileID: 450074523}
-  _player: {fileID: 1084622875}
+  _character: {fileID: 1084622875}
 --- !u!114 &1215654922
 MonoBehaviour:
   m_ObjectHideFlags: 0
