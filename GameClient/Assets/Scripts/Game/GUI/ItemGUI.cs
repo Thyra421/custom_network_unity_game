@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ItemGUI : MonoBehaviour
@@ -8,6 +9,8 @@ public class ItemGUI : MonoBehaviour
     private Image _image;
     [SerializeField]
     private TMP_Text _amountText;
+    [SerializeField]
+    private RectTransform _rectTransform;
     private int _amount;
     private Item _item;
 
@@ -23,13 +26,17 @@ public class ItemGUI : MonoBehaviour
             _image.gameObject.SetActive(true);
             _amountText.gameObject.SetActive(item.Property == ItemProperty.Stackable);
         }
-    }
+    }    
 
-    private void OnMouseOver() {
-        TooltipGUI.Current.Hide();
-    }
+    public int Amount => _amount;
 
-    private void OnMouseEnter() {
-        TooltipGUI.Current.Show(_item);
-    }
+    public Item Item => _item;
+
+    //private void OnMouseOver() {
+    //    TooltipGUI.Current.Hide();
+    //}
+
+    //private void OnMouseEnter() {
+    //    TooltipGUI.Current.Show(_item);
+    //}
 }

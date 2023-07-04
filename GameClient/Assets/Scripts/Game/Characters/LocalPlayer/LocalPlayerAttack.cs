@@ -3,7 +3,16 @@ using UnityEngine;
 public class LocalPlayerAttack : MonoBehaviour
 {
     [SerializeField]
-    protected Animator _animator;
+    private Animator _animator;
+    private Weapon _weapon;
+    private event OnWeaponEquipedHandler _onWeaponEquiped;
+
+    public delegate void OnWeaponEquipedHandler(Weapon weapon);
+
+    public void Equip(Weapon weapon) {
+        _weapon = weapon;
+        _onWeaponEquiped?.Invoke(weapon);
+    }
 
     public void Attack() {
         _animator.SetTrigger("Attack");
@@ -15,5 +24,10 @@ public class LocalPlayerAttack : MonoBehaviour
             Attack();
         if (Input.GetKeyUp(KeyCode.Alpha2))
             TCPClient.Send(new MessageUseItem("HealthPotion"));
+    }
+
+    public event OnWeaponEquipedHandler OnWeaponEquipedEvent {
+        add => _onWeaponEquiped += value;
+        remove => _onWeaponEquiped -= value;
     }
 }

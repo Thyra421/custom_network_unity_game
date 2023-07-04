@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(PlayerMovement))]
-[RequireComponent(typeof(PlayerAttack))]
+[RequireComponent(typeof(PlayerAbilities))]
 public class Player : Unit
 {
     private readonly PlayerInventory _inventory;
@@ -11,9 +11,9 @@ public class Player : Unit
     [SerializeField]
     private PlayerMovement _movement;
     [SerializeField]
-    private PlayerAttack _attack;
+    private PlayerAbilities _abilities;
     [SerializeField]
-    private PlayerActivity _activity;
+    private PlayerActivity _activity;    
     private Client _client;
     private Room _room;
 
@@ -21,6 +21,7 @@ public class Player : Unit
         _inventory = new PlayerInventory(this);
         _itemActionController = new PlayerItemActionController(this);
         _experience = new PlayerExperience(this);
+        _abilities
     }
 
     public void Initialize(Client client, Room room) {
@@ -39,7 +40,7 @@ public class Player : Unit
 
     public PlayerItemActionController ItemActionController => _itemActionController;
 
-    public PlayerAttack Attack => _attack;
+    public PlayerAbilities Abilities => _abilities;
 
     public PlayerMovement Movement => _movement;
 

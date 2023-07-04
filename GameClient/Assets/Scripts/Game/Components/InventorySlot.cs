@@ -16,6 +16,14 @@ public class InventorySlot
         _onChanged?.Invoke(_item, _amount);
     }
 
+    public void Swap(InventorySlot other) {
+        Item tmpItem = other._item;
+        int tmpAmount = other._amount;
+
+        other.Set(_item, _amount);
+        Set(tmpItem, tmpAmount);
+    }
+
     public void Remove(int amount) {
         _amount -= amount;
         if (_amount == 0)

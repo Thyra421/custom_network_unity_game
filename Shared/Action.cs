@@ -16,8 +16,6 @@ public class ActionParameter
         _parameterName = parameterName;
     }
 
-    public string TypeName => _typeName;
-
     public object ToObject {
         get {
             Type type = Type.GetType(_typeName);
@@ -37,6 +35,10 @@ public class ActionParameter
             return null;
         }
     }
+
+    public string TypeName => _typeName;
+
+    public string ParameterName => _parameterName;
 }
 
 [Serializable]

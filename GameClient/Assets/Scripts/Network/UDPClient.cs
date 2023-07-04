@@ -42,16 +42,11 @@ public static class UDPClient
         }
     }
 
-    private static void OnError() => Debug.LogError("[UDPClient] not connected");
+    private static void OnError() => Debug.LogWarning("[UDPClient] not connected");
 
     private static void OnConnected() => Debug.Log("[UDPClient] connected");
 
     private static void OnListening() => Debug.Log("[UDPClient] listening on port " + _port);
-
-    private static void OnDisconnected() {
-        Debug.Log("[UDPClient] disconnected");
-        SceneLoader.Current.LoadMenuAsync();
-    }
 
     public static int Port => _port;
 

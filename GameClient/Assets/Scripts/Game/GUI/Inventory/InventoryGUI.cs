@@ -18,7 +18,7 @@ public class InventoryGUI : MonoBehaviour
     private void Start() {
         for (int i = 0; i < InventoryManager.Current.Slots.Length; i++) {
             InventorySlotGUI newSlot = Instantiate(_slotGUITemplate, _parent).GetComponent<InventorySlotGUI>();
-            InventoryManager.Current.Slots[i].OnChanged += newSlot.OnChanged;
+            newSlot.Initialize(InventoryManager.Current.Slots[i]);
         }
     }
 

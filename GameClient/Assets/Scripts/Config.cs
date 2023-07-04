@@ -4,4 +4,5 @@ public static class Config
     public const int SERVER_PORT_UDP = 8080;
     public const int SERVER_PORT_HTTP = 80;
     public const string SERVER_ADDRESS = "127.0.0.1";
+    public const int ACTION_BAR_SLOTS = 8;
 }

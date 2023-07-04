@@ -55,6 +55,14 @@ public class InventoryManager : MonoBehaviour
         MessageHandler.Current.OnMessageCraftedEvent += OnMessageCrafted;
     }
 
+    public void Swap() {
+
+    }
+
+    public void ADD_TEST_ITEM(Item i) {
+        Add(i, 1);
+    }
+
     public InventorySlot[] Slots => _slots;
 
     public static InventoryManager Current => _current;
