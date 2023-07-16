@@ -13,7 +13,9 @@ public class Player : Unit
     [SerializeField]
     private PlayerAbilities _abilities;
     [SerializeField]
-    private PlayerActivity _activity;    
+    private PlayerActivity _activity;
+    [SerializeField]
+    private PlayerCooldowns _cooldowns;
     private Client _client;
     private Room _room;
 
@@ -21,7 +23,6 @@ public class Player : Unit
         _inventory = new PlayerInventory(this);
         _itemActionController = new PlayerItemActionController(this);
         _experience = new PlayerExperience(this);
-        _abilities
     }
 
     public void Initialize(Client client, Room room) {
@@ -47,6 +48,8 @@ public class Player : Unit
     public PlayerActivity Activity => _activity;
 
     public PlayerExperience Experience => _experience;
+
+    public PlayerCooldowns Cooldowns => _cooldowns;
 
     public PlayerData Data => new PlayerData(_id, Movement.TransformData, Movement.PlayerAnimationData);
 }

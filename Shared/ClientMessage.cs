@@ -35,8 +35,13 @@ public struct MessageMovement
     }
 }
 
-public struct MessageAttack
+public struct MessageUseAbility
 {
+    public string abilityName;
+
+    public MessageUseAbility(string abilityName) {
+        this.abilityName = abilityName;
+    }
 }
 
 public struct MessagePickUp
@@ -74,5 +79,14 @@ public struct MessageTriggerAnimation
 
     public MessageTriggerAnimation(string animationName) {
         this.animationName = animationName;
+    }
+}
+
+public struct MessageEquip
+{
+    public string weaponName;
+
+    public MessageEquip(string weaponName) {
+        this.weaponName = weaponName;
     }
 }

@@ -27,7 +27,7 @@ public class UDPServer
     }
 
     private static void OnMessage(string message, Client client) {
-        Debug.Log($"[UDPServer] received {message}");
+        //Debug.Log($"[UDPServer] received {message}");
         Type messageType = Utils.GetMessageType(message);
 
         if (messageType.Equals(typeof(MessageMovement))) {

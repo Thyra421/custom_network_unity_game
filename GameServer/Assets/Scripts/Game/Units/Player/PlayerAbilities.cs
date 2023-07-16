@@ -1,25 +1,39 @@
+using System.Linq;
 using UnityEngine;
 
 public class PlayerAbilities : MonoBehaviour
 {
     [SerializeField]
+    private Player _player;
+    [SerializeField]
     private GameObject _meleePrefab;
     [SerializeField]
-    private PlayerWeaponAbilityActionController _weaponAbilityActionController;
-
-    public void UseAbility(int index) {
-        switch (index) {
-            case < 3:
-                _weaponAbilityActionController.Use(_weapon.Abilities[index]);
-                break;
-        }
-    }
-
-    public void Initialize(PlayerWeaponAbilityActionController weaponAbilityActionController) {
-        _weaponAbilityActionController = weaponAbilityActionController;
-    }
-
+    private PlayerAbilityActionController _weaponAbilityActionController;
     private Weapon _weapon;
+    private Ability _extraAbility;
+
+    private void Awake() {
+        _weaponAbilityActionController = new PlayerAbilityActionController(_player);
+    }
+
+    public void UseAbility(Ability ability) {
+        if ((_weapon != null && _weapon.Abilities.Any((Ability a) => a == ability)) || ability == _extraAbility) {
+            if (!_player.Cooldowns.Any(ability)) {
+                _weaponAbilityActionController.Use(ability);
+                _player.Room.PlayersManager.BroadcastTCP(new MessageUsedAbility(_player.Id, ability.name));
+            } else
+                _player.Client.Tcp.Send(new MessageError(MessageErrorType.inCooldown));
+        } else
+            _player.Client.Tcp.Send(new MessageError(MessageErrorType.cantDoThat));
+    }
+
+    public void Equip(Weapon weapon) {
+        if (_player.Inventory.Contains(weapon, 1)) {
+            _weapon = weapon;
+            _player.Room.PlayersManager.BroadcastTCP(new MessageEquiped(_player.Id, _weapon.name));
+        } else
+            _player.Client.Tcp.Send(new MessageError(MessageErrorType.cantDoThat));
+    }
 
     public GameObject MeleePrefab => _meleePrefab;
 }

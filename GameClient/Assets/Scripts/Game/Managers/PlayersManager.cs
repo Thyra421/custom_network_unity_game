@@ -63,11 +63,15 @@ public class PlayersManager : MonoBehaviour
             RemovePlayer(remotePlayer);
     }
 
-    private void OnMessageAttacked(MessageAttacked messageAttacked) {
-        if (messageAttacked.id == _myPlayer.Id)
-            return;
+    private void OnMessageUsedAbility(MessageUsedAbility messageUsedAbility) {
+        Ability ability = Resources.Load<Ability>($"{SharedConfig.ABILITIES_PATH}/{messageUsedAbility.abilityName}");
 
-        FindPlayer(messageAttacked.id)?.TriggerAnimation("Attack");
+        if (messageUsedAbility.id == _myPlayer.Id) {
+            AbilitiesManager.Current.UseAbility(ability);
+        }
+            
+
+        FindPlayer(messageUsedAbility.id)?.TriggerAnimation("Attack");
     }
 
     private void OnMessageHealthChanged(MessageHealthChanged messageHealthChanged) {
@@ -113,7 +117,7 @@ public class PlayersManager : MonoBehaviour
         MessageHandler.Current.OnMessageJoinedGameEvent += OnMessageJoinedGame;
         MessageHandler.Current.OnMessageLeftGameEvent += OnMessageLeftGame;
         MessageHandler.Current.OnMessagePlayerMovedEvent += OnMessagePlayerMoved;
-        MessageHandler.Current.OnMessageAttackedEvent += OnMessageAttacked;
+        MessageHandler.Current.OnMessageUsedAbilityEvent += OnMessageUsedAbility;
         MessageHandler.Current.OnMessageHealthChangedEvent += OnMessageHealthChanged;
         MessageHandler.Current.OnMessageChannelEvent += OnMessageChannel;
         MessageHandler.Current.OnMessageCastEvent += OnMessageCast;

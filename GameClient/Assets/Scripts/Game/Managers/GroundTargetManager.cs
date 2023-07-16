@@ -9,18 +9,18 @@ public class GroundTargetManager : MonoBehaviour
     private GameObject _currentTarget;
 
     private void Update() {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        bool result = Physics.Raycast(ray, out RaycastHit hit, 100, _whatIsGround);
+        //bool result = Physics.Raycast(ray, out RaycastHit hit, 100, _whatIsGround);
 
-        if (Input.GetKeyDown(KeyCode.Alpha3)) {
-            if (_currentTarget != null)
-                Destroy(_currentTarget);
-            else if (result)
-                _currentTarget = Instantiate(_groundTargetTemplate, hit.point, Quaternion.identity);
-        }
+        //if (Input.GetKeyDown(KeyCode.Alpha3)) {
+        //    if (_currentTarget != null)
+        //        Destroy(_currentTarget);
+        //    else if (result)
+        //        _currentTarget = Instantiate(_groundTargetTemplate, hit.point, Quaternion.identity);
+        //}
 
-        if (_currentTarget != null)
-            _currentTarget.transform.position = hit.point;
+        //if (_currentTarget != null)
+        //    _currentTarget.transform.position = hit.point;
     }
 }

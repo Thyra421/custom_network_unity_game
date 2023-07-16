@@ -81,9 +81,9 @@ public static class TCPClient
         } else if (messageType.Equals(typeof(MessageSpawnNPCs))) {
             MessageSpawnNPCs messageSpawnNPCs = Utils.Deserialize<MessageSpawnNPCs>(message);
             MessageHandler.Current.OnMessageSpawnNPCs?.Invoke(messageSpawnNPCs);
-        }  else if (messageType.Equals(typeof(MessageAttacked))) {
-            MessageAttacked messageAttacked = Utils.Deserialize<MessageAttacked>(message);
-            MessageHandler.Current.OnMessageAttacked?.Invoke(messageAttacked);
+        }  else if (messageType.Equals(typeof(MessageUsedAbility))) {
+            MessageUsedAbility messageUsedAbility = Utils.Deserialize<MessageUsedAbility>(message);
+            MessageHandler.Current.OnMessageUsedAbility?.Invoke(messageUsedAbility);
         } else if (messageType.Equals(typeof(MessageDespawnObject))) {
             MessageDespawnObject messageDespawnObject = Utils.Deserialize<MessageDespawnObject>(message);
             MessageHandler.Current.OnMessageDespawnObject?.Invoke(messageDespawnObject);
@@ -111,6 +111,9 @@ public static class TCPClient
         } else if (messageType.Equals(typeof(MessageExperienceChanged))) {
             MessageExperienceChanged messageExperienceChanged = Utils.Deserialize<MessageExperienceChanged>(message);
             MessageHandler.Current.OnMessageExperienceChanged?.Invoke(messageExperienceChanged);
+        } else if (messageType.Equals(typeof(MessageEquiped))) {
+            MessageEquiped messageEquiped = Utils.Deserialize<MessageEquiped>(message);
+            MessageHandler.Current.OnMessageEquiped?.Invoke(messageEquiped);
         }
     }
 

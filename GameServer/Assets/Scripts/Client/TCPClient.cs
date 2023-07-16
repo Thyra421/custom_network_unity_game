@@ -27,31 +27,34 @@ public class TCPClient
         Type messageType = Utils.GetMessageType(message);
 
         if (messageType.Equals(typeof(MessageAuthenticate))) {
-            MessageAuthenticate clientMessageAuthenticate = Utils.Deserialize<MessageAuthenticate>(message);
-            OnMessageAuthenticate(clientMessageAuthenticate);
+            MessageAuthenticate messageAuthenticate = Utils.Deserialize<MessageAuthenticate>(message);
+            OnMessageAuthenticate(messageAuthenticate);
         } else if (messageType.Equals(typeof(MessagePlay))) {
-            MessagePlay clientMessagePlay = Utils.Deserialize<MessagePlay>(message);
-            OnMessagePlay(clientMessagePlay);
-        } else if (messageType.Equals(typeof(MessageAttack))) {
-            MessageAttack clientMessageAttack = Utils.Deserialize<MessageAttack>(message);
-            OnMessageAttack(clientMessageAttack);
+            MessagePlay messagePlay = Utils.Deserialize<MessagePlay>(message);
+            OnMessagePlay(messagePlay);
+        } else if (messageType.Equals(typeof(MessageUseAbility))) {
+            MessageUseAbility messageUseAbility = Utils.Deserialize<MessageUseAbility>(message);
+            OnMessageUseAbility(messageUseAbility);
         } else if (messageType.Equals(typeof(MessagePickUp))) {
-            MessagePickUp clientMessagePickUp = Utils.Deserialize<MessagePickUp>(message);
-            OnMessagePickUp(clientMessagePickUp);
+            MessagePickUp messagePickUp = Utils.Deserialize<MessagePickUp>(message);
+            OnMessagePickUp(messagePickUp);
         } else if (messageType.Equals(typeof(MessageCraft))) {
-            MessageCraft clientMessageCraft = Utils.Deserialize<MessageCraft>(message);
-            OnMessageCraft(clientMessageCraft);
+            MessageCraft messageCraft = Utils.Deserialize<MessageCraft>(message);
+            OnMessageCraft(messageCraft);
         } else if (messageType.Equals(typeof(MessageUseItem))) {
-            MessageUseItem clientMessageUseItem = Utils.Deserialize<MessageUseItem>(message);
-            OnMessageUseItem(clientMessageUseItem);
+            MessageUseItem messageUseItem = Utils.Deserialize<MessageUseItem>(message);
+            OnMessageUseItem(messageUseItem);
+        } else if (messageType.Equals(typeof(MessageEquip))) {
+            MessageEquip messageEquip = Utils.Deserialize<MessageEquip>(message);
+            OnMessageEquip(messageEquip);
         }
     }
 
-    private void OnMessageAuthenticate(MessageAuthenticate clientMessageAuthenticate) {
-        _client.Authenticate(new UDPClient(clientMessageAuthenticate.udpAddress, clientMessageAuthenticate.udpPort), clientMessageAuthenticate.secret);
+    private void OnMessageAuthenticate(MessageAuthenticate messageAuthenticate) {
+        _client.Authenticate(new UDPClient(messageAuthenticate.udpAddress, messageAuthenticate.udpPort), messageAuthenticate.secret);
     }
 
-    private void OnMessagePlay(MessagePlay clientMessagePlay) {
+    private void OnMessagePlay(MessagePlay messagePlay) {
         Player newPlayer = Reception.Current.JoinOrCreateRoom(_client);
         newPlayer.Room.PlayersManager.BroadcastTCP(new MessageJoinedGame(newPlayer.Data), newPlayer);
 
@@ -63,14 +66,25 @@ public class TCPClient
         Send(messageSpawnNPCs);
     }
 
-    private void OnMessageAttack(MessageAttack clientMessageAttack) {
-        _client.Player.Room.PlayersManager.BroadcastTCP(new MessageAttacked(_client.Player.Id), _client.Player);
-        _client.Player.Attack.Attack();
+    private void OnMessageUseAbility(MessageUseAbility messageUseAbility) {
+        Ability ability = Resources.Load<Ability>($"{SharedConfig.ABILITIES_PATH}/{messageUseAbility.abilityName}");
+        if (ability != null)
+            _client.Player.Abilities.UseAbility(ability);
+        else
+            Send(new MessageError(MessageErrorType.abilityNotFound));
     }
 
-    private void OnMessagePickUp(MessagePickUp clientMessagePickUp) {
+    private void OnMessageEquip(MessageEquip messageEquip) {
+        Weapon weapon = Resources.Load<Weapon>($"{SharedConfig.ITEMS_PATH}/{messageEquip.weaponName}");
+        if (weapon != null)
+            _client.Player.Abilities.Equip(weapon);
+        else
+            Send(new MessageError(MessageErrorType.objectNotFound));
+    }
+
+    private void OnMessagePickUp(MessagePickUp messagePickUp) {
         Player player = _client.Player;
-        Node node = player.Room.NodesManager.FindNode(clientMessagePickUp.id);
+        Node node = player.Room.NodesManager.FindNode(messagePickUp.id);
 
         // node doesn't exist?
         if (node == null || node.RemainingLoots <= 0) {
@@ -133,9 +147,10 @@ public class TCPClient
         }, "Crafting", 1);
     }
 
-    private void OnMessageUseItem(MessageUseItem clientMessageUseItem) {
-        UsableItem item = Resources.Load<UsableItem>($"{SharedConfig.CRAFTED_ITEMS_PATH}/{clientMessageUseItem.itemName}");
-        _client.Player.ItemActionController.Use(item);
+    private void OnMessageUseItem(MessageUseItem messageUseItem) {
+        UsableItem item = Resources.Load<UsableItem>($"{SharedConfig.ITEMS_PATH}/{messageUseItem.itemName}");
+        if (item != null)
+            _client.Player.ItemActionController.Use(item);
     }
 
     public TCPClient(TcpClient tcpClient) {

@@ -1,53 +1,32 @@
 using UnityEngine.EventSystems;
 using UnityEngine;
 
-enum ActionBarSlotContent
-{
-    None, Ability, Item
-}
-
 public class ActionBarSlotGUI : MonoBehaviour, IDropHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     [SerializeField]
     private ItemGUI _itemGUI;
-    private ActionBarSlotContent _content;
-
-    private void Transfert(ActionBarSlotGUI other) {
-        switch (other._content) {
-            case ActionBarSlotContent.None:
-                Clear();
-                break;
-            case ActionBarSlotContent.Ability:
-                break;
-            case ActionBarSlotContent.Item:
-                InitializeItem(other._itemGUI.Item, other._itemGUI.Amount);
-                break;
-        }
-    }
 
     private void Clear() {
         _itemGUI.Initialize(null, 0);
     }
 
-    private void SwapItem(ActionBarSlotGUI other) {
+    private void Swap(ActionBarSlotGUI other) {
         Item tmpItem = other._itemGUI.Item;
         int tmpAmount = other._itemGUI.Amount;
-        other.Transfert(this);
-        InitializeItem(tmpItem, tmpAmount);
+        other.Initialize(_itemGUI.Item, _itemGUI.Amount);
+        Initialize(tmpItem, tmpAmount);
     }
 
-    private void Swap(ActionBarSlotGUI other) {
-        switch (other._content) {
-            case ActionBarSlotContent.Ability:
-                break;
-            case ActionBarSlotContent.Item:
-                SwapItem(other);
-                break;
-        }
+    private void OnChanged(Item item, int amount) {
+        if (item == _itemGUI.Item)
+            _itemGUI.Initialize(item, amount);
     }
 
-    public void InitializeItem(Item item, int amount) {
-        _content = ActionBarSlotContent.Item;
+    private void Awake() {
+        InventoryManager.Current.OnChanged += OnChanged;
+    }
+
+    public void Initialize(Item item, int amount) {
         _itemGUI.Initialize(item, amount);
     }
 
@@ -61,12 +40,14 @@ public class ActionBarSlotGUI : MonoBehaviour, IDropHandler, IBeginDragHandler, 
 
     public void OnEndDrag(PointerEventData eventData) {
         DragAndDropGUI.Current.StopDrag();
+        if (!eventData.pointerCurrentRaycast.isValid)
+            Clear();
     }
 
     public void OnDrop(PointerEventData eventData) {
         if (eventData.pointerDrag.TryGetComponent(out ActionBarSlotGUI actionBarSlotGUI) && actionBarSlotGUI._itemGUI.Item != null)
             Swap(actionBarSlotGUI);
         if (eventData.pointerDrag.TryGetComponent(out InventorySlotGUI inventorySlotGUI) && inventorySlotGUI.Slot.Item != null)
-            InitializeItem(inventorySlotGUI.Slot.Item, inventorySlotGUI.Slot.Amount);
+            Initialize(inventorySlotGUI.Slot.Item, inventorySlotGUI.Slot.Amount);
     }
 }

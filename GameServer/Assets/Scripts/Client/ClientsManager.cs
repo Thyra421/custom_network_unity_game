@@ -5,6 +5,8 @@ public class ClientsManager
 {
     private readonly List<Client> _clients = new List<Client>();
 
+    public List<Client> Clients => _clients;
+
     public Client Create(TCPClient tcpClient) {
         Client newClient = new Client(tcpClient);
         _clients.Add(newClient);

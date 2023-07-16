@@ -81,12 +81,14 @@ public struct MessageLeftGame
     }
 }
 
-public struct MessageAttacked
+public struct MessageUsedAbility
 {
     public string id;
+    public string abilityName;
 
-    public MessageAttacked(string id) {
+    public MessageUsedAbility(string id, string abilityName) {
         this.id = id;
+        this.abilityName = abilityName;
     }
 }
 
@@ -110,7 +112,7 @@ public struct MessageInventoryRemove
 
 public enum MessageErrorType
 {
-    inventoryFull, notEnoughInventorySpace, uniqueItem, objectNotFound, notEnoughResources, tooFarAway, cantWhileMoving, busy
+    inventoryFull, notEnoughInventorySpace, uniqueItem, objectNotFound, abilityNotFound, notEnoughResources, tooFarAway, cantWhileMoving, busy, inCooldown, cantDoThat
 }
 
 public struct MessageError
@@ -206,5 +208,16 @@ public struct MessageWeaponExperienceChanged
         this.weaponName = weaponName;
         this.currentLevel = currentLevel;
         this.currentRatio = currentRatio;
+    }
+}
+
+public struct MessageEquiped
+{
+    public string id;
+    public string weaponName;
+
+    public MessageEquiped(string id, string weaponName) {
+        this.id = id;
+        this.weaponName = weaponName;
     }
 }

@@ -6,6 +6,7 @@ public class InventoryManager : MonoBehaviour
 {
     private static InventoryManager _current;
     private readonly InventorySlot[] _slots = new InventorySlot[SharedConfig.INVENTORY_SPACE];
+    private event OnChangedHandler _onChanged;
 
     private InventorySlot Find(Item item) => Array.Find(_slots, (InventorySlot i) => i.Item == item);
 
@@ -14,32 +15,40 @@ public class InventoryManager : MonoBehaviour
     private InventorySlot EmptySlot => Array.Find(_slots, (InventorySlot i) => i.Item == null);
 
     private void Add(Item item, int amount) {
-        if (!Any(item) || !(item.Property == ItemProperty.Stackable))
-            EmptySlot.Set(item, amount);
-        else
-            Find(item).Add(amount);
+        InventorySlot slot;
+
+        if (!Any(item) || !(item.Property == ItemProperty.Stackable)) {
+            slot = EmptySlot;
+            slot.Set(item, amount);
+        } else {
+            slot = Find(item);
+            slot.Add(amount);
+        }
+        _onChanged?.Invoke(item, slot.Amount);
     }
 
     private void Remove(Item item, int amount) {
-        Find(item).Remove(amount);
+        InventorySlot slot = Find(item);
+        slot.Remove(amount);
+        _onChanged?.Invoke(item, slot.Amount);
     }
 
     private void OnMessageInventoryAdd(MessageInventoryAdd messageInventoryAdd) {
-        Item item = Resources.Load<Item>($"{SharedConfig.RAW_MATERIALS_PATH}/{messageInventoryAdd.data.itemName}");
+        Item item = Resources.Load<Item>($"{SharedConfig.ITEMS_PATH}/{messageInventoryAdd.data.itemName}");
         Add(item, messageInventoryAdd.data.amount);
     }
 
     private void OnMessageInventoryRemove(MessageInventoryRemove messageInventoryRemove) {
-        Item item = Resources.Load<Item>($"{SharedConfig.RAW_MATERIALS_PATH}/{messageInventoryRemove.data.itemName}");
+        Item item = Resources.Load<Item>($"{SharedConfig.ITEMS_PATH}/{messageInventoryRemove.data.itemName}");
         Remove(item, messageInventoryRemove.data.amount);
     }
 
     private void OnMessageCrafted(MessageCrafted messageCrafted) {
         foreach (ItemStackData r in messageCrafted.reagents) {
-            Item reagent = Resources.Load<Item>($"{SharedConfig.RAW_MATERIALS_PATH}/{r.itemName}");
+            Item reagent = Resources.Load<Item>($"{SharedConfig.ITEMS_PATH}/{r.itemName}");
             Remove(reagent, r.amount);
         }
-        Item outcome = Resources.Load<Item>($"{SharedConfig.CRAFTED_ITEMS_PATH}/{messageCrafted.outcome.itemName}");
+        Item outcome = Resources.Load<Item>($"{SharedConfig.ITEMS_PATH}/{messageCrafted.outcome.itemName}");
         Add(outcome, messageCrafted.outcome.amount);
     }
 
@@ -55,8 +64,11 @@ public class InventoryManager : MonoBehaviour
         MessageHandler.Current.OnMessageCraftedEvent += OnMessageCrafted;
     }
 
-    public void Swap() {
+    public delegate void OnChangedHandler(Item item, int amount);
 
+    public event OnChangedHandler OnChanged {
+        add => _onChanged += value;
+        remove => _onChanged -= value;
     }
 
     public void ADD_TEST_ITEM(Item i) {

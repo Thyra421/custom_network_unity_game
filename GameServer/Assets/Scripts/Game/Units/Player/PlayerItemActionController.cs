@@ -1,6 +1,6 @@
 using System.Linq;
 
-public class PlayerItemActionController : ItemActionController
+public class PlayerItemActionController : IItemActionController
 {
     private readonly Player _player;
 
@@ -9,12 +9,12 @@ public class PlayerItemActionController : ItemActionController
     }
 
     public void Use(UsableItem item) {
-        foreach (ItemAction entry in item.Actions) {
-            typeof(ItemActionController).GetMethod(entry.MethodName).Invoke(this, entry.Parameters.Select((ActionParameter param) => param.ToObject).ToArray());
-        }
+        if (_player.Inventory.Contains(item, 1) && !_player.Cooldowns.Any(item))
+            foreach (ItemAction entry in item.Actions)
+                typeof(IItemActionController).GetMethod(entry.MethodName).Invoke(this, entry.Parameters.Select((ActionParameter param) => param.ToObject).ToArray());
     }
 
-    public override void RestoreHealth(int amount) {
+    public void RestoreHealth(int amount) {
         _player.Statistics.CurrentHealth += amount;
         _player.Room.PlayersManager.BroadcastTCP(new MessageHealthChanged(_player.Id, _player.Statistics.CurrentHealth, _player.Statistics.MaxHealth));
     }

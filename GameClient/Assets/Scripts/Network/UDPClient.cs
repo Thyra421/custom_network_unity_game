@@ -30,7 +30,7 @@ public static class UDPClient
     }
 
     private static void OnMessage(string message) {
-        Debug.Log($"[UDPServer] received {message}");
+        //Debug.Log($"[UDPServer] received {message}");
         Type messageType = Utils.GetMessageType(message);
 
         if (messageType.Equals(typeof(MessagePlayerMoved))) {
