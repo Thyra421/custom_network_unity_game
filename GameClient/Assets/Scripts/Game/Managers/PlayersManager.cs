@@ -3,14 +3,18 @@ using UnityEngine;
 
 public class PlayersManager : MonoBehaviour
 {
-    private static PlayersManager _current;
     [SerializeField]
     private GameObject _playerPrefab;
     [SerializeField]
     private LocalPlayer _myPlayer;
     private readonly List<RemotePlayer> _remotePlayers = new List<RemotePlayer>();
-    private event OnAddedPlayerHandler _onAddedPlayer;
-    private event OnRemovedPlayerHandler _onRemovedPlayer;
+
+    public static PlayersManager Current { get; private set; }
+
+    public delegate void OnAddedPlayerHandler(Character player);
+    public delegate void OnRemovedPlayerHandler(Character player);
+    public event OnAddedPlayerHandler OnAddedPlayer;
+    public event OnRemovedPlayerHandler OnRemovedPlayer;
 
     private RemotePlayer FindPlayer(string id) => _remotePlayers.Find((RemotePlayer p) => p.Id == id);
 
@@ -18,11 +22,11 @@ public class PlayersManager : MonoBehaviour
         RemotePlayer newRemotePlayer = Instantiate(_playerPrefab, data.transformData.position.ToVector3, Quaternion.identity).GetComponent<RemotePlayer>();
         newRemotePlayer.Initialize(data.id);
         _remotePlayers.Add(newRemotePlayer);
-        _onAddedPlayer?.Invoke(newRemotePlayer);
+        OnAddedPlayer?.Invoke(newRemotePlayer);
     }
 
     private void RemovePlayer(RemotePlayer remotePlayer) {
-        _onRemovedPlayer?.Invoke(remotePlayer);
+        OnRemovedPlayer?.Invoke(remotePlayer);
         _remotePlayers.Remove(remotePlayer);
         Destroy(remotePlayer.gameObject);
     }
@@ -68,10 +72,9 @@ public class PlayersManager : MonoBehaviour
 
         if (messageUsedAbility.id == _myPlayer.Id) {
             AbilitiesManager.Current.UseAbility(ability);
-        }
-            
-
-        FindPlayer(messageUsedAbility.id)?.TriggerAnimation("Attack");
+            _myPlayer.AbilityEffectController.Use(ability);
+        } else
+            FindPlayer(messageUsedAbility.id)?.AbilityEffectController.Use(ability);
     }
 
     private void OnMessageHealthChanged(MessageHealthChanged messageHealthChanged) {
@@ -108,9 +111,20 @@ public class PlayersManager : MonoBehaviour
             FindPlayer(messageStopActivity.id)?.StopActivity();
     }
 
+    private void OnMessageEquiped(MessageEquiped messageEquiped) {
+        Weapon weapon = Resources.Load<Weapon>($"{SharedConfig.ITEMS_PATH}/{messageEquiped.weaponName}");
+
+        if (messageEquiped.id == _myPlayer.Id) {
+            AbilitiesManager.Current.Equip(weapon);
+            // equip weapon skin
+        } else
+            // equip weapon skin
+            ;
+    }
+
     private void Awake() {
-        if (_current == null)
-            _current = this;
+        if (Current == null)
+            Current = this;
         else
             Destroy(gameObject);
         MessageHandler.Current.OnMessageGameStateEvent += OnMessageGameState;
@@ -122,20 +136,6 @@ public class PlayersManager : MonoBehaviour
         MessageHandler.Current.OnMessageChannelEvent += OnMessageChannel;
         MessageHandler.Current.OnMessageCastEvent += OnMessageCast;
         MessageHandler.Current.OnMessageStopActivityEvent += OnMessageStopActivity;
-    }
-
-    public delegate void OnAddedPlayerHandler(Character player);
-    public delegate void OnRemovedPlayerHandler(Character player);
-
-    public static PlayersManager Current => _current;
-
-    public event OnAddedPlayerHandler OnAddedPlayerEvent {
-        add => _onAddedPlayer += value;
-        remove => _onAddedPlayer -= value;
-    }
-
-    public event OnRemovedPlayerHandler OnRemovedPlayerEvent {
-        add => _onRemovedPlayer += value;
-        remove => _onRemovedPlayer -= value;
+        MessageHandler.Current.OnMessageEquipedEvent += OnMessageEquiped;
     }
 }

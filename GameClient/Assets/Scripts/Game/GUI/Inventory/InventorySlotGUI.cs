@@ -5,18 +5,19 @@ public class InventorySlotGUI : MonoBehaviour, IDropHandler, IBeginDragHandler, 
 {
     [SerializeField]
     private ItemGUI _itemGUI;
-    private InventorySlot _slot;
     private bool _isHovering = false;
+
+    public InventorySlot Slot { get; private set; }
 
     private void Update() {
         if (_isHovering && Input.GetMouseButtonUp(1))
-            if (_slot.Item != null && _slot.Item is Weapon)
-                TCPClient.Send(new MessageEquip(_slot.Item.name));
+            if (Slot.Item != null && Slot.Item is Weapon)
+                TCPClient.Send(new MessageEquip(Slot.Item.name));
     }
 
     public void OnBeginDrag(PointerEventData eventData) {
-        if (_slot.Item != null)
-            DragAndDropGUI.Current.StartDrag(_slot.Item.Icon);
+        if (Slot.Item != null)
+            DragAndDropGUI.Current.StartDrag(Slot.Item.Icon);
     }
 
     public void OnEndDrag(PointerEventData eventData) {
@@ -28,7 +29,7 @@ public class InventorySlotGUI : MonoBehaviour, IDropHandler, IBeginDragHandler, 
 
     public void OnDrop(PointerEventData eventData) {
         if (eventData.pointerDrag.TryGetComponent(out InventorySlotGUI otherSlotGUI))
-            _slot.Swap(otherSlotGUI.Slot);
+            Slot.Swap(otherSlotGUI.Slot);
     }
 
     public void OnChanged(Item item, int amount) {
@@ -37,7 +38,7 @@ public class InventorySlotGUI : MonoBehaviour, IDropHandler, IBeginDragHandler, 
 
     public void Initialize(InventorySlot slot) {
         slot.OnChanged += OnChanged;
-        _slot = slot;
+        Slot = slot;
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
@@ -47,6 +48,4 @@ public class InventorySlotGUI : MonoBehaviour, IDropHandler, IBeginDragHandler, 
     public void OnPointerExit(PointerEventData eventData) {
         _isHovering = false;
     }
-
-    public InventorySlot Slot => _slot;
 }

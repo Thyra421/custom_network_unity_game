@@ -1,17 +1,17 @@
 using System.Linq;
 using UnityEngine;
 
-public class PlayerAbilityActionController : IAbilityActionController
+public class PlayerAbilityEffectController : IAbilityEffectController
 {
     private readonly Player _player;
 
-    public PlayerAbilityActionController(Player player) {
+    public PlayerAbilityEffectController(Player player) {
         _player = player;
     }
 
     public void Use(Ability ability) {
-        foreach (AbilityAction action in ability.Actions) {
-            typeof(IAbilityActionController).GetMethod(action.MethodName).Invoke(this, action.Parameters.Select((ActionParameter param) => param.ToObject).ToArray());
+        foreach (AbilityEffect effect in ability.Effects) {
+            typeof(PlayerAbilityEffectController).GetMethod(effect.MethodName).Invoke(this, effect.Parameters.Select((EffectParameter param) => param.ToObject).ToArray());
         }
     }
 

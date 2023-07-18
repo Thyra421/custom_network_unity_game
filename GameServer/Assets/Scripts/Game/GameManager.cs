@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    private static GameManager _current;
     [SerializeField]
     private NPCArea[] _NPCAreas;
     [SerializeField]
@@ -13,9 +12,11 @@ public class GameManager : MonoBehaviour
     private NodeArea[] _nodeAreas;
     public Text debugText;
 
+    public static GameManager Current { get; private set; }
+
     private void Awake() {
-        if (_current == null)
-            _current = this;
+        if (Current == null)
+            Current = this;
         else
             Destroy(gameObject);
     }
@@ -23,8 +24,6 @@ public class GameManager : MonoBehaviour
     private void Start() {
         API.Start();
     }
-
-    public static GameManager Current => _current;
 
     public NPCArea[] NPCAreas => _NPCAreas;
 

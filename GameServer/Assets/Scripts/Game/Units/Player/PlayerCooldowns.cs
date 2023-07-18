@@ -4,21 +4,17 @@ using UnityEngine;
 
 public class Cooldown
 {
-    private ICooldownHandler _element;
-    private float _cooldown;
+    public ICooldownHandler Element { get; private set; }
+    public float RemainingCooldown { get; private set; }
 
     public Cooldown(ICooldownHandler element) {
-        _element = element;
-        _cooldown = element.Cooldown;
+        Element = element;
+        RemainingCooldown = element.Cooldown;
     }
 
     public void Recharge() {
-        _cooldown -= Time.deltaTime;
+        RemainingCooldown -= Time.deltaTime;
     }
-
-    public float RemainingCooldown => _cooldown;
-
-    public ICooldownHandler Element => _element;
 }
 
 public class PlayerCooldowns : MonoBehaviour

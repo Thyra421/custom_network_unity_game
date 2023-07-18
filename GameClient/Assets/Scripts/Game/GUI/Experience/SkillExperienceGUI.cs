@@ -20,6 +20,6 @@ public class SkillExperienceGUI : MonoBehaviour
         _levelText.text = 0.ToString();
         _ratioSlider.value = 0;
         _skillNameText.text = skillName;
-        skillExperience.OnChangedEvent += OnChanged;
+        skillExperience.OnChanged += OnChanged;
     }
 }

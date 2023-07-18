@@ -7,10 +7,11 @@ public class PlayerSkillExperience
     private readonly SkillType _skillType;
     private int _currentExperience;
     private int _experienceToLevel;
-    private int _currentLevel = 1;
+
+    public int CurrentLevel { get; private set; } = 1;
 
     private void LevelUp() {
-        _currentLevel++;
+        CurrentLevel++;
         _currentExperience = 0;
         _experienceToLevel = Mathf.RoundToInt(_experienceToLevel * Config.LEVEL_EXPERIENCE_INCREASE_MULTIPLICATOR);
     }
@@ -23,7 +24,7 @@ public class PlayerSkillExperience
             AddExperience(excess);
             return;
         }
-        _player.Client.Tcp.Send(new MessageExperienceChanged(_skillType, _currentLevel, Ratio));
+        _player.Client.Tcp.Send(new MessageExperienceChanged(_skillType, CurrentLevel, Ratio));
     }
 
     public PlayerSkillExperience(Player player, int experienceToLevel, SkillType skillType) {
@@ -33,23 +34,17 @@ public class PlayerSkillExperience
     }
 
     public float Ratio => (float)_currentExperience / _experienceToLevel;
-
-    public int CurrentLevel => _currentLevel;
 }
 
 public class WeaponSkillExperience
 {
-    private readonly Weapon _weapon;
-    private readonly PlayerSkillExperience _experience;
+    public Weapon Weapon { get; private set; }
+    public PlayerSkillExperience Experience { get; private set; }
 
     public WeaponSkillExperience(Player player, Weapon weapon) {
-        _weapon = weapon;
-        _experience = new PlayerSkillExperience(player, 20, SkillType.Weapon);
+        Weapon = weapon;
+        Experience = new PlayerSkillExperience(player, 20, SkillType.Weapon);
     }
-
-    public Weapon Weapon => _weapon;
-
-    public PlayerSkillExperience Experience => _experience;
 }
 
 public class PlayerExperience

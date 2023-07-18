@@ -5,10 +5,11 @@ using UnityEngine;
 
 public class RoomNodesManager : MonoBehaviour
 {
-    private readonly List<Node> _nodes = new List<Node>();
     private readonly List<Transform> _occupied = new List<Transform>();
     [SerializeField]
     private Room _room;
+
+    public List<Node> Nodes { get; } = new List<Node>();
 
     private Transform FindFreeSpawn(NodeArea area) {
         Transform randomTransform = area.RandomSpawn;
@@ -25,7 +26,7 @@ public class RoomNodesManager : MonoBehaviour
         Node newNode = newObject.AddComponent<Node>();
         newObject.name = $"{dropSource.name} {newNode.Id}";
         newNode.Initialize(dropSource, area);
-        _nodes.Add(newNode);
+        Nodes.Add(newNode);
         return newNode;
     }
 
@@ -51,15 +52,13 @@ public class RoomNodesManager : MonoBehaviour
         _occupied.Remove(node.NodeArea.FindSpawn(node.transform.position));
         if (node.DropSource.RespawnTimerInSeconds != -1)
             StartCoroutine(Respawn(node.DropSource, node.NodeArea));
-        _nodes.Remove(node);
+        Nodes.Remove(node);
         Destroy(node.gameObject);
     }
 
     public Node FindNode(string id) {
-        return _nodes.Find((Node m) => m.Id == id);
+        return Nodes.Find((Node m) => m.Id == id);
     }
 
-    public NodeData[] NodeDatas => _nodes.Select((Node node) => node.Data).ToArray();
-
-    public List<Node> Nodes => _nodes;
+    public NodeData[] NodeDatas => Nodes.Select((Node node) => node.Data).ToArray();
 }

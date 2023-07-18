@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-    private static InventoryManager _current;
-    private readonly InventorySlot[] _slots = new InventorySlot[SharedConfig.INVENTORY_SPACE];
-    private event OnChangedHandler _onChanged;
+    public static InventoryManager Current { get; private set; }
+    public InventorySlot[] Slots { get; } = new InventorySlot[SharedConfig.INVENTORY_SPACE];
 
-    private InventorySlot Find(Item item) => Array.Find(_slots, (InventorySlot i) => i.Item == item);
+    public delegate void OnChangedHandler(Item item, int amount);
+    public event OnChangedHandler OnChanged;
 
-    private bool Any(Item item) => _slots.Any((InventorySlot i) => i.Item == item);
+    private InventorySlot Find(Item item) => Array.Find(Slots, (InventorySlot i) => i.Item == item);
 
-    private InventorySlot EmptySlot => Array.Find(_slots, (InventorySlot i) => i.Item == null);
+    private bool Any(Item item) => Slots.Any((InventorySlot i) => i.Item == item);
+
+    private InventorySlot EmptySlot => Array.Find(Slots, (InventorySlot i) => i.Item == null);
 
     private void Add(Item item, int amount) {
         InventorySlot slot;
@@ -24,13 +26,13 @@ public class InventoryManager : MonoBehaviour
             slot = Find(item);
             slot.Add(amount);
         }
-        _onChanged?.Invoke(item, slot.Amount);
+        OnChanged?.Invoke(item, slot.Amount);
     }
 
     private void Remove(Item item, int amount) {
         InventorySlot slot = Find(item);
         slot.Remove(amount);
-        _onChanged?.Invoke(item, slot.Amount);
+        OnChanged?.Invoke(item, slot.Amount);
     }
 
     private void OnMessageInventoryAdd(MessageInventoryAdd messageInventoryAdd) {
@@ -53,29 +55,18 @@ public class InventoryManager : MonoBehaviour
     }
 
     private void Awake() {
-        if (_current == null)
-            _current = this;
+        if (Current == null)
+            Current = this;
         else
             Destroy(gameObject);
-        for (int i = 0; i < _slots.Length; i++)
-            _slots[i] = new InventorySlot();
+        for (int i = 0; i < Slots.Length; i++)
+            Slots[i] = new InventorySlot();
         MessageHandler.Current.OnMessageInventoryAddEvent += OnMessageInventoryAdd;
         MessageHandler.Current.OnMessageInventoryRemoveEvent += OnMessageInventoryRemove;
         MessageHandler.Current.OnMessageCraftedEvent += OnMessageCrafted;
     }
 
-    public delegate void OnChangedHandler(Item item, int amount);
-
-    public event OnChangedHandler OnChanged {
-        add => _onChanged += value;
-        remove => _onChanged -= value;
-    }
-
     public void ADD_TEST_ITEM(Item i) {
         Add(i, 1);
     }
-
-    public InventorySlot[] Slots => _slots;
-
-    public static InventoryManager Current => _current;
 }

@@ -3,11 +3,9 @@ using UnityEngine;
 [RequireComponent(typeof(NPCMovement))]
 public class NPC : Character
 {
-    private NPCMovement _movement;
+    public NPCMovement Movement { get; private set; }
 
     private void Awake() {
-        _movement = gameObject.GetComponent<NPCMovement>();
+        Movement = gameObject.GetComponent<NPCMovement>();
     }
-
-    public NPCMovement Movement => _movement;
 }

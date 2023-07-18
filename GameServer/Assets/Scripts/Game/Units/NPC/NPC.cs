@@ -61,5 +61,5 @@ public class NPC : Unit
 
     public TransformData TransformData => new TransformData(transform);
 
-    public NPCData Data => new NPCData(_id, TransformData, Animation, _area.Animal.name);
+    public NPCData Data => new NPCData(Id, TransformData, Animation, _area.Animal.name);
 }

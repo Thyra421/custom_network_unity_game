@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WeaponGUI : MonoBehaviour
+public class AbilitiesGUI : MonoBehaviour
 {
     [SerializeField]
     private Image _weaponImage;

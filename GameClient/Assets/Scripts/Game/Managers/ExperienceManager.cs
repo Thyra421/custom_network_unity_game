@@ -4,108 +4,79 @@ public class PlayerSkillExperience
 {
     private float _currentRatio;
     private int _currentLevel = 1;
-    private event OnChangedHandler _onChanged;
+
+    public delegate void OnChangedHandler(float currentRatio, int currentLevel);
+    public event OnChangedHandler OnChanged;
 
     public void SetExperience(int currentLevel, float currentRatio) {
         _currentLevel = currentLevel;
         _currentRatio = currentRatio;
-        _onChanged?.Invoke(_currentRatio, _currentLevel);
+        OnChanged?.Invoke(_currentRatio, _currentLevel);
     }
-
-    public event OnChangedHandler OnChangedEvent {
-        add => _onChanged += value;
-        remove => _onChanged -= value;
-    }
-
-    public delegate void OnChangedHandler(float currentRatio, int currentLevel);
 }
 
 public class WeaponSkillExperience
 {
-    private readonly Weapon _weapon;
-    private readonly PlayerSkillExperience _experience = new PlayerSkillExperience();
+    public Weapon Weapon { get; }
+    public PlayerSkillExperience Experience { get; } = new PlayerSkillExperience();
 
     public WeaponSkillExperience(Weapon weapon) {
-        _weapon = weapon;
+        Weapon = weapon;
     }
-
-    public Weapon Weapon => _weapon;
-
-    public PlayerSkillExperience Experience => _experience;
 }
 
 public class ExperienceManager : MonoBehaviour
 {
-    private static ExperienceManager _current;
-    private readonly PlayerSkillExperience _generalExperience = new PlayerSkillExperience();
-    private readonly PlayerSkillExperience _gatheringExperience = new PlayerSkillExperience();
-    private readonly PlayerSkillExperience _miningExperience = new PlayerSkillExperience();
-    private readonly PlayerSkillExperience _cookingExperience = new PlayerSkillExperience();
-    private readonly PlayerSkillExperience _alchemyExperience = new PlayerSkillExperience();
-    private readonly PlayerSkillExperience _forgingExperience = new PlayerSkillExperience();
-    private readonly PlayerSkillExperience _lumberjackingExperience = new PlayerSkillExperience();
-    private readonly PlayerSkillExperience _engineeringExperience = new PlayerSkillExperience();
-    private readonly PlayerSkillExperience _huntingExperience = new PlayerSkillExperience();
+    public static ExperienceManager Current { get; private set; }
+    public PlayerSkillExperience GeneralExperience { get; } = new PlayerSkillExperience();
+    public PlayerSkillExperience GatheringExperience { get; } = new PlayerSkillExperience();
+    public PlayerSkillExperience MiningExperience { get; } = new PlayerSkillExperience();
+    public PlayerSkillExperience CookingExperience { get; } = new PlayerSkillExperience();
+    public PlayerSkillExperience AlchemyExperience { get; } = new PlayerSkillExperience();
+    public PlayerSkillExperience ForgingExperience { get; } = new PlayerSkillExperience();
+    public PlayerSkillExperience LumberjackingExperience { get; } = new PlayerSkillExperience();
+    public PlayerSkillExperience EngineeringExperience { get; } = new PlayerSkillExperience();
+    public PlayerSkillExperience HuntingExperience { get; } = new PlayerSkillExperience();
 
     //private readonly List<WeaponSkillExperience> _weaponsExperience = new List<WeaponSkillExperience>();
 
     private void OnExperienceChanged(MessageExperienceChanged messageExperienceChanged) {
         switch (messageExperienceChanged.type) {
             case SkillType.General:
-                _generalExperience.SetExperience(messageExperienceChanged.currentLevel, messageExperienceChanged.currentRatio);
+                GeneralExperience.SetExperience(messageExperienceChanged.currentLevel, messageExperienceChanged.currentRatio);
                 break;
             case SkillType.Gathering:
-                _gatheringExperience.SetExperience(messageExperienceChanged.currentLevel, messageExperienceChanged.currentRatio);
+                GatheringExperience.SetExperience(messageExperienceChanged.currentLevel, messageExperienceChanged.currentRatio);
                 break;
             case SkillType.Mining:
-                _miningExperience.SetExperience(messageExperienceChanged.currentLevel, messageExperienceChanged.currentRatio);
+                MiningExperience.SetExperience(messageExperienceChanged.currentLevel, messageExperienceChanged.currentRatio);
                 break;
             case SkillType.Lumberjacking:
-                _lumberjackingExperience.SetExperience(messageExperienceChanged.currentLevel, messageExperienceChanged.currentRatio);
+                LumberjackingExperience.SetExperience(messageExperienceChanged.currentLevel, messageExperienceChanged.currentRatio);
                 break;
             case SkillType.Hunting:
-                _huntingExperience.SetExperience(messageExperienceChanged.currentLevel, messageExperienceChanged.currentRatio);
+                HuntingExperience.SetExperience(messageExperienceChanged.currentLevel, messageExperienceChanged.currentRatio);
                 break;
             case SkillType.Cooking:
-                _cookingExperience.SetExperience(messageExperienceChanged.currentLevel, messageExperienceChanged.currentRatio);
+                CookingExperience.SetExperience(messageExperienceChanged.currentLevel, messageExperienceChanged.currentRatio);
                 break;
             case SkillType.Alchemy:
-                _alchemyExperience.SetExperience(messageExperienceChanged.currentLevel, messageExperienceChanged.currentRatio);
+                AlchemyExperience.SetExperience(messageExperienceChanged.currentLevel, messageExperienceChanged.currentRatio);
                 break;
             case SkillType.Forging:
-                _forgingExperience.SetExperience(messageExperienceChanged.currentLevel, messageExperienceChanged.currentRatio);
+                ForgingExperience.SetExperience(messageExperienceChanged.currentLevel, messageExperienceChanged.currentRatio);
                 break;
             case SkillType.Engineering:
-                _engineeringExperience.SetExperience(messageExperienceChanged.currentLevel, messageExperienceChanged.currentRatio);
+                EngineeringExperience.SetExperience(messageExperienceChanged.currentLevel, messageExperienceChanged.currentRatio);
                 break;
         }
     }
 
     private void Awake() {
-        if (_current == null)
-            _current = this;
+        if (Current == null)
+            Current = this;
         else
             Destroy(gameObject);
         MessageHandler.Current.OnMessageExperienceChangedEvent += OnExperienceChanged;
     }
-
-    public PlayerSkillExperience GeneralExperience => _generalExperience;
-
-    public PlayerSkillExperience GatheringExperience => _gatheringExperience;
-
-    public PlayerSkillExperience MiningExperience => _miningExperience;
-
-    public PlayerSkillExperience CookingExperience => _cookingExperience;
-
-    public PlayerSkillExperience AlchemyExperience => _alchemyExperience;
-
-    public PlayerSkillExperience ForgingExperience => _forgingExperience;
-
-    public PlayerSkillExperience LumberjackingExperience => _lumberjackingExperience;
-
-    public PlayerSkillExperience EngineeringExperience => _engineeringExperience;
-
-    public PlayerSkillExperience HuntingExperience => _huntingExperience;
-
-    public static ExperienceManager Current => _current;
 }

@@ -4,31 +4,28 @@ using UnityEngine;
 public class Node : Unit
 {
     private readonly Queue<RawMaterial> _loots = new Queue<RawMaterial>();
-    private DropSource _dropSource;
-    private NodeArea _nodeArea;
     private TransformData _transformData;
+
+    public DropSource DropSource { get; private set; }
+    public NodeArea NodeArea { get; private set; }
 
     private void Awake() {
         _transformData = new TransformData(transform);
     }
 
     public void Initialize(DropSource dropSource, NodeArea nodeArea) {
-        _dropSource = dropSource;
-        _nodeArea = nodeArea;
-        int amount = Random.Range(_dropSource.MinInclusive, _dropSource.MaxExclusive);
+        DropSource = dropSource;
+        NodeArea = nodeArea;
+        int amount = Random.Range(DropSource.MinInclusive, DropSource.MaxExclusive);
         for (int i = 0; i < amount; i++)
-            _loots.Enqueue(_dropSource.RandomLoot as RawMaterial);
+            _loots.Enqueue(DropSource.RandomLoot as RawMaterial);
     }
 
     public void RemoveOne() => _loots.Dequeue();
 
-    public NodeData Data => new NodeData(_id, _transformData, _dropSource.name);
+    public NodeData Data => new NodeData(Id, _transformData, DropSource.name);
 
     public Item Loot => _loots.Peek();
 
     public int RemainingLoots => _loots.Count;
-
-    public DropSource DropSource => _dropSource;
-
-    public NodeArea NodeArea => _nodeArea;
 }

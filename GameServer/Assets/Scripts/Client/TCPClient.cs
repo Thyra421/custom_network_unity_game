@@ -150,7 +150,7 @@ public class TCPClient
     private void OnMessageUseItem(MessageUseItem messageUseItem) {
         UsableItem item = Resources.Load<UsableItem>($"{SharedConfig.ITEMS_PATH}/{messageUseItem.itemName}");
         if (item != null)
-            _client.Player.ItemActionController.Use(item);
+            _client.Player.ItemEffectController.Use(item);
     }
 
     public TCPClient(TcpClient tcpClient) {

@@ -3,11 +3,11 @@ using System.Net;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public delegate void OnSuccessHandler<T>(T message);
-public delegate void OnFailureHandler();
-
 public static class HTTPClient
 {
+    public delegate void OnSuccessHandler<T>(T message);
+    public delegate void OnFailureHandler();
+
     private static IEnumerator Get<T>(string route, OnSuccessHandler<T> onSuccess, OnFailureHandler onError = null) {
         string url = $"{Config.SERVER_ADDRESS}:{Config.SERVER_PORT_HTTP}/{route}";
         UnityWebRequest uwr = UnityWebRequest.Get(url);

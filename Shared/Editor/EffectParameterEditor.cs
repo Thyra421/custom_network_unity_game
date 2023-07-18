@@ -2,8 +2,8 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-[CustomPropertyDrawer(typeof(ActionParameter))]
-public class ActionParameterEditor : PropertyDrawer
+[CustomPropertyDrawer(typeof(EffectParameter))]
+public class EffectParameterEditor : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
         // get properties
@@ -12,7 +12,7 @@ public class ActionParameterEditor : PropertyDrawer
         SerializedProperty parameterNameProperty = property.FindPropertyRelative("_parameterName");
         // get value (non-parsed) and type
         Type type = Type.GetType(typeNameProperty.stringValue);
-        object valueObject = ((ActionParameter)property.boxedValue).ToObject;
+        object valueObject = ((EffectParameter)property.boxedValue).ToObject;
         if (valueObject == null) {
             EditorGUILayout.HelpBox($"Unsupported type {type.FullName}", MessageType.Error);
             return;

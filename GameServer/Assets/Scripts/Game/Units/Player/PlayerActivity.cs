@@ -1,11 +1,12 @@
 using UnityEngine;
+using System;
 
 public class PlayerActivity : MonoBehaviour
 {
     [SerializeField]
     private Player _player;
     private float _elapsedTime;
-    private System.Action _currentActivity;
+    private Action _currentActivity;
     private int _remainingTicks;
     private float _currentActivityTimeInSeconds;
 
@@ -32,7 +33,7 @@ public class PlayerActivity : MonoBehaviour
             Process();
     }
 
-    public void Cast(System.Action activity, string activityName, float castTimeInSeconds) {
+    public void Cast(Action activity, string activityName, float castTimeInSeconds) {
         if (_player.Movement.IsMoving) {
             _player.Client.Tcp.Send(new MessageError(MessageErrorType.cantWhileMoving));
             return;
@@ -49,7 +50,7 @@ public class PlayerActivity : MonoBehaviour
         _player.Room.PlayersManager.BroadcastTCP(new MessageCast(_player.Id, activityName, castTimeInSeconds));
     }
 
-    public void Channel(System.Action activity, string activityName, int ticks, float intervalTimeInSeconds) {
+    public void Channel(Action activity, string activityName, int ticks, float intervalTimeInSeconds) {
         if (_player.Movement.IsMoving) {
             _player.Client.Tcp.Send(new MessageError(MessageErrorType.cantWhileMoving));
             return;

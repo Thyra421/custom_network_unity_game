@@ -15,12 +15,12 @@ MonoBehaviour:
   _displayName: Mace swing
   _cooldown: 3
   _icon: {fileID: 21300000, guid: cc5d0d6a5acb9514f9b3815a621e9138, type: 3}
-  _actions:
+  _effects:
   - _methodName: Melee
     _parameters:
-    - _parameterValue: 0
+    - _parameterValue: 10
       _typeName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
       _parameterName: damage
-    - _parameterValue: 
+    - _parameterValue: Attack
       _typeName: System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
       _parameterName: animationName

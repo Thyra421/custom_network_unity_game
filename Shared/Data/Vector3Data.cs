@@ -26,5 +26,5 @@ public struct Vector3Data
         return other.x == x && other.y == y && other.z == z;
     }
 
-    public float Distance(Vector3Data other) => Vector3.Distance(ToVector3, other.ToVector3);
+    public readonly float Distance(Vector3Data other) => Vector3.Distance(ToVector3, other.ToVector3);
 }

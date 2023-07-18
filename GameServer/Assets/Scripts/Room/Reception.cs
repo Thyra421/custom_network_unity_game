@@ -3,10 +3,11 @@ using UnityEngine;
 
 class Reception : MonoBehaviour
 {
-    private static Reception _current;
     [SerializeField]
     private GameObject _roomPrefab;
     private readonly List<Room> _rooms = new List<Room>();
+
+    public static Reception Current { get; private set; }
 
     private Player JoinRoom(Client client, Room room) {
         Player newPlayer = room.PlayersManager.CreatePlayer(client);
@@ -21,8 +22,8 @@ class Reception : MonoBehaviour
     }
 
     private void Awake() {
-        if (_current == null)
-            _current = this;
+        if (Current == null)
+            Current = this;
         else
             Destroy(gameObject);
     }
@@ -38,6 +39,4 @@ class Reception : MonoBehaviour
             return CreateRoom(client);
         return JoinRoom(client, room);
     }
-
-    public static Reception Current => _current;
 }

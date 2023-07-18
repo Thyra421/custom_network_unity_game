@@ -4,12 +4,12 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-[CustomPropertyDrawer(typeof(Action), true)]
-public class ActionEditor : PropertyDrawer
+[CustomPropertyDrawer(typeof(Effect), true)]
+public class EffectEditor : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
         // get method names from the selected class
-        string className = ((Action)property.boxedValue).ClassName;
+        string className = ((Effect)property.boxedValue).ClassAssemblyQualifiedName;
         MethodInfo[] _methodInfos = Type.GetType(className).GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
         string[] methodNames = _methodInfos.Select((MethodInfo m) => m.Name).ToArray();
         // get selected method name or first if none selected
@@ -32,7 +32,7 @@ public class ActionEditor : PropertyDrawer
             // get parameter property and initialize it if misses parameters
             SerializedProperty parameterProperty = parametersProperty.GetArrayElementAtIndex(i);
             if (parameterProperty == null)
-                parameterProperty.boxedValue = new ActionParameter(parameterTypeName, parameterInfos[i].Name);
+                parameterProperty.boxedValue = new EffectParameter(parameterTypeName, parameterInfos[i].Name);
             // get parameter property name type and value
             SerializedProperty parameterNameProperty = parameterProperty.FindPropertyRelative("_parameterName");
             SerializedProperty parameterTypeProperty = parameterProperty.FindPropertyRelative("_typeName");

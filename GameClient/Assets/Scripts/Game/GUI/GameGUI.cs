@@ -5,15 +5,16 @@ using UnityEngine;
 [RequireComponent(typeof(CraftingGUI))]
 public class GameGUI : MonoBehaviour
 {
-    private static GameGUI _current;
     [SerializeField]
     private GameObject _experiencePanel;
     [SerializeField]
     private GameObject _inventoryPanel;
 
+    public static GameGUI Current { get; private set; }
+
     private void Awake() {
-        if (_current == null)
-            _current = this;
+        if (Current == null)
+            Current = this;
         else
             Destroy(gameObject);
     }
@@ -75,6 +76,4 @@ public class GameGUI : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
             CloseAll();
     }
-
-    public static GameGUI Current => _current;
 }

@@ -1,6 +1,4 @@
 public interface ICooldownHandler
 {
-    public float Cooldown {
-        get;
-    }
+    public float Cooldown { get; }
 }

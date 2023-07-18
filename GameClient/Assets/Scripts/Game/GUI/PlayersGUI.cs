@@ -2,24 +2,18 @@ using UnityEngine;
 
 public class PlayersGUI : MonoBehaviour
 {
-    private static PlayersGUI _current;
+    public static PlayersGUI Current { get; private set; }
 
-    public static PlayersGUI Current => _current;
+    private void OnAddedPlayer(Character player) { }
 
-    private void OnAddedPlayer(Character player) {
-
-    }
-
-    private void OnRemovedPlayer(Character player) {
-
-    }
+    private void OnRemovedPlayer(Character player) { }
 
     private void Awake() {
-        if (_current == null)
-            _current = this;
+        if (Current == null)
+            Current = this;
         else
             Destroy(gameObject);
-        PlayersManager.Current.OnAddedPlayerEvent += OnAddedPlayer;
-        PlayersManager.Current.OnRemovedPlayerEvent += OnRemovedPlayer;
+        PlayersManager.Current.OnAddedPlayer += OnAddedPlayer;
+        PlayersManager.Current.OnRemovedPlayer += OnRemovedPlayer;
     }
 }

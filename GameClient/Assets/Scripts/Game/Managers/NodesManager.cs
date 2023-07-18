@@ -3,10 +3,14 @@ using UnityEngine;
 
 public class NodesManager : MonoBehaviour
 {
-    private static NodesManager _current;
     private readonly List<Node> _nodes = new List<Node>();
-    private event OnAddedNodeHandler _onAddedNode;
-    private event OnRemovedNodeHandler _onRemovedNode;
+
+    public static NodesManager Current { get; private set; }
+
+    public delegate void OnAddedNodeHandler(Node node);
+    public delegate void OnRemovedNodeHandler(Node node);
+    private event OnAddedNodeHandler OnAddedNode;
+    private event OnRemovedNodeHandler OnRemovedNode;
 
     private Node FindNode(string id) => _nodes.Find((Node n) => n.Id == id);
 
@@ -16,20 +20,19 @@ public class NodesManager : MonoBehaviour
         Node newNode = newObject.AddComponent<Node>();
         newNode.Initialize(data.id);
         _nodes.Add(newNode);
-        _onAddedNode?.Invoke(newNode);
+        OnAddedNode?.Invoke(newNode);
     }
 
     private void RemoveNode(string id) {
         Node node = FindNode(id);
-        _onRemovedNode?.Invoke(node);
+        OnRemovedNode?.Invoke(node);
         _nodes.Remove(node);
         Destroy(node.gameObject);
     }
 
     private void OnMessageSpawnNodes(MessageSpawnNodes messageSpawnNodes) {
-        foreach (NodeData o in messageSpawnNodes.nodes) {
+        foreach (NodeData o in messageSpawnNodes.nodes)
             CreateNode(o);
-        }
     }
 
     private void OnMessageDespawnObject(MessageDespawnObject messageDespawnObject) {
@@ -37,26 +40,11 @@ public class NodesManager : MonoBehaviour
     }
 
     private void Awake() {
-        if (_current == null)
-            _current = this;
+        if (Current == null)
+            Current = this;
         else
             Destroy(gameObject);
         MessageHandler.Current.OnMessageDespawnObjectEvent += OnMessageDespawnObject;
         MessageHandler.Current.OnMessageSpawnNodesEvent += OnMessageSpawnNodes;
-    }
-
-    public delegate void OnAddedNodeHandler(Node node);
-    public delegate void OnRemovedNodeHandler(Node node);
-
-    public static NodesManager Current => _current;
-
-    public event OnAddedNodeHandler OnAddedNodeEvent {
-        add => _onAddedNode += value;
-        remove => _onAddedNode -= value;
-    }
-
-    public event OnRemovedNodeHandler OnRemovedNodeEvent {
-        add => _onRemovedNode += value;
-        remove => _onRemovedNode -= value;
     }
 }

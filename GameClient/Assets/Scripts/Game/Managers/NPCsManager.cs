@@ -3,10 +3,14 @@ using UnityEngine;
 
 public class NPCsManager : MonoBehaviour
 {
-    private static NPCsManager _current;
     private readonly List<NPC> _NPCs = new List<NPC>();
-    private event OnAddedNPCHandler _onAddedNPC;
-    private event OnRemovedNPCHandler _onRemovedNPC;
+
+    public static NPCsManager Current { get; private set; }
+
+    public delegate void OnAddedNPCHandler(NPC NPC);
+    public delegate void OnRemovedNPCHandler(NPC NPC);
+    public event OnAddedNPCHandler OnAddedNPC;
+    public event OnRemovedNPCHandler OnRemovedNPC;
 
     private NPC FindNPC(string id) => _NPCs.Find((NPC n) => n.Id == id);
 
@@ -17,12 +21,12 @@ public class NPCsManager : MonoBehaviour
         newNPC.Initialize(data.id);
         newNPC.Movement.Initialize(animal);
         _NPCs.Add(newNPC);
-        _onAddedNPC?.Invoke(newNPC);
+        OnAddedNPC?.Invoke(newNPC);
     }
 
     private void RemoveNPC(string id) {
         NPC NPC = FindNPC(id);
-        _onRemovedNPC?.Invoke(NPC);
+        OnRemovedNPC?.Invoke(NPC);
         _NPCs.Remove(NPC);
         Destroy(NPC.gameObject);
     }
@@ -49,27 +53,12 @@ public class NPCsManager : MonoBehaviour
     }
 
     private void Awake() {
-        if (_current == null)
-            _current = this;
+        if (Current == null)
+            Current = this;
         else
             Destroy(gameObject);
         //MessageHandler.Current.OnMessageDespawnObjectEvent += OnMessageDespawnObject;
         MessageHandler.Current.OnMessageSpawnNPCsEvent += OnMessageSpawnNPCs;
         MessageHandler.Current.OnMessageNPCMovedEvent += OnMessageNPCMoved;
-    }
-
-    public delegate void OnAddedNPCHandler(NPC NPC);
-    public delegate void OnRemovedNPCHandler(NPC NPC);
-
-    public static NPCsManager Current => _current;
-
-    public event OnAddedNPCHandler OnAddedNPCEvent {
-        add => _onAddedNPC += value;
-        remove => _onAddedNPC -= value;
-    }
-
-    public event OnRemovedNPCHandler OnRemovedNPCEvent {
-        add => _onRemovedNPC += value;
-        remove => _onRemovedNPC -= value;
     }
 }

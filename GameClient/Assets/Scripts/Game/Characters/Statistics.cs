@@ -1,22 +1,20 @@
-using UnityEngine;
-
-public class Statistics : MonoBehaviour
+public class Statistics
 {
-    protected int _currentHealth;
-    protected int _maxHealth = 100;
-    protected event OnChangedHandler _onChanged;
-
-    private void Awake() {
-        _currentHealth = _maxHealth;
-    }
+    private int _currentHealth;
+    private int _maxHealth = 100;
 
     public delegate void OnChangedHandler(int currentHealth, int maxHealth);
+    public event OnChangedHandler OnChanged;
+
+    public Statistics() {
+        _currentHealth = _maxHealth;
+    }
 
     public int CurrentHealth {
         get => _currentHealth;
         set {
             _currentHealth = value;
-            _onChanged?.Invoke(_currentHealth, _maxHealth);
+            OnChanged?.Invoke(_currentHealth, _maxHealth);
         }
     }
 
@@ -24,12 +22,7 @@ public class Statistics : MonoBehaviour
         get => _maxHealth;
         set {
             _maxHealth = value;
-            _onChanged?.Invoke(_currentHealth, _maxHealth);
+            OnChanged?.Invoke(_currentHealth, _maxHealth);
         }
-    }
-
-    public event OnChangedHandler OnChangedEvent {
-        add => _onChanged += value;
-        remove => _onChanged -= value;
     }
 }

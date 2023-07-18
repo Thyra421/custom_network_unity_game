@@ -1,26 +1,26 @@
 using System;
 using UnityEngine;
 
-public interface IItemActionController
+public interface IItemEffectController
 {
     public void RestoreHealth(int amount);
 }
 
 [Serializable]
-public class ItemAction : Action
+public class ItemEffect : Effect
 {
-    public ItemAction() : base(typeof(IItemActionController).AssemblyQualifiedName) { }
+    public ItemEffect() : base(typeof(IItemEffectController).AssemblyQualifiedName) { }
 }
 
 [CreateAssetMenu]
 public class UsableItem : Item, ICooldownHandler
 {
     [SerializeField]
-    private ItemAction[] _actions;
+    private ItemEffect[] _effects;
     [SerializeField]
     private float _cooldown;
 
-    public ItemAction[] Actions => _actions;
+    public ItemEffect[] Effects => _effects;
 
     public float Cooldown => _cooldown;
 }

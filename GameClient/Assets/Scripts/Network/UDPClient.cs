@@ -6,10 +6,11 @@ using UnityEngine;
 
 public static class UDPClient
 {
+    public const string Address = "127.0.0.1";
     private static UdpClient _udpClient;
     private static bool _connected;
-    private static int _port = 10000;
-    private const string _address = "127.0.0.1";
+
+    public static int Port { get; private set; } = 10000;
 
     private static async void Listen() {
         if (!_connected) {
@@ -46,17 +47,13 @@ public static class UDPClient
 
     private static void OnConnected() => Debug.Log("[UDPClient] connected");
 
-    private static void OnListening() => Debug.Log("[UDPClient] listening on port " + _port);
-
-    public static int Port => _port;
-
-    public static string Address => _address;
+    private static void OnListening() => Debug.Log("[UDPClient] listening on port " + Port);
 
     public static void Connect() {
         try {
             _udpClient = new UdpClient();
             _udpClient.Connect(Config.SERVER_ADDRESS, Config.SERVER_PORT_UDP);
-            _port = ((IPEndPoint)_udpClient.Client.LocalEndPoint).Port;
+            Port = ((IPEndPoint)_udpClient.Client.LocalEndPoint).Port;
             _connected = true;
             OnConnected();
             Listen();

@@ -22,8 +22,6 @@ public class NPCArea : MonoBehaviour
         }
     }
 
-    public float Radius => _radius;
-
     public Animal Animal => _animal;
 
     public int Amount => _amount;

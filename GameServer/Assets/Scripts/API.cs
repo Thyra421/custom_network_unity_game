@@ -1,15 +1,12 @@
 public static class API
 {
-    private static readonly ClientsManager _clients = new ClientsManager();
     private static readonly TCPServer _tcpServer = new TCPServer();
-    private static readonly UDPServer _udpServer = new UDPServer();
+
+    public static ClientsManager Clients { get; } = new ClientsManager();
+    public static UDPServer UdpServer { get; } = new UDPServer();
 
     public static void Start() {
         _tcpServer.Start();
-        _udpServer.Start();
+        UdpServer.Start();
     }
-
-    public static ClientsManager Clients => _clients;
-
-    public static UDPServer UdpServer => _udpServer;
 }

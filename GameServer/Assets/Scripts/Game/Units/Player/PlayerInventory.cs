@@ -4,25 +4,21 @@ using UnityEngine;
 
 public class InventoryItemStack
 {
-    private readonly Item _item;
-    private int _amount;
+    public Item Item { get; }
+    public int Amount { get; private set; }
 
     public InventoryItemStack(Item item, int amount) {
-        _item = item;
-        _amount = amount;
+        Item = item;
+        Amount = amount;
     }
 
     public void Remove(int amount) {
-        _amount -= amount;
+        Amount -= amount;
     }
 
     public void Add(int amount) {
-        _amount += amount;
+        Amount += amount;
     }
-
-    public Item Item => _item;
-
-    public int Amount => _amount;
 }
 
 public class PlayerInventory

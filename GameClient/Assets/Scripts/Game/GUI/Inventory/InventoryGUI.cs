@@ -2,15 +2,16 @@ using UnityEngine;
 
 public class InventoryGUI : MonoBehaviour
 {
-    private static InventoryGUI _current;
     [SerializeField]
     private Transform _parent;
     [SerializeField]
     private GameObject _slotGUITemplate;
 
+    public static InventoryGUI Current { get; private set; }
+
     private void Awake() {
-        if (_current == null)
-            _current = this;
+        if (Current == null)
+            Current = this;
         else
             Destroy(gameObject);
     }
@@ -21,6 +22,4 @@ public class InventoryGUI : MonoBehaviour
             newSlot.Initialize(InventoryManager.Current.Slots[i]);
         }
     }
-
-    public static InventoryGUI Current => _current;
 }

@@ -2,14 +2,7 @@ using UnityEngine;
 
 public class MessageHandler : MonoBehaviour
 {
-    private static MessageHandler _current;
-
-    private void Awake() {
-        if (_current == null)
-            _current = this;
-        else
-            Destroy(gameObject);
-    }
+    public static MessageHandler Current { get; private set; }
 
     public delegate void OnMessageJoinedGameHandler(MessageJoinedGame messageJoinedGame);
     public delegate void OnMessagePlayerMovedHandler(MessagePlayerMoved messagePlayerMoved);
@@ -68,5 +61,10 @@ public class MessageHandler : MonoBehaviour
     public OnMessageExperienceChangedHandler OnMessageExperienceChanged => OnMessageExperienceChangedEvent;
     public OnMessageEquipedHandler OnMessageEquiped => OnMessageEquipedEvent;
 
-    public static MessageHandler Current => _current;
+    private void Awake() {
+        if (Current == null)
+            Current = this;
+        else
+            Destroy(gameObject);
+    }
 }

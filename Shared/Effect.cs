@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class ActionParameter
+public class EffectParameter
 {
     [SerializeField]
     private string _parameterValue;
@@ -11,7 +11,7 @@ public class ActionParameter
     [SerializeField]
     private string _parameterName;
 
-    public ActionParameter(string typeName, string parameterName) {
+    public EffectParameter(string typeName, string parameterName) {
         _typeName = typeName;
         _parameterName = parameterName;
     }
@@ -42,21 +42,20 @@ public class ActionParameter
 }
 
 [Serializable]
-public abstract class Action
+public abstract class Effect
 {
     [SerializeField]
     private string _methodName;
     [SerializeField]
-    private ActionParameter[] _parameters;
-    private readonly string _classAssemblyQualifiedName;
+    private EffectParameter[] _parameters;
 
-    public Action(string classAssemblyQualifiedName) {
-        _classAssemblyQualifiedName = classAssemblyQualifiedName;
+    public string ClassAssemblyQualifiedName { get; }
+
+    public Effect(string classAssemblyQualifiedName) {
+        ClassAssemblyQualifiedName = classAssemblyQualifiedName;
     }
 
     public string MethodName => _methodName;
 
-    public ActionParameter[] Parameters => _parameters;
-
-    public string ClassName => _classAssemblyQualifiedName;
+    public EffectParameter[] Parameters => _parameters;
 }

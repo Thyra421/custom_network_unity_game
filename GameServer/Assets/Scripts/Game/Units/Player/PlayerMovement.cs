@@ -2,9 +2,10 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private PlayerAnimationData _animationData;
     private TransformData _lastTransform;
     private float _elapsedTime;
+
+    public PlayerAnimationData AnimationData { get; private set; }
 
     private void Update() {
         _elapsedTime += Time.deltaTime;
@@ -19,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
             _elapsedTime = 0;
         transform.position = transformData.position.ToVector3;
         transform.eulerAngles = transformData.rotation.ToVector3;
-        _animationData = animation;
+        AnimationData = animation;
     }
 
     public bool UpdateTransformIfChanged() {
@@ -32,8 +33,6 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public TransformData TransformData => new TransformData(transform);
-
-    public PlayerAnimationData PlayerAnimationData => _animationData;
 
     public bool IsMoving => _elapsedTime <= .05f;
 }

@@ -3,15 +3,16 @@ using UnityEngine;
 
 public class TooltipGUI : MonoBehaviour
 {
-    private static TooltipGUI _current;
     [SerializeField]
     private TMP_Text _nameText;
     [SerializeField]
     private TMP_Text _description;
 
+    public static TooltipGUI Current { get; private set; }
+
     private void Awake() {
-        if (_current == null)
-            _current = this;
+        if (Current == null)
+            Current = this;
         else
             Destroy(gameObject);
     }
@@ -30,6 +31,4 @@ public class TooltipGUI : MonoBehaviour
     public void Hide() {
         gameObject.SetActive(false);
     }
-
-    public static TooltipGUI Current => _current;
 }

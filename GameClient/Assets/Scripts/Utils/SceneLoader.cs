@@ -4,11 +4,11 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
-    private static SceneLoader _current;
+    public static SceneLoader Current { get; private set; }
 
     private void Awake() {
-        if (_current == null) {
-            _current = this;
+        if (Current == null) {
+            Current = this;
             DontDestroyOnLoad(gameObject);
         } else
             Destroy(gameObject);
@@ -19,8 +19,6 @@ public class SceneLoader : MonoBehaviour
         while (!asyncLoad.isDone)
             yield return null;
     }
-
-    public static SceneLoader Current => _current;
 
     public void LoadMenuAsync() {
         StartCoroutine(LoadSceneAsync("Menu"));

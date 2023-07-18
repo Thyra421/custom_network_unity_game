@@ -22,7 +22,7 @@ public class Node : NetworkObject
             _outline.enabled = true;
 
             if (Input.GetMouseButtonUp(1) && _isOnRange)
-                TCPClient.Send(new MessagePickUp(_id));
+                TCPClient.Send(new MessagePickUp(Id));
         }
         else
             _outline.enabled = false;
@@ -32,6 +32,4 @@ public class Node : NetworkObject
         _outline = gameObject.AddComponent<Outline>();
         _outline.enabled = false;
     }
-
-    public delegate void OnChangedHandler(int remainingLoots);
 }

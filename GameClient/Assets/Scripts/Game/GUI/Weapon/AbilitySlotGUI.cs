@@ -28,7 +28,7 @@ public class AbilitySlotGUI : MonoBehaviour
 
     private void OnUpdated(float cooldown) {
         _text.text = Mathf.CeilToInt(cooldown).ToString();
-        _swipe.fillAmount = cooldown / _slot.Ability.Cooldown;
+        _swipe.fillAmount = cooldown / _slot.CurrentAbility.Cooldown;
         _text.gameObject.SetActive(cooldown > 0);
     }
 

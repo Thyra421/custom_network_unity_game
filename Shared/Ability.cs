@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public interface IAbilityActionController
+public interface IAbilityEffectController
 {
     public abstract void Melee(int damage, string animationName);
 
@@ -9,9 +9,9 @@ public interface IAbilityActionController
 }
 
 [Serializable]
-public class AbilityAction : Action
+public class AbilityEffect : Effect
 {
-    public AbilityAction() : base(typeof(IAbilityActionController).AssemblyQualifiedName) { }
+    public AbilityEffect() : base(typeof(IAbilityEffectController).AssemblyQualifiedName) { }
 }
 
 [CreateAssetMenu]
@@ -24,9 +24,9 @@ public class Ability : ScriptableObject, ICooldownHandler
     [SerializeField]
     private Sprite _icon;
     [SerializeField]
-    private AbilityAction[] _actions;
+    private AbilityEffect[] _effects;
 
-    public AbilityAction[] Actions => _actions;
+    public AbilityEffect[] Effects => _effects;
 
     public Sprite Icon => _icon;
 

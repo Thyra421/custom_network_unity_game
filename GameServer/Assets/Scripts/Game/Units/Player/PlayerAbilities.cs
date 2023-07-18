@@ -7,19 +7,18 @@ public class PlayerAbilities : MonoBehaviour
     private Player _player;
     [SerializeField]
     private GameObject _meleePrefab;
-    [SerializeField]
-    private PlayerAbilityActionController _weaponAbilityActionController;
+    private PlayerAbilityEffectController _weaponAbilityEffectController;
     private Weapon _weapon;
     private Ability _extraAbility;
 
     private void Awake() {
-        _weaponAbilityActionController = new PlayerAbilityActionController(_player);
+        _weaponAbilityEffectController = new PlayerAbilityEffectController(_player);
     }
 
     public void UseAbility(Ability ability) {
         if ((_weapon != null && _weapon.Abilities.Any((Ability a) => a == ability)) || ability == _extraAbility) {
             if (!_player.Cooldowns.Any(ability)) {
-                _weaponAbilityActionController.Use(ability);
+                _weaponAbilityEffectController.Use(ability);
                 _player.Room.PlayersManager.BroadcastTCP(new MessageUsedAbility(_player.Id, ability.name));
             } else
                 _player.Client.Tcp.Send(new MessageError(MessageErrorType.inCooldown));

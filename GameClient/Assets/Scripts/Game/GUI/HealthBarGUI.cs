@@ -16,8 +16,6 @@ public class HealthBarGUI : MonoBehaviour
     public void Awake() {
         _healthSlider.maxValue = _character.Statistics.MaxHealth;
         _healthSlider.value = _character.Statistics.CurrentHealth;
-        _character.Statistics.OnChangedEvent += OnChanged;
+        _character.Statistics.OnChanged += OnChanged;
     }
-
-    public Character Character => _character;
 }

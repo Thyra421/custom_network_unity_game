@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class CraftingGUI : MonoBehaviour
 {
-    private static CraftingGUI _current;
     [SerializeField]
     private GameObject _engineeringPanel;
     [SerializeField]
@@ -14,9 +13,11 @@ public class CraftingGUI : MonoBehaviour
     [SerializeField]
     private GameObject _craftingPanel;
 
+    public static CraftingGUI Current { get; private set; }
+
     private void Awake() {
-        if (_current == null)
-            _current = this;
+        if (Current == null)
+            Current = this;
         else
             Destroy(gameObject);
     }
@@ -72,6 +73,4 @@ public class CraftingGUI : MonoBehaviour
     public void CloseCrafting() {
         _craftingPanel.SetActive(false);
     }
-
-    public static CraftingGUI Current => _current;
 }

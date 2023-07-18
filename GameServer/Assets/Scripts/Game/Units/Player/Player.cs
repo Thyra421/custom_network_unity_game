@@ -4,10 +4,6 @@
 [RequireComponent(typeof(PlayerAbilities))]
 public class Player : Unit
 {
-    private readonly PlayerInventory _inventory;
-    private readonly PlayerItemActionController _itemActionController;
-    private readonly PlayerExperience _experience;
-    private readonly PlayerStatistics _statistics = new PlayerStatistics();
     [SerializeField]
     private PlayerMovement _movement;
     [SerializeField]
@@ -16,30 +12,25 @@ public class Player : Unit
     private PlayerActivity _activity;
     [SerializeField]
     private PlayerCooldowns _cooldowns;
-    private Client _client;
-    private Room _room;
+
+    public PlayerStatistics Statistics { get; } = new PlayerStatistics();
+    public Client Client { get; private set; }
+    public Room Room { get; private set; }
+    public PlayerInventory Inventory { get; }
+    public PlayerItemEffectController ItemEffectController { get; }
+    public PlayerExperience Experience { get; }
 
     private Player() {
-        _inventory = new PlayerInventory(this);
-        _itemActionController = new PlayerItemActionController(this);
-        _experience = new PlayerExperience(this);
+        Inventory = new PlayerInventory(this);
+        ItemEffectController = new PlayerItemEffectController(this);
+        Experience = new PlayerExperience(this);
     }
 
     public void Initialize(Client client, Room room) {
-        _client = client;
-        _room = room;
+        Client = client;
+        Room = room;
         client.Player = this;
     }
-
-    public Client Client => _client;
-
-    public Room Room => _room;
-
-    public PlayerInventory Inventory => _inventory;
-
-    public PlayerStatistics Statistics => _statistics;
-
-    public PlayerItemActionController ItemActionController => _itemActionController;
 
     public PlayerAbilities Abilities => _abilities;
 
@@ -47,9 +38,7 @@ public class Player : Unit
 
     public PlayerActivity Activity => _activity;
 
-    public PlayerExperience Experience => _experience;
-
     public PlayerCooldowns Cooldowns => _cooldowns;
 
-    public PlayerData Data => new PlayerData(_id, Movement.TransformData, Movement.PlayerAnimationData);
+    public PlayerData Data => new PlayerData(Id, Movement.TransformData, Movement.AnimationData);
 }

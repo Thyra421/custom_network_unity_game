@@ -1,7 +1,6 @@
 using UnityEngine;
 
 [RequireComponent(typeof(LocalPlayerMovement))]
-[RequireComponent(typeof(LocalPlayerAttack))]
 public class LocalPlayer : Character
 {
     [SerializeField]

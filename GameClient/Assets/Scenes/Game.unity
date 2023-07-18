@@ -12221,10 +12221,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1084622879}
-  - component: {fileID: 1084622876}
   - component: {fileID: 1084622875}
   - component: {fileID: 1084622874}
-  - component: {fileID: 1084622881}
   - component: {fileID: 1084622871}
   - component: {fileID: 1084622880}
   m_Layer: 8
@@ -12291,22 +12289,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e812fae08f9694fb41708aa15734a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _statistics: {fileID: 1084622881}
   _animator: {fileID: 1662535364}
   _movement: {fileID: 1084622874}
---- !u!114 &1084622876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1084622870}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 524c07235da42404890a36c61b272c9b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _animator: {fileID: 1662535364}
 --- !u!4 &1084622879
 Transform:
   m_ObjectHideFlags: 0
@@ -12350,18 +12334,6 @@ CharacterController:
   m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.9, z: 0}
---- !u!114 &1084622881
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1084622870}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 283385386dafe694483305634a19ceee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1084736407
 GameObject:
   m_ObjectHideFlags: 0
