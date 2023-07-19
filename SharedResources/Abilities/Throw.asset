@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec44f75a71e270a4e922a35f67a72bd8, type: 3}
   m_Name: Throw
   m_EditorClassIdentifier: 
-  _displayName: Mace swing
+  _displayName: Throw
   _cooldown: 3
   _icon: {fileID: 21300000, guid: cc5d0d6a5acb9514f9b3815a621e9138, type: 3}
   _effects:
@@ -21,13 +21,13 @@ MonoBehaviour:
     - _parameterValue: 10
       _typeName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
       _parameterName: damage
-    - _parameterValue: 
+    - _parameterValue: Projectile
       _typeName: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
       _parameterName: prefab
-    - _parameterValue: 0
+    - _parameterValue: 15
       _typeName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
       _parameterName: speed
-    - _parameterValue: 0
+    - _parameterValue: 10
       _typeName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
       _parameterName: distance

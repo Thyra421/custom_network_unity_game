@@ -31,6 +31,9 @@ public class EffectParameter
             } else if (type == typeof(float)) {
                 bool success = float.TryParse(_parameterValue, out float result);
                 return success ? result : 0f;
+            } else if (type == typeof(GameObject)) {
+                GameObject result = Resources.Load<GameObject>($"{SharedConfig.PREFABS_PATH}/{_parameterValue}");
+                return result;
             }
             return null;
         }

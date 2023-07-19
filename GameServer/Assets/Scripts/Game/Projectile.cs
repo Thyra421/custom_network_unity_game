@@ -1,22 +1,25 @@
 using UnityEngine;
 
-[RequireComponent(typeof(AttackHitbox))]
 public class Projectile : MonoBehaviour
 {
     private float _speed;
-    private Vector3 _destination;
+    //private Vector3 _destination;
+    private float _distance;
+    private Vector3 _originalPosition;
 
     private void FixedUpdate() {
-        transform.position = Vector3.Lerp(transform.position, _destination, _speed * Time.deltaTime);
+        transform.Translate(_speed * Time.deltaTime * Vector3.forward);
     }
 
     private void Update() {
-        if (Vector3.Distance(transform.position, _destination) <= .5f)
+        if (Vector3.Distance(_originalPosition, transform.position) >= _distance)
             Destroy(gameObject);
     }
 
     public void Initialize(float speed, float distance) {
+        _distance = distance;
         _speed = speed;
-        _destination = transform.forward * distance;
+        _originalPosition = transform.position;
+        //_destination = _originalPosition + transform.rotation * Vector3.forward * _distance;
     }
 }

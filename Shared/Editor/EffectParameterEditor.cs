@@ -13,10 +13,10 @@ public class EffectParameterEditor : PropertyDrawer
         // get value (non-parsed) and type
         Type type = Type.GetType(typeNameProperty.stringValue);
         object valueObject = ((EffectParameter)property.boxedValue).ToObject;
-        if (valueObject == null) {
-            EditorGUILayout.HelpBox($"Unsupported type {type.FullName}", MessageType.Error);
-            return;
-        }
+        //if (valueObject == null) {
+        //    EditorGUILayout.HelpBox($"Unsupported type {type.FullName}", MessageType.Error);
+        //    return;
+        //}
         // show label
         EditorGUI.PrefixLabel(position, new GUIContent(parameterNameProperty.stringValue));
         // parse value, show it, and set the new value in the value property
@@ -32,6 +32,10 @@ public class EffectParameterEditor : PropertyDrawer
         } else if (type == typeof(float)) {
             float newValue = EditorGUILayout.FloatField((float)valueObject);
             parameterValueProperty.stringValue = newValue.ToString();
+        } else if (type == typeof(GameObject)) {
+            EditorGUILayout.HelpBox($"Prefab must be located in {SharedConfig.PREFABS_PATH}", MessageType.Info);
+            GameObject newValue = (GameObject)EditorGUILayout.ObjectField((GameObject)valueObject, typeof(GameObject), false);
+            parameterValueProperty.stringValue = newValue?.name;
         } else {
             EditorGUILayout.HelpBox($"Unsupported type {type.FullName}", MessageType.Error);
         }

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -15,16 +16,16 @@ public class PlayerAbilityEffectController : IAbilityEffectController
         }
     }
 
-    public void Melee(int damage, string animationName) {
+    public void Melee(int damage, string animationName, float duration) {
         AttackHitbox attackHitbox = Object.Instantiate(_player.Abilities.MeleePrefab, _player.transform).GetComponent<AttackHitbox>();
-        attackHitbox.Initialize(_player, damage);
+        attackHitbox.Initialize(_player, damage, duration);
     }
 
     public void Projectile(int damage, GameObject prefab, float speed, float distance) {
-        GameObject obj = Object.Instantiate(_player.Abilities.MeleePrefab, _player.transform.position, _player.transform.rotation, _player.transform);
+        GameObject obj = Object.Instantiate(_player.Abilities.ProjectilePrefab, _player.transform.position, _player.transform.rotation);
         AttackHitbox attackHitbox = obj.GetComponent<AttackHitbox>();
         Projectile projectile = obj.GetComponent<Projectile>();
-        attackHitbox.Initialize(_player, damage);
+        attackHitbox.Initialize(_player, damage, -1);
         projectile.Initialize(speed, distance);
     }
 }

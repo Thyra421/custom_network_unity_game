@@ -174,6 +174,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 1690176236420092206}
   _meleePrefab: {fileID: 257098994458715521, guid: 88a24f8c4001f5842ac9d11f06dc0b75, type: 3}
+  _projectilePrefab: {fileID: 8626977615830537101, guid: b2b176cee4878b141ab18486270dd403, type: 3}
 --- !u!114 &2204009403275688645
 MonoBehaviour:
   m_ObjectHideFlags: 0

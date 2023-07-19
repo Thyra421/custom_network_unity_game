@@ -37,4 +37,6 @@ public class PlayerAbilities : MonoBehaviour
     }
 
     public GameObject MeleePrefab => _meleePrefab;
+
+    public GameObject ProjectilePrefab => _projectilePrefab;
 }

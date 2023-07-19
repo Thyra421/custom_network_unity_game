@@ -14,7 +14,7 @@ public class CharacterAbilityEffectController : IAbilityEffectController
             typeof(CharacterAbilityEffectController).GetMethod(effect.MethodName).Invoke(this, effect.Parameters.Select((EffectParameter param) => param.ToObject).ToArray());
     }
 
-    public void Melee(int damage, string animationName) {
+    public void Melee(int damage, string animationName, float duration) {
         _character.TriggerAnimation(animationName);
     }
 

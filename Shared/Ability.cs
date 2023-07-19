@@ -3,7 +3,7 @@ using UnityEngine;
 
 public interface IAbilityEffectController
 {
-    public abstract void Melee(int damage, string animationName);
+    public abstract void Melee(int damage, string animationName, float duration);
 
     public abstract void Projectile(int damage, GameObject prefab, float speed, float distance);
 }

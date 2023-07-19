@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,11 +6,13 @@ class AttackHitbox : MonoBehaviour
 {
     private readonly List<Collider> _collidersTouched = new List<Collider>();
     private int _damages;
+    private float _duration;
 
     public Player Player { get; private set; }
 
     private void Start() {
-        Destroy(gameObject, .5f);
+        if (_duration > 0)
+            Destroy(gameObject, _duration);
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -23,8 +26,9 @@ class AttackHitbox : MonoBehaviour
         }
     }
 
-    public void Initialize(Player player, int damages) {
+    public void Initialize(Player player, int damages, float duration) {
         Player = player;
         _damages = damages;
+        _duration = duration;
     }
 }
