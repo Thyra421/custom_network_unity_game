@@ -21,6 +21,10 @@ public class PlayerAbilityEffectController : IAbilityEffectController
     }
 
     public void Projectile(int damage, GameObject prefab, float speed, float distance) {
-        throw new System.NotImplementedException();
+        GameObject obj = Object.Instantiate(_player.Abilities.MeleePrefab, _player.transform.position, _player.transform.rotation, _player.transform);
+        AttackHitbox attackHitbox = obj.GetComponent<AttackHitbox>();
+        Projectile projectile = obj.GetComponent<Projectile>();
+        attackHitbox.Initialize(_player, damage);
+        projectile.Initialize(speed, distance);
     }
 }

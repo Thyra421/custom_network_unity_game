@@ -7,6 +7,8 @@ public class PlayerAbilities : MonoBehaviour
     private Player _player;
     [SerializeField]
     private GameObject _meleePrefab;
+    [SerializeField]
+    private GameObject _projectilePrefab;
     private PlayerAbilityEffectController _weaponAbilityEffectController;
     private Weapon _weapon;
     private Ability _extraAbility;
