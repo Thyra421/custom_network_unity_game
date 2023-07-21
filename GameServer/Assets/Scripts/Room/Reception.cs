@@ -11,14 +11,18 @@ class Reception : MonoBehaviour
 
     private Player JoinRoom(Client client, Room room) {
         Player newPlayer = room.PlayersManager.CreatePlayer(client);
+
+        client.Tcp.Send(new MessageGameState(newPlayer.Id, newPlayer.Room.PlayersManager.PlayerDatas));
+        client.Tcp.Send(new MessageSpawnNodes(newPlayer.Room.NodesManager.NodeDatas));
+        client.Tcp.Send(new MessageSpawnNPCs(newPlayer.Room.NPCsManager.NPCDatas));
+
         return newPlayer;
     }
 
-    private Player CreateRoom(Client client) {
+    private Player CreateAndJoinRoom(Client client) {
         Room newRoom = Instantiate(_roomPrefab).GetComponent<Room>();
         _rooms.Add(newRoom);
-        Player newPlayer = newRoom.PlayersManager.CreatePlayer(client);
-        return newPlayer;
+        return JoinRoom(client, newRoom);
     }
 
     private void Awake() {
@@ -36,7 +40,7 @@ class Reception : MonoBehaviour
     public Player JoinOrCreateRoom(Client client) {
         Room room = _rooms.Find((Room r) => !r.PlayersManager.IsFull);
         if (room == null)
-            return CreateRoom(client);
+            return CreateAndJoinRoom(client);
         return JoinRoom(client, room);
     }
 }

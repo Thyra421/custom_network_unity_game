@@ -37,10 +37,6 @@ public class NPCsManager : MonoBehaviour
         }
     }
 
-    //private void OnMessageDespawnObject(MessageDespawnObject messageDespawnObject) {
-    //    RemoveNPC(messageDespawnObject.id);
-    //}
-
     private void OnMessageNPCMoved(MessageNPCMoved serverMessageNPCMoved) {
         foreach (NPCData n in serverMessageNPCMoved.NPCs) {
             NPC NPC = FindNPC(n.id);
@@ -57,7 +53,6 @@ public class NPCsManager : MonoBehaviour
             Current = this;
         else
             Destroy(gameObject);
-        //MessageHandler.Current.OnMessageDespawnObjectEvent += OnMessageDespawnObject;
         MessageHandler.Current.OnMessageSpawnNPCsEvent += OnMessageSpawnNPCs;
         MessageHandler.Current.OnMessageNPCMovedEvent += OnMessageNPCMoved;
     }

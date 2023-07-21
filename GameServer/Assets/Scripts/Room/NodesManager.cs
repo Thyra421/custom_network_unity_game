@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class RoomNodesManager : MonoBehaviour
+public class NodesManager : MonoBehaviour
 {
     private readonly List<Transform> _occupied = new List<Transform>();
     [SerializeField]
@@ -48,7 +48,7 @@ public class RoomNodesManager : MonoBehaviour
     }
 
     public void RemoveNode(Node node) {
-        _room.PlayersManager.BroadcastTCP(new MessageDespawnObject(node.Id));
+        _room.PlayersManager.BroadcastTCP(new MessageDespawnNode(node.Id));
         _occupied.Remove(node.NodeArea.FindSpawn(node.transform.position));
         if (node.DropSource.RespawnTimerInSeconds != -1)
             StartCoroutine(Respawn(node.DropSource, node.NodeArea));

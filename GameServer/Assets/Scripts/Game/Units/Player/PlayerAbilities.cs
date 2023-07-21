@@ -7,8 +7,6 @@ public class PlayerAbilities : MonoBehaviour
     private Player _player;
     [SerializeField]
     private GameObject _meleePrefab;
-    [SerializeField]
-    private GameObject _projectilePrefab;
     private PlayerAbilityEffectController _weaponAbilityEffectController;
     private Weapon _weapon;
     private Ability _extraAbility;
@@ -21,7 +19,7 @@ public class PlayerAbilities : MonoBehaviour
         if ((_weapon != null && _weapon.Abilities.Any((Ability a) => a == ability)) || ability == _extraAbility) {
             if (!_player.Cooldowns.Any(ability)) {
                 _weaponAbilityEffectController.Use(ability);
-                _player.Room.PlayersManager.BroadcastTCP(new MessageUsedAbility(_player.Id, ability.name));
+                _player.Client.Tcp.Send(new MessageUsedAbility(ability.name));
             } else
                 _player.Client.Tcp.Send(new MessageError(MessageErrorType.inCooldown));
         } else
@@ -37,6 +35,4 @@ public class PlayerAbilities : MonoBehaviour
     }
 
     public GameObject MeleePrefab => _meleePrefab;
-
-    public GameObject ProjectilePrefab => _projectilePrefab;
 }

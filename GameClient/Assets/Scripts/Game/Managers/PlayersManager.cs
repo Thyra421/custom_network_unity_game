@@ -70,11 +70,7 @@ public class PlayersManager : MonoBehaviour
     private void OnMessageUsedAbility(MessageUsedAbility messageUsedAbility) {
         Ability ability = Resources.Load<Ability>($"{SharedConfig.ABILITIES_PATH}/{messageUsedAbility.abilityName}");
 
-        if (messageUsedAbility.id == _myPlayer.Id) {
-            AbilitiesManager.Current.UseAbility(ability);
-            _myPlayer.AbilityEffectController.Use(ability);
-        } else
-            FindPlayer(messageUsedAbility.id)?.AbilityEffectController.Use(ability);
+        AbilitiesManager.Current.UseAbility(ability);
     }
 
     private void OnMessageHealthChanged(MessageHealthChanged messageHealthChanged) {

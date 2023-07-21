@@ -325,7 +325,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: add wep
 --- !u!222 &16499713
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -644,7 +644,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &210418476
 GameObject:
@@ -1403,7 +1403,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2360486282472451303, guid: a700f5532e721604c98efdf8be444b46, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2360486282472451303, guid: a700f5532e721604c98efdf8be444b46, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1800,7 +1800,7 @@ GameObject:
   - component: {fileID: 703939361}
   - component: {fileID: 703939364}
   m_Layer: 5
-  m_Name: Button (Legacy)
+  m_Name: TEST
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4506,7 +4506,7 @@ Transform:
   - {fileID: 654105932}
   - {fileID: 971183864}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1621405388
 GameObject:

@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Linq;
 using System.Collections;
 
-public class RoomNPCsManager : MonoBehaviour
+public class NPCsManager : MonoBehaviour
 {
     [SerializeField]
     private Room _room;
@@ -52,8 +52,8 @@ public class RoomNPCsManager : MonoBehaviour
     public NPC CreateNPC(NPCArea area) {
         GameObject newGameObject = Instantiate(area.Animal.Prefab, area.RandomPosition, Quaternion.identity, transform);
         NPC newNPC = newGameObject.AddComponent<NPC>();
-        newGameObject.name = $"{area.Animal.DisplayName} {newNPC.Id}";
         newNPC.Initialize(area);
+        newGameObject.name = $"{area.Animal.DisplayName} {newNPC.Id}";
         _NPCs.Add(newNPC);
         Debug.Log($"[NPCs] created => {_NPCs.Count} NPCs");
         return newNPC;

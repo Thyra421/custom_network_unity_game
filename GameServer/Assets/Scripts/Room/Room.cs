@@ -1,20 +1,25 @@
 ﻿using UnityEngine;
 
-[RequireComponent (typeof(RoomNodesManager))]
-[RequireComponent(typeof(RoomPlayersManager))]
-[RequireComponent(typeof(RoomNPCsManager))]
+[RequireComponent (typeof(NodesManager))]
+[RequireComponent(typeof(PlayersManager))]
+[RequireComponent(typeof(NPCsManager))]
+[RequireComponent(typeof(VFXsManager))]
 public class Room : MonoBehaviour
 {
     [SerializeField]
-    private RoomNodesManager _nodesManager;
+    private NodesManager _nodesManager;
     [SerializeField]
-    private RoomPlayersManager _playersManager;
+    private PlayersManager _playersManager;
     [SerializeField]
-    private RoomNPCsManager _NPCsManager;
+    private NPCsManager _NPCsManager;
+    [SerializeField]
+    private VFXsManager _VFXsManager;
 
-    public RoomNodesManager NodesManager => _nodesManager;
+    public NodesManager NodesManager => _nodesManager;
 
-    public RoomPlayersManager PlayersManager => _playersManager;
+    public PlayersManager PlayersManager => _playersManager;
 
-    public RoomNPCsManager NPCsManager => _NPCsManager;
+    public NPCsManager NPCsManager => _NPCsManager;
+
+    public VFXsManager VFXsManager => _VFXsManager;
 }

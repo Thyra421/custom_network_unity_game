@@ -84,9 +84,9 @@ public static class TCPClient
         }  else if (messageType.Equals(typeof(MessageUsedAbility))) {
             MessageUsedAbility messageUsedAbility = Utils.Deserialize<MessageUsedAbility>(message);
             MessageHandler.Current.OnMessageUsedAbility?.Invoke(messageUsedAbility);
-        } else if (messageType.Equals(typeof(MessageDespawnObject))) {
-            MessageDespawnObject messageDespawnObject = Utils.Deserialize<MessageDespawnObject>(message);
-            MessageHandler.Current.OnMessageDespawnObject?.Invoke(messageDespawnObject);
+        } else if (messageType.Equals(typeof(MessageDespawnNode))) {
+            MessageDespawnNode messageDespawnNode = Utils.Deserialize<MessageDespawnNode>(message);
+            MessageHandler.Current.OnMessageDespawnNode?.Invoke(messageDespawnNode);
         } else if (messageType.Equals(typeof(MessageInventoryAdd))) {
             MessageInventoryAdd messageInventoryAdd = Utils.Deserialize<MessageInventoryAdd>(message);
             MessageHandler.Current.OnMessageInventoryAdd?.Invoke(messageInventoryAdd);
@@ -114,6 +114,12 @@ public static class TCPClient
         } else if (messageType.Equals(typeof(MessageEquiped))) {
             MessageEquiped messageEquiped = Utils.Deserialize<MessageEquiped>(message);
             MessageHandler.Current.OnMessageEquiped?.Invoke(messageEquiped);
+        } else if (messageType.Equals(typeof(MessageSpawnVFX))) {
+            MessageSpawnVFX messageSpawnVFX = Utils.Deserialize<MessageSpawnVFX>(message);
+            MessageHandler.Current.OnMessageSpawnVFX?.Invoke(messageSpawnVFX);
+        } else if (messageType.Equals(typeof(MessageDespawnVFX))) {
+            MessageDespawnVFX messageDespawnVFX = Utils.Deserialize<MessageDespawnVFX>(message);
+            MessageHandler.Current.OnMessageDespawnVFX?.Invoke(messageDespawnVFX);
         }
     }
 

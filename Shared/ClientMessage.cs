@@ -73,15 +73,6 @@ public struct MessageUseItem
     }
 }
 
-public struct MessageTriggerAnimation
-{
-    public string animationName;
-
-    public MessageTriggerAnimation(string animationName) {
-        this.animationName = animationName;
-    }
-}
-
 public struct MessageEquip
 {
     public string weaponName;

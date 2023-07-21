@@ -6,7 +6,6 @@ public abstract class Character : NetworkObject
     protected Animator _animator;
 
     public Statistics Statistics { get; private set; }
-    public CharacterAbilityEffectController AbilityEffectController { get; private set; }
 
     public delegate void OnCastHandler(string activityName, float castTimeInSeconds);
     public delegate void OnChannelHandler(string activityName, int ticks, float intervalTimeInSeconds);
@@ -17,7 +16,6 @@ public abstract class Character : NetworkObject
 
     private void Awake() {
         Statistics = new Statistics();
-        AbilityEffectController = new CharacterAbilityEffectController(this);
     }
 
     public void Cast(string activityName, float castTimeInSeconds) {

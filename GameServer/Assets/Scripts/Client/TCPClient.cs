@@ -2,23 +2,22 @@
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class TCPClient
 {
     private readonly NetworkStream _stream;
-    private Client _client;
+
+    public Client Client { get; set; }
 
     private void OnDisconnect() {
         Debug.Log($"[TCPClient] disconnected");
 
-        Player player = _client.Player;
-        if (player != null) {
+        Player player = Client.Player;
+        if (player != null)
             player.Room.PlayersManager.RemovePlayer(player);
-            player.Room.PlayersManager.BroadcastTCP(new MessageLeftGame(player.Id), player);
-        }
-        API.Clients.Remove(_client);
+
+        API.Clients.Remove(Client);
     }
 
     private void OnMessage(string message) {
@@ -51,25 +50,17 @@ public class TCPClient
     }
 
     private void OnMessageAuthenticate(MessageAuthenticate messageAuthenticate) {
-        _client.Authenticate(new UDPClient(messageAuthenticate.udpAddress, messageAuthenticate.udpPort), messageAuthenticate.secret);
+        Client.Authenticate(new UDPClient(messageAuthenticate.udpAddress, messageAuthenticate.udpPort), messageAuthenticate.secret);
     }
 
     private void OnMessagePlay(MessagePlay messagePlay) {
-        Player newPlayer = Reception.Current.JoinOrCreateRoom(_client);
-        newPlayer.Room.PlayersManager.BroadcastTCP(new MessageJoinedGame(newPlayer.Data), newPlayer);
-
-        MessageGameState messageGameState = new MessageGameState(newPlayer.Id, newPlayer.Room.PlayersManager.PlayerDatas);
-        MessageSpawnNodes messageSpawnNodes = new MessageSpawnNodes(newPlayer.Room.NodesManager.NodeDatas);
-        MessageSpawnNPCs messageSpawnNPCs = new MessageSpawnNPCs(newPlayer.Room.NPCsManager.NPCDatas);
-        Send(messageGameState);
-        Send(messageSpawnNodes);
-        Send(messageSpawnNPCs);
+        Reception.Current.JoinOrCreateRoom(Client);
     }
 
     private void OnMessageUseAbility(MessageUseAbility messageUseAbility) {
         Ability ability = Resources.Load<Ability>($"{SharedConfig.ABILITIES_PATH}/{messageUseAbility.abilityName}");
         if (ability != null)
-            _client.Player.Abilities.UseAbility(ability);
+            Client.Player.Abilities.UseAbility(ability);
         else
             Send(new MessageError(MessageErrorType.abilityNotFound));
     }
@@ -77,13 +68,13 @@ public class TCPClient
     private void OnMessageEquip(MessageEquip messageEquip) {
         Weapon weapon = Resources.Load<Weapon>($"{SharedConfig.ITEMS_PATH}/{messageEquip.weaponName}");
         if (weapon != null)
-            _client.Player.Abilities.Equip(weapon);
+            Client.Player.Abilities.Equip(weapon);
         else
             Send(new MessageError(MessageErrorType.objectNotFound));
     }
 
     private void OnMessagePickUp(MessagePickUp messagePickUp) {
-        Player player = _client.Player;
+        Player player = Client.Player;
         Node node = player.Room.NodesManager.FindNode(messagePickUp.id);
 
         // node doesn't exist?
@@ -125,23 +116,23 @@ public class TCPClient
         }
         // has all reagents?
         foreach (ItemStack itemStack in pattern.Reagents)
-            if (!_client.Player.Inventory.Contains(itemStack.Item, itemStack.Amount)) {
+            if (!Client.Player.Inventory.Contains(itemStack.Item, itemStack.Amount)) {
                 Send(new MessageError(MessageErrorType.notEnoughResources));
                 return;
             }
         //start casting
-        _client.Player.Activity.Cast(() => {
+        Client.Player.Activity.Cast(() => {
             // remove reagents from inventory
             foreach (ItemStack itemStack in pattern.Reagents)
-                _client.Player.Inventory.Remove(itemStack.Item, itemStack.Amount, false);
+                Client.Player.Inventory.Remove(itemStack.Item, itemStack.Amount, false);
             // has enough space?
-            if (_client.Player.Inventory.Add(pattern.Outcome.Item, pattern.Outcome.Amount, false)) {
+            if (Client.Player.Inventory.Add(pattern.Outcome.Item, pattern.Outcome.Amount, false)) {
                 Send(new MessageCrafted(pattern.Reagents.Select((ItemStack stack) => new ItemStackData(stack.Item.name, stack.Amount)).ToArray(), new ItemStackData(pattern.Outcome.Item.name, pattern.Outcome.Amount)));
             }
             // else put the reagents back in the inventory
             else {
                 foreach (ItemStack itemStack in pattern.Reagents)
-                    _client.Player.Inventory.Add(itemStack.Item, itemStack.Amount, false);
+                    Client.Player.Inventory.Add(itemStack.Item, itemStack.Amount, false);
                 Send(new MessageError(MessageErrorType.notEnoughInventorySpace));
             }
         }, "Crafting", 1);
@@ -149,8 +140,14 @@ public class TCPClient
 
     private void OnMessageUseItem(MessageUseItem messageUseItem) {
         UsableItem item = Resources.Load<UsableItem>($"{SharedConfig.ITEMS_PATH}/{messageUseItem.itemName}");
-        if (item != null)
-            _client.Player.ItemEffectController.Use(item);
+
+        // item exists?
+        if (item == null) {
+            Send(new MessageError(MessageErrorType.objectNotFound));
+            return;
+        }
+        // TODO check that the player has the item
+        Client.Player.ItemEffectController.Use(item);
     }
 
     public TCPClient(TcpClient tcpClient) {
@@ -199,10 +196,5 @@ public class TCPClient
         } catch (Exception e) {
             Debug.LogException(e);
         }
-    }
-
-    public Client Client {
-        get => _client;
-        set => _client = value;
     }
 }

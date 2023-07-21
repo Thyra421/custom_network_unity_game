@@ -40,6 +40,9 @@ public static class UDPClient
         } else if (messageType.Equals(typeof(MessageNPCMoved))) {
             MessageNPCMoved messageNPCMoved = Utils.Deserialize<MessageNPCMoved>(message);
             MessageHandler.Current.OnMessageNPCMoved?.Invoke(messageNPCMoved);
+        } else if (messageType.Equals(typeof(MessageVFXMoved))) {
+            MessageVFXMoved messageVFXMoved = Utils.Deserialize<MessageVFXMoved>(message);
+            MessageHandler.Current.OnMessageVFXMoved?.Invoke(messageVFXMoved);
         }
     }
 

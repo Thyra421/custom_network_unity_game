@@ -17,7 +17,7 @@ public struct TransformData
 
     public static TransformData Zero => new TransformData(Vector3Data.Zero, Vector3Data.Zero);
 
-    public bool Equals(TransformData other) {
+    public readonly bool Equals(TransformData other) {
         return other.position.Equals(position) && other.rotation.Equals(rotation);
     }
 }

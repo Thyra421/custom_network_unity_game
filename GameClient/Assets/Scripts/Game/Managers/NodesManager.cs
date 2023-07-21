@@ -35,8 +35,8 @@ public class NodesManager : MonoBehaviour
             CreateNode(o);
     }
 
-    private void OnMessageDespawnObject(MessageDespawnObject messageDespawnObject) {
-        RemoveNode(messageDespawnObject.id);
+    private void OnMessageDespawnNode(MessageDespawnNode messageDespawnNode) {
+        RemoveNode(messageDespawnNode.id);
     }
 
     private void Awake() {
@@ -44,7 +44,7 @@ public class NodesManager : MonoBehaviour
             Current = this;
         else
             Destroy(gameObject);
-        MessageHandler.Current.OnMessageDespawnObjectEvent += OnMessageDespawnObject;
+        MessageHandler.Current.OnMessageDespawnNodeEvent += OnMessageDespawnNode;
         MessageHandler.Current.OnMessageSpawnNodesEvent += OnMessageSpawnNodes;
     }
 }

@@ -10,6 +10,10 @@ public class NPC : Unit
     private TransformData _lastTransform;
     private bool _isResting;
 
+    private NPCAnimationData Animation => new NPCAnimationData(_animator.GetBool("IsRunning"));
+
+    private TransformData TransformData => new TransformData(transform);
+
     private void SetRandomDestination() {
         _navMeshAgent.SetDestination(_area.RandomPosition);
         _animator.SetBool("IsRunning", true);
@@ -55,11 +59,7 @@ public class NPC : Unit
             _lastTransform = TransformData;
             return true;
         }
-    }
-
-    public NPCAnimationData Animation => new NPCAnimationData(_animator.GetBool("IsRunning"));
-
-    public TransformData TransformData => new TransformData(transform);
+    }   
 
     public NPCData Data => new NPCData(Id, TransformData, Animation, _area.Animal.name);
 }

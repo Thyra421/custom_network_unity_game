@@ -9,7 +9,7 @@ public class MessageHandler : MonoBehaviour
     public delegate void OnMessageLeftGameHandler(MessageLeftGame messageLeftGame);
     public delegate void OnMessageGameStateHandler(MessageGameState messageGameState);
     public delegate void OnMessageUsedAbilityHandler(MessageUsedAbility messageUsedAbility);
-    public delegate void OnMessageDespawnObjectHandler(MessageDespawnObject messageDespawnObject);
+    public delegate void OnMessageDespawnNodeHandler(MessageDespawnNode messageDespawnNode);
     public delegate void OnMessageSpawnNodesHandler(MessageSpawnNodes messageSpawnNodes);
     public delegate void OnMessageNPCMovedHandler(MessageNPCMoved messageNPCMoved);
     public delegate void OnMessageSpawnNPCsHandler(MessageSpawnNPCs messageSpawnNPCs);
@@ -22,13 +22,16 @@ public class MessageHandler : MonoBehaviour
     public delegate void OnMessageStopActivityHandler(MessageStopActivity messageStopActivity);
     public delegate void OnMessageExperienceChangedHandler(MessageExperienceChanged messageExperienceChanged);
     public delegate void OnMessageEquipedHandler(MessageEquiped messageEquiped);
+    public delegate void OnMessageSpawnVFXHandler(MessageSpawnVFX messageSpawnVFX);
+    public delegate void OnMessageDespawnVFXHandler(MessageDespawnVFX messageDespawnVFX);
+    public delegate void OnMessageVFXMovedHandler(MessageVFXMoved messageVFXMoved);
 
     public event OnMessageJoinedGameHandler OnMessageJoinedGameEvent;
     public event OnMessagePlayerMovedHandler OnMessagePlayerMovedEvent;
     public event OnMessageLeftGameHandler OnMessageLeftGameEvent;
     public event OnMessageGameStateHandler OnMessageGameStateEvent;
     public event OnMessageUsedAbilityHandler OnMessageUsedAbilityEvent;
-    public event OnMessageDespawnObjectHandler OnMessageDespawnObjectEvent;
+    public event OnMessageDespawnNodeHandler OnMessageDespawnNodeEvent;
     public event OnMessageSpawnNodesHandler OnMessageSpawnNodesEvent;
     public event OnMessageNPCMovedHandler OnMessageNPCMovedEvent;
     public event OnMessageSpawnNPCsHandler OnMessageSpawnNPCsEvent;
@@ -41,13 +44,16 @@ public class MessageHandler : MonoBehaviour
     public event OnMessageStopActivityHandler OnMessageStopActivityEvent;
     public event OnMessageExperienceChangedHandler OnMessageExperienceChangedEvent;
     public event OnMessageEquipedHandler OnMessageEquipedEvent;
+    public event OnMessageSpawnVFXHandler OnMessageSpawnVFXEvent;
+    public event OnMessageDespawnVFXHandler OnMessageDespawnVFXEvent;
+    public event OnMessageVFXMovedHandler OnMessageVFXMovedEvent;
 
     public OnMessageJoinedGameHandler OnMessageJoinedGame => OnMessageJoinedGameEvent;
     public OnMessagePlayerMovedHandler OnMessagePlayerMoved => OnMessagePlayerMovedEvent;
     public OnMessageLeftGameHandler OnMessageLeftGame => OnMessageLeftGameEvent;
     public OnMessageGameStateHandler OnMessageGameState => OnMessageGameStateEvent;
     public OnMessageUsedAbilityHandler OnMessageUsedAbility => OnMessageUsedAbilityEvent;
-    public OnMessageDespawnObjectHandler OnMessageDespawnObject => OnMessageDespawnObjectEvent;
+    public OnMessageDespawnNodeHandler OnMessageDespawnNode => OnMessageDespawnNodeEvent;
     public OnMessageSpawnNodesHandler OnMessageSpawnNodes => OnMessageSpawnNodesEvent;
     public OnMessageNPCMovedHandler OnMessageNPCMoved => OnMessageNPCMovedEvent;
     public OnMessageSpawnNPCsHandler OnMessageSpawnNPCs => OnMessageSpawnNPCsEvent;
@@ -60,6 +66,9 @@ public class MessageHandler : MonoBehaviour
     public OnMessageStopActivityHandler OnMessageStopActivity => OnMessageStopActivityEvent;
     public OnMessageExperienceChangedHandler OnMessageExperienceChanged => OnMessageExperienceChangedEvent;
     public OnMessageEquipedHandler OnMessageEquiped => OnMessageEquipedEvent;
+    public OnMessageSpawnVFXHandler OnMessageSpawnVFX => OnMessageSpawnVFXEvent;
+    public OnMessageDespawnVFXHandler OnMessageDespawnVFX => OnMessageDespawnVFXEvent;
+    public OnMessageVFXMovedHandler OnMessageVFXMoved => OnMessageVFXMovedEvent;
 
     private void Awake() {
         if (Current == null)

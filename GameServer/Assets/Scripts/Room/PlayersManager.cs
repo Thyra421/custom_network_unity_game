@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 using System.Linq;
 
-public class RoomPlayersManager : MonoBehaviour
+public class PlayersManager : MonoBehaviour
 {
     private const int MAX_PLAYERS = 2;
     [SerializeField]
@@ -66,11 +66,13 @@ public class RoomPlayersManager : MonoBehaviour
         newGameObject.name = "Player " + newPlayer.Id;
         newPlayer.Initialize(client, _room);
         _players.Add(newPlayer);
+        BroadcastTCP(new MessageJoinedGame(newPlayer.Data), newPlayer);
         Debug.Log($"[Players] created => {_players.Count} players");
         return newPlayer;
     }
 
     public void RemovePlayer(Player player) {
+        BroadcastTCP(new MessageLeftGame(player.Id), player);
         _players.Remove(player);
         Destroy(player.gameObject);
         Debug.Log($"[Players] removed => {_players.Count} players");

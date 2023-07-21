@@ -1,4 +1,6 @@
-﻿public struct MessageSecret
+﻿#region PLAYERS
+
+public struct MessageSecret
 {
     public string secret;
 
@@ -16,21 +18,12 @@ public struct MessageJoinedGame
     }
 }
 
-public struct MessagePlayerMoved
+public struct MessageLeftGame
 {
-    public PlayerData[] players;
+    public string id;
 
-    public MessagePlayerMoved(PlayerData[] players) {
-        this.players = players;
-    }
-}
-
-public struct MessageNPCMoved
-{
-    public NPCData[] NPCs;
-
-    public MessageNPCMoved(NPCData[] NPCs) {
-        this.NPCs = NPCs;
+    public MessageLeftGame(string id) {
+        this.id = id;
     }
 }
 
@@ -45,93 +38,12 @@ public struct MessageGameState
     }
 }
 
-public struct MessageSpawnNodes
+public struct MessagePlayerMoved
 {
-    public NodeData[] nodes;
+    public PlayerData[] players;
 
-    public MessageSpawnNodes(NodeData[] nodes) {
-        this.nodes = nodes;
-    }
-}
-
-public struct MessageSpawnNPCs
-{
-    public NPCData[] NPCs;
-
-    public MessageSpawnNPCs(NPCData[] NPCs) {
-        this.NPCs = NPCs;
-    }
-}
-
-public struct MessageDespawnObject
-{
-    public string id;
-
-    public MessageDespawnObject(string id) {
-        this.id = id;
-    }
-}
-
-public struct MessageLeftGame
-{
-    public string id;
-
-    public MessageLeftGame(string id) {
-        this.id = id;
-    }
-}
-
-public struct MessageUsedAbility
-{
-    public string id;
-    public string abilityName;
-
-    public MessageUsedAbility(string id, string abilityName) {
-        this.id = id;
-        this.abilityName = abilityName;
-    }
-}
-
-public struct MessageInventoryAdd
-{
-    public ItemStackData data;
-
-    public MessageInventoryAdd(ItemStackData data) {
-        this.data = data;
-    }
-}
-
-public struct MessageInventoryRemove
-{
-    public ItemStackData data;
-
-    public MessageInventoryRemove(ItemStackData data) {
-        this.data = data;
-    }
-}
-
-public enum MessageErrorType
-{
-    inventoryFull, notEnoughInventorySpace, uniqueItem, objectNotFound, abilityNotFound, notEnoughResources, tooFarAway, cantWhileMoving, busy, inCooldown, cantDoThat
-}
-
-public struct MessageError
-{
-    public MessageErrorType type;
-
-    public MessageError(MessageErrorType type) {
-        this.type = type;
-    }
-}
-
-public struct MessageCrafted
-{
-    public ItemStackData[] reagents;
-    public ItemStackData outcome;
-
-    public MessageCrafted(ItemStackData[] reagents, ItemStackData outcome) {
-        this.reagents = reagents;
-        this.outcome = outcome;
+    public MessagePlayerMoved(PlayerData[] players) {
+        this.players = players;
     }
 }
 
@@ -147,6 +59,30 @@ public struct MessageHealthChanged
         this.maxHealth = maxHealth;
     }
 }
+
+public struct MessageEquiped
+{
+    public string id;
+    public string weaponName;
+
+    public MessageEquiped(string id, string weaponName) {
+        this.id = id;
+        this.weaponName = weaponName;
+    }
+}
+
+public struct MessageTriggerAnimation
+{
+    public string id;
+    public string animationName;
+
+    public MessageTriggerAnimation(string id, string animationName) {
+        this.id = id;
+        this.animationName = animationName;
+    }
+}
+
+#region ACTIVITY
 
 public struct MessageCast
 {
@@ -185,6 +121,126 @@ public struct MessageStopActivity
     }
 }
 
+#endregion ACTIVITY
+
+#endregion PLAYERS
+
+#region NODES
+
+public struct MessageSpawnNodes
+{
+    public NodeData[] nodes;
+
+    public MessageSpawnNodes(NodeData[] nodes) {
+        this.nodes = nodes;
+    }
+}
+
+public struct MessageDespawnNode
+{
+    public string id;
+
+    public MessageDespawnNode(string id) {
+        this.id = id;
+    }
+}
+
+#endregion NODES
+
+#region NPCS
+
+public struct MessageSpawnNPCs
+{
+    public NPCData[] NPCs;
+
+    public MessageSpawnNPCs(NPCData[] NPCs) {
+        this.NPCs = NPCs;
+    }
+}
+
+
+public struct MessageNPCMoved
+{
+    public NPCData[] NPCs;
+
+    public MessageNPCMoved(NPCData[] NPCs) {
+        this.NPCs = NPCs;
+    }
+}
+
+#endregion NPCS
+
+#region VFXS
+
+public struct MessageSpawnVFX
+{
+    public VFXData VFX;
+
+    public MessageSpawnVFX(VFXData VFX) {
+        this.VFX = VFX;
+    }
+}
+
+public struct MessageDespawnVFX
+{
+    public string id;
+
+    public MessageDespawnVFX(string id) {
+        this.id = id;
+    }
+}
+
+public struct MessageVFXMoved
+{
+    public VFXData[] VFXs;
+
+    public MessageVFXMoved(VFXData[] vFXs) {
+        VFXs = vFXs;
+    }
+}
+
+#endregion VFXS
+
+#region LOCAL
+
+public struct MessageUsedAbility
+{
+    public string abilityName;
+
+    public MessageUsedAbility(string abilityName) {
+        this.abilityName = abilityName;
+    }
+}
+
+public struct MessageInventoryAdd
+{
+    public ItemStackData data;
+
+    public MessageInventoryAdd(ItemStackData data) {
+        this.data = data;
+    }
+}
+
+public struct MessageInventoryRemove
+{
+    public ItemStackData data;
+
+    public MessageInventoryRemove(ItemStackData data) {
+        this.data = data;
+    }
+}
+
+public struct MessageCrafted
+{
+    public ItemStackData[] reagents;
+    public ItemStackData outcome;
+
+    public MessageCrafted(ItemStackData[] reagents, ItemStackData outcome) {
+        this.reagents = reagents;
+        this.outcome = outcome;
+    }
+}
+
 public struct MessageExperienceChanged
 {
     public SkillType type;
@@ -211,13 +267,18 @@ public struct MessageWeaponExperienceChanged
     }
 }
 
-public struct MessageEquiped
+public enum MessageErrorType
 {
-    public string id;
-    public string weaponName;
+    inventoryFull, notEnoughInventorySpace, uniqueItem, objectNotFound, abilityNotFound, notEnoughResources, tooFarAway, cantWhileMoving, busy, inCooldown, cantDoThat
+}
 
-    public MessageEquiped(string id, string weaponName) {
-        this.id = id;
-        this.weaponName = weaponName;
+public struct MessageError
+{
+    public MessageErrorType type;
+
+    public MessageError(MessageErrorType type) {
+        this.type = type;
     }
 }
+
+#endregion LOCAL
