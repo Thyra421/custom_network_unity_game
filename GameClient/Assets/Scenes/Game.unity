@@ -4009,9 +4009,10 @@ MonoBehaviour:
   _zoomIncrement: 5
   _rotationSpeed: 3
   _initialDistance: 5
-  _minDistance: 1
+  _minDistance: 2
   _maxDistance: 10
-  _aimDistance: 0.8
+  _aimDistance: 0.5
+  _aimSpeed: 10
   _collisionLayers:
     serializedVersion: 2
     m_Bits: 64
@@ -17794,7 +17795,7 @@ GameObject:
   - component: {fileID: 1616264858}
   - component: {fileID: 1616264857}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: EquipedWeapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23862,7 +23863,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -10, y: -10}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2136863147
 MonoBehaviour:

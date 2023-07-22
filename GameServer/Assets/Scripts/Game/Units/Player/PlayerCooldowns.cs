@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Cooldown
 {
-    public ICooldownHandler Element { get; private set; }
+    public IRechargeable Element { get; private set; }
     public float RemainingCooldown { get; private set; }
 
-    public Cooldown(ICooldownHandler element) {
+    public Cooldown(IRechargeable element) {
         Element = element;
         RemainingCooldown = element.Cooldown;
     }
@@ -26,9 +26,9 @@ public class PlayerCooldowns : MonoBehaviour
         _cooldowns.RemoveAll((Cooldown c) => c.RemainingCooldown <= 0);
     }
 
-    public bool Any(ICooldownHandler ability) => _cooldowns.Any((Cooldown c) => c.Element == ability);
+    public bool Any(IRechargeable ability) => _cooldowns.Any((Cooldown c) => c.Element == ability);
 
-    public void Add(ICooldownHandler cooldownHandler) {
+    public void Add(IRechargeable cooldownHandler) {
         _cooldowns.Add(new Cooldown(cooldownHandler));
     }
 }

@@ -1,6 +1,15 @@
 using System;
 using UnityEngine;
 
+public interface IEffectController
+{
+    public abstract void RestoreHealth(int amount);
+
+    public abstract void Melee(int damage, string animationName, float duration);
+
+    public abstract void Projectile(int damage, string animationName, GameObject prefab, float speed, float distance);
+}
+
 [Serializable]
 public class EffectParameter
 {
@@ -45,18 +54,12 @@ public class EffectParameter
 }
 
 [Serializable]
-public abstract class Effect
+public class Effect
 {
     [SerializeField]
     private string _methodName;
     [SerializeField]
     private EffectParameter[] _parameters;
-
-    public string ClassAssemblyQualifiedName { get; }
-
-    public Effect(string classAssemblyQualifiedName) {
-        ClassAssemblyQualifiedName = classAssemblyQualifiedName;
-    }
 
     public string MethodName => _methodName;
 

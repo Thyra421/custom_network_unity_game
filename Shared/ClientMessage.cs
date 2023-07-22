@@ -71,9 +71,11 @@ public struct MessageCraft
 public struct MessageUseItem
 {
     public string itemName;
+    public Vector3Data aimTarget;
 
-    public MessageUseItem(string itemName) {
+    public MessageUseItem(string itemName, Vector3Data aimTarget) {
         this.itemName = itemName;
+        this.aimTarget = aimTarget;
     }
 }
 

@@ -59,30 +59,41 @@ public class TCPClient
 
     private void OnMessageUseAbility(MessageUseAbility messageUseAbility) {
         Ability ability = Resources.Load<Ability>($"{SharedConfig.ABILITIES_PATH}/{messageUseAbility.abilityName}");
-        if (ability != null)
-            Client.Player.Abilities.UseAbility(ability, messageUseAbility.aimTarget);
-        else
+
+        // ability exists?
+        if (ability == null) {
             Send(new MessageError(MessageErrorType.abilityNotFound));
+            return;
+        }
+        Client.Player.Abilities.UseAbility(ability, messageUseAbility.aimTarget);
     }
 
     private void OnMessageEquip(MessageEquip messageEquip) {
         Weapon weapon = Resources.Load<Weapon>($"{SharedConfig.ITEMS_PATH}/{messageEquip.weaponName}");
-        if (weapon != null)
-            Client.Player.Abilities.Equip(weapon);
-        else
+
+        // weapon exists?
+        if (weapon == null) {
             Send(new MessageError(MessageErrorType.objectNotFound));
+            return;
+        }
+        // has weapon in inventory?
+        if (!Client.Player.Inventory.Contains(weapon, 1)) {
+            Send(new MessageError(MessageErrorType.objectNotFound));
+            return;
+        }
+        Client.Player.Abilities.Equip(weapon);
     }
 
     private void OnMessagePickUp(MessagePickUp messagePickUp) {
         Player player = Client.Player;
         Node node = player.Room.NodesManager.FindNode(messagePickUp.id);
 
-        // node doesn't exist?
+        // node exists and has loots remaining?
         if (node == null || node.RemainingLoots <= 0) {
             Send(new MessageError(MessageErrorType.objectNotFound));
             return;
         }
-        // player too far away?
+        // player close enough?
         if (!node.GetComponentInChildren<Collider>().bounds.Intersects(player.GetComponent<Collider>().bounds)) {
             Send(new MessageError(MessageErrorType.tooFarAway));
             return;
@@ -146,8 +157,17 @@ public class TCPClient
             Send(new MessageError(MessageErrorType.objectNotFound));
             return;
         }
-        // TODO check that the player has the item
-        Client.Player.ItemEffectController.Use(item);
+        // has item in inventory?
+        if (!Client.Player.Inventory.Contains(item, 1)) {
+            Send(new MessageError(MessageErrorType.objectNotFound));
+            return;
+        }
+        // is in cooldown?
+        if (Client.Player.Cooldowns.Any(item)) {
+            Send(new MessageError(MessageErrorType.inCooldown));
+            return;
+        }
+        Client.Player.EffectController.Use(item, messageUseItem.aimTarget);
     }
 
     public TCPClient(TcpClient tcpClient) {

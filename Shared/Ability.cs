@@ -1,18 +1,4 @@
-using System;
 using UnityEngine;
-
-public interface IAbilityEffectController
-{
-    public abstract void Melee(int damage, string animationName, float duration);
-
-    public abstract void Projectile(int damage, string animationName, GameObject prefab, float speed, float distance);
-}
-
-[Serializable]
-public class AbilityEffect : Effect
-{
-    public AbilityEffect() : base(typeof(IAbilityEffectController).AssemblyQualifiedName) { }
-}
 
 public enum AbilityTargetingType
 {
@@ -20,7 +6,7 @@ public enum AbilityTargetingType
 }
 
 [CreateAssetMenu]
-public class Ability : ScriptableObject, ICooldownHandler
+public class Ability : ScriptableObject, IRechargeable, IUsable
 {
     [SerializeField]
     private string _displayName;
@@ -31,9 +17,9 @@ public class Ability : ScriptableObject, ICooldownHandler
     [SerializeField]
     private AbilityTargetingType _targetingType;
     [SerializeField]
-    private AbilityEffect[] _effects;
+    private Effect[] _effects;
 
-    public AbilityEffect[] Effects => _effects;
+    public Effect[] Effects => _effects;
 
     public Sprite Icon => _icon;
 

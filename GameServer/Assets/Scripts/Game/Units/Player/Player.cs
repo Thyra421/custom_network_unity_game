@@ -17,12 +17,12 @@ public class Player : Unit
     public Client Client { get; private set; }
     public Room Room { get; private set; }
     public PlayerInventory Inventory { get; }
-    public PlayerItemEffectController ItemEffectController { get; }
+    public PlayerEffectController EffectController { get; }
     public PlayerExperience Experience { get; }
 
     private Player() {
         Inventory = new PlayerInventory(this);
-        ItemEffectController = new PlayerItemEffectController(this);
+        EffectController = new PlayerEffectController(this);
         Experience = new PlayerExperience(this);
     }
 

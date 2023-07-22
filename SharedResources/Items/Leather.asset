@@ -17,5 +17,5 @@ MonoBehaviour:
   _rarity: 0
   _price: 0
   _property: 0
-  _icon: {fileID: 21300000, guid: 8e6b87d3e39d6ae4a9f16f58c9339c81, type: 3}
+  _icon: {fileID: 21300000, guid: 310b28abd7578074b95656f579fbdebc, type: 3}
   _region: 0
