@@ -80,7 +80,7 @@ public class CameraController : MonoBehaviour
             _currentDistance = Mathf.Lerp(_currentDistance, _minDistance, _aimSpeed * Time.deltaTime);
             _internalOffset = Vector3.Lerp(_internalOffset, transform.right * _aimDistance, _aimSpeed * Time.deltaTime);
         } else {
-            _currentDistance = Mathf.Lerp(_currentDistance, _desiredDistance, _aimSpeed * Time.deltaTime);
+            _currentDistance = Mathf.Lerp(_currentDistance, _desiredDistance, _zoomSpeed * Time.deltaTime);
             _internalOffset = Vector3.Lerp(_internalOffset, Vector3.zero, _aimSpeed * Time.deltaTime);
         }
 

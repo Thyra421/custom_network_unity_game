@@ -120,6 +120,9 @@ public static class TCPClient
         } else if (messageType.Equals(typeof(MessageDespawnVFX))) {
             MessageDespawnVFX messageDespawnVFX = Utils.Deserialize<MessageDespawnVFX>(message);
             MessageHandler.Current.OnMessageDespawnVFX?.Invoke(messageDespawnVFX);
+        } else if (messageType.Equals(typeof(MessageTriggerAnimation))) {
+            MessageTriggerAnimation messageTriggerAnimation = Utils.Deserialize<MessageTriggerAnimation>(message);
+            MessageHandler.Current.OnMessageTriggerAnimation?.Invoke(messageTriggerAnimation);
         }
     }
 

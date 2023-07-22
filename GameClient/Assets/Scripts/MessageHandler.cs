@@ -25,6 +25,7 @@ public class MessageHandler : MonoBehaviour
     public delegate void OnMessageSpawnVFXHandler(MessageSpawnVFX messageSpawnVFX);
     public delegate void OnMessageDespawnVFXHandler(MessageDespawnVFX messageDespawnVFX);
     public delegate void OnMessageVFXMovedHandler(MessageVFXMoved messageVFXMoved);
+    public delegate void OnMessageTriggerAnimationHandler(MessageTriggerAnimation messageTriggerAnimation);
 
     public event OnMessageJoinedGameHandler OnMessageJoinedGameEvent;
     public event OnMessagePlayerMovedHandler OnMessagePlayerMovedEvent;
@@ -47,6 +48,7 @@ public class MessageHandler : MonoBehaviour
     public event OnMessageSpawnVFXHandler OnMessageSpawnVFXEvent;
     public event OnMessageDespawnVFXHandler OnMessageDespawnVFXEvent;
     public event OnMessageVFXMovedHandler OnMessageVFXMovedEvent;
+    public event OnMessageTriggerAnimationHandler OnMessageTriggerAnimationEvent;
 
     public OnMessageJoinedGameHandler OnMessageJoinedGame => OnMessageJoinedGameEvent;
     public OnMessagePlayerMovedHandler OnMessagePlayerMoved => OnMessagePlayerMovedEvent;
@@ -69,6 +71,7 @@ public class MessageHandler : MonoBehaviour
     public OnMessageSpawnVFXHandler OnMessageSpawnVFX => OnMessageSpawnVFXEvent;
     public OnMessageDespawnVFXHandler OnMessageDespawnVFX => OnMessageDespawnVFXEvent;
     public OnMessageVFXMovedHandler OnMessageVFXMoved => OnMessageVFXMovedEvent;
+    public OnMessageTriggerAnimationHandler OnMessageTriggerAnimation => OnMessageTriggerAnimationEvent;
 
     private void Awake() {
         if (Current == null)

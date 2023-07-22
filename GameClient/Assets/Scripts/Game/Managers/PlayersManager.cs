@@ -118,6 +118,13 @@ public class PlayersManager : MonoBehaviour
             ;
     }
 
+    private void OnMessageTriggerAnimation(MessageTriggerAnimation messageTriggerAnimation) {
+        if (messageTriggerAnimation.id == _myPlayer.Id)
+            _myPlayer.TriggerAnimation(messageTriggerAnimation.animationName);
+        else
+            FindPlayer(messageTriggerAnimation.id)?.TriggerAnimation(messageTriggerAnimation.animationName);
+    }
+
     private void Awake() {
         if (Current == null)
             Current = this;
@@ -133,5 +140,6 @@ public class PlayersManager : MonoBehaviour
         MessageHandler.Current.OnMessageCastEvent += OnMessageCast;
         MessageHandler.Current.OnMessageStopActivityEvent += OnMessageStopActivity;
         MessageHandler.Current.OnMessageEquipedEvent += OnMessageEquiped;
+        MessageHandler.Current.OnMessageTriggerAnimationEvent += OnMessageTriggerAnimation;
     }
 }
