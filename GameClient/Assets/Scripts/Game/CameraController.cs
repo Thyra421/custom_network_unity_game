@@ -24,6 +24,8 @@ public class CameraController : MonoBehaviour
     private float _maxDistance = 7;
     [SerializeField]
     private float _aimDistance = .5f;
+    [SerializeField]
+    private float _aimSpeed = 10f;
     [Header("Physics")]
     [SerializeField]
     private LayerMask _collisionLayers;
@@ -32,14 +34,22 @@ public class CameraController : MonoBehaviour
     private float _xRotation = 0f;
     private float _yRotation = 0f;
     private float _desiredDistance;
-    private bool _isAiming;
     private Vector3 _internalOffset;
 
-    public event OnStartZoomInAimHandler OnStartZoomInAim;
-    public event OnEndZoomInAimHandler OnEndZoomInAim;
+    public static CameraController Current { get; private set; }
+    public bool IsAiming { get; private set; }
 
     public delegate void OnStartZoomInAimHandler();
     public delegate void OnEndZoomInAimHandler();
+    public event OnStartZoomInAimHandler OnStartZoomInAim;
+    public event OnEndZoomInAimHandler OnEndZoomInAim;
+
+    private void Awake() {
+        if (Current == null)
+            Current = this;
+        else
+            Destroy(gameObject);
+    }
 
     private void Start() {
         _offset = transform.position - _target.position;
@@ -63,26 +73,18 @@ public class CameraController : MonoBehaviour
                 _yRotation -= Input.GetAxis("Mouse Y") * _rotationSpeed;
                 _yRotation = Mathf.Clamp(_yRotation, -60f, 60f);
                 _player.transform.rotation = Quaternion.Euler(0f, _xRotation, 0f);
-
             }
         }
 
-        _currentDistance = Mathf.Lerp(_currentDistance, _isAiming ? _minDistance : _desiredDistance, _zoomSpeed * Time.deltaTime);
+        if (IsAiming) {
+            _currentDistance = Mathf.Lerp(_currentDistance, _minDistance, _aimSpeed * Time.deltaTime);
+            _internalOffset = Vector3.Lerp(_internalOffset, transform.right * _aimDistance, _aimSpeed * Time.deltaTime);
+        } else {
+            _currentDistance = Mathf.Lerp(_currentDistance, _desiredDistance, _aimSpeed * Time.deltaTime);
+            _internalOffset = Vector3.Lerp(_internalOffset, Vector3.zero, _aimSpeed * Time.deltaTime);
+        }
+
         Quaternion rotation = Quaternion.Euler(_yRotation, _xRotation, 0f);
-
-        if (Input.GetKeyDown(KeyCode.Tab)) {
-            _isAiming = true;
-            OnStartZoomInAim?.Invoke();
-        }
-        if (Input.GetKey(KeyCode.Tab))
-            _internalOffset = Vector3.Lerp(_internalOffset, transform.right * _aimDistance, 10 * Time.deltaTime);
-        else
-            _internalOffset = Vector3.Lerp(_internalOffset, Vector3.zero, 10 * Time.deltaTime);
-        if (Input.GetKeyUp(KeyCode.Tab)) {
-            _isAiming = false;
-            OnEndZoomInAim?.Invoke();
-        }
-
         Vector3 desiredPosition = _target.position + rotation * _offset * _currentDistance + _internalOffset;
 
         if (Physics.Linecast(_target.position, desiredPosition, out RaycastHit hit, _collisionLayers))
@@ -90,4 +92,16 @@ public class CameraController : MonoBehaviour
 
         transform.SetPositionAndRotation(desiredPosition, rotation);
     }
+
+    public void StartAim() {
+        IsAiming = true;
+        OnStartZoomInAim?.Invoke();
+    }
+
+    public void StopAim() {
+        IsAiming = false;
+        OnEndZoomInAim?.Invoke();
+    }
+
+    public Vector3Data AimDirection => new Vector3Data(transform.forward);
 }

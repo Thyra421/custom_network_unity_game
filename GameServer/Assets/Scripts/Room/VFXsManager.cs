@@ -15,7 +15,7 @@ public class VFXsManager : MonoBehaviour
         if (_elapsedTime >= (1f / SharedConfig.SYNC_FREQUENCY)) {
             _elapsedTime = 0f;
 
-            VFXData[] VFXDatas = GetVFXDatas((VFX v) => v.UpdateTransformIfChanged());
+            VFXMovementData[] VFXDatas = GetVFXMovementDatas((VFX v) => v.UpdateTransformIfChanged());
             if (VFXDatas.Length > 0)
                 _room.PlayersManager.BroadcastUDP(new MessageVFXMoved(VFXDatas));
         }
@@ -24,13 +24,16 @@ public class VFXsManager : MonoBehaviour
     private VFXData[] GetVFXDatas(Predicate<VFX> condition) =>
         _VFXs.FindAll(condition).Select((VFX vfx) => vfx.Data).ToArray();
 
+    private VFXMovementData[] GetVFXMovementDatas(Predicate<VFX> condition) =>
+        _VFXs.FindAll(condition).Select((VFX vfx) => vfx.MovementData).ToArray();
+
     private void Update() {
         SyncMovement();
     }
 
-    public VFX CreateVFX(GameObject obj, string prefabName) {
+    public VFX CreateVFX(GameObject obj, string prefabName, float speed) {
         VFX newVFX = obj.AddComponent<VFX>();
-        newVFX.Initialize(this, prefabName);
+        newVFX.Initialize(this, prefabName, speed);
         obj.name = $"{prefabName} {newVFX.Id}";
         _VFXs.Add(newVFX);
         Debug.Log($"[VFXs] created => {_VFXs.Count} VFXs");
@@ -46,4 +49,6 @@ public class VFXsManager : MonoBehaviour
     }
 
     public VFXData[] VFXDatas => _VFXs.Select((VFX vfx) => vfx.Data).ToArray();
+
+    public VFXMovementData[] VFXMovementDatas => _VFXs.Select((VFX vfx) => vfx.MovementData).ToArray();
 }

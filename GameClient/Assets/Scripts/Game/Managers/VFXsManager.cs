@@ -39,10 +39,12 @@ public class VFXsManager : MonoBehaviour
     }
 
     private void OnMessageVFXMoved(MessageVFXMoved serverMessageVFXMoved) {
-        foreach (VFXData n in serverMessageVFXMoved.VFXs) {
+        foreach (VFXMovementData n in serverMessageVFXMoved.VFXs) {
             VFX VFX = FindVFX(n.id);
-            if (VFX != null)
+            if (VFX != null) {
                 VFX.DestinationPosition = n.transformData.position.ToVector3;
+                VFX.MovementSpeed = n.speed;
+            }
         }
     }
 

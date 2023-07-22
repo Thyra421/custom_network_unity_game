@@ -15,6 +15,7 @@ MonoBehaviour:
   _displayName: Throw
   _cooldown: 3
   _icon: {fileID: 21300000, guid: cc5d0d6a5acb9514f9b3815a621e9138, type: 3}
+  _targetingType: 1
   _effects:
   - _methodName: Projectile
     _parameters:
@@ -28,9 +29,9 @@ MonoBehaviour:
       _typeName: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
       _parameterName: prefab
-    - _parameterValue: 10
+    - _parameterValue: 60
       _typeName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
       _parameterName: speed
-    - _parameterValue: 10
+    - _parameterValue: 50
       _typeName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
       _parameterName: distance

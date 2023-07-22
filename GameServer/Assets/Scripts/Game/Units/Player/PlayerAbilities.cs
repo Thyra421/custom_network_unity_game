@@ -15,10 +15,10 @@ public class PlayerAbilities : MonoBehaviour
         _weaponAbilityEffectController = new PlayerAbilityEffectController(_player);
     }
 
-    public void UseAbility(Ability ability) {
+    public void UseAbility(Ability ability, Vector3Data aimTarget) {
         if ((_weapon != null && _weapon.Abilities.Any((Ability a) => a == ability)) || ability == _extraAbility) {
             if (!_player.Cooldowns.Any(ability)) {
-                _weaponAbilityEffectController.Use(ability);
+                _weaponAbilityEffectController.Use(ability, aimTarget);
                 _player.Client.Tcp.Send(new MessageUsedAbility(ability.name));
             } else
                 _player.Client.Tcp.Send(new MessageError(MessageErrorType.inCooldown));

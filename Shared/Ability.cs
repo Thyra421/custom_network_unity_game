@@ -14,6 +14,11 @@ public class AbilityEffect : Effect
     public AbilityEffect() : base(typeof(IAbilityEffectController).AssemblyQualifiedName) { }
 }
 
+public enum AbilityTargetingType
+{
+    OnPlayer, Aimed, GroundedArea
+}
+
 [CreateAssetMenu]
 public class Ability : ScriptableObject, ICooldownHandler
 {
@@ -24,6 +29,8 @@ public class Ability : ScriptableObject, ICooldownHandler
     [SerializeField]
     private Sprite _icon;
     [SerializeField]
+    private AbilityTargetingType _targetingType;
+    [SerializeField]
     private AbilityEffect[] _effects;
 
     public AbilityEffect[] Effects => _effects;
@@ -31,4 +38,6 @@ public class Ability : ScriptableObject, ICooldownHandler
     public Sprite Icon => _icon;
 
     public float Cooldown => _cooldown;
+
+    public AbilityTargetingType TargetingType => _targetingType;
 }

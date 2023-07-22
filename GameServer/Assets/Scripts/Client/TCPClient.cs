@@ -60,7 +60,7 @@ public class TCPClient
     private void OnMessageUseAbility(MessageUseAbility messageUseAbility) {
         Ability ability = Resources.Load<Ability>($"{SharedConfig.ABILITIES_PATH}/{messageUseAbility.abilityName}");
         if (ability != null)
-            Client.Player.Abilities.UseAbility(ability);
+            Client.Player.Abilities.UseAbility(ability, messageUseAbility.aimTarget);
         else
             Send(new MessageError(MessageErrorType.abilityNotFound));
     }

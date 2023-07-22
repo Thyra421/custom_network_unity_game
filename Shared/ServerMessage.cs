@@ -192,9 +192,9 @@ public struct MessageDespawnVFX
 
 public struct MessageVFXMoved
 {
-    public VFXData[] VFXs;
+    public VFXMovementData[] VFXs;
 
-    public MessageVFXMoved(VFXData[] vFXs) {
+    public MessageVFXMoved(VFXMovementData[] vFXs) {
         VFXs = vFXs;
     }
 }

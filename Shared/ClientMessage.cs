@@ -1,4 +1,6 @@
-﻿public struct MessageLogin
+﻿using UnityEngine.Rendering;
+
+public struct MessageLogin
 {
     public string username;
 
@@ -38,9 +40,11 @@ public struct MessageMovement
 public struct MessageUseAbility
 {
     public string abilityName;
+    public Vector3Data aimTarget;
 
-    public MessageUseAbility(string abilityName) {
+    public MessageUseAbility(string abilityName, Vector3Data aimTarget) {
         this.abilityName = abilityName;
+        this.aimTarget = aimTarget;
     }
 }
 

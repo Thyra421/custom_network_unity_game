@@ -20,7 +20,21 @@ public class AbilitySlot
 
     public void Use() {
         if (CurrentAbility != null && _currentCooldown <= 0)
-            TCPClient.Send(new MessageUseAbility(CurrentAbility.name));
+            switch (CurrentAbility.TargetingType) {
+                case AbilityTargetingType.OnPlayer:
+                    TCPClient.Send(new MessageUseAbility(CurrentAbility.name, Vector3Data.Zero));
+                    break;
+                case AbilityTargetingType.Aimed:
+                    CameraController cam = CameraController.Current;
+                    if (cam.IsAiming) {
+                        TCPClient.Send(new MessageUseAbility(CurrentAbility.name, cam.AimDirection));
+                        cam.StopAim();
+                    } else
+                        cam.StartAim();
+                    break;
+                case AbilityTargetingType.GroundedArea:
+                    break;
+            }
     }
 
     public void Used() {
