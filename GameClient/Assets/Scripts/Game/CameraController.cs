@@ -22,6 +22,8 @@ public class CameraController : MonoBehaviour
     private float _minDistance = 0;
     [SerializeField]
     private float _maxDistance = 7;
+    [SerializeField]
+    private float _aimDistance = .5f;
     [Header("Physics")]
     [SerializeField]
     private LayerMask _collisionLayers;
@@ -30,6 +32,14 @@ public class CameraController : MonoBehaviour
     private float _xRotation = 0f;
     private float _yRotation = 0f;
     private float _desiredDistance;
+    private bool _isAiming;
+    private Vector3 _internalOffset;
+
+    public event OnStartZoomInAimHandler OnStartZoomInAim;
+    public event OnEndZoomInAimHandler OnEndZoomInAim;
+
+    public delegate void OnStartZoomInAimHandler();
+    public delegate void OnEndZoomInAimHandler();
 
     private void Start() {
         _offset = transform.position - _target.position;
@@ -53,13 +63,27 @@ public class CameraController : MonoBehaviour
                 _yRotation -= Input.GetAxis("Mouse Y") * _rotationSpeed;
                 _yRotation = Mathf.Clamp(_yRotation, -60f, 60f);
                 _player.transform.rotation = Quaternion.Euler(0f, _xRotation, 0f);
+
             }
         }
 
-        _currentDistance = Mathf.Lerp(_currentDistance, _desiredDistance, _zoomSpeed * Time.deltaTime);
-
+        _currentDistance = Mathf.Lerp(_currentDistance, _isAiming ? _minDistance : _desiredDistance, _zoomSpeed * Time.deltaTime);
         Quaternion rotation = Quaternion.Euler(_yRotation, _xRotation, 0f);
-        Vector3 desiredPosition = _target.position + rotation * _offset * _currentDistance;
+
+        if (Input.GetKeyDown(KeyCode.Tab)) {
+            _isAiming = true;
+            OnStartZoomInAim?.Invoke();
+        }
+        if (Input.GetKey(KeyCode.Tab))
+            _internalOffset = Vector3.Lerp(_internalOffset, transform.right * _aimDistance, 10 * Time.deltaTime);
+        else
+            _internalOffset = Vector3.Lerp(_internalOffset, Vector3.zero, 10 * Time.deltaTime);
+        if (Input.GetKeyUp(KeyCode.Tab)) {
+            _isAiming = false;
+            OnEndZoomInAim?.Invoke();
+        }
+
+        Vector3 desiredPosition = _target.position + rotation * _offset * _currentDistance + _internalOffset;
 
         if (Physics.Linecast(_target.position, desiredPosition, out RaycastHit hit, _collisionLayers))
             desiredPosition = hit.point + Vector3.up * .1f;
