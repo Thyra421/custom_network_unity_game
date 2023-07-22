@@ -1,12 +1,21 @@
+using System;
 using UnityEngine;
 
 public enum AbilityTargetingType
 {
-    OnPlayer, Aimed, GroundedArea
+    Melee, Aimed, GroundedArea
 }
 
-[CreateAssetMenu]
-public class Ability : ScriptableObject, IRechargeable, IUsable
+[Serializable]
+public class AbilityHit : IUsable
+{
+    [SerializeField]
+    private Effect[] _effects;
+
+    public Effect[] Effects => _effects;
+}
+
+public abstract class Ability : ScriptableObject, IRechargeable, IUsable
 {
     [SerializeField]
     private string _displayName;
@@ -15,9 +24,9 @@ public class Ability : ScriptableObject, IRechargeable, IUsable
     [SerializeField]
     private Sprite _icon;
     [SerializeField]
-    private AbilityTargetingType _targetingType;
-    [SerializeField]
     private Effect[] _effects;
+    [SerializeField]
+    private string _animationName;
 
     public Effect[] Effects => _effects;
 
@@ -25,5 +34,13 @@ public class Ability : ScriptableObject, IRechargeable, IUsable
 
     public float Cooldown => _cooldown;
 
-    public AbilityTargetingType TargetingType => _targetingType;
+    public string AnimationName => _animationName;
+}
+
+public abstract class OffensiveAbility : Ability
+{
+    [SerializeField]
+    private AbilityHit _hit;
+
+    public AbilityHit Hit => _hit;
 }

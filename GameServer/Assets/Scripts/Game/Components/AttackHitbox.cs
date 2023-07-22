@@ -6,6 +6,7 @@ class AttackHitbox : MonoBehaviour
     private readonly List<Collider> _collidersTouched = new List<Collider>();
     private int _damages;
     private float _duration;
+    private AbilityHit _hit;
 
     public Player Player { get; private set; }
 
@@ -20,14 +21,15 @@ class AttackHitbox : MonoBehaviour
         Player otherPlayer = other.GetComponent<Player>();
         if (otherPlayer != null && otherPlayer != Player && otherPlayer.Room == Player.Room) {
             _collidersTouched.Add(other);
+            otherPlayer.EffectController.Use(_hit);
             otherPlayer.Statistics.CurrentHealth -= _damages;
             Player.Room.PlayersManager.BroadcastTCP(new MessageHealthChanged(otherPlayer.Id, otherPlayer.Statistics.CurrentHealth, otherPlayer.Statistics.MaxHealth));
         }
     }
 
-    public void Initialize(Player player, int damages, float duration) {
+    public void Initialize(Player player, AbilityHit hit, float duration) {
         Player = player;
-        _damages = damages;
+        _hit = hit;
         _duration = duration;
     }
 }

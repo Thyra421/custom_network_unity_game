@@ -13,10 +13,6 @@ public class EffectParameterEditor : PropertyDrawer
         // get value (non-parsed) and type
         Type type = Type.GetType(typeNameProperty.stringValue);
         object valueObject = ((EffectParameter)property.boxedValue).ToObject;
-        //if (valueObject == null) {
-        //    EditorGUILayout.HelpBox($"Unsupported type {type.FullName}", MessageType.Error);
-        //    return;
-        //}
         // show label
         EditorGUI.PrefixLabel(position, new GUIContent(parameterNameProperty.stringValue));
         // parse value, show it, and set the new value in the value property

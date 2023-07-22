@@ -65,7 +65,7 @@ public class TCPClient
             Send(new MessageError(MessageErrorType.abilityNotFound));
             return;
         }
-        Client.Player.Abilities.UseAbility(ability, messageUseAbility.aimTarget);
+        Client.Player.Abilities.UseAbility(ability, messageUseAbility.aimTarget.ToVector3);
     }
 
     private void OnMessageEquip(MessageEquip messageEquip) {
@@ -167,7 +167,7 @@ public class TCPClient
             Send(new MessageError(MessageErrorType.inCooldown));
             return;
         }
-        Client.Player.EffectController.Use(item, messageUseItem.aimTarget);
+        Client.Player.EffectController.Use(item);
     }
 
     public TCPClient(TcpClient tcpClient) {

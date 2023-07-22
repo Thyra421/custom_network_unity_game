@@ -3,11 +3,11 @@ using UnityEngine;
 
 public interface IEffectController
 {
+    public abstract void DealDamage(int amount);
+
+    public abstract void ApplyAura(string test);
+
     public abstract void RestoreHealth(int amount);
-
-    public abstract void Melee(int damage, string animationName, float duration);
-
-    public abstract void Projectile(int damage, string animationName, GameObject prefab, float speed, float distance);
 }
 
 [Serializable]

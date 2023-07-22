@@ -19,22 +19,20 @@ public class AbilitySlot
     }
 
     public void Use() {
-        if (CurrentAbility != null && _currentCooldown <= 0)
-            switch (CurrentAbility.TargetingType) {
-                case AbilityTargetingType.OnPlayer:
-                    TCPClient.Send(new MessageUseAbility(CurrentAbility.name, Vector3Data.Zero));
-                    break;
-                case AbilityTargetingType.Aimed:
-                    CameraController cam = CameraController.Current;
-                    if (cam.IsAiming) {
-                        TCPClient.Send(new MessageUseAbility(CurrentAbility.name, cam.AimDirection));
-                        cam.StopAim();
-                    } else
-                        cam.StartAim();
-                    break;
-                case AbilityTargetingType.GroundedArea:
-                    break;
+        if (CurrentAbility == null || _currentCooldown > 0)
+            return;
+        if (CurrentAbility is OffensiveAbility) {
+            if (CurrentAbility is MeleeAbility)
+                TCPClient.Send(new MessageUseAbility(CurrentAbility.name, Vector3Data.Zero));
+            if (CurrentAbility is AimedAbility) {
+                CameraController cam = CameraController.Current;
+                if (cam.IsAiming) {
+                    TCPClient.Send(new MessageUseAbility(CurrentAbility.name, cam.AimDirection));
+                    cam.StopAim();
+                } else
+                    cam.StartAim();
             }
+        }
     }
 
     public void Used() {
