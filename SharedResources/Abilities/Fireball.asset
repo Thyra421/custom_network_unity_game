@@ -25,12 +25,12 @@ MonoBehaviour:
       - _parameterValue: 15
         _typeName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
         _parameterName: amount
-    - _methodName: ApplyStatusModifier
+    - _methodName: AddAlteration
       _parameters:
       - _parameterValue: Burn
-        _typeName: StatusModifier, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        _typeName: Alteration, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
           PublicKeyToken=null
-        _parameterName: modifier
+        _parameterName: alteration
   _prefab: {fileID: 5335648963724452009, guid: c1b21a42047cb974e9df7ea342ad8013, type: 3}
   _speed: 50
   _distance: 30

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerAlterations : MonoBehaviour
 {
+    [SerializeField]
+    private Player _player;
     private List<AlterationTimer> _alterationTimers = new List<AlterationTimer>();
 
     private void FixedUpdate() {
@@ -12,7 +14,10 @@ public class PlayerAlterations : MonoBehaviour
     }
 
     public void Add(Alteration alteration) {
-        _alterationTimers.Add(new AlterationTimer(alteration));
+        if (alteration is PeriodicAlteration periodicAlteration)
+            _alterationTimers.Add(new PeriodicAlterationTimer(_player, periodicAlteration));
+        else
+            _alterationTimers.Add(new AlterationTimer(alteration));
     }
 
     public List<Alteration> Alterations => _alterationTimers.Select((AlterationTimer s) => s.Alteration).ToList();

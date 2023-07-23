@@ -10,7 +10,7 @@ public class AlterationTimer
         RemainingDuration = alteration.BaseDuration;
     }
 
-    public void Update() {
+    public virtual void Update() {
         RemainingDuration -= Time.deltaTime;
     }
 }
