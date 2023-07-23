@@ -2,21 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Cooldown
-{
-    public IRechargeable Element { get; private set; }
-    public float RemainingCooldown { get; private set; }
-
-    public Cooldown(IRechargeable element) {
-        Element = element;
-        RemainingCooldown = element.Cooldown;
-    }
-
-    public void Recharge() {
-        RemainingCooldown -= Time.deltaTime;
-    }
-}
-
 public class PlayerCooldowns : MonoBehaviour
 {
     private readonly List<Cooldown> _cooldowns = new List<Cooldown>();

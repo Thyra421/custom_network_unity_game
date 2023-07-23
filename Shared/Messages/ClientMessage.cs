@@ -1,6 +1,4 @@
-﻿using UnityEngine.Rendering;
-
-public struct MessageLogin
+﻿public struct MessageLogin
 {
     public string username;
 

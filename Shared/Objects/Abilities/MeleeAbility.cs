@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Ability/Melee")]
 public class MeleeAbility : OffensiveAbility
 {
     [SerializeField]

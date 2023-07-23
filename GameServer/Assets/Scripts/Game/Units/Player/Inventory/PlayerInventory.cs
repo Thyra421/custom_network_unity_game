@@ -2,25 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class InventoryItemStack
-{
-    public Item Item { get; }
-    public int Amount { get; private set; }
-
-    public InventoryItemStack(Item item, int amount) {
-        Item = item;
-        Amount = amount;
-    }
-
-    public void Remove(int amount) {
-        Amount -= amount;
-    }
-
-    public void Add(int amount) {
-        Amount += amount;
-    }
-}
-
 public class PlayerInventory
 {
     private readonly Player _player;

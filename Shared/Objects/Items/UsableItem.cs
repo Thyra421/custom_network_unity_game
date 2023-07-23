@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Item/Usable")]
 public class UsableItem : Item, IRechargeable, IUsable
 {
     [SerializeField]
