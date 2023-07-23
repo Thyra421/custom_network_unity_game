@@ -2,7 +2,7 @@
 
 public interface IDirectEffectController
 {
-    public void ApplyStatusModifier(StatusModifier modifier);
+    public void AddAlteration(Alteration alteration);
 
     public void DealDamage(int amount);
 

@@ -13,8 +13,8 @@ public class PlayerDirectEffectController : IDirectEffectController
             typeof(PlayerDirectEffectController).GetMethod(effect.MethodName).Invoke(this, effect.Parameters.Select((EffectParameter param) => param.ToObject).ToArray());
     }
 
-    public void ApplyStatusModifier(StatusModifier modifier) {
-        _player.Status.Add(modifier);
+    public void AddAlteration(Alteration alteration) {
+        _player.Alterations.Add(alteration);
     }
 
     public void RestoreHealth(int amount) {

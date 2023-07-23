@@ -32,9 +32,9 @@ public class EffectParameterEditor : PropertyDrawer
             EditorGUILayout.HelpBox($"Prefab must be located in {SharedConfig.PREFABS_PATH}", MessageType.Info);
             GameObject newValue = (GameObject)EditorGUILayout.ObjectField((GameObject)valueObject, typeof(GameObject), false);
             parameterValueProperty.stringValue = newValue?.name;
-        } else if (type == typeof(StatusModifier)) {
-            EditorGUILayout.HelpBox($"Status modifier must be located in {SharedConfig.STATUS_MODIFITERS_PATH}", MessageType.Info);
-            StatusModifier newValue = (StatusModifier)EditorGUILayout.ObjectField((StatusModifier)valueObject, typeof(StatusModifier), false);
+        } else if (type == typeof(Alteration)) {
+            EditorGUILayout.HelpBox($"Status modifier must be located in {SharedConfig.ALTERATIONS_PATH}", MessageType.Info);
+            Alteration newValue = (Alteration)EditorGUILayout.ObjectField((Alteration)valueObject, typeof(Alteration), false);
             parameterValueProperty.stringValue = newValue?.name;
         } else {
             EditorGUILayout.HelpBox($"Unsupported type {type.FullName}", MessageType.Error);

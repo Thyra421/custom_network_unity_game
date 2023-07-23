@@ -9,10 +9,10 @@ public class PlayerStatusEffectController : IStatusEffectController
         _statistics = statistics;
     }
 
-    public StatisticsData Apply(List<StatusModifier> modifiers) {
-        foreach (StatusModifier modifier in modifiers)
-            if (modifier is ContinuousStatusModifier continuousStatusModifier)
-                foreach (StatusEffect effect in continuousStatusModifier.Effects)
+    public StatisticsData Apply(List<Alteration> alterations) {
+        foreach (Alteration alteration in alterations)
+            if (alteration is ContinuousAlteration continuousAlteration)
+                foreach (StatusEffect effect in continuousAlteration.Effects)
                     typeof(PlayerStatusEffectController).GetMethod(effect.MethodName).Invoke(this, effect.Parameters.Select((EffectParameter param) => param.ToObject).ToArray());
         return _statistics;
     }

@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "StatusModifier/Periodic")]
-public class PeriodicStatusModifier : StatusModifier, IUsable
+[CreateAssetMenu(menuName = "Alteration/Periodic")]
+public class PeriodicAlteration : Alteration, IUsable
 {
     [SerializeField]
     private DirectEffect[] _effects;

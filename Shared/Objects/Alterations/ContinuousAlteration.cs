@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "StatusModifier/Continuous")]
-public class ContinuousStatusModifier : StatusModifier
+[CreateAssetMenu(menuName = "Alteration/Continuous")]
+public class ContinuousAlteration : Alteration
 {
     [SerializeField]
     private StatusEffect[] _effects;

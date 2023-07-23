@@ -39,7 +39,7 @@ public class PlayerStatistics
     public StatisticsData Statistics {
         get {
             PlayerStatusEffectController statusEffectController = new PlayerStatusEffectController(_baseStatistics);
-            return statusEffectController.Apply(_player.Status.StatusModifiers);
+            return statusEffectController.Apply(_player.Alterations.Alterations);
         }
     }
 }

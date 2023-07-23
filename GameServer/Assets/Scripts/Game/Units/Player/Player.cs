@@ -4,7 +4,7 @@
 [RequireComponent(typeof(PlayerAbilities))]
 [RequireComponent(typeof(PlayerActivity))]
 [RequireComponent(typeof(PlayerCooldowns))]
-[RequireComponent(typeof(PlayerStatus))]
+[RequireComponent(typeof(PlayerAlterations))]
 public class Player : Unit
 {
     [SerializeField]
@@ -16,7 +16,7 @@ public class Player : Unit
     [SerializeField]
     private PlayerCooldowns _cooldowns;
     [SerializeField]
-    private PlayerStatus _status;
+    private PlayerAlterations _alterations;
 
     public Client Client { get; private set; }
     public Room Room { get; private set; }
@@ -48,5 +48,5 @@ public class Player : Unit
 
     public PlayerCooldowns Cooldowns => _cooldowns;
 
-    public PlayerStatus Status => _status;
+    public PlayerAlterations Alterations => _alterations;
 }

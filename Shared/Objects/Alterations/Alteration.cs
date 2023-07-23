@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class StatusModifier : ScriptableObject
+public abstract class Alteration : ScriptableObject
 {
     [SerializeField]
     private string _displayName;

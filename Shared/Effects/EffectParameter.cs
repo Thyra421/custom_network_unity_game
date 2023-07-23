@@ -34,8 +34,8 @@ public class EffectParameter
             } else if (type == typeof(GameObject)) {
                 GameObject result = Resources.Load<GameObject>($"{SharedConfig.PREFABS_PATH}/{_parameterValue}");
                 return result;
-            } else if (type == typeof(StatusModifier)) {
-                StatusModifier result = Resources.Load<StatusModifier>($"{SharedConfig.STATUS_MODIFITERS_PATH}/{_parameterValue}");
+            } else if (type == typeof(Alteration)) {
+                Alteration result = Resources.Load<Alteration>($"{SharedConfig.ALTERATIONS_PATH}/{_parameterValue}");
                 return result;
             }
             return null;
