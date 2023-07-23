@@ -18,6 +18,7 @@ MonoBehaviour:
   _effects: []
   _animationName: Attack
   _hit:
+    _pierce: 1
     _effects:
     - _methodName: DealDamage
       _parameters:

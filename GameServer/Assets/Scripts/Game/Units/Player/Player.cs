@@ -2,6 +2,9 @@
 
 [RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(PlayerAbilities))]
+[RequireComponent(typeof(PlayerActivity))]
+[RequireComponent(typeof(PlayerCooldowns))]
+[RequireComponent(typeof(PlayerStatus))]
 public class Player : Unit
 {
     [SerializeField]
@@ -12,17 +15,20 @@ public class Player : Unit
     private PlayerActivity _activity;
     [SerializeField]
     private PlayerCooldowns _cooldowns;
+    [SerializeField]
+    private PlayerStatus _status;
 
-    public PlayerStatistics Statistics { get; } = new PlayerStatistics();
     public Client Client { get; private set; }
     public Room Room { get; private set; }
+    public PlayerStatistics Statistics { get; }
     public PlayerInventory Inventory { get; }
-    public PlayerEffectController EffectController { get; }
+    public PlayerDirectEffectController EffectController { get; }
     public PlayerExperience Experience { get; }
 
     private Player() {
+        Statistics = new PlayerStatistics(this);
         Inventory = new PlayerInventory(this);
-        EffectController = new PlayerEffectController(this);
+        EffectController = new PlayerDirectEffectController(this);
         Experience = new PlayerExperience(this);
     }
 
@@ -32,6 +38,8 @@ public class Player : Unit
         client.Player = this;
     }
 
+    public PlayerData Data => new PlayerData(Id, Movement.TransformData, Movement.AnimationData);
+
     public PlayerAbilities Abilities => _abilities;
 
     public PlayerMovement Movement => _movement;
@@ -40,5 +48,5 @@ public class Player : Unit
 
     public PlayerCooldowns Cooldowns => _cooldowns;
 
-    public PlayerData Data => new PlayerData(Id, Movement.TransformData, Movement.AnimationData);
+    public PlayerStatus Status => _status;
 }

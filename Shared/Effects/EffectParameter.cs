@@ -1,14 +1,5 @@
-using System;
+﻿using System;
 using UnityEngine;
-
-public interface IEffectController
-{
-    public abstract void DealDamage(int amount);
-
-    public abstract void ApplyAura(string test);
-
-    public abstract void RestoreHealth(int amount);
-}
 
 [Serializable]
 public class EffectParameter
@@ -43,6 +34,9 @@ public class EffectParameter
             } else if (type == typeof(GameObject)) {
                 GameObject result = Resources.Load<GameObject>($"{SharedConfig.PREFABS_PATH}/{_parameterValue}");
                 return result;
+            } else if (type == typeof(StatusModifier)) {
+                StatusModifier result = Resources.Load<StatusModifier>($"{SharedConfig.STATUS_MODIFITERS_PATH}/{_parameterValue}");
+                return result;
             }
             return null;
         }
@@ -51,17 +45,4 @@ public class EffectParameter
     public string TypeName => _typeName;
 
     public string ParameterName => _parameterName;
-}
-
-[Serializable]
-public class Effect
-{
-    [SerializeField]
-    private string _methodName;
-    [SerializeField]
-    private EffectParameter[] _parameters;
-
-    public string MethodName => _methodName;
-
-    public EffectParameter[] Parameters => _parameters;
 }

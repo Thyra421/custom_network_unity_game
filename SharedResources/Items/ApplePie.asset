@@ -18,4 +18,5 @@ MonoBehaviour:
   _price: 0
   _property: 0
   _icon: {fileID: 21300000, guid: a54b4875913dbec4c850dcb7bbbed48f, type: 3}
-  _actions: []
+  _effects: []
+  _cooldown: 0

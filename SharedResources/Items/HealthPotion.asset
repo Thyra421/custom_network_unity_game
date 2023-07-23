@@ -21,7 +21,7 @@ MonoBehaviour:
   _effects:
   - _methodName: RestoreHealth
     _parameters:
-    - _parameterValue: 45
+    - _parameterValue: 30
       _typeName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
       _parameterName: amount
   _cooldown: 0

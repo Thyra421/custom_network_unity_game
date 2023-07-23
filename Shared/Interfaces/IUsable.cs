@@ -1,4 +1,4 @@
 public interface IUsable
 {
-    public Effect[] Effects { get; }
+    public DirectEffect[] Effects { get; }
 }

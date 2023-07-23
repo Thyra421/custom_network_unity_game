@@ -9,11 +9,11 @@ public abstract class Ability : ScriptableObject, IRechargeable, IUsable
     [SerializeField]
     private Sprite _icon;
     [SerializeField]
-    private Effect[] _effects;
+    private DirectEffect[] _effects;
     [SerializeField]
     private string _animationName;
 
-    public Effect[] Effects => _effects;
+    public DirectEffect[] Effects => _effects;
 
     public Sprite Icon => _icon;
 

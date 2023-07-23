@@ -9,7 +9,9 @@ public class EffectEditor : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
         // get method names from the selected class
-        MethodInfo[] _methodInfos = typeof(IEffectController).GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
+        string className = ((Effect)property.boxedValue).ClassName;
+        Type type = Type.GetType(className);
+        MethodInfo[] _methodInfos = type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
         string[] methodNames = _methodInfos.Select((MethodInfo m) => m.Name).ToArray();
         // get selected method name or first if none selected
         SerializedProperty methodNameProperty = property.FindPropertyRelative("_methodName");

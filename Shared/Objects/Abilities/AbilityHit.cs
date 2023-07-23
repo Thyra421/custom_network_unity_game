@@ -5,7 +5,11 @@ using UnityEngine;
 public class AbilityHit : IUsable
 {
     [SerializeField]
-    private Effect[] _effects;
+    private bool _pierce;
+    [SerializeField]
+    private DirectEffect[] _effects;
 
-    public Effect[] Effects => _effects;
+    public bool Pierce => _pierce;
+
+    public DirectEffect[] Effects => _effects;
 }

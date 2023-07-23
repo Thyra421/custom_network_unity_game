@@ -9,4 +9,5 @@ public static class SharedConfig
     public const string CRAFTING_PATTERNS_PATH = "Shared/CraftingPatterns";
     public const string NPCS_PATH = "Shared/NPCs";
     public const string ABILITIES_PATH = "Shared/Abilities";
+    public const string STATUS_MODIFITERS_PATH = "Shared/StatusModifiers";
 }
