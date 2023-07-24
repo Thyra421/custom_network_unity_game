@@ -23,7 +23,7 @@ class AttackHitbox : MonoBehaviour
         Player otherPlayer = other.GetComponent<Player>();
         if (otherPlayer != null && otherPlayer != Player && otherPlayer.Room == Player.Room) {
             _collidersTouched.Add(other);
-            new PlayerDirectEffectController(Player, otherPlayer).Use(_hit);
+            new PlayerDirectEffectController(otherPlayer, Player).Use(_hit);
             otherPlayer.Statistics.CurrentHealth -= _damages;
             Player.Room.PlayersManager.BroadcastTCP(new MessageHealthChanged(otherPlayer.Id, otherPlayer.Statistics.CurrentHealth, otherPlayer.Statistics.MaxHealth));
         }

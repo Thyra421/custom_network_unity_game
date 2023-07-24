@@ -2,17 +2,28 @@
 
 public class AlterationController
 {
-    public Alteration Alteration { get; }
-    public Player Owner { get;  }
-    public float RemainingDuration { get; private set; }
+    protected float _remainingDuration;
 
-    public AlterationController(Alteration alteration, Player owner) {
-        Alteration = alteration;
+    public Player Player { get; }
+    public Player Owner { get; }
+    public Alteration Alteration { get; }
+
+    public AlterationController(Player player, Player owner, Alteration alteration) {
+        Player = player;
         Owner = owner;
-        RemainingDuration = alteration.BaseDuration;
+        Alteration = alteration;
+        _remainingDuration = Alteration.BaseDuration;
+    }
+
+    public virtual void Refresh() {
+        _remainingDuration = Alteration.BaseDuration;
     }
 
     public virtual void Update() {
-        RemainingDuration -= Time.deltaTime;
+        _remainingDuration = Mathf.Clamp(_remainingDuration - Time.deltaTime, 0, Alteration.BaseDuration);
     }
+
+    public AlterationData Data => new AlterationData(Player.Id, Owner.Id, Alteration.name, _remainingDuration);
+
+    public bool IsExpired => _remainingDuration <= 0;
 }

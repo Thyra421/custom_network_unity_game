@@ -26,6 +26,9 @@ public class MessageHandler : MonoBehaviour
     public delegate void OnMessageDespawnVFXHandler(MessageDespawnVFX messageDespawnVFX);
     public delegate void OnMessageVFXMovedHandler(MessageVFXMoved messageVFXMoved);
     public delegate void OnMessageTriggerAnimationHandler(MessageTriggerAnimation messageTriggerAnimation);
+    public delegate void OnMessageAddAlterationHandler(MessageAddAlteration messageAddAlteration);
+    public delegate void OnMessageRefreshAlterationHandler(MessageRefreshAlteration messageRefreshAlteration);
+    public delegate void OnMessageRemoveAlterationHandler(MessageRemoveAlteration messageRemoveAlteration);
 
     public event OnMessageJoinedGameHandler OnMessageJoinedGameEvent;
     public event OnMessagePlayerMovedHandler OnMessagePlayerMovedEvent;
@@ -49,6 +52,9 @@ public class MessageHandler : MonoBehaviour
     public event OnMessageDespawnVFXHandler OnMessageDespawnVFXEvent;
     public event OnMessageVFXMovedHandler OnMessageVFXMovedEvent;
     public event OnMessageTriggerAnimationHandler OnMessageTriggerAnimationEvent;
+    public event OnMessageAddAlterationHandler OnMessageAddAlterationEvent;
+    public event OnMessageRefreshAlterationHandler OnMessageRefreshAlterationEvent;
+    public event OnMessageRemoveAlterationHandler OnMessageRemoveAlterationEvent;
 
     public OnMessageJoinedGameHandler OnMessageJoinedGame => OnMessageJoinedGameEvent;
     public OnMessagePlayerMovedHandler OnMessagePlayerMoved => OnMessagePlayerMovedEvent;
@@ -72,6 +78,9 @@ public class MessageHandler : MonoBehaviour
     public OnMessageDespawnVFXHandler OnMessageDespawnVFX => OnMessageDespawnVFXEvent;
     public OnMessageVFXMovedHandler OnMessageVFXMoved => OnMessageVFXMovedEvent;
     public OnMessageTriggerAnimationHandler OnMessageTriggerAnimation => OnMessageTriggerAnimationEvent;
+    public OnMessageAddAlterationHandler OnMessageAddAlteration => OnMessageAddAlterationEvent;
+    public OnMessageRefreshAlterationHandler OnMessageRefreshAlteration => OnMessageRefreshAlterationEvent;
+    public OnMessageRemoveAlterationHandler OnMessageRemoveAlteration => OnMessageRemoveAlterationEvent;
 
     private void Awake() {
         if (Current == null)

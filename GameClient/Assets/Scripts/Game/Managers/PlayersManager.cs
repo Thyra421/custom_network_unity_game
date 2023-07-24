@@ -67,12 +67,6 @@ public class PlayersManager : MonoBehaviour
             RemovePlayer(remotePlayer);
     }
 
-    private void OnMessageUsedAbility(MessageUsedAbility messageUsedAbility) {
-        Ability ability = Resources.Load<Ability>($"{SharedConfig.ABILITIES_PATH}/{messageUsedAbility.abilityName}");
-
-        AbilitiesManager.Current.UseAbility(ability);
-    }
-
     private void OnMessageHealthChanged(MessageHealthChanged messageHealthChanged) {
         if (messageHealthChanged.id == _myPlayer.Id) {
             _myPlayer.Statistics.MaxHealth = messageHealthChanged.maxHealth;
@@ -112,9 +106,9 @@ public class PlayersManager : MonoBehaviour
 
         if (messageEquiped.id == _myPlayer.Id) {
             AbilitiesManager.Current.Equip(weapon);
-            // equip weapon skin
+            // TODO equip weapon skin
         } else
-            // equip weapon skin
+            // TODO equip weapon skin
             ;
     }
 
@@ -123,6 +117,34 @@ public class PlayersManager : MonoBehaviour
             _myPlayer.TriggerAnimation(messageTriggerAnimation.animationName);
         else
             FindPlayer(messageTriggerAnimation.id)?.TriggerAnimation(messageTriggerAnimation.animationName);
+    }
+
+    private void OnMessageAddAlteration(MessageAddAlteration messageAddAlteration) {
+        Alteration alteration = Resources.Load<Alteration>($"{SharedConfig.ALTERATIONS_PATH}/{messageAddAlteration.alteration.alterationName}");
+        AlterationController alterationController = new AlterationController(alteration, messageAddAlteration.alteration.remainingDuration, messageAddAlteration.alteration.ownerId);
+
+        if (messageAddAlteration.alteration.targetId == _myPlayer.Id)
+            _myPlayer.Alterations.Add(alterationController);
+        else
+            FindPlayer(messageAddAlteration.alteration.targetId)?.Alterations.Add(alterationController);
+    }
+
+    private void OnMessageRefreshAlteration(MessageRefreshAlteration messageRefreshAlteration) {
+        Alteration alteration = Resources.Load<Alteration>($"{SharedConfig.ALTERATIONS_PATH}/{messageRefreshAlteration.alteration.alterationName}");
+
+        if (messageRefreshAlteration.alteration.targetId == _myPlayer.Id)
+            _myPlayer.Alterations.Refresh(alteration, messageRefreshAlteration.alteration.remainingDuration, messageRefreshAlteration.alteration.ownerId);
+        else
+            FindPlayer(messageRefreshAlteration.alteration.targetId)?.Alterations.Refresh(alteration, messageRefreshAlteration.alteration.remainingDuration, messageRefreshAlteration.alteration.ownerId);
+    }
+
+    private void OnMessageRemoveAlteration(MessageRemoveAlteration messageRemoveAlteration) {
+        Alteration alteration = Resources.Load<Alteration>($"{SharedConfig.ALTERATIONS_PATH}/{messageRemoveAlteration.alteration.alterationName}");
+
+        if (messageRemoveAlteration.alteration.targetId == _myPlayer.Id)
+            _myPlayer.Alterations.Remove(alteration, messageRemoveAlteration.alteration.ownerId);
+        else
+            FindPlayer(messageRemoveAlteration.alteration.targetId)?.Alterations.Remove(alteration, messageRemoveAlteration.alteration.ownerId);
     }
 
     private void Awake() {
@@ -134,12 +156,14 @@ public class PlayersManager : MonoBehaviour
         MessageHandler.Current.OnMessageJoinedGameEvent += OnMessageJoinedGame;
         MessageHandler.Current.OnMessageLeftGameEvent += OnMessageLeftGame;
         MessageHandler.Current.OnMessagePlayerMovedEvent += OnMessagePlayerMoved;
-        MessageHandler.Current.OnMessageUsedAbilityEvent += OnMessageUsedAbility;
         MessageHandler.Current.OnMessageHealthChangedEvent += OnMessageHealthChanged;
         MessageHandler.Current.OnMessageChannelEvent += OnMessageChannel;
         MessageHandler.Current.OnMessageCastEvent += OnMessageCast;
         MessageHandler.Current.OnMessageStopActivityEvent += OnMessageStopActivity;
         MessageHandler.Current.OnMessageEquipedEvent += OnMessageEquiped;
         MessageHandler.Current.OnMessageTriggerAnimationEvent += OnMessageTriggerAnimation;
+        MessageHandler.Current.OnMessageAddAlterationEvent += OnMessageAddAlteration;
+        MessageHandler.Current.OnMessageRefreshAlterationEvent += OnMessageRefreshAlteration;
+        MessageHandler.Current.OnMessageRemoveAlterationEvent += OnMessageRemoveAlteration;
     }
 }

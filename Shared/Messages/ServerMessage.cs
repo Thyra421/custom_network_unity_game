@@ -86,40 +86,28 @@ public struct MessageTriggerAnimation
 
 public struct MessageAddAlteration
 {
-    public string targetId;
-    public string ownerId;
-    public string alterationName;
+    public AlterationData alteration;
 
-    public MessageAddAlteration(string targetId, string ownerId, string alterationName) {
-        this.targetId = targetId;
-        this.ownerId = ownerId;
-        this.alterationName = alterationName;
+    public MessageAddAlteration(AlterationData alteration) {
+        this.alteration = alteration;
     }
 }
 
 public struct MessageRefreshAlteration
 {
-    public string targetId;
-    public string ownerId;
-    public string alterationName;
+    public AlterationData alteration;
 
-    public MessageRefreshAlteration(string targetId, string ownerId, string alterationName) {
-        this.targetId = targetId;
-        this.ownerId = ownerId;
-        this.alterationName = alterationName;
+    public MessageRefreshAlteration(AlterationData alteration) {
+        this.alteration = alteration;
     }
 }
 
 public struct MessageRemoveAlteration
 {
-    public string targetId;
-    public string ownerId;
-    public string alterationName;
+    public AlterationData alteration;
 
-    public MessageRemoveAlteration(string targetId, string ownerId, string alterationName) {
-        this.targetId = targetId;
-        this.ownerId = ownerId;
-        this.alterationName = alterationName;
+    public MessageRemoveAlteration(AlterationData alteration) {
+        this.alteration = alteration;
     }
 }
 

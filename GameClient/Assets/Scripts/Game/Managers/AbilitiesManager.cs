@@ -14,6 +14,12 @@ public class AbilitiesManager : MonoBehaviour
     public event OnChangedWeaponHandler OnChangedWeapon;
     public event OnChangedPactHandler OnChangedPact;
 
+    private void OnMessageUsedAbility(MessageUsedAbility messageUsedAbility) {
+        Ability ability = Resources.Load<Ability>($"{SharedConfig.ABILITIES_PATH}/{messageUsedAbility.abilityName}");
+
+        UseAbility(ability);
+    }
+
     private void FixedUpdate() {
         float cooldownAmount = Time.deltaTime;
         AbilitySlot1.Cooldown(cooldownAmount);
@@ -41,6 +47,7 @@ public class AbilitiesManager : MonoBehaviour
             Current = this;
         else
             Destroy(gameObject);
+        MessageHandler.Current.OnMessageUsedAbilityEvent += OnMessageUsedAbility;
     }
 
     public void UseAbility(Ability ability) {

@@ -15,8 +15,8 @@ public class PlayerDirectEffectController : IDirectEffectController
             typeof(PlayerDirectEffectController).GetMethod(effect.MethodName).Invoke(this, effect.Parameters.Select((EffectParameter param) => param.ToObject).ToArray());
     }
 
-    public void AddAlteration(Alteration alteration) {
-        _target.Alterations.Add(alteration, _owner);
+    public void ApplyAlteration(Alteration alteration) {
+        _target.Alterations.Apply(alteration, _owner);
     }
 
     public void RestoreHealth(int amount) {

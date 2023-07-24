@@ -1,0 +1,34 @@
+using UnityEngine;
+
+public class AlterationController
+{
+    private float _remainingDuration;
+
+    public Alteration Alteration { get; }
+    public string OwnerId { get; }
+
+    public delegate void OnRemainingDurationChangedHandler(float remainingDuration);
+    public event OnRemainingDurationChangedHandler OnRemainingDurationChanged;
+
+    public AlterationController(Alteration alteration, float remainingDuration, string ownerId) {
+        Alteration = alteration;
+        RemainingDuration = remainingDuration;
+        OwnerId = ownerId;
+    }
+
+    public void Update() {
+        RemainingDuration -= Time.deltaTime;
+    }
+
+    public void Refresh(float remainingDuration) {
+        RemainingDuration = remainingDuration;
+    }
+
+    public float RemainingDuration {
+        get => _remainingDuration;
+        private set {
+            _remainingDuration = value;
+            OnRemainingDurationChanged?.Invoke(_remainingDuration);
+        }
+    }
+}

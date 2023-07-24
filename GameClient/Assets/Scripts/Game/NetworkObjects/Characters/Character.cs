@@ -1,9 +1,12 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Alterations))]
 public abstract class Character : NetworkObject
 {
     [SerializeField]
     protected Animator _animator;
+    [SerializeField]
+    private Alterations _alterations;
 
     public Statistics Statistics { get; private set; }
 
@@ -35,4 +38,6 @@ public abstract class Character : NetworkObject
     }
 
     public Animator Animator => _animator;
+
+    public Alterations Alterations => _alterations;
 }

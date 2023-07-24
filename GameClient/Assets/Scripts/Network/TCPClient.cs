@@ -81,7 +81,7 @@ public static class TCPClient
         } else if (messageType.Equals(typeof(MessageSpawnNPCs))) {
             MessageSpawnNPCs messageSpawnNPCs = Utils.Deserialize<MessageSpawnNPCs>(message);
             MessageHandler.Current.OnMessageSpawnNPCs?.Invoke(messageSpawnNPCs);
-        }  else if (messageType.Equals(typeof(MessageUsedAbility))) {
+        } else if (messageType.Equals(typeof(MessageUsedAbility))) {
             MessageUsedAbility messageUsedAbility = Utils.Deserialize<MessageUsedAbility>(message);
             MessageHandler.Current.OnMessageUsedAbility?.Invoke(messageUsedAbility);
         } else if (messageType.Equals(typeof(MessageDespawnNode))) {
@@ -123,6 +123,15 @@ public static class TCPClient
         } else if (messageType.Equals(typeof(MessageTriggerAnimation))) {
             MessageTriggerAnimation messageTriggerAnimation = Utils.Deserialize<MessageTriggerAnimation>(message);
             MessageHandler.Current.OnMessageTriggerAnimation?.Invoke(messageTriggerAnimation);
+        } else if (messageType.Equals(typeof(MessageAddAlteration))) {
+            MessageAddAlteration messageAddAlteration = Utils.Deserialize<MessageAddAlteration>(message);
+            MessageHandler.Current.OnMessageAddAlteration?.Invoke(messageAddAlteration);
+        } else if (messageType.Equals(typeof(MessageRefreshAlteration))) {
+            MessageRefreshAlteration messageRefreshAlteration = Utils.Deserialize<MessageRefreshAlteration>(message);
+            MessageHandler.Current.OnMessageRefreshAlteration?.Invoke(messageRefreshAlteration);
+        } else if (messageType.Equals(typeof(MessageRemoveAlteration))) {
+            MessageRemoveAlteration messageRemoveAlteration = Utils.Deserialize<MessageRemoveAlteration>(message);
+            MessageHandler.Current.OnMessageRemoveAlteration?.Invoke(messageRemoveAlteration);
         }
     }
 
