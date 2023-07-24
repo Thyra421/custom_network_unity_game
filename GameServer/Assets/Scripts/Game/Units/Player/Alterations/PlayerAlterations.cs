@@ -6,19 +6,19 @@ public class PlayerAlterations : MonoBehaviour
 {
     [SerializeField]
     private Player _player;
-    private List<AlterationTimer> _alterationTimers = new List<AlterationTimer>();
+    private List<AlterationController> _alterationControllers = new List<AlterationController>();
 
     private void FixedUpdate() {
-        _alterationTimers.ForEach((AlterationTimer t) => t.Update());
-        _alterationTimers.RemoveAll((AlterationTimer t) => t.RemainingDuration <= 0);
+        _alterationControllers.ForEach((AlterationController c) => c.Update());
+        _alterationControllers.RemoveAll((AlterationController c) => c.RemainingDuration <= 0);
     }
 
-    public void Add(Alteration alteration) {
+    public void Add(Alteration alteration, Player owner) {
         if (alteration is PeriodicAlteration periodicAlteration)
-            _alterationTimers.Add(new PeriodicAlterationTimer(_player, periodicAlteration));
+            _alterationControllers.Add(new PeriodicAlterationController(_player, periodicAlteration, owner));
         else
-            _alterationTimers.Add(new AlterationTimer(alteration));
+            _alterationControllers.Add(new AlterationController(alteration, owner));
     }
 
-    public List<Alteration> Alterations => _alterationTimers.Select((AlterationTimer s) => s.Alteration).ToList();
+    public List<Alteration> Alterations => _alterationControllers.Select((AlterationController s) => s.Alteration).ToList();
 }

@@ -82,6 +82,49 @@ public struct MessageTriggerAnimation
     }
 }
 
+#region ALTERATIONS
+
+public struct MessageAddAlteration
+{
+    public string targetId;
+    public string ownerId;
+    public string alterationName;
+
+    public MessageAddAlteration(string targetId, string ownerId, string alterationName) {
+        this.targetId = targetId;
+        this.ownerId = ownerId;
+        this.alterationName = alterationName;
+    }
+}
+
+public struct MessageRefreshAlteration
+{
+    public string targetId;
+    public string ownerId;
+    public string alterationName;
+
+    public MessageRefreshAlteration(string targetId, string ownerId, string alterationName) {
+        this.targetId = targetId;
+        this.ownerId = ownerId;
+        this.alterationName = alterationName;
+    }
+}
+
+public struct MessageRemoveAlteration
+{
+    public string targetId;
+    public string ownerId;
+    public string alterationName;
+
+    public MessageRemoveAlteration(string targetId, string ownerId, string alterationName) {
+        this.targetId = targetId;
+        this.ownerId = ownerId;
+        this.alterationName = alterationName;
+    }
+}
+
+#endregion ALTERATIONS
+
 #region ACTIVITY
 
 public struct MessageCast

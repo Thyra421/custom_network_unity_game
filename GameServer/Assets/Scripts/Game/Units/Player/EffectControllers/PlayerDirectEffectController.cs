@@ -2,10 +2,12 @@ using System.Linq;
 
 public class PlayerDirectEffectController : IDirectEffectController
 {
-    private readonly Player _player;
+    private readonly Player _target;
+    private readonly Player _owner;
 
-    public PlayerDirectEffectController(Player player) {
-        _player = player;
+    public PlayerDirectEffectController(Player target, Player owner) {
+        _target = target;
+        _owner = owner;
     }
 
     public void Use(IUsable usable) {
@@ -14,14 +16,14 @@ public class PlayerDirectEffectController : IDirectEffectController
     }
 
     public void AddAlteration(Alteration alteration) {
-        _player.Alterations.Add(alteration);
+        _target.Alterations.Add(alteration, _owner);
     }
 
     public void RestoreHealth(int amount) {
-        _player.Statistics.CurrentHealth += amount;
+        _target.Statistics.CurrentHealth += amount;
     }
 
     public void DealDamage(int amount) {
-        _player.Statistics.CurrentHealth -= amount;
+        _target.Statistics.CurrentHealth -= amount;
     }
 }

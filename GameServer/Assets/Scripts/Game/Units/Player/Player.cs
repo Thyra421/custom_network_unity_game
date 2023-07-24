@@ -22,13 +22,11 @@ public class Player : Unit
     public Room Room { get; private set; }
     public PlayerStatistics Statistics { get; }
     public PlayerInventory Inventory { get; }
-    public PlayerDirectEffectController EffectController { get; }
     public PlayerExperience Experience { get; }
 
     private Player() {
         Statistics = new PlayerStatistics(this);
         Inventory = new PlayerInventory(this);
-        EffectController = new PlayerDirectEffectController(this);
         Experience = new PlayerExperience(this);
     }
 

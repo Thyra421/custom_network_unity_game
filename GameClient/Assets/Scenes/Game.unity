@@ -4012,7 +4012,8 @@ MonoBehaviour:
   _minDistance: 2
   _maxDistance: 10
   _aimDistance: 0.5
-  _aimSpeed: 10
+  _aimSpeed: 15
+  _aimZoomDistance: 2
   _collisionLayers:
     serializedVersion: 2
     m_Bits: 64

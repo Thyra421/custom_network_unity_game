@@ -26,6 +26,8 @@ public class CameraController : MonoBehaviour
     private float _aimDistance = .5f;
     [SerializeField]
     private float _aimSpeed = 10f;
+    [SerializeField]
+    private float _aimZoomDistance = 2f;
     [Header("Physics")]
     [SerializeField]
     private LayerMask _collisionLayers;
@@ -77,7 +79,7 @@ public class CameraController : MonoBehaviour
         }
 
         if (IsAiming) {
-            _currentDistance = Mathf.Lerp(_currentDistance, _minDistance, _aimSpeed * Time.deltaTime);
+            _currentDistance = Mathf.Lerp(_currentDistance, _aimZoomDistance, _aimSpeed * Time.deltaTime);
             _internalOffset = Vector3.Lerp(_internalOffset, transform.right * _aimDistance, _aimSpeed * Time.deltaTime);
         } else {
             _currentDistance = Mathf.Lerp(_currentDistance, _desiredDistance, _zoomSpeed * Time.deltaTime);

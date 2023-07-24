@@ -36,7 +36,7 @@ public class PlayerAbilities : MonoBehaviour
             return;
         }
 
-        _player.EffectController.Use(ability);
+        new PlayerDirectEffectController(_player, _player).Use(ability);
 
         if (ability is OffensiveAbility offensiveAbility) {
             if (ability is MeleeAbility meleeAbility)

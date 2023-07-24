@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 
-public class AlterationTimer
+public class AlterationController
 {
-    public Alteration Alteration { get; private set; }
+    public Alteration Alteration { get; }
+    public Player Owner { get;  }
     public float RemainingDuration { get; private set; }
 
-    public AlterationTimer(Alteration alteration) {
+    public AlterationController(Alteration alteration, Player owner) {
         Alteration = alteration;
+        Owner = owner;
         RemainingDuration = alteration.BaseDuration;
     }
 
