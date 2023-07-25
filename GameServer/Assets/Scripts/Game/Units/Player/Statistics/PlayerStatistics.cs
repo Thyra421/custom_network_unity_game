@@ -1,20 +1,45 @@
+using System;
+using System.Linq;
 using UnityEngine;
 
-public struct StatisticsData
+public class PlayerStatistics : MonoBehaviour
 {
-    public float _movementSpeed;
-}
-
-public class PlayerStatistics
-{
-    private readonly Player _player;
-    private int _maxHealth = 100;
+    [SerializeField]
+    private Player _player;
+    private int _maxHealth;
     private int _currentHealth;
-    private StatisticsData _baseStatistics;
 
-    public PlayerStatistics(Player player) {
-        _player = player;
-        _currentHealth = _maxHealth;
+    private readonly Statistic[] _statistics = new Statistic[Enum.GetValues(typeof(StatisticType)).Length];
+
+    private void Awake() {
+        for (int i = 0; i < Enum.GetValues(typeof(StatisticType)).Length; i++) {
+            _statistics[i] = new Statistic((StatisticType)Enum.GetValues(typeof(StatisticType)).GetValue(i));
+        }
+    }
+
+    private StatisticData[] Datas => _statistics.Select((Statistic s) => s.Data).ToArray();
+
+    private void OnStatisticsChanged(StatisticData[] oldStatistics) {
+        StatisticData[] newStatistics = Datas;
+
+        StatisticData[] difference = newStatistics.Where((StatisticData sd, int index) => sd.value != oldStatistics[index].value).ToArray();
+
+        if (difference.Length > 0)
+            _player.Client.Tcp.Send(new MessageStatisticsChanged(difference));
+    }
+
+    public void OnAddedContinuousAlteration(ContinuousAlteration alteration) {
+        StatisticData[] oldStatistics = Datas;
+        new PlayerStatusEffectController(this).Add(alteration);
+
+        OnStatisticsChanged(oldStatistics);
+    }
+
+    public void OnRemovedContinuousAlteration(ContinuousAlteration alteration) {
+        StatisticData[] oldStatistics = Datas;
+        new PlayerStatusEffectController(this).Remove(alteration);
+
+        OnStatisticsChanged(oldStatistics);
     }
 
     public int CurrentHealth {
@@ -34,12 +59,5 @@ public class PlayerStatistics
         }
     }
 
-    public StatisticsData BaseStatistics => _baseStatistics;
-
-    public StatisticsData Statistics {
-        get {
-            PlayerStatusEffectController statusEffectController = new PlayerStatusEffectController(_baseStatistics);
-            return statusEffectController.Apply(_player.Alterations.Alterations);
-        }
-    }
+    public Statistic Find(StatisticType type) => Array.Find(_statistics, (Statistic s) => s.Type == type);
 }

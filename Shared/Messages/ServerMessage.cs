@@ -272,6 +272,7 @@ public struct MessageCrafted
     }
 }
 
+// TODO list
 public struct MessageExperienceChanged
 {
     public SkillType type;
@@ -295,6 +296,15 @@ public struct MessageWeaponExperienceChanged
         this.weaponName = weaponName;
         this.currentLevel = currentLevel;
         this.currentRatio = currentRatio;
+    }
+}
+
+public struct MessageStatisticsChanged
+{
+    public StatisticData[] statisticDatas;
+
+    public MessageStatisticsChanged(StatisticData[] statisticDatas) {
+        this.statisticDatas = statisticDatas;
     }
 }
 

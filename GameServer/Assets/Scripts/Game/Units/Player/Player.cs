@@ -5,6 +5,7 @@
 [RequireComponent(typeof(PlayerActivity))]
 [RequireComponent(typeof(PlayerCooldowns))]
 [RequireComponent(typeof(PlayerAlterations))]
+[RequireComponent(typeof(PlayerStatistics))]
 public class Player : Unit
 {
     [SerializeField]
@@ -17,15 +18,15 @@ public class Player : Unit
     private PlayerCooldowns _cooldowns;
     [SerializeField]
     private PlayerAlterations _alterations;
+    [SerializeField]
+    private PlayerStatistics _statistics;
 
     public Client Client { get; private set; }
     public Room Room { get; private set; }
-    public PlayerStatistics Statistics { get; }
     public PlayerInventory Inventory { get; }
     public PlayerExperience Experience { get; }
 
     private Player() {
-        Statistics = new PlayerStatistics(this);
         Inventory = new PlayerInventory(this);
         Experience = new PlayerExperience(this);
     }
@@ -47,4 +48,6 @@ public class Player : Unit
     public PlayerCooldowns Cooldowns => _cooldowns;
 
     public PlayerAlterations Alterations => _alterations;
+
+    public PlayerStatistics Statistics => _statistics;
 }

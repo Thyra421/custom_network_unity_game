@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class PlayerAlterations : MonoBehaviour
@@ -19,7 +18,11 @@ public class PlayerAlterations : MonoBehaviour
         _alterationControllers.Add(newAlterationController);
 
         _player.Client.Tcp.Send(new MessageAddAlteration(newAlterationController.Data));
-        owner.Client.Tcp.Send(new MessageAddAlteration(newAlterationController.Data));
+        if (_player != owner)
+            owner.Client.Tcp.Send(new MessageAddAlteration(newAlterationController.Data));
+
+        if (alteration is ContinuousAlteration continuousAlteration)
+            _player.Statistics.OnAddedContinuousAlteration(continuousAlteration);
     }
 
     private void Refresh(AlterationController alterationController) {
@@ -34,6 +37,9 @@ public class PlayerAlterations : MonoBehaviour
         alterationController.Owner.Client.Tcp.Send(new MessageRemoveAlteration(alterationController.Data));
 
         _alterationControllers.Remove(alterationController);
+
+        if (alterationController.Alteration is ContinuousAlteration continuousAlteration)
+            _player.Statistics.OnRemovedContinuousAlteration(continuousAlteration);
     }
 
     private AlterationController Find(Alteration alteration, Player owner) => _alterationControllers.Find((AlterationController ac) => ac.Alteration == alteration && ac.Owner == owner);
@@ -58,6 +64,4 @@ public class PlayerAlterations : MonoBehaviour
         else
             Add(alteration, owner);
     }
-
-    public List<Alteration> Alterations => _alterationControllers.Select((AlterationController s) => s.Alteration).ToList();
 }

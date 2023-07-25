@@ -16,7 +16,7 @@ public class SkillExperienceGUI : MonoBehaviour
         _ratioSlider.value = currentRatio;
     }
 
-    public void Initialize(string skillName, PlayerSkillExperience skillExperience) {
+    public void Initialize(string skillName, SkillExperience skillExperience) {
         _levelText.text = 0.ToString();
         _ratioSlider.value = 0;
         _skillNameText.text = skillName;

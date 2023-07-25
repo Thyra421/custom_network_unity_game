@@ -132,6 +132,9 @@ public static class TCPClient
         } else if (messageType.Equals(typeof(MessageRemoveAlteration))) {
             MessageRemoveAlteration messageRemoveAlteration = Utils.Deserialize<MessageRemoveAlteration>(message);
             MessageHandler.Current.OnMessageRemoveAlteration?.Invoke(messageRemoveAlteration);
+        } else if (messageType.Equals(typeof(MessageStatisticsChanged))) {
+            MessageStatisticsChanged messageStatisticsChanged = Utils.Deserialize<MessageStatisticsChanged>(message);
+            MessageHandler.Current.OnMessageStatisticsChanged?.Invoke(messageStatisticsChanged);
         }
     }
 

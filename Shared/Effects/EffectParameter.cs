@@ -37,6 +37,9 @@ public class EffectParameter
             } else if (type == typeof(Alteration)) {
                 Alteration result = Resources.Load<Alteration>($"{SharedConfig.ALTERATIONS_PATH}/{_parameterValue}");
                 return result;
+            } else if (type == typeof(StatisticType)) {
+                bool success = Enum.TryParse(_parameterValue, out StatisticType result);
+                return success ? result : 0;
             }
             return null;
         }

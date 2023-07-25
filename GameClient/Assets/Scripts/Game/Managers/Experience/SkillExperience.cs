@@ -1,4 +1,4 @@
-﻿public class PlayerSkillExperience
+﻿public class SkillExperience
 {
     private float _currentRatio;
     private int _currentLevel = 1;

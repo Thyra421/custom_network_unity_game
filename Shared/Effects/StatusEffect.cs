@@ -2,9 +2,9 @@
 
 public interface IStatusEffectController
 {
-    public void Root();
+    public void ModifyStatistic(StatisticType type, float value, bool percent);
 
-    public void Slow(float amount);
+    public void Root();
 }
 
 [Serializable]

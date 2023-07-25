@@ -1,27 +1,34 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 public class PlayerStatusEffectController : IStatusEffectController
 {
-    private StatisticsData _statistics;
+    private PlayerStatistics _statistics;
 
-    public PlayerStatusEffectController(StatisticsData statistics) {
+    public PlayerStatusEffectController(PlayerStatistics statistics) {
         _statistics = statistics;
     }
 
-    public StatisticsData Apply(List<Alteration> alterations) {
-        foreach (Alteration alteration in alterations)
-            if (alteration is ContinuousAlteration continuousAlteration)
-                foreach (StatusEffect effect in continuousAlteration.Effects)
-                    typeof(PlayerStatusEffectController).GetMethod(effect.MethodName).Invoke(this, effect.Parameters.Select((EffectParameter param) => param.ToObject).ToArray());
-        return _statistics;
+    public void Add(ContinuousAlteration alteration) {
+        foreach (StatusEffect effect in alteration.Effects)
+            typeof(PlayerStatusEffectController).GetMethod(effect.MethodName).Invoke(this, effect.Parameters.Select((EffectParameter param) => param.ToObject).ToArray());
+    }
+
+    public void Remove(ContinuousAlteration alteration) {
+        foreach (StatusEffect effect in alteration.Effects)
+            typeof(PlayerStatusEffectController).GetMethod($"Remove{effect.MethodName}").Invoke(this, effect.Parameters.Select((EffectParameter param) => param.ToObject).ToArray());
+    }
+
+    public void ModifyStatistic(StatisticType type, float value, bool percent) {
+        _statistics.Find(type).Modifiers.Add(new StatisticModifier(value, percent));
+    }
+
+    public void RemoveModifyStatistic(StatisticType type, float value, bool percent) {
+        _statistics.Find(type).Modifiers.Remove(new StatisticModifier(value, percent));
     }
 
     public void Root() {
-        _statistics._movementSpeed = 0;
     }
 
-    public void Slow(float amount) {
-        _statistics._movementSpeed -= amount;
+    public void RemoveRoot() {
     }
 }

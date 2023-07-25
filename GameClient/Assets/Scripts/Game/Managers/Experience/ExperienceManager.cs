@@ -3,15 +3,15 @@ using UnityEngine;
 public class ExperienceManager : MonoBehaviour
 {
     public static ExperienceManager Current { get; private set; }
-    public PlayerSkillExperience GeneralExperience { get; } = new PlayerSkillExperience();
-    public PlayerSkillExperience GatheringExperience { get; } = new PlayerSkillExperience();
-    public PlayerSkillExperience MiningExperience { get; } = new PlayerSkillExperience();
-    public PlayerSkillExperience CookingExperience { get; } = new PlayerSkillExperience();
-    public PlayerSkillExperience AlchemyExperience { get; } = new PlayerSkillExperience();
-    public PlayerSkillExperience ForgingExperience { get; } = new PlayerSkillExperience();
-    public PlayerSkillExperience LumberjackingExperience { get; } = new PlayerSkillExperience();
-    public PlayerSkillExperience EngineeringExperience { get; } = new PlayerSkillExperience();
-    public PlayerSkillExperience HuntingExperience { get; } = new PlayerSkillExperience();
+    public SkillExperience GeneralExperience { get; } = new SkillExperience();
+    public SkillExperience GatheringExperience { get; } = new SkillExperience();
+    public SkillExperience MiningExperience { get; } = new SkillExperience();
+    public SkillExperience CookingExperience { get; } = new SkillExperience();
+    public SkillExperience AlchemyExperience { get; } = new SkillExperience();
+    public SkillExperience ForgingExperience { get; } = new SkillExperience();
+    public SkillExperience LumberjackingExperience { get; } = new SkillExperience();
+    public SkillExperience EngineeringExperience { get; } = new SkillExperience();
+    public SkillExperience HuntingExperience { get; } = new SkillExperience();
 
     //private readonly List<WeaponSkillExperience> _weaponsExperience = new List<WeaponSkillExperience>();
 
