@@ -18,7 +18,7 @@ public class DropSource : ScriptableObject
     [SerializeField]
     private float _respawnTimerInSeconds;
     [SerializeField]
-    private SkillType _skillType;
+    private ExperienceType _experienceType;
     [SerializeField]
     private int _requiredLevel;
 
@@ -34,5 +34,5 @@ public class DropSource : ScriptableObject
 
     public float RespawnTimerInSeconds => _respawnTimerInSeconds;
 
-    public SkillType SkillType => _skillType;
+    public ExperienceType ExperienceType => _experienceType;
 }

@@ -18,3 +18,4 @@ MonoBehaviour:
   _outcome:
     _item: {fileID: 11400000, guid: 53af1dfde9b1e0e4792be753cbbbb624, type: 2}
     _amount: 1
+  _experienceType: 6

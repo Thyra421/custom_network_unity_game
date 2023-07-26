@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public abstract class Ability : ScriptableObject, IRechargeable, IUsable
+[CreateAssetMenu(menuName = "Ability/Ability")]
+public class Ability : ScriptableObject, IDisplayable, IRechargeable, IUsable
 {
     [SerializeField]
     private string _displayName;
@@ -13,11 +14,14 @@ public abstract class Ability : ScriptableObject, IRechargeable, IUsable
     [SerializeField]
     private string _animationName;
 
-    public DirectEffect[] Effects => _effects;
+    public string DisplayName => _displayName;
 
     public Sprite Icon => _icon;
+
+    public DirectEffect[] Effects => _effects;
 
     public float Cooldown => _cooldown;
 
     public string AnimationName => _animationName;
+
 }

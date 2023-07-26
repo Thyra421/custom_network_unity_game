@@ -10,7 +10,7 @@ public enum ItemProperty
     Stackable, NonStackable, Unique
 }
 
-public abstract class Item : ScriptableObject
+public abstract class Item : ScriptableObject, IDisplayable
 {
     [SerializeField]
     protected string _displayName;

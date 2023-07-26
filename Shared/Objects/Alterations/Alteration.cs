@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class Alteration : ScriptableObject
+public abstract class Alteration : ScriptableObject, IDisplayable
 {
     [SerializeField]
     private string _displayName;

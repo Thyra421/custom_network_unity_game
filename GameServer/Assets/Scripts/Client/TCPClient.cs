@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class TCPClient
@@ -108,8 +109,7 @@ public class TCPClient
                 if (node.RemainingLoots <= 0)
                     player.Room.NodesManager.RemoveNode(node);
                 // gain experience
-                PlayerSkillExperience skillExperience = player.Experience.GetSkillExperience(node.DropSource.SkillType);
-                skillExperience.AddExperience(5);
+                player.Experience.AddExperience(new ExperienceType[] { ExperienceType.General, node.DropSource.ExperienceType }, 5);
             }
             // else cancel channeling
             else
@@ -125,20 +125,25 @@ public class TCPClient
             Send(new MessageError(MessageErrorType.objectNotFound));
             return;
         }
+
+        Player player = Client.Player;
+
         // has all reagents?
         foreach (ItemStack itemStack in pattern.Reagents)
-            if (!Client.Player.Inventory.Contains(itemStack.Item, itemStack.Amount)) {
+            if (!player.Inventory.Contains(itemStack.Item, itemStack.Amount)) {
                 Send(new MessageError(MessageErrorType.notEnoughResources));
                 return;
             }
         //start casting
-        Client.Player.Activity.Cast(() => {
+        player.Activity.Cast(() => {
             // remove reagents from inventory
             foreach (ItemStack itemStack in pattern.Reagents)
-                Client.Player.Inventory.Remove(itemStack.Item, itemStack.Amount, false);
+                player.Inventory.Remove(itemStack.Item, itemStack.Amount, false);
             // has enough space?
-            if (Client.Player.Inventory.Add(pattern.Outcome.Item, pattern.Outcome.Amount, false)) {
+            if (player.Inventory.Add(pattern.Outcome.Item, pattern.Outcome.Amount, false)) {
                 Send(new MessageCrafted(pattern.Reagents.Select((ItemStack stack) => new ItemStackData(stack.Item.name, stack.Amount)).ToArray(), new ItemStackData(pattern.Outcome.Item.name, pattern.Outcome.Amount)));
+                // gain experience
+                player.Experience.AddExperience(new ExperienceType[] { ExperienceType.General, pattern.ExperienceType }, 20);
             }
             // else put the reagents back in the inventory
             else {

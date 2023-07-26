@@ -2,7 +2,7 @@
 
 public class PlayerStatusEffectController : IStatusEffectController
 {
-    private PlayerStatistics _statistics;
+    private readonly PlayerStatistics _statistics;
 
     public PlayerStatusEffectController(PlayerStatistics statistics) {
         _statistics = statistics;

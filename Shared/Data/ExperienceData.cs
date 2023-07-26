@@ -1,4 +1,4 @@
-public enum SkillType
+public enum ExperienceType
 {
     General,
     Gathering,
@@ -8,19 +8,18 @@ public enum SkillType
     Cooking,
     Alchemy,
     Forging,
-    Engineering,
-    Weapon
+    Engineering
 }
 
 public struct ExperienceData
 {
-    public SkillType type;
+    public ExperienceType type;
     public int level;
-    public float percent;
+    public float ratio;
 
-    public ExperienceData(SkillType type, int level, float percent) {
+    public ExperienceData(ExperienceType type, int level, float ratio) {
         this.type = type;
         this.level = level;
-        this.percent = percent;
+        this.ratio = ratio;
     }
 }

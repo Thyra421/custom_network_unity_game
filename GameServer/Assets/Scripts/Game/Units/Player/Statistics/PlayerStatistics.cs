@@ -12,9 +12,8 @@ public class PlayerStatistics : MonoBehaviour
     private readonly Statistic[] _statistics = new Statistic[Enum.GetValues(typeof(StatisticType)).Length];
 
     private void Awake() {
-        for (int i = 0; i < Enum.GetValues(typeof(StatisticType)).Length; i++) {
+        for (int i = 0; i < Enum.GetValues(typeof(StatisticType)).Length; i++)
             _statistics[i] = new Statistic((StatisticType)Enum.GetValues(typeof(StatisticType)).GetValue(i));
-        }
     }
 
     private StatisticData[] Datas => _statistics.Select((Statistic s) => s.Data).ToArray();

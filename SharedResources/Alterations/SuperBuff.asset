@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1b8ef76f27c91564cb87594713cc6552, type: 3}
-  m_Name: MegaBuff
+  m_Name: SuperBuff
   m_EditorClassIdentifier: 
-  _displayName: MegaBuff
+  _displayName: Super Buff
   _icon: {fileID: 21300000, guid: 4637953d65a24364aab3372a525b9ed2, type: 3}
   _stackable: 0
   _baseDuration: 8

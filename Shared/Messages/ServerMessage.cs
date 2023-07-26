@@ -272,17 +272,12 @@ public struct MessageCrafted
     }
 }
 
-// TODO list
 public struct MessageExperienceChanged
 {
-    public SkillType type;
-    public int currentLevel;
-    public float currentRatio;
+    public ExperienceData[] experiences;
 
-    public MessageExperienceChanged(SkillType type, int currentLevel, float currentRatio) {
-        this.type = type;
-        this.currentLevel = currentLevel;
-        this.currentRatio = currentRatio;
+    public MessageExperienceChanged(ExperienceData[] experiences) {
+        this.experiences = experiences;        
     }
 }
 

@@ -1,66 +1,29 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class PlayerExperience
 {
     private readonly Player _player;
-    private readonly PlayerSkillExperience _generalExperience;
-    private readonly PlayerSkillExperience _gatheringExperience;
-    private readonly PlayerSkillExperience _miningExperience;
-    private readonly PlayerSkillExperience _cookingExperience;
-    private readonly PlayerSkillExperience _alchemyExperience;
-    private readonly PlayerSkillExperience _forgingExperience;
-    private readonly PlayerSkillExperience _lumberjackingExperience;
-    private readonly PlayerSkillExperience _engineeringExperience;
-    private readonly PlayerSkillExperience _huntingExperience;
-    private readonly List<WeaponSkillExperience> _weaponsExperience = new List<WeaponSkillExperience>();
+    private readonly SkillExperience[] _skillExperiences = new SkillExperience[Enum.GetValues(typeof(ExperienceType)).Length];
+
+    private SkillExperience Find(ExperienceType experienceType) => Array.Find(_skillExperiences, (SkillExperience se) => se.ExperienceType == experienceType);
 
     public PlayerExperience(Player player) {
         _player = player;
-        _generalExperience = new PlayerSkillExperience(player, 60, SkillType.General);
-        _gatheringExperience = new PlayerSkillExperience(_player, 20, SkillType.Gathering);
-        _miningExperience = new PlayerSkillExperience(_player, 20, SkillType.Mining);
-        _cookingExperience = new PlayerSkillExperience(_player, 20, SkillType.Cooking);
-        _alchemyExperience = new PlayerSkillExperience(_player, 20, SkillType.Alchemy);
-        _forgingExperience = new PlayerSkillExperience(_player, 20, SkillType.Forging);
-        _lumberjackingExperience = new PlayerSkillExperience(_player, 20, SkillType.Lumberjacking);
-        _engineeringExperience = new PlayerSkillExperience(_player, 20, SkillType.Engineering);
-        _huntingExperience = new PlayerSkillExperience(_player, 20, SkillType.Hunting);
+        for (int i = 0; i < Enum.GetValues(typeof(ExperienceType)).Length; i++)
+            _skillExperiences[i] = new SkillExperience((ExperienceType)Enum.GetValues(typeof(ExperienceType)).GetValue(i));
     }
 
-    public void AddWeaponExperience(Weapon weapon, int amount) {
-        WeaponSkillExperience skillExperience = FindWeaponExperience(weapon);
+    public void AddExperience(ExperienceType[] experienceTypes, int amount) {
+        List<SkillExperience> modifiedSkills = new List<SkillExperience>();
 
-        if (skillExperience == null) {
-            skillExperience = new WeaponSkillExperience(_player, weapon);
-            _weaponsExperience.Add(skillExperience);
+        foreach (ExperienceType et in experienceTypes) {
+            SkillExperience skillExperience = Find(et);
+            skillExperience.AddExperience(amount);
+            modifiedSkills.Add(skillExperience);
         }
 
-        skillExperience.Experience.AddExperience(amount);
+        _player.Client.Tcp.Send(new MessageExperienceChanged(modifiedSkills.Select((SkillExperience se) => se.Data).ToArray()));
     }
-
-    public PlayerSkillExperience GetSkillExperience(SkillType skillType) {
-        switch (skillType) {
-            case SkillType.General:
-                return _generalExperience;
-            case SkillType.Gathering:
-                return _gatheringExperience;
-            case SkillType.Mining:
-                return _miningExperience;
-            case SkillType.Lumberjacking:
-                return _lumberjackingExperience;
-            case SkillType.Hunting:
-                return _huntingExperience;
-            case SkillType.Cooking:
-                return _cookingExperience;
-            case SkillType.Alchemy:
-                return _alchemyExperience;
-            case SkillType.Forging:
-                return _forgingExperience;
-            case SkillType.Engineering:
-                return _engineeringExperience;
-        }
-        return null;
-    }
-
-    public WeaponSkillExperience FindWeaponExperience(Weapon weapon) => _weaponsExperience.Find((WeaponSkillExperience w) => w.Weapon == weapon);
 }
