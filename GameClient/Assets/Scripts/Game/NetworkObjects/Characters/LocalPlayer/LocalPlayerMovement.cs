@@ -26,6 +26,8 @@ public class LocalPlayerMovement : Movement
     private Vector3 _hitNormal;
     private Vector3 _hitPoint;
 
+    private float MovementSpeed => StatisticsManager.Current.Find(StatisticType.MovementSpeed).Value * SharedConfig.PLAYER_MOVEMENT_SPEED;
+
     private void MoveInDirection() {
         Vector3 movingDirection = _direction * _currentSpeed;
         movingDirection = transform.rotation * movingDirection;
@@ -68,10 +70,10 @@ public class LocalPlayerMovement : Movement
 
         if (input.magnitude > 0) {
             _direction = input;
-            _currentSpeed = Mathf.Clamp(_currentSpeed + _acceleration * Time.deltaTime, 0, _movementSpeed);
+            _currentSpeed = Mathf.Clamp(_currentSpeed + _acceleration * Time.deltaTime, 0, MovementSpeed);
         } else {
             _direction = Vector3.Lerp(_direction, Vector3.zero, Time.deltaTime * _deceleration);
-            _currentSpeed = Mathf.Clamp(_currentSpeed - _deceleration * Time.deltaTime, 0, _movementSpeed);
+            _currentSpeed = Mathf.Clamp(_currentSpeed - _deceleration * Time.deltaTime, 0, MovementSpeed);
             if (_currentSpeed < 1)
                 _direction = Vector3.zero;
         }

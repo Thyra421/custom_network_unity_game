@@ -27,7 +27,6 @@ public class UDPServer
     }
 
     private static void OnMessage(string message, Client client) {
-        //Debug.Log($"[UDPServer] received {message}");
         Type messageType = Utils.GetMessageType(message);
 
         if (messageType.Equals(typeof(MessageMovement))) {
@@ -37,9 +36,11 @@ public class UDPServer
     }
 
     private static void OnMessageMovement(MessageMovement messageMovement, Client client) {
-        if (client.Player.Activity.IsBusy && client.Player.Movement.TransformData.position.Distance(messageMovement.newTransform.position) > .1f)
-            client.Player.Activity.Stop();
-        client.Player.Movement.SetMovement(messageMovement.newTransform, messageMovement.animation);
+        Player player = client.Player;
+
+        if (player.Activity.IsBusy && player.Movement.TransformData.position.Distance(messageMovement.newTransform.position) > .1f)
+            player.Activity.Stop();
+        player.Movement.SetMovement(messageMovement.newTransform, messageMovement.animation);
     }
 
     private static void OnStarted() => Debug.Log($"[UDPServer] started");

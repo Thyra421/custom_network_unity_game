@@ -7,16 +7,17 @@ public class NPCMovement : Movement
     public Vector3 DestinationPosition { get; set; }
     public Vector3 DestinationRotation { get; set; }
     public NPCAnimationData NPCAnimationData { get; set; }
+    public float MovementSpeed { get; set; }
 
     protected override void Move() {
         Vector3 direction = (DestinationPosition - transform.position).normalized;
         float distance = Vector3.Distance(transform.position, DestinationPosition);
 
         _animator.SetBool("IsRunning", NPCAnimationData.isRunning);
-        if (distance <= _movementSpeed * Time.deltaTime) {
+        if (distance <= MovementSpeed * Time.deltaTime) {
             transform.position = DestinationPosition;
         } else {
-            transform.position += _movementSpeed * Time.deltaTime * direction;
+            transform.position += MovementSpeed * Time.deltaTime * direction;
         }
     }
 
@@ -28,9 +29,5 @@ public class NPCMovement : Movement
         _animator = GetComponent<Animator>();
         DestinationPosition = transform.position;
         DestinationRotation = transform.eulerAngles;
-    }
-
-    public void Initialize(Animal animal) {
-        _movementSpeed = animal.MovementSpeed;
     }
 }

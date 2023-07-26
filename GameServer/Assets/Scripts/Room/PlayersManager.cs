@@ -20,9 +20,9 @@ public class PlayersManager : MonoBehaviour
             _elapsedTime = 0f;
             if (_players.Count < 2)
                 return;
-            PlayerData[] playerDatas = GetPlayerDatas((Player p) => p.Movement.UpdateTransformIfChanged());
-            if (playerDatas.Length > 0)
-                BroadcastUDP((Player player) => new MessagePlayerMoved(Array.FindAll(playerDatas, (PlayerData data) => data.id != player.Id).ToArray()), (MessagePlayerMoved message) => message.players.Length > 0);
+            PlayerMovementData[] playerMovementDatas = GetPlayerMovementDatas((Player p) => p.Movement.UpdateTransformIfChanged());
+            if (playerMovementDatas.Length > 0)
+                BroadcastUDP((Player player) => new MessagePlayerMoved(Array.FindAll(playerMovementDatas, (PlayerMovementData data) => data.id != player.Id).ToArray()), (MessagePlayerMoved message) => message.players.Length > 0);
         }
     }
 
@@ -33,6 +33,8 @@ public class PlayersManager : MonoBehaviour
                 client.Udp?.Send(message);
         }
     }
+
+    private PlayerMovementData[] GetPlayerMovementDatas(Predicate<Player> condition) => _players.FindAll(condition).Select((Player player) => player.Movement.Data).ToArray();
 
     private PlayerData[] GetPlayerDatas(Predicate<Player> condition) =>
         _players.FindAll(condition).Select((Player player) => player.Data).ToArray();

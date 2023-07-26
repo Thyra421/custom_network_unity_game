@@ -40,9 +40,9 @@ public struct MessageGameState
 
 public struct MessagePlayerMoved
 {
-    public PlayerData[] players;
+    public PlayerMovementData[] players;
 
-    public MessagePlayerMoved(PlayerData[] players) {
+    public MessagePlayerMoved(PlayerMovementData[] players) {
         this.players = players;
     }
 }
@@ -192,9 +192,9 @@ public struct MessageSpawnNPCs
 
 public struct MessageNPCMoved
 {
-    public NPCData[] NPCs;
+    public NPCMovementData[] NPCs;
 
-    public MessageNPCMoved(NPCData[] NPCs) {
+    public MessageNPCMoved(NPCMovementData[] NPCs) {
         this.NPCs = NPCs;
     }
 }

@@ -19,7 +19,6 @@ public class NPCsManager : MonoBehaviour
         GameObject newObject = Instantiate(animal.Prefab, data.transformData.position.ToVector3, Quaternion.Euler(data.transformData.rotation.ToVector3));
         NPC newNPC = newObject.AddComponent<NPC>();
         newNPC.Initialize(data.id);
-        newNPC.Movement.Initialize(animal);
         _NPCs.Add(newNPC);
         OnAddedNPC?.Invoke(newNPC);
     }
@@ -38,12 +37,13 @@ public class NPCsManager : MonoBehaviour
     }
 
     private void OnMessageNPCMoved(MessageNPCMoved serverMessageNPCMoved) {
-        foreach (NPCData n in serverMessageNPCMoved.NPCs) {
+        foreach (NPCMovementData n in serverMessageNPCMoved.NPCs) {
             NPC NPC = FindNPC(n.id);
             if (NPC != null) {
                 NPC.Movement.DestinationPosition = n.transformData.position.ToVector3;
                 NPC.Movement.DestinationRotation = n.transformData.rotation.ToVector3;
                 NPC.Movement.NPCAnimationData = n.NPCAnimationData;
+                NPC.Movement.MovementSpeed = n.speed;
             }
         }
     }

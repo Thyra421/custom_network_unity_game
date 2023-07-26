@@ -1,6 +1,16 @@
 ﻿public enum StatisticType
 {
-    movementSpeed, jumpHeight, physicalDamage, magicDamage, physicalArmor, magicArmor, healing
+    MovementSpeed,
+    JumpHeight,
+    PhysicalDamage,
+    MagicDamage,
+    PhysicalArmor,
+    MagicArmor,
+    Healing,
+    GatheringSpeed,
+    MiningSpeed,
+    SkinningSpeed,
+    LumberjackingSpeed
 }
 
 public struct StatisticData

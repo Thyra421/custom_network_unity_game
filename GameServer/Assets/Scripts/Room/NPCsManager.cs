@@ -16,7 +16,7 @@ public class NPCsManager : MonoBehaviour
         if (_elapsedTime >= (1f / SharedConfig.SYNC_FREQUENCY)) {
             _elapsedTime = 0f;
 
-            NPCData[] NPCDatas = GetNPCDatas((NPC n) => n.UpdateTransformIfChanged());
+            NPCMovementData[] NPCDatas = GetNPCMovementDatas((NPC n) => n.UpdateTransformIfChanged());
             if (NPCDatas.Length > 0)
                 _room.PlayersManager.BroadcastUDP(new MessageNPCMoved(NPCDatas));
         }
@@ -24,6 +24,9 @@ public class NPCsManager : MonoBehaviour
 
     private NPCData[] GetNPCDatas(Predicate<NPC> condition) =>
         _NPCs.FindAll(condition).Select((NPC npc) => npc.Data).ToArray();
+
+    private NPCMovementData[] GetNPCMovementDatas(Predicate<NPC> condition) =>
+        _NPCs.FindAll(condition).Select((NPC npc) => npc.MovementData).ToArray();
 
     private IEnumerator Respawn(NPCArea area) {
         yield return new WaitForSeconds(area.Animal.RespawnTimerInSeconds);
@@ -66,4 +69,6 @@ public class NPCsManager : MonoBehaviour
     }
 
     public NPCData[] NPCDatas => _NPCs.Select((NPC npc) => npc.Data).ToArray();
+
+    public NPCMovementData[] NPCMovementDatas => _NPCs.Select((NPC npc) => npc.MovementData).ToArray();
 }

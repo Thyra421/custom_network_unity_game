@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField]
+    private Player _player;
     private TransformData _lastTransform;
     private float _elapsedTime;
 
@@ -31,6 +33,10 @@ public class PlayerMovement : MonoBehaviour
             return true;
         }
     }
+
+    public float MovementSpeed => _player.Statistics.Find(StatisticType.MovementSpeed).AlteredValue * SharedConfig.PLAYER_MOVEMENT_SPEED;
+
+    public PlayerMovementData Data => new PlayerMovementData(_player.Id, TransformData, AnimationData, MovementSpeed);
 
     public TransformData TransformData => new TransformData(transform);
 

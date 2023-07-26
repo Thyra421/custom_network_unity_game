@@ -8,6 +8,7 @@ public class RemotePlayerMovement : Movement
     public Vector3 DestinationPosition { get; set; }
     public Vector3 DestinationRotation { get; set; }
     public PlayerAnimationData PlayerAnimationData { get; set; }
+    public float MovementSpeed { get; set; }
 
     protected override void Move() {
         Vector3 direction = (DestinationPosition - transform.position).normalized;
@@ -17,10 +18,10 @@ public class RemotePlayerMovement : Movement
         _animator.SetBool("IsGrounded", PlayerAnimationData.isGrounded);
         _animator.SetFloat("X", PlayerAnimationData.x);
         _animator.SetFloat("Y", PlayerAnimationData.y);
-        if (distance <= _movementSpeed * Time.deltaTime || distance > 2) {
+        if (distance <= MovementSpeed * Time.deltaTime || distance > 2) {
             transform.position = DestinationPosition;
         } else {
-            transform.position += _movementSpeed * Time.deltaTime * direction;
+            transform.position += MovementSpeed * Time.deltaTime * direction;
         }
     }
 

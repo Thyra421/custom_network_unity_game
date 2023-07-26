@@ -59,7 +59,9 @@ public class NPC : Unit
             _lastTransform = TransformData;
             return true;
         }
-    }   
+    }
+
+    public NPCMovementData MovementData => new NPCMovementData(Id, TransformData, Animation, 5);
 
     public NPCData Data => new NPCData(Id, TransformData, Animation, _area.Animal.name);
 }

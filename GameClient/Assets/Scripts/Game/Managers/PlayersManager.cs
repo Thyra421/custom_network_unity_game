@@ -45,15 +45,16 @@ public class PlayersManager : MonoBehaviour
     }
 
     private void OnMessagePlayerMoved(MessagePlayerMoved serverMessagePlayerMoved) {
-        foreach (PlayerData p in serverMessagePlayerMoved.players) {
-            if (p.id == _myPlayer.Id)
+        foreach (PlayerMovementData pmd in serverMessagePlayerMoved.players) {
+            if (pmd.id == _myPlayer.Id)
                 continue;
 
-            RemotePlayer remotePlayer = FindPlayer(p.id);
+            RemotePlayer remotePlayer = FindPlayer(pmd.id);
             if (remotePlayer != null) {
-                remotePlayer.Movement.DestinationPosition = p.transformData.position.ToVector3;
-                remotePlayer.Movement.DestinationRotation = p.transformData.rotation.ToVector3;
-                remotePlayer.Movement.PlayerAnimationData = p.animationData;
+                remotePlayer.Movement.DestinationPosition = pmd.transformData.position.ToVector3;
+                remotePlayer.Movement.DestinationRotation = pmd.transformData.rotation.ToVector3;
+                remotePlayer.Movement.PlayerAnimationData = pmd.animationData;
+                remotePlayer.Movement.MovementSpeed = pmd.movementSpeed;
             }
         }
     }
