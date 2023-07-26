@@ -6,15 +6,10 @@ public class PlayerStatistics : MonoBehaviour
 {
     [SerializeField]
     private Player _player;
-    private int _maxHealth;
+    private int _maxHealth = 100;
     private int _currentHealth;
 
     private readonly Statistic[] _statistics = new Statistic[Enum.GetValues(typeof(StatisticType)).Length];
-
-    private void Awake() {
-        for (int i = 0; i < Enum.GetValues(typeof(StatisticType)).Length; i++)
-            _statistics[i] = new Statistic((StatisticType)Enum.GetValues(typeof(StatisticType)).GetValue(i));
-    }
 
     private StatisticData[] Datas => _statistics.Select((Statistic s) => s.Data).ToArray();
 
@@ -25,6 +20,12 @@ public class PlayerStatistics : MonoBehaviour
 
         if (difference.Length > 0)
             _player.Client.Tcp.Send(new MessageStatisticsChanged(difference));
+    }
+
+    private void Awake() {
+        for (int i = 0; i < Enum.GetValues(typeof(StatisticType)).Length; i++)
+            _statistics[i] = new Statistic((StatisticType)Enum.GetValues(typeof(StatisticType)).GetValue(i));
+        _currentHealth = _maxHealth;
     }
 
     public void OnAddedContinuousAlteration(ContinuousAlteration alteration) {

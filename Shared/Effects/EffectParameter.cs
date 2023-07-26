@@ -20,27 +20,22 @@ public class EffectParameter
         get {
             Type type = Type.GetType(_typeName);
 
-            if (type == typeof(int)) {
-                bool success = int.TryParse(_parameterValue, out int result);
-                return success ? result : 0;
-            } else if (type == typeof(string))
+            if (type == typeof(int))
+                return int.TryParse(_parameterValue, out int result) ? result : 0;
+            else if (type == typeof(string))
                 return _parameterValue;
-            else if (type == typeof(bool)) {
-                bool success = bool.TryParse(_parameterValue, out bool result);
-                return success && result;
-            } else if (type == typeof(float)) {
-                bool success = float.TryParse(_parameterValue, out float result);
-                return success ? result : 0f;
-            } else if (type == typeof(GameObject)) {
-                GameObject result = Resources.Load<GameObject>($"{SharedConfig.PREFABS_PATH}/{_parameterValue}");
-                return result;
-            } else if (type == typeof(Alteration)) {
-                Alteration result = Resources.Load<Alteration>($"{SharedConfig.ALTERATIONS_PATH}/{_parameterValue}");
-                return result;
-            } else if (type == typeof(StatisticType)) {
-                bool success = Enum.TryParse(_parameterValue, out StatisticType result);
-                return success ? result : 0;
-            }
+            else if (type == typeof(bool))
+                return bool.TryParse(_parameterValue, out bool result) && result;
+            else if (type == typeof(float))
+                return float.TryParse(_parameterValue, out float result) ? result : 0f;
+            else if (type == typeof(GameObject))
+                return Resources.Load<GameObject>($"{SharedConfig.PREFABS_PATH}/{_parameterValue}");
+            else if (type == typeof(Alteration))
+                return Resources.Load<Alteration>($"{SharedConfig.ALTERATIONS_PATH}/{_parameterValue}");
+            else if (type == typeof(StatisticType))
+                return Enum.TryParse(_parameterValue, out StatisticType result) ? result : 0;
+            else if (type == typeof(DamageType))
+                return Enum.TryParse(_parameterValue, out DamageType result) ? result : 0;
             return null;
         }
     }

@@ -25,6 +25,10 @@ MonoBehaviour:
       - _parameterValue: 15
         _typeName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
         _parameterName: amount
+      - _parameterValue: Magic
+        _typeName: DamageType, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        _parameterName: damageType
     - _methodName: ApplyAlteration
       _parameters:
       - _parameterValue: Burn

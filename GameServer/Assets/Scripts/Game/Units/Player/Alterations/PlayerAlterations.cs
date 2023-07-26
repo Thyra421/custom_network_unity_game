@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.UI.GridLayoutGroup;
 
 public class PlayerAlterations : MonoBehaviour
 {
@@ -29,12 +30,14 @@ public class PlayerAlterations : MonoBehaviour
         alterationController.Refresh();
 
         _player.Client.Tcp.Send(new MessageRefreshAlteration(alterationController.Data));
-        alterationController.Owner.Client.Tcp.Send(new MessageRefreshAlteration(alterationController.Data));
+        if (_player != alterationController.Owner)
+            alterationController.Owner.Client.Tcp.Send(new MessageRefreshAlteration(alterationController.Data));
     }
 
     private void Remove(AlterationController alterationController) {
         _player.Client.Tcp.Send(new MessageRemoveAlteration(alterationController.Data));
-        alterationController.Owner.Client.Tcp.Send(new MessageRemoveAlteration(alterationController.Data));
+        if (_player != alterationController.Owner)
+            alterationController.Owner.Client.Tcp.Send(new MessageRemoveAlteration(alterationController.Data));
 
         _alterationControllers.Remove(alterationController);
 

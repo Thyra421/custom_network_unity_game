@@ -1,4 +1,5 @@
 using System.Linq;
+using UnityEngine;
 
 public class PlayerDirectEffectController : IDirectEffectController
 {
@@ -20,10 +21,17 @@ public class PlayerDirectEffectController : IDirectEffectController
     }
 
     public void RestoreHealth(int amount) {
-        _target.Statistics.CurrentHealth += amount;
+        _target.Statistics.CurrentHealth += Mathf.FloorToInt(amount * _owner.Statistics.Find(StatisticType.Healing).AlteredValue);
     }
 
-    public void DealDamage(int amount) {
-        _target.Statistics.CurrentHealth -= amount;
+    public void DealDamage(int amount, DamageType damageType) {
+        switch (damageType) {
+            case DamageType.Physical:
+                _target.Statistics.CurrentHealth -= Mathf.FloorToInt(amount * _owner.Statistics.Find(StatisticType.PhysicalDamage).AlteredValue);
+                break;
+            case DamageType.Magic:
+                _target.Statistics.CurrentHealth -= Mathf.FloorToInt(amount * _owner.Statistics.Find(StatisticType.MagicDamage).AlteredValue);
+                break;
+        }
     }
 }

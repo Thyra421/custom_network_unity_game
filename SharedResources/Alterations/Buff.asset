@@ -20,7 +20,7 @@ MonoBehaviour:
   _effects:
   - _methodName: ModifyStatistic
     _parameters:
-    - _parameterValue: physicalArmor
+    - _parameterValue: MovementSpeed
       _typeName: StatisticType, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       _parameterName: type

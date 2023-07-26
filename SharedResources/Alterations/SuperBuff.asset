@@ -20,19 +20,19 @@ MonoBehaviour:
   _effects:
   - _methodName: ModifyStatistic
     _parameters:
-    - _parameterValue: movementSpeed
+    - _parameterValue: MovementSpeed
       _typeName: StatisticType, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       _parameterName: type
-    - _parameterValue: 1
+    - _parameterValue: 25
       _typeName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
       _parameterName: value
-    - _parameterValue: False
+    - _parameterValue: True
       _typeName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
       _parameterName: percent
   - _methodName: ModifyStatistic
     _parameters:
-    - _parameterValue: physicalDamage
+    - _parameterValue: MagicDamage
       _typeName: StatisticType, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       _parameterName: type
@@ -44,7 +44,7 @@ MonoBehaviour:
       _parameterName: percent
   - _methodName: ModifyStatistic
     _parameters:
-    - _parameterValue: physicalArmor
+    - _parameterValue: PhysicalDamage
       _typeName: StatisticType, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       _parameterName: type

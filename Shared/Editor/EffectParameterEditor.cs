@@ -28,6 +28,9 @@ public class EffectParameterEditor : PropertyDrawer
         } else if (type == typeof(float)) {
             float newValue = EditorGUILayout.FloatField((float)valueObject);
             parameterValueProperty.stringValue = newValue.ToString();
+        } else if (type.IsEnum) {
+            Enum newValue = EditorGUILayout.EnumPopup((Enum)valueObject);
+            parameterValueProperty.stringValue = newValue.ToString();
         } else if (type == typeof(GameObject)) {
             EditorGUILayout.HelpBox($"Prefab must be located in {SharedConfig.PREFABS_PATH}", MessageType.Info);
             GameObject newValue = (GameObject)EditorGUILayout.ObjectField((GameObject)valueObject, typeof(GameObject), false);
@@ -36,9 +39,6 @@ public class EffectParameterEditor : PropertyDrawer
             EditorGUILayout.HelpBox($"Alteration must be located in {SharedConfig.ALTERATIONS_PATH}", MessageType.Info);
             Alteration newValue = (Alteration)EditorGUILayout.ObjectField((Alteration)valueObject, typeof(Alteration), false);
             parameterValueProperty.stringValue = newValue?.name;
-        } else if (type == typeof(StatisticType)) {
-            StatisticType newValue = (StatisticType)EditorGUILayout.EnumPopup((StatisticType)valueObject);
-            parameterValueProperty.stringValue = newValue.ToString();
         } else {
             EditorGUILayout.HelpBox($"Unsupported type {type.FullName}", MessageType.Error);
         }

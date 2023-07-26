@@ -32,7 +32,8 @@ public class AbilitySlot
                 } else
                     cam.StartAim();
             }
-        }
+        } else
+            TCPClient.Send(new MessageUseAbility(CurrentAbility.name, Vector3Data.Zero));
     }
 
     public void Used() {

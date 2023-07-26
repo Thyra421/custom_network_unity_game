@@ -651,7 +651,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25aa9fabfb8e2734e904f640a1c98b4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healthSlider: {fileID: 0}
+  _healthSlider: {fileID: 5762096660141449139}
   _character: {fileID: 0}
 --- !u!114 &4491952645366131347
 MonoBehaviour:
@@ -681,7 +681,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parent: {fileID: 1575642991209937388}
-  _prefab: {fileID: 6571405558405253377, guid: cbb5899a3b0de954bb6748f0da2b0530, type: 3}
+  _prefab: {fileID: 98145314687821380, guid: cbb5899a3b0de954bb6748f0da2b0530, type: 3}
   _alterations: {fileID: 0}
 --- !u!1 &5694054878746831091
 GameObject:

@@ -1,10 +1,15 @@
 ﻿using System;
 
+public enum DamageType
+{
+    Physical, Magic
+}
+
 public interface IDirectEffectController
 {
     public void ApplyAlteration(Alteration alteration);
 
-    public void DealDamage(int amount);
+    public void DealDamage(int amount, DamageType damageType);
 
     public void RestoreHealth(int amount);
 }

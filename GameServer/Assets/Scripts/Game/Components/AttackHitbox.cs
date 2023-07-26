@@ -1,12 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
-using static UnityEngine.UI.GridLayoutGroup;
 
 class AttackHitbox : MonoBehaviour
 {
     private readonly List<Collider> _collidersTouched = new List<Collider>();
-    private int _damages;
     private float _duration;
     private AbilityHit _hit;
 
@@ -24,8 +21,6 @@ class AttackHitbox : MonoBehaviour
         if (otherPlayer != null && otherPlayer != Player && otherPlayer.Room == Player.Room) {
             _collidersTouched.Add(other);
             new PlayerDirectEffectController(otherPlayer, Player).Use(_hit);
-            otherPlayer.Statistics.CurrentHealth -= _damages;
-            Player.Room.PlayersManager.BroadcastTCP(new MessageHealthChanged(otherPlayer.Id, otherPlayer.Statistics.CurrentHealth, otherPlayer.Statistics.MaxHealth));
         }
     }
 
