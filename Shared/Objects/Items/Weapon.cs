@@ -7,4 +7,11 @@ public class Weapon : Item
     private Ability[] _abilities;
 
     public Ability[] Abilities => _abilities;
+
+    public override void BuildTooltip(RectTransform parent) {
+        base.BuildTooltip(parent);
+
+        foreach (Ability ability in _abilities)
+            TooltipBuilder.BuildText(parent, ability.DisplayName);
+    }
 }

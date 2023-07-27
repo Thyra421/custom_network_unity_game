@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4de59e2c14b22274293865419c914c46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _itemGUI: {fileID: 6659832483079579651}
+  _itemGUI: {fileID: 5508238049263558110}
 --- !u!222 &8452357922881027621
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -225,9 +225,9 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1963583726655886317}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6659832483079579651 stripped
+--- !u!114 &5508238049263558110 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5128604528246995950, guid: 70763fc6e82f0cf4ba9337303207c8c4,
+  m_CorrespondingSourceObject: {fileID: 6282870766697106995, guid: 70763fc6e82f0cf4ba9337303207c8c4,
     type: 3}
   m_PrefabInstance: {fileID: 1963583726655886317}
   m_PrefabAsset: {fileID: 0}

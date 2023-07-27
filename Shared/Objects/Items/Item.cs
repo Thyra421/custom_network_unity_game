@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public enum ItemRarity
@@ -10,7 +11,7 @@ public enum ItemProperty
     Stackable, NonStackable, Unique
 }
 
-public abstract class Item : ScriptableObject, IDisplayable
+public abstract class Item : ScriptableObject, IDisplayable, ITooltipHandler
 {
     [SerializeField]
     protected string _displayName;
@@ -19,8 +20,6 @@ public abstract class Item : ScriptableObject, IDisplayable
     protected string _description;
     [SerializeField]
     protected ItemRarity _rarity;
-    [SerializeField]
-    protected int _price;
     [SerializeField]
     protected ItemProperty _property;
     [SerializeField]
@@ -35,4 +34,19 @@ public abstract class Item : ScriptableObject, IDisplayable
     public string Description => _description;
 
     public ItemRarity Rarity => _rarity;
+
+    public static Color RarityColor(ItemRarity rarity) {
+        switch (rarity) {
+            case ItemRarity.Common:
+                return Color.white;
+            case ItemRarity.Rare:
+                return Color.blue;
+        }
+        return Color.white;
+    }
+
+    public virtual void BuildTooltip(RectTransform parent) {
+        TooltipBuilder.BuildText(parent, DisplayName, RarityColor(_rarity), FontStyles.Bold);
+        TooltipBuilder.BuildText(parent, $"\"{_description}\"", Color.yellow);
+    }
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CraftingGUI : MonoBehaviour
+public class CraftingGUIManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject _engineeringPanel;
@@ -13,7 +13,7 @@ public class CraftingGUI : MonoBehaviour
     [SerializeField]
     private GameObject _craftingPanel;
 
-    public static CraftingGUI Current { get; private set; }
+    public static CraftingGUIManager Current { get; private set; }
 
     private void Awake() {
         if (Current == null)

@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ItemGUI : MonoBehaviour
+public class ItemGUI : MonoBehaviour, ITooltipHandlerGUI
 {
     [SerializeField]
     private Image _image;
@@ -13,6 +13,10 @@ public class ItemGUI : MonoBehaviour
 
     public int Amount { get; private set; }
     public Item Item { get; private set; }
+
+    public void BuildTooltip(RectTransform parent) {
+        Item?.BuildTooltip(parent);
+    }
 
     public void Initialize(Item item, int amount) {
         Item = item;
@@ -27,12 +31,4 @@ public class ItemGUI : MonoBehaviour
             _amountText.gameObject.SetActive(item.Property == ItemProperty.Stackable);
         }
     }
-
-    //private void OnMouseOver() {
-    //    TooltipGUI.Current.Hide();
-    //}
-
-    //private void OnMouseEnter() {
-    //    TooltipGUI.Current.Show(Item);
-    //}
 }

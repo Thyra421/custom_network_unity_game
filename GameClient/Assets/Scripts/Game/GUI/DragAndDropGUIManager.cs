@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DragAndDropGUI : MonoBehaviour
+public class DragAndDropGUIManager : MonoBehaviour
 {
     [SerializeField]
     private Image _dragIndicator;
 
-    public static DragAndDropGUI Current { get; private set; }
+    public static DragAndDropGUIManager Current { get; private set; }
 
     private void Awake() {
         if (Current == null)

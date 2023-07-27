@@ -32,14 +32,14 @@ public class ActionBarSlotGUI : MonoBehaviour, IDropHandler, IBeginDragHandler, 
 
     public void OnBeginDrag(PointerEventData eventData) {
         if (_itemGUI.Item != null)
-            DragAndDropGUI.Current.StartDrag(_itemGUI.Item.Icon);
+            DragAndDropGUIManager.Current.StartDrag(_itemGUI.Item.Icon);
     }
 
     public void OnDrag(PointerEventData eventData) {
     }
 
     public void OnEndDrag(PointerEventData eventData) {
-        DragAndDropGUI.Current.StopDrag();
+        DragAndDropGUIManager.Current.StopDrag();
         if (!eventData.pointerCurrentRaycast.isValid)
             Clear();
     }

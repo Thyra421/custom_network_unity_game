@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CombatGUI : MonoBehaviour
+public class CombatGUIManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject _aimTarget;

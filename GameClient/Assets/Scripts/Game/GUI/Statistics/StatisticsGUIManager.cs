@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StatisticsGUI : MonoBehaviour
+public class StatisticsGUIManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject _prefab;

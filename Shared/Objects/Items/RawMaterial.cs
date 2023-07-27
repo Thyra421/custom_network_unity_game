@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum RawMaterialRegion
@@ -12,4 +13,10 @@ public class RawMaterial : Item
     private RawMaterialRegion _region;
 
     public RawMaterialRegion Region => _region;
+
+    public override void BuildTooltip(RectTransform parent) {
+        base.BuildTooltip(parent);
+
+        TooltipBuilder.BuildText(parent, _region.ToString());
+    }
 }

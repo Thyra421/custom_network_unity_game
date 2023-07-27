@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AbilitySlotGUI : MonoBehaviour
+public class AbilitySlotGUI : MonoBehaviour, ITooltipHandlerGUI
 {
     [SerializeField]
     private Button _button;
@@ -37,5 +37,9 @@ public class AbilitySlotGUI : MonoBehaviour
         _button.onClick.AddListener(slot.Use);
         _slot.OnChanged += OnChanged;
         _slot.OnUpdated += OnUpdated;
+    }
+
+    public void BuildTooltip(RectTransform parent) {
+        _slot.CurrentAbility?.BuildTooltip(parent);
     }
 }

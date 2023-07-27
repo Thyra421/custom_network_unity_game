@@ -1,13 +1,13 @@
 using UnityEngine;
 
-public class InventoryGUI : MonoBehaviour
+public class InventoryGUIManager : MonoBehaviour
 {
     [SerializeField]
     private Transform _parent;
     [SerializeField]
     private GameObject _slotGUITemplate;
 
-    public static InventoryGUI Current { get; private set; }
+    public static InventoryGUIManager Current { get; private set; }
 
     private void Awake() {
         if (Current == null)

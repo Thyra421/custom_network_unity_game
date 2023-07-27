@@ -1,7 +1,8 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Ability/Ability")]
-public class Ability : ScriptableObject, IDisplayable, IRechargeable, IUsable
+public class Ability : ScriptableObject, IDisplayable, IRechargeable, IUsable, ITooltipHandler
 {
     [SerializeField]
     private string _displayName;
@@ -24,4 +25,10 @@ public class Ability : ScriptableObject, IDisplayable, IRechargeable, IUsable
 
     public string AnimationName => _animationName;
 
+    public virtual void BuildTooltip(RectTransform parent) {
+        TooltipBuilder.BuildText(parent, _displayName);
+        TooltipBuilder.BuildText(parent, $"{_cooldown} seconds cooldown");
+        foreach (DirectEffect effect in _effects)
+            TooltipBuilder.BuildText(parent, effect.MethodName);
+    }
 }

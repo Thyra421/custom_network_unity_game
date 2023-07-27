@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class ExperienceGUI : MonoBehaviour
+public class ExperienceGUIManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject _prefab;

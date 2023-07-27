@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 
 [CreateAssetMenu(menuName="Ability/Aimed")]
 public class AimedAbility : OffensiveAbility
@@ -15,4 +16,9 @@ public class AimedAbility : OffensiveAbility
     public float Speed => _speed;
 
     public float Distance => _distance;
+
+    public override void BuildTooltip(RectTransform parent) {
+        base.BuildTooltip(parent);
+        TooltipBuilder.BuildText(parent, "Aimed");
+    }
 }

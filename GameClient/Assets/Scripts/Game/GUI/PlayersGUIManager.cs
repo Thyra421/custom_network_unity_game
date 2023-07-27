@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class PlayersGUI : MonoBehaviour
+public class PlayersGUIManager : MonoBehaviour
 {
-    public static PlayersGUI Current { get; private set; }
+    public static PlayersGUIManager Current { get; private set; }
 
     private void OnAddedPlayer(Character player) { }
 

@@ -1,16 +1,16 @@
 using UnityEngine;
 
-[RequireComponent(typeof(PlayersGUI))]
-[RequireComponent(typeof(InventoryGUI))]
-[RequireComponent(typeof(CraftingGUI))]
-public class GameGUI : MonoBehaviour
+[RequireComponent(typeof(PlayersGUIManager))]
+[RequireComponent(typeof(InventoryGUIManager))]
+[RequireComponent(typeof(CraftingGUIManager))]
+public class GameGUIManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject _experiencePanel;
     [SerializeField]
     private GameObject _inventoryPanel;
 
-    public static GameGUI Current { get; private set; }
+    public static GameGUIManager Current { get; private set; }
 
     private void Awake() {
         if (Current == null)
@@ -36,25 +36,25 @@ public class GameGUI : MonoBehaviour
 
     public void ToggleEngineering() {
         CloseExperience();
-        CraftingGUI.Current.ToggleEngineering();
+        CraftingGUIManager.Current.ToggleEngineering();
     }
 
     public void ToggleAlchemy() {
         CloseExperience();
-        CraftingGUI.Current.ToggleAlchemy();
+        CraftingGUIManager.Current.ToggleAlchemy();
     }
 
     public void ToggleForging() {
         CloseExperience();
-        CraftingGUI.Current.ToggleForging();
+        CraftingGUIManager.Current.ToggleForging();
     }
 
     public void ToggleCooking() {
         CloseExperience();
-        CraftingGUI.Current.ToggleCooking();
+        CraftingGUIManager.Current.ToggleCooking();
     }
 
-    public void CloseCrafting() => CraftingGUI.Current.CloseCrafting();
+    public void CloseCrafting() => CraftingGUIManager.Current.CloseCrafting();
 
     public void CloseInventory() => _inventoryPanel.SetActive(false);
 
