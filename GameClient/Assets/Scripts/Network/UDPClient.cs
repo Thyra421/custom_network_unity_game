@@ -55,7 +55,7 @@ public static class UDPClient
     public static void Connect() {
         try {
             _udpClient = new UdpClient();
-            _udpClient.Connect(Config.SERVER_ADDRESS, Config.SERVER_PORT_UDP);
+            _udpClient.Connect(Config.Current.ServerAddress, Config.Current.ServerPortUDP);
             Port = ((IPEndPoint)_udpClient.Client.LocalEndPoint).Port;
             _connected = true;
             OnConnected();

@@ -1,8 +1,26 @@
-﻿public static class Config
+﻿using UnityEngine;
+
+[CreateAssetMenu(menuName = "Config/Config")]
+public class Config : SingletonScriptableObject<Config>
 {
-    public const int TCP_PORT = 8080;
-    public const int UDP_PORT = 8080;
-    public const string ADDRESS = "127.0.0.1";
-    public const string PREFABS_PATH = "Prefabs";
-    public const float LEVEL_EXPERIENCE_INCREASE_MULTIPLICATOR = 1.3f;
+    [SerializeField]
+    private int _TCPPort = 8080;
+    [SerializeField]
+    private int _UDPPort = 8080;
+    [SerializeField]
+    private string _address = "127.0.0.1";
+    [SerializeField]
+    private float _levelExperienceIncreaseMultiplicator = 1.3f;
+    [SerializeField]
+    private int _maxPlayersPerRoom = 2;
+
+    public int TCPPort => _TCPPort;
+
+    public int UDPPort => _UDPPort;
+
+    public string Address => _address;
+
+    public float LevelExperienceIncreaseMultiplicator => _levelExperienceIncreaseMultiplicator;
+
+    public int MaxPlayersPerRoom => _maxPlayersPerRoom;
 }

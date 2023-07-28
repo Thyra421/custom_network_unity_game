@@ -12,7 +12,7 @@ public class VFXsManager : MonoBehaviour
 
     private void SyncMovement() {
         _elapsedTime += Time.deltaTime;
-        if (_elapsedTime >= (1f / SharedConfig.SYNC_FREQUENCY)) {
+        if (_elapsedTime >= (1f / SharedConfig.Current.SyncFrequency)) {
             _elapsedTime = 0f;
 
             VFXMovementData[] VFXDatas = GetVFXMovementDatas((VFX v) => v.UpdateTransformIfChanged());

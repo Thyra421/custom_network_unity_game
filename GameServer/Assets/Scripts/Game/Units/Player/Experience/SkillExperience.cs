@@ -13,7 +13,7 @@ public class SkillExperience
     private void LevelUp() {
         _currentLevel++;
         _currentExperience = 0;
-        _experienceToLevel = Mathf.RoundToInt(_experienceToLevel * Config.LEVEL_EXPERIENCE_INCREASE_MULTIPLICATOR);
+        _experienceToLevel = Mathf.RoundToInt(_experienceToLevel * Config.Current.LevelExperienceIncreaseMultiplicator);
     }
 
     public SkillExperience(ExperienceType experienceType) {

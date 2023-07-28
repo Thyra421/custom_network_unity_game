@@ -1,8 +1,22 @@
-public static class Config
+using UnityEngine;
+
+[CreateAssetMenu(menuName = "Config/Config")]
+public class Config : SingletonScriptableObject<Config>
 {
-    public const int SERVER_PORT_TCP = 8080;
-    public const int SERVER_PORT_UDP = 8080;
-    public const int SERVER_PORT_HTTP = 80;
-    public const string SERVER_ADDRESS = "127.0.0.1";
-    public const int ACTION_BAR_SLOTS = 8;
+    [SerializeField]
+    private int _serverPortTCP = 8080;
+    [SerializeField]
+    private int _serverPortUDP = 8080;
+    [SerializeField]
+    private int _serverPortHTTP = 80;
+    [SerializeField]
+    private string _serverAddress = "127.0.0.1";
+
+    public int ServerPortTCP => _serverPortTCP;
+
+    public int ServerPortUDP => _serverPortUDP;
+
+    public int ServerPortHTTP => _serverPortHTTP;
+
+    public string ServerAddress => _serverAddress;
 }

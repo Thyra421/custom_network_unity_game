@@ -5,7 +5,7 @@ using System.Linq;
 
 public class PlayersManager : MonoBehaviour
 {
-    private const int MAX_PLAYERS = 2;
+    
     [SerializeField]
     private Room _room;
     private readonly List<Player> _players = new List<Player>();
@@ -16,7 +16,7 @@ public class PlayersManager : MonoBehaviour
 
     private void SyncMovement() {
         _elapsedTime += Time.deltaTime;
-        if (_elapsedTime >= (1f / SharedConfig.SYNC_FREQUENCY)) {
+        if (_elapsedTime >= (1f / SharedConfig.Current.SyncFrequency)) {
             _elapsedTime = 0f;
             if (_players.Count < 2)
                 return;
@@ -84,5 +84,5 @@ public class PlayersManager : MonoBehaviour
 
     public PlayerData[] PlayerDatas => _players.Select((Player player) => player.Data).ToArray();
 
-    public bool IsFull => _players.Count == MAX_PLAYERS;
+    public bool IsFull => _players.Count == Config.Current.MaxPlayersPerRoom;
 }

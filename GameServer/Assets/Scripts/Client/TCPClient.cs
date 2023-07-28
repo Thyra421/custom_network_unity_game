@@ -59,7 +59,7 @@ public class TCPClient
     }
 
     private void OnMessageUseAbility(MessageUseAbility messageUseAbility) {
-        Ability ability = Resources.Load<Ability>($"{SharedConfig.ABILITIES_PATH}/{messageUseAbility.abilityName}");
+        Ability ability = Resources.Load<Ability>($"{SharedConfig.Current.AbilitiesPath}/{messageUseAbility.abilityName}");
 
         // ability exists?
         if (ability == null) {
@@ -70,7 +70,7 @@ public class TCPClient
     }
 
     private void OnMessageEquip(MessageEquip messageEquip) {
-        Weapon weapon = Resources.Load<Weapon>($"{SharedConfig.ITEMS_PATH}/{messageEquip.weaponName}");
+        Weapon weapon = Resources.Load<Weapon>($"{SharedConfig.Current.ItemsPath}/{messageEquip.weaponName}");
 
         // weapon exists?
         if (weapon == null) {
@@ -118,7 +118,7 @@ public class TCPClient
     }
 
     private void OnMessageCraft(MessageCraft messageCraft) {
-        CraftingPattern pattern = Resources.Load<CraftingPattern>($"{SharedConfig.CRAFTING_PATTERNS_PATH}/{messageCraft.directoryName}/{messageCraft.patternName}");
+        CraftingPattern pattern = Resources.Load<CraftingPattern>($"{SharedConfig.Current.CraftingPattersPath}/{messageCraft.directoryName}/{messageCraft.patternName}");
 
         // pattern exists?
         if (pattern == null) {
@@ -155,7 +155,7 @@ public class TCPClient
     }
 
     private void OnMessageUseItem(MessageUseItem messageUseItem) {
-        UsableItem item = Resources.Load<UsableItem>($"{SharedConfig.ITEMS_PATH}/{messageUseItem.itemName}");
+        UsableItem item = Resources.Load<UsableItem>($"{SharedConfig.Current.ItemsPath}/{messageUseItem.itemName}");
 
         // item exists?
         if (item == null) {
@@ -185,7 +185,7 @@ public class TCPClient
         serializedMessage += '#';
         byte[] bytes = Encoding.ASCII.GetBytes(serializedMessage);
 
-        int batchSize = SharedConfig.TCP_BATCH_SIZE;
+        int batchSize = SharedConfig.Current.TCPBatchSize;
         int i = 0;
 
         while (i < bytes.Length) {
@@ -200,7 +200,7 @@ public class TCPClient
     }
 
     public async void Listen() {
-        byte[] bytes = new byte[SharedConfig.TCP_BATCH_SIZE];
+        byte[] bytes = new byte[SharedConfig.Current.TCPBatchSize];
         int i;
         string buffer = "";
 

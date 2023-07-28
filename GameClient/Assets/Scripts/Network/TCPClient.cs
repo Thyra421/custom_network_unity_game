@@ -140,7 +140,7 @@ public static class TCPClient
 
     public static void Connect() {
         try {
-            _tcpClient = new TcpClient(Config.SERVER_ADDRESS, Config.SERVER_PORT_TCP);
+            _tcpClient = new TcpClient(Config.Current.ServerAddress, Config.Current.ServerPortTCP);
             OnConnected();
             Listen();
         } catch {

@@ -26,25 +26,25 @@ public class SharedConfig : SingletonScriptableObject<SharedConfig>
     [SerializeField]
     private string _alterationsPath = "Shared/Alterations";    
 
-    public int SyncFrequency { get => _syncFrequency; }
+    public int SyncFrequency => _syncFrequency;
 
-    public int TCPBatchSize { get => _TCPBatchSize; }
+    public int TCPBatchSize => _TCPBatchSize;
 
-    public int InventorySpace { get => _inventorySpace; }
+    public int InventorySpace => _inventorySpace;
 
-    public float PlayerMovementSpeed { get => _playerMovementSpeed; }
+    public float PlayerMovementSpeed => _playerMovementSpeed;
 
-    public string PrefabsPath { get => _prefabsPath; }
+    public string PrefabsPath => _prefabsPath;
 
-    public string ItemsPath { get => _itemsPath; }
+    public string ItemsPath => _itemsPath;
 
-    public string DropSourcesPath { get => _dropSourcesPath; }
+    public string DropSourcesPath => _dropSourcesPath;
 
-    public string CraftingPattersPath { get => _craftingPattersPath; }
+    public string CraftingPattersPath => _craftingPattersPath;
 
-    public string NPCsPath { get => _NPCsPath; }
+    public string NPCsPath => _NPCsPath;
 
-    public string AbilitiesPath { get => _abilitiesPath; }
+    public string AbilitiesPath => _abilitiesPath;
 
-    public string AlterationsPath { get => _alterationsPath; }
+    public string AlterationsPath => _alterationsPath;
 }

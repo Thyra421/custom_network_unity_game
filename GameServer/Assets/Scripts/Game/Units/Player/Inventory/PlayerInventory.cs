@@ -34,7 +34,7 @@ public class PlayerInventory
         }
         // => not stackable
         // inventory full?
-        else if (_stacks.Count >= SharedConfig.INVENTORY_SPACE) {
+        else if (_stacks.Count >= SharedConfig.Current.InventorySpace) {
             if (send)
                 _player.Client.Tcp.Send(new MessageError(MessageErrorType.inventoryFull));
             return false;

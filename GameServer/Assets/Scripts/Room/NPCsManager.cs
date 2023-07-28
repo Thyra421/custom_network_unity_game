@@ -13,7 +13,7 @@ public class NPCsManager : MonoBehaviour
 
     private void SyncMovement() {
         _elapsedTime += Time.deltaTime;
-        if (_elapsedTime >= (1f / SharedConfig.SYNC_FREQUENCY)) {
+        if (_elapsedTime >= (1f / SharedConfig.Current.SyncFrequency)) {
             _elapsedTime = 0f;
 
             NPCMovementData[] NPCDatas = GetNPCMovementDatas((NPC n) => n.UpdateTransformIfChanged());
