@@ -26,9 +26,9 @@ public class Ability : ScriptableObject, IDisplayable, IRechargeable, IUsable, I
     public string AnimationName => _animationName;
 
     public virtual void BuildTooltip(RectTransform parent) {
-        TooltipBuilder.BuildText(parent, _displayName);
-        TooltipBuilder.BuildText(parent, $"{_cooldown} seconds cooldown");
+        TooltipBuilder.Current.BuildText(parent, _displayName);
+        TooltipBuilder.Current.BuildText(parent, $"{_cooldown} seconds cooldown");
         foreach (DirectEffect effect in _effects)
-            TooltipBuilder.BuildText(parent, effect.MethodName);
+            TooltipBuilder.Current.BuildText(parent, effect.MethodName);
     }
 }

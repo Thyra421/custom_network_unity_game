@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0ac439e98dd46e47989e20fe291d70e, type: 3}
+  m_Name: SharedConfig
+  m_EditorClassIdentifier: 
+  _syncFrequency: 20
+  _TCPBatchSize: 1024
+  _inventorySpace: 30
+  _playerMovementSpeed: 7
+  _prefabsPath: Shared/Prefabs
+  _itemsPath: Shared/Items
+  _dropSourcesPath: Shared/DropSources
+  _craftingPattersPath: Shared/CraftingPatterns
+  _NPCsPath: Shared/NPCs
+  _abilitiesPath: Shared/Abilities
+  _alterationsPath: Shared/Alterations
+  _tooltipTextPrefab: {fileID: 7569607784956985445, guid: c61f4a9cd6bd91e459d82c41a936e595,
+    type: 3}

@@ -15,7 +15,7 @@ public class VFXsManager : MonoBehaviour
     private VFX FindVFX(string id) => _VFXs.Find((VFX v) => v.Id == id);
 
     private void CreateVFX(VFXData data) {
-        GameObject obj = Resources.Load<GameObject>($"{SharedConfig.PREFABS_PATH}/{data.prefabName}");
+        GameObject obj = Resources.Load<GameObject>($"{SharedConfig.Current.PrefabsPath}/{data.prefabName}");
         GameObject newObject = Instantiate(obj, data.transformData.position.ToVector3, Quaternion.Euler(data.transformData.rotation.ToVector3));
         VFX newVFX = newObject.AddComponent<VFX>();
         newVFX.Initialize(data.id);

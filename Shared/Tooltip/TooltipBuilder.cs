@@ -1,17 +1,17 @@
 using TMPro;
 using UnityEngine;
 
-public static class TooltipBuilder
+[CreateAssetMenu(menuName = "Config/TooltipBuilder")]
+public class TooltipBuilder : SingletonScriptableObject<TooltipBuilder>
 {
-    private const string TOOLTIP_TEXT_PATH = "Shared/Tooltip/TooltipTextGUI";
+    [SerializeField]
+    private GameObject _tooltipTextPrefab;
 
-    public static void BuildText(RectTransform parent, string text, FontStyles style = FontStyles.Normal) {
-        GameObject prefab = Resources.Load<GameObject>(TOOLTIP_TEXT_PATH);
-        Object.Instantiate(prefab, parent).GetComponent<TooltipTextGUI>().Initialize(text, style);
+    public void BuildText(RectTransform parent, string text, FontStyles style = FontStyles.Normal) {
+        Instantiate(_tooltipTextPrefab, parent).GetComponent<TooltipTextGUI>().Initialize(text, style);
     }
 
-    public static void BuildText(RectTransform parent, string text, Color color, FontStyles style = FontStyles.Normal) {
-        GameObject prefab = Resources.Load<GameObject>(TOOLTIP_TEXT_PATH);
-        Object.Instantiate(prefab, parent).GetComponent<TooltipTextGUI>().Initialize(text, color, style);
+    public void BuildText(RectTransform parent, string text, Color color, FontStyles style = FontStyles.Normal) {
+        Instantiate(_tooltipTextPrefab, parent).GetComponent<TooltipTextGUI>().Initialize(text, color, style);
     }
 }

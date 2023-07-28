@@ -9,8 +9,8 @@ public abstract class OffensiveAbility : Ability
 
     public override void BuildTooltip(RectTransform parent) {
         base.BuildTooltip(parent);
-        TooltipBuilder.BuildText(parent, "On hit:");
+        TooltipBuilder.Current.BuildText(parent, "On hit:");
         foreach (DirectEffect effect in _hit.Effects)
-            TooltipBuilder.BuildText(parent, effect.MethodName);
+            TooltipBuilder.Current.BuildText(parent, effect.MethodName);
     }
 }

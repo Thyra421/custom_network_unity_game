@@ -15,7 +15,7 @@ public class AbilitiesManager : MonoBehaviour
     public event OnChangedPactHandler OnChangedPact;
 
     private void OnMessageUsedAbility(MessageUsedAbility messageUsedAbility) {
-        Ability ability = Resources.Load<Ability>($"{SharedConfig.ABILITIES_PATH}/{messageUsedAbility.abilityName}");
+        Ability ability = Resources.Load<Ability>($"{SharedConfig.Current.AbilitiesPath}/{messageUsedAbility.abilityName}");
 
         UseAbility(ability);
     }

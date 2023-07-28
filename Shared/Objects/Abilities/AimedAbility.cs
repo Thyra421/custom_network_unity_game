@@ -19,6 +19,6 @@ public class AimedAbility : OffensiveAbility
 
     public override void BuildTooltip(RectTransform parent) {
         base.BuildTooltip(parent);
-        TooltipBuilder.BuildText(parent, "Aimed");
+        TooltipBuilder.Current.BuildText(parent, "Aimed");
     }
 }

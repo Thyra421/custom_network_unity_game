@@ -15,7 +15,7 @@ public class NodesManager : MonoBehaviour
     private Node FindNode(string id) => _nodes.Find((Node n) => n.Id == id);
 
     private void CreateNode(NodeData data) {
-        DropSource dropSource = Resources.Load<DropSource>($"{SharedConfig.DROP_SOURCES_PATH}/{data.dropSourceName}");
+        DropSource dropSource = Resources.Load<DropSource>($"{SharedConfig.Current.DropSourcesPath}/{data.dropSourceName}");
         GameObject newObject = Instantiate(dropSource.Prefab, data.transformData.position.ToVector3, Quaternion.Euler(data.transformData.rotation.ToVector3));
         Node newNode = newObject.AddComponent<Node>();
         newNode.Initialize(data.id);

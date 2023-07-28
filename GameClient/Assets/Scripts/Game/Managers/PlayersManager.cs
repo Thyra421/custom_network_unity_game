@@ -103,7 +103,7 @@ public class PlayersManager : MonoBehaviour
     }
 
     private void OnMessageEquiped(MessageEquiped messageEquiped) {
-        Weapon weapon = Resources.Load<Weapon>($"{SharedConfig.ITEMS_PATH}/{messageEquiped.weaponName}");
+        Weapon weapon = Resources.Load<Weapon>($"{SharedConfig.Current.ItemsPath}/{messageEquiped.weaponName}");
 
         if (messageEquiped.id == _myPlayer.Id) {
             AbilitiesManager.Current.Equip(weapon);
@@ -121,7 +121,7 @@ public class PlayersManager : MonoBehaviour
     }
 
     private void OnMessageAddAlteration(MessageAddAlteration messageAddAlteration) {
-        Alteration alteration = Resources.Load<Alteration>($"{SharedConfig.ALTERATIONS_PATH}/{messageAddAlteration.alteration.alterationName}");
+        Alteration alteration = Resources.Load<Alteration>($"{SharedConfig.Current.AlterationsPath}/{messageAddAlteration.alteration.alterationName}");
         AlterationController alterationController = new AlterationController(alteration, messageAddAlteration.alteration.remainingDuration, messageAddAlteration.alteration.ownerId);
 
         if (messageAddAlteration.alteration.targetId == _myPlayer.Id)
@@ -131,7 +131,7 @@ public class PlayersManager : MonoBehaviour
     }
 
     private void OnMessageRefreshAlteration(MessageRefreshAlteration messageRefreshAlteration) {
-        Alteration alteration = Resources.Load<Alteration>($"{SharedConfig.ALTERATIONS_PATH}/{messageRefreshAlteration.alteration.alterationName}");
+        Alteration alteration = Resources.Load<Alteration>($"{SharedConfig.Current.AlterationsPath}/{messageRefreshAlteration.alteration.alterationName}");
 
         if (messageRefreshAlteration.alteration.targetId == _myPlayer.Id)
             _myPlayer.Alterations.Refresh(alteration, messageRefreshAlteration.alteration.remainingDuration, messageRefreshAlteration.alteration.ownerId);
@@ -140,7 +140,7 @@ public class PlayersManager : MonoBehaviour
     }
 
     private void OnMessageRemoveAlteration(MessageRemoveAlteration messageRemoveAlteration) {
-        Alteration alteration = Resources.Load<Alteration>($"{SharedConfig.ALTERATIONS_PATH}/{messageRemoveAlteration.alteration.alterationName}");
+        Alteration alteration = Resources.Load<Alteration>($"{SharedConfig.Current.AlterationsPath}/{messageRemoveAlteration.alteration.alterationName}");
 
         if (messageRemoveAlteration.alteration.targetId == _myPlayer.Id)
             _myPlayer.Alterations.Remove(alteration, messageRemoveAlteration.alteration.ownerId);

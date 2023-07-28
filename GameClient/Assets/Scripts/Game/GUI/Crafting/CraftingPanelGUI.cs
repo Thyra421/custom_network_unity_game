@@ -29,7 +29,7 @@ public class CraftingPanelGUI : MonoBehaviour
     }
 
     private void Start() {
-        CraftingPattern[] patterns = Resources.LoadAll<CraftingPattern>($"{SharedConfig.CRAFTING_PATTERNS_PATH}/{_directoryName}");
+        CraftingPattern[] patterns = Resources.LoadAll<CraftingPattern>($"{SharedConfig.Current.CraftingPattersPath}/{_directoryName}");
         foreach (CraftingPattern pattern in patterns) {
             CraftingItemSelectionGUI craftingItemSelectionGUI = Instantiate(_itemSelectionTemplate, _selectionParent).GetComponent<CraftingItemSelectionGUI>();
             craftingItemSelectionGUI.Initialize(this, pattern);

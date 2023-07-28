@@ -26,7 +26,7 @@ public class LocalPlayerMovement : Movement
     private Vector3 _hitNormal;
     private Vector3 _hitPoint;
 
-    private float MovementSpeed => StatisticsManager.Current.Find(StatisticType.MovementSpeed).Value * SharedConfig.PLAYER_MOVEMENT_SPEED;
+    private float MovementSpeed => StatisticsManager.Current.Find(StatisticType.MovementSpeed).Value * SharedConfig.Current.PlayerMovementSpeed;
 
     private void MoveInDirection() {
         Vector3 movingDirection = _direction * _currentSpeed;

@@ -46,7 +46,7 @@ public abstract class Item : ScriptableObject, IDisplayable, ITooltipHandler
     }
 
     public virtual void BuildTooltip(RectTransform parent) {
-        TooltipBuilder.BuildText(parent, DisplayName, RarityColor(_rarity), FontStyles.Bold);
-        TooltipBuilder.BuildText(parent, $"\"{_description}\"", Color.yellow);
+        TooltipBuilder.Current.BuildText(parent, DisplayName, RarityColor(_rarity), FontStyles.Bold);
+        TooltipBuilder.Current.BuildText(parent, $"\"{_description}\"", Color.yellow);
     }
 }

@@ -15,7 +15,7 @@ public class NPCsManager : MonoBehaviour
     private NPC FindNPC(string id) => _NPCs.Find((NPC n) => n.Id == id);
 
     private void CreateNPC(NPCData data) {
-        Animal animal = Resources.Load<Animal>($"{SharedConfig.NPCS_PATH}/{data.animalName}");
+        Animal animal = Resources.Load<Animal>($"{SharedConfig.Current.NPCsPath}/{data.animalName}");
         GameObject newObject = Instantiate(animal.Prefab, data.transformData.position.ToVector3, Quaternion.Euler(data.transformData.rotation.ToVector3));
         NPC newNPC = newObject.AddComponent<NPC>();
         newNPC.Initialize(data.id);

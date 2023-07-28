@@ -29,9 +29,9 @@ public class EffectParameter
             else if (type == typeof(float))
                 return float.TryParse(_parameterValue, out float result) ? result : 0f;
             else if (type == typeof(GameObject))
-                return Resources.Load<GameObject>($"{SharedConfig.PREFABS_PATH}/{_parameterValue}");
+                return Resources.Load<GameObject>($"{SharedConfig.Current.PrefabsPath}/{_parameterValue}");
             else if (type == typeof(Alteration))
-                return Resources.Load<Alteration>($"{SharedConfig.ALTERATIONS_PATH}/{_parameterValue}");
+                return Resources.Load<Alteration>($"{SharedConfig.Current.AlterationsPath}/{_parameterValue}");
             else if (type == typeof(StatisticType))
                 return Enum.TryParse(_parameterValue, out StatisticType result) ? result : 0;
             else if (type == typeof(DamageType))

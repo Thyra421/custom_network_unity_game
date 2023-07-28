@@ -10,6 +10,6 @@ public class MeleeAbility : OffensiveAbility
 
     public override void BuildTooltip(RectTransform parent) {
         base.BuildTooltip(parent);
-        TooltipBuilder.BuildText(parent, "Melee");
+        TooltipBuilder.Current.BuildText(parent, "Melee");
     }
 }

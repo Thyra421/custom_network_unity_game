@@ -15,8 +15,8 @@ public class UsableItem : Item, IRechargeable, IUsable
 
     public override void BuildTooltip(RectTransform parent) {
         base.BuildTooltip(parent);
-        TooltipBuilder.BuildText(parent, $"{_cooldown} seconds cooldown");
+        TooltipBuilder.Current.BuildText(parent, $"{_cooldown} seconds cooldown");
         foreach (DirectEffect effect in _effects)
-            TooltipBuilder.BuildText(parent, effect.MethodName);
+            TooltipBuilder.Current.BuildText(parent, effect.MethodName);
     }
 }

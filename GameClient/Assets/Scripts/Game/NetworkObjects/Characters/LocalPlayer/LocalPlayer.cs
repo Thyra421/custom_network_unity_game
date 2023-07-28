@@ -10,7 +10,7 @@ public class LocalPlayer : Character
 
     private void SendMovement() {
         _elapsedTime += Time.deltaTime;
-        if (_elapsedTime >= (1f / SharedConfig.SYNC_FREQUENCY)) {
+        if (_elapsedTime >= (1f / SharedConfig.Current.SyncFrequency)) {
             _elapsedTime = 0f;
             TransformData transformData = new TransformData(transform);
             if (!transformData.Equals(_lastTransform)) {

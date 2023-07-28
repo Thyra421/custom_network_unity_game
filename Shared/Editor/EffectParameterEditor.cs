@@ -32,11 +32,11 @@ public class EffectParameterEditor : PropertyDrawer
             Enum newValue = EditorGUILayout.EnumPopup((Enum)valueObject);
             parameterValueProperty.stringValue = newValue.ToString();
         } else if (type == typeof(GameObject)) {
-            EditorGUILayout.HelpBox($"Prefab must be located in {SharedConfig.PREFABS_PATH}", MessageType.Info);
+            EditorGUILayout.HelpBox($"Prefab must be located in {SharedConfig.Current.PrefabsPath}", MessageType.Info);
             GameObject newValue = (GameObject)EditorGUILayout.ObjectField((GameObject)valueObject, typeof(GameObject), false);
             parameterValueProperty.stringValue = newValue?.name;
         } else if (type == typeof(Alteration)) {
-            EditorGUILayout.HelpBox($"Alteration must be located in {SharedConfig.ALTERATIONS_PATH}", MessageType.Info);
+            EditorGUILayout.HelpBox($"Alteration must be located in {SharedConfig.Current.AlterationsPath}", MessageType.Info);
             Alteration newValue = (Alteration)EditorGUILayout.ObjectField((Alteration)valueObject, typeof(Alteration), false);
             parameterValueProperty.stringValue = newValue?.name;
         } else {

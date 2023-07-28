@@ -17,6 +17,6 @@ public class RawMaterial : Item
     public override void BuildTooltip(RectTransform parent) {
         base.BuildTooltip(parent);
 
-        TooltipBuilder.BuildText(parent, _region.ToString());
+        TooltipBuilder.Current.BuildText(parent, _region.ToString());
     }
 }

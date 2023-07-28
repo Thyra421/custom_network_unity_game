@@ -5,7 +5,7 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Current { get; private set; }
-    public InventorySlot[] Slots { get; } = new InventorySlot[SharedConfig.INVENTORY_SPACE];
+    public InventorySlot[] Slots { get; } = new InventorySlot[SharedConfig.Current.InventorySpace];
 
     public delegate void OnChangedHandler(Item item, int amount);
     public event OnChangedHandler OnChanged;
@@ -36,21 +36,21 @@ public class InventoryManager : MonoBehaviour
     }
 
     private void OnMessageInventoryAdd(MessageInventoryAdd messageInventoryAdd) {
-        Item item = Resources.Load<Item>($"{SharedConfig.ITEMS_PATH}/{messageInventoryAdd.data.itemName}");
+        Item item = Resources.Load<Item>($"{SharedConfig.Current.ItemsPath}/{messageInventoryAdd.data.itemName}");
         Add(item, messageInventoryAdd.data.amount);
     }
 
     private void OnMessageInventoryRemove(MessageInventoryRemove messageInventoryRemove) {
-        Item item = Resources.Load<Item>($"{SharedConfig.ITEMS_PATH}/{messageInventoryRemove.data.itemName}");
+        Item item = Resources.Load<Item>($"{SharedConfig.Current.ItemsPath}/{messageInventoryRemove.data.itemName}");
         Remove(item, messageInventoryRemove.data.amount);
     }
 
     private void OnMessageCrafted(MessageCrafted messageCrafted) {
         foreach (ItemStackData r in messageCrafted.reagents) {
-            Item reagent = Resources.Load<Item>($"{SharedConfig.ITEMS_PATH}/{r.itemName}");
+            Item reagent = Resources.Load<Item>($"{SharedConfig.Current.ItemsPath}/{r.itemName}");
             Remove(reagent, r.amount);
         }
-        Item outcome = Resources.Load<Item>($"{SharedConfig.ITEMS_PATH}/{messageCrafted.outcome.itemName}");
+        Item outcome = Resources.Load<Item>($"{SharedConfig.Current.ItemsPath}/{messageCrafted.outcome.itemName}");
         Add(outcome, messageCrafted.outcome.amount);
     }
 
