@@ -7,25 +7,19 @@ public class AbilitySlotGUI : MonoBehaviour, ITooltipHandlerGUI
     [SerializeField]
     private RectTransform _transform;
     [SerializeField]
-    private Button _button;
-    [SerializeField]
     private Image _image;
     [SerializeField]
     private Image _swipe;
     [SerializeField]
     private TMP_Text _text;
     private AbilitySlot _slot;
-    private Sprite _defaultSprite;
-
-    private void Start() {
-        _defaultSprite = _image.sprite;
-    }
 
     private void OnChanged(Ability ability) {
-        if (ability != null)
+        if (ability != null) {
+            _image.gameObject.SetActive(true);
             _image.sprite = ability.Icon;
-        else
-            _image.sprite = _defaultSprite;
+        } else
+            _image.gameObject.SetActive(false);
     }
 
     private void OnUpdated(float cooldown) {
