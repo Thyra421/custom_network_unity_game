@@ -7,7 +7,7 @@ public class TooltipGUIManager : MonoBehaviour
     private RectTransform _parent;
     [SerializeField]
     private VerticalLayoutGroup _verticalLayoutGroup;
-    private ITooltipHandlerGUI _currentTooltip;
+    private ITooltipHandlerGUI _currentTooltipHandler;
 
     public static TooltipGUIManager Current { get; private set; }
 
@@ -17,7 +17,7 @@ public class TooltipGUIManager : MonoBehaviour
     }
 
     private void Build() {
-        _currentTooltip.BuildTooltip(_parent);
+        _currentTooltipHandler.BuildTooltip(_parent);
         LayoutRebuilder.ForceRebuildLayoutImmediate(_parent);
     }
 
@@ -27,7 +27,31 @@ public class TooltipGUIManager : MonoBehaviour
     }
 
     private void LateUpdate() {
-        _parent.position = Input.mousePosition;
+        if (_currentTooltipHandler == null)
+            return;
+
+        Vector2 pivot = Vector2.zero;
+        Vector2 position = Vector2.zero;
+
+        RectTransform handler = _currentTooltipHandler.RectTransform;
+
+        if (handler.position.x >= Screen.width / 2) {
+            pivot.x = 1;
+            position.x = handler.position.x - handler.rect.size.x * handler.lossyScale.x / 2;
+        } else {
+            pivot.x = 0;
+            position.x = handler.position.x + handler.rect.size.x * handler.lossyScale.x / 2;
+        }
+        if (handler.position.y >= Screen.height / 2) {
+            pivot.y = 1;
+            position.y = handler.position.y - handler.rect.size.y * handler.lossyScale.y / 2;
+        } else {
+            pivot.y = 0;
+            position.y = handler.position.y + handler.rect.size.y * handler.lossyScale.y / 2;
+        }
+
+        _parent.pivot = pivot;
+        _parent.position = position;
     }
 
     private void Awake() {
@@ -38,11 +62,11 @@ public class TooltipGUIManager : MonoBehaviour
     }
 
     public ITooltipHandlerGUI Tooltip {
-        get => _currentTooltip;
+        get => _currentTooltipHandler;
         set {
-            if (value != _currentTooltip) {
-                _currentTooltip = value;
-                if (_currentTooltip != null) {
+            if (value != _currentTooltipHandler) {
+                _currentTooltipHandler = value;
+                if (_currentTooltipHandler != null && _currentTooltipHandler.IsTooltipReady) {
                     _parent.gameObject.SetActive(true);
                     Rebuild();
                 } else

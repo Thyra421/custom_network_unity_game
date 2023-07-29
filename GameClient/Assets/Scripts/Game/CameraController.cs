@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class CameraController : MonoBehaviour
 {
@@ -40,6 +39,7 @@ public class CameraController : MonoBehaviour
 
     public static CameraController Current { get; private set; }
     public bool IsAiming { get; private set; }
+    public bool IsBusy { get; private set; }
 
     public delegate void OnStartZoomInAimHandler();
     public delegate void OnEndZoomInAimHandler();
@@ -60,7 +60,12 @@ public class CameraController : MonoBehaviour
     }
 
     private void LateUpdate() {
-        if (!EventSystem.current.IsPointerOverGameObject() && EventSystem.current.currentSelectedGameObject == null) {
+        if (IsBusy || !GUIManager.Current.IsBusy) {
+            if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
+                IsBusy = true;
+            if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
+                IsBusy = false;
+
             float scroll = Input.GetAxis("Mouse ScrollWheel");
             _desiredDistance -= scroll * _zoomIncrement;
             _desiredDistance = Mathf.Clamp(_desiredDistance, _minDistance, _maxDistance);

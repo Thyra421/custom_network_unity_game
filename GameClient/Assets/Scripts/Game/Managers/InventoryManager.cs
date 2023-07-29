@@ -5,7 +5,7 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Current { get; private set; }
-    public InventorySlot[] Slots { get; } = new InventorySlot[SharedConfig.Current.InventorySpace];
+    public InventorySlot[] Slots { get; private set; }
 
     public delegate void OnChangedHandler(Item item, int amount);
     public event OnChangedHandler OnChanged;
@@ -59,6 +59,7 @@ public class InventoryManager : MonoBehaviour
             Current = this;
         else
             Destroy(gameObject);
+        Slots = new InventorySlot[SharedConfig.Current.InventorySpace];
         for (int i = 0; i < Slots.Length; i++)
             Slots[i] = new InventorySlot();
         MessageHandler.Current.OnMessageInventoryAddEvent += OnMessageInventoryAdd;

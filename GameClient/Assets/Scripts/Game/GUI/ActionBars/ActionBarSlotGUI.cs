@@ -1,7 +1,6 @@
-using UnityEngine.EventSystems;
 using UnityEngine;
 
-public class ActionBarSlotGUI : MonoBehaviour, IDropHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class ActionBarSlotGUI : MonoBehaviour, IDropAreaGUI, IDraggableGUI
 {
     [SerializeField]
     private ItemGUI _itemGUI;
@@ -30,24 +29,28 @@ public class ActionBarSlotGUI : MonoBehaviour, IDropHandler, IBeginDragHandler, 
         _itemGUI.Initialize(item, amount);
     }
 
-    public void OnBeginDrag(PointerEventData eventData) {
-        if (_itemGUI.Item != null)
-            DragAndDropGUIManager.Current.StartDrag(_itemGUI.Item.Icon);
-    }
-
-    public void OnDrag(PointerEventData eventData) {
-    }
-
-    public void OnEndDrag(PointerEventData eventData) {
-        DragAndDropGUIManager.Current.StopDrag();
-        if (!eventData.pointerCurrentRaycast.isValid)
-            Clear();
-    }
-
-    public void OnDrop(PointerEventData eventData) {
-        if (eventData.pointerDrag.TryGetComponent(out ActionBarSlotGUI actionBarSlotGUI) && actionBarSlotGUI._itemGUI.Item != null)
+    public void OnDrop(IDraggableGUI draggable) {
+        if (draggable is ActionBarSlotGUI actionBarSlotGUI)
             Swap(actionBarSlotGUI);
-        if (eventData.pointerDrag.TryGetComponent(out InventorySlotGUI inventorySlotGUI) && inventorySlotGUI.Slot.Item != null)
+        else if (draggable is InventorySlotGUI inventorySlotGUI)
             Initialize(inventorySlotGUI.Slot.Item, inventorySlotGUI.Slot.Amount);
     }
+
+    public void Use() {
+        if (_itemGUI.Item == null)
+            return;
+
+        if (_itemGUI.Item is Weapon)
+            TCPClient.Send(new MessageEquip(_itemGUI.Item.name));
+        if (_itemGUI.Item is UsableItem)
+            TCPClient.Send(new MessageUseItem(_itemGUI.Item.name, Vector3Data.Zero));
+    }
+
+    public void Discard() {
+        Clear();
+    }
+
+    public Sprite DragIndicator => _itemGUI.Item.Icon;
+
+    public bool IsReadyToBeDragged => _itemGUI.Item != null;
 }

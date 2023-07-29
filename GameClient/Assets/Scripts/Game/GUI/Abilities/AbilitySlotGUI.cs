@@ -5,6 +5,8 @@ using UnityEngine.UI;
 public class AbilitySlotGUI : MonoBehaviour, ITooltipHandlerGUI
 {
     [SerializeField]
+    private RectTransform _transform;
+    [SerializeField]
     private Button _button;
     [SerializeField]
     private Image _image;
@@ -34,12 +36,19 @@ public class AbilitySlotGUI : MonoBehaviour, ITooltipHandlerGUI
 
     public void Initialize(AbilitySlot slot) {
         _slot = slot;
-        _button.onClick.AddListener(slot.Use);
         _slot.OnChanged += OnChanged;
         _slot.OnUpdated += OnUpdated;
     }
 
-    public void BuildTooltip(RectTransform parent) {
-        _slot.CurrentAbility?.BuildTooltip(parent);
+    public void Use() {
+        _slot.Use();
     }
+
+    public void BuildTooltip(RectTransform parent) {
+        _slot.CurrentAbility.BuildTooltip(parent);
+    }
+
+    public bool IsTooltipReady => _slot?.CurrentAbility != null;
+
+    public RectTransform RectTransform => _transform;
 }
