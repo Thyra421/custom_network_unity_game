@@ -1,11 +1,15 @@
+using TMPro;
 using UnityEngine;
 
-public abstract class Alteration : ScriptableObject, IDisplayable
+public abstract class Alteration : ScriptableObject, IDisplayable, ITooltipHandler
 {
     [SerializeField]
     private string _displayName;
     [SerializeField]
     private Sprite _icon;
+    [TextArea(1, 5)]
+    [SerializeField]
+    private string _description;
     [SerializeField]
     private bool _stackable;
     /// <summary>
@@ -28,4 +32,9 @@ public abstract class Alteration : ScriptableObject, IDisplayable
     public bool PersistsAferDeath => _persistsAferDeath;
 
     public bool IsPermanent => _baseDurationInSeconds < 0;
+
+    public void BuildTooltip(RectTransform parent) {
+        TooltipBuilder.Current.BuildText(parent, _displayName, FontStyles.Bold);
+        TooltipBuilder.Current.BuildText(parent, _description, Color.green);
+    }
 }

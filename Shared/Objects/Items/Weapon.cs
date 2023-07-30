@@ -12,6 +12,6 @@ public class Weapon : Item
         base.BuildTooltip(parent);
 
         foreach (Ability ability in _abilities)
-            TooltipBuilder.Current.BuildText(parent, ability.DisplayName);
+            ability.BuildTooltip(parent);
     }
 }

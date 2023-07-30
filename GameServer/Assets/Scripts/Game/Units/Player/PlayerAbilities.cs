@@ -31,6 +31,7 @@ public class PlayerAbilities : MonoBehaviour
         GameObject obj = Instantiate(directAOEAbility.Prefab, targetPosition, Quaternion.identity);
         DirectAbilityHitbox attackHitbox = obj.AddComponent<DirectAbilityHitbox>();
         attackHitbox.Initialize(_player, directAOEAbility.Hit, directAOEAbility.DurationInSeconds);
+        _player.Room.VFXsManager.CreateVFX(obj, directAOEAbility.Prefab.name, 0);
     }
 
     private IEnumerator PersistentAOE(PersistentAOEAbility persistentAOEAbility, Vector3 targetPosition) {
@@ -39,6 +40,7 @@ public class PlayerAbilities : MonoBehaviour
         GameObject obj = Instantiate(persistentAOEAbility.Prefab, targetPosition, Quaternion.identity);
         PersistentAbilityHitbox attackHitbox = obj.AddComponent<PersistentAbilityHitbox>();
         attackHitbox.Initialize(_player, persistentAOEAbility.Alteration, persistentAOEAbility.DurationInSeconds);
+        _player.Room.VFXsManager.CreateVFX(obj, persistentAOEAbility.Prefab.name, 0);
     }
 
     public void UseAbility(Ability ability, Vector3 aimTarget) {

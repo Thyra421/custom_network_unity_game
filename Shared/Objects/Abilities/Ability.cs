@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Ability/Ability")]
@@ -30,7 +31,7 @@ public class Ability : ScriptableObject, IDisplayable, IRechargeable, IUsable, I
     public string Description => _description;
 
     public virtual void BuildTooltip(RectTransform parent) {
-        TooltipBuilder.Current.BuildText(parent, _displayName);
+        TooltipBuilder.Current.BuildText(parent, _displayName, FontStyles.Bold);
         TooltipBuilder.Current.BuildText(parent, $"{_cooldownInSeconds} seconds cooldown");
         TooltipBuilder.Current.BuildText(parent, $"On use: {_description}", Color.green);
     }

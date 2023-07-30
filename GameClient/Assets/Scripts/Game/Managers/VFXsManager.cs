@@ -7,11 +7,6 @@ public class VFXsManager : MonoBehaviour
 
     public static VFXsManager Current { get; private set; }
 
-    public delegate void OnAddedVFXHandler(VFX VFX);
-    public delegate void OnRemovedVFXHandler(VFX VFX);
-    public event OnAddedVFXHandler OnAddedVFX;
-    public event OnRemovedVFXHandler OnRemovedVFX;
-
     private VFX FindVFX(string id) => _VFXs.Find((VFX v) => v.Id == id);
 
     private void CreateVFX(VFXData data) {
@@ -20,12 +15,10 @@ public class VFXsManager : MonoBehaviour
         VFX newVFX = newObject.AddComponent<VFX>();
         newVFX.Initialize(data.id);
         _VFXs.Add(newVFX);
-        OnAddedVFX?.Invoke(newVFX);
     }
 
     private void RemoveVFX(string id) {
         VFX VFX = FindVFX(id);
-        OnRemovedVFX?.Invoke(VFX);
         _VFXs.Remove(VFX);
         Destroy(VFX.gameObject);
     }
