@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -24,6 +25,14 @@ public class PlayerAbilities : MonoBehaviour
         attackHitbox.Initialize(_player, hit, duration);
     }
 
+    private IEnumerator AOE(AbilityHit hit, Vector3 targetPosition, GameObject prefab, float durationInSeconds, float delayInSeconds) {
+        yield return new WaitForSeconds(delayInSeconds);
+
+        GameObject obj = Instantiate(prefab, targetPosition, Quaternion.identity);
+        AttackHitbox attackHitbox = obj.AddComponent<AttackHitbox>();
+        attackHitbox.Initialize(_player, hit, durationInSeconds);
+    }
+
     public void UseAbility(Ability ability, Vector3 aimTarget) {
         // is allowed to use this ability?
         if ((_weapon == null || !_weapon.Abilities.Any((Ability a) => a == ability)) && ability != _extraAbility) {
@@ -43,6 +52,8 @@ public class PlayerAbilities : MonoBehaviour
                 Melee(meleeAbility.Hit, meleeAbility.Duration);
             if (ability is AimedAbility aimedAbility)
                 Aimed(aimedAbility.Hit, aimTarget, aimedAbility.Prefab, aimedAbility.Speed, aimedAbility.Distance);
+            if (ability is AOEAbility AOEAbility)
+                StartCoroutine(AOE(AOEAbility.Hit, aimTarget, AOEAbility.Prefab, AOEAbility.DurationInSeconds, AOEAbility.DelayInSeconds));
         }
 
         _player.Client.Tcp.Send(new MessageUsedAbility(ability.name));

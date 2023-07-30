@@ -17,7 +17,12 @@ public class AbilitiesGUIManager : MonoBehaviour
     private AbilitySlotGUI _ability5;
 
     private void OnChangedWeapon(Weapon weapon) {
-        _weaponImage.sprite = weapon.Icon;
+        if (weapon == null) {
+            _weaponImage.sprite = weapon.Icon;
+            _weaponImage.gameObject.SetActive(true);
+        }
+        else
+            _weaponImage.gameObject.SetActive(false);
     }
 
     private void Awake() {

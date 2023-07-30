@@ -22,3 +22,4 @@ MonoBehaviour:
       _typeName: Alteration, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       _parameterName: alteration
   _animationName: Attack
+  _description: Increase all your stats.

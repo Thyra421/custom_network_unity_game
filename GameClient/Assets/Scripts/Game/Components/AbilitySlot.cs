@@ -24,13 +24,21 @@ public class AbilitySlot
         if (CurrentAbility is OffensiveAbility) {
             if (CurrentAbility is MeleeAbility)
                 TCPClient.Send(new MessageUseAbility(CurrentAbility.name, Vector3Data.Zero));
-            if (CurrentAbility is AimedAbility) {
+            else if (CurrentAbility is AimedAbility) {
                 CameraController cam = CameraController.Current;
                 if (cam.IsAiming) {
                     TCPClient.Send(new MessageUseAbility(CurrentAbility.name, cam.AimDirection));
                     cam.StopAim();
                 } else
                     cam.StartAim();
+            }
+            else if (CurrentAbility is AOEAbility) {
+                GroundTargetManager targ = GroundTargetManager.Current;
+                if (targ.HasTarget) {
+                    TCPClient.Send(new MessageUseAbility(CurrentAbility.name, targ.TargetPosition));
+                    targ.DestroyGroundTarget();
+                } else
+                    targ.CreateGroundTarget();
             }
         } else
             TCPClient.Send(new MessageUseAbility(CurrentAbility.name, Vector3Data.Zero));

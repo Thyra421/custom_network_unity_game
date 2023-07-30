@@ -13,6 +13,9 @@ public class Ability : ScriptableObject, IDisplayable, IRechargeable, IUsable, I
     private DirectEffect[] _effects;
     [SerializeField]
     private string _animationName;
+    [TextArea(1, 5)]
+    [SerializeField]
+    private string _description;
 
     public string DisplayName => _displayName;
 
@@ -24,10 +27,11 @@ public class Ability : ScriptableObject, IDisplayable, IRechargeable, IUsable, I
 
     public string AnimationName => _animationName;
 
+    public string Description => _description;
+
     public virtual void BuildTooltip(RectTransform parent) {
         TooltipBuilder.Current.BuildText(parent, _displayName);
         TooltipBuilder.Current.BuildText(parent, $"{_cooldown} seconds cooldown");
-        foreach (DirectEffect effect in _effects)
-            TooltipBuilder.Current.BuildText(parent, effect.MethodName);
+        TooltipBuilder.Current.BuildText(parent, $"On use: {_description}", Color.green);
     }
 }

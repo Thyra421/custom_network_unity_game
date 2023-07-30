@@ -22,6 +22,7 @@ MonoBehaviour:
       _typeName: Alteration, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       _parameterName: alteration
   _animationName: Attack
+  _description: Swing your sword to deal moderate damage.
   _hit:
     _pierce: 1
     _effects:
