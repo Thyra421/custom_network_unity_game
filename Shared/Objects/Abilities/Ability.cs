@@ -6,7 +6,7 @@ public class Ability : ScriptableObject, IDisplayable, IRechargeable, IUsable, I
     [SerializeField]
     private string _displayName;
     [SerializeField]
-    private float _cooldown;
+    private float _cooldownInSeconds;
     [SerializeField]
     private Sprite _icon;
     [SerializeField]
@@ -23,7 +23,7 @@ public class Ability : ScriptableObject, IDisplayable, IRechargeable, IUsable, I
 
     public DirectEffect[] Effects => _effects;
 
-    public float Cooldown => _cooldown;
+    public float CooldownInSeconds => _cooldownInSeconds;
 
     public string AnimationName => _animationName;
 
@@ -31,7 +31,7 @@ public class Ability : ScriptableObject, IDisplayable, IRechargeable, IUsable, I
 
     public virtual void BuildTooltip(RectTransform parent) {
         TooltipBuilder.Current.BuildText(parent, _displayName);
-        TooltipBuilder.Current.BuildText(parent, $"{_cooldown} seconds cooldown");
+        TooltipBuilder.Current.BuildText(parent, $"{_cooldownInSeconds} seconds cooldown");
         TooltipBuilder.Current.BuildText(parent, $"On use: {_description}", Color.green);
     }
 }

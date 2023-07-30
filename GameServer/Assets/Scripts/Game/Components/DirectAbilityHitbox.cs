@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-class AttackHitbox : MonoBehaviour
+class DirectAbilityHitbox : MonoBehaviour
 {
     private readonly List<Collider> _collidersTouched = new List<Collider>();
     private float _duration;

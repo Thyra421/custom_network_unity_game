@@ -6,9 +6,9 @@ public class PeriodicAlteration : Alteration, IUsable
     [SerializeField]
     private DirectEffect[] _effects;
     [SerializeField]
-    private float _intervalDuration;
+    private float _intervalDurationInSeconds;
 
     public DirectEffect[] Effects => _effects;
 
-    public float IntervalDuration => _intervalDuration;
+    public float IntervalDurationInSeconds => _intervalDurationInSeconds;
 }

@@ -1,23 +1,26 @@
+using UnityEngine;
+
 public class PeriodicAlterationController : AlterationController
 {
-    private float _nextTick;
+    private float _tickTimer;
 
-    private bool TickReady => _remainingDuration <= _nextTick;
+    private bool TickReady => _tickTimer <= 0;
 
     public PeriodicAlterationController(Player player, Player owner, PeriodicAlteration alteration) : base(player, owner, alteration) {
-        _nextTick = alteration.BaseDuration - alteration.IntervalDuration;
+        _tickTimer = alteration.IntervalDurationInSeconds;
     }
 
     public override void Refresh() {
         base.Refresh();
-        _nextTick = Alteration.BaseDuration - (Alteration as PeriodicAlteration).IntervalDuration;
+        _tickTimer = (Alteration as PeriodicAlteration).IntervalDurationInSeconds;
     }
 
     public override void Update() {
         base.Update();
+        _tickTimer -= Time.deltaTime;
         if (TickReady) {
             new PlayerDirectEffectController(Player, Owner).Use(Alteration as PeriodicAlteration);
-            _nextTick -= (Alteration as PeriodicAlteration).IntervalDuration;
+            _tickTimer = (Alteration as PeriodicAlteration).IntervalDurationInSeconds;
         }
     }
 }

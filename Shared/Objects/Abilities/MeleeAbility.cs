@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(menuName = "Ability/Melee")]
-public class MeleeAbility : OffensiveAbility
+public class MeleeAbility : DirectAbility
 {
     [SerializeField]
-    private float _duration;
+    private float _durationInSeconds;
 
-    public float Duration => _duration;
+    public float DurationInSeconds => _durationInSeconds;
 
     public override void BuildTooltip(RectTransform parent) {
         base.BuildTooltip(parent);

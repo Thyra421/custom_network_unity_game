@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class OffensiveAbility : Ability
+public abstract class DirectAbility : Ability
 {
     [SerializeField]
     private AbilityHit _hit;

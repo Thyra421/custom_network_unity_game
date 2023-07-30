@@ -17,10 +17,14 @@ public class AlterationController
     }
 
     public void Update() {
+        if (Alteration.IsPermanent)
+            return;
         RemainingDuration -= Time.deltaTime;
     }
 
     public void Refresh(float remainingDuration) {
+        if (Alteration.IsPermanent)
+            return;
         RemainingDuration = remainingDuration;
     }
 

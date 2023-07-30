@@ -3,14 +3,16 @@
 public class Cooldown
 {
     public IRechargeable Element { get; private set; }
-    public float RemainingCooldown { get; private set; }
+    private float _remainingCooldownInSeconds;
 
     public Cooldown(IRechargeable element) {
         Element = element;
-        RemainingCooldown = element.Cooldown;
+        _remainingCooldownInSeconds = element.CooldownInSeconds;
     }
 
     public void Recharge() {
-        RemainingCooldown -= Time.deltaTime;
+        _remainingCooldownInSeconds -= Time.deltaTime;
     }
+
+    public bool IsReady => _remainingCooldownInSeconds <= 0;
 }

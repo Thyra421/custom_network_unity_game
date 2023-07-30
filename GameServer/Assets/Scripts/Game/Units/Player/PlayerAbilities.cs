@@ -11,26 +11,34 @@ public class PlayerAbilities : MonoBehaviour
     private Weapon _weapon;
     private Ability _extraAbility;
 
-    private void Aimed(AbilityHit hit, Vector3 aimTarget, GameObject prefab, float speed, float distance) {
-        GameObject obj = Instantiate(prefab, _player.transform.position + Vector3.up, Quaternion.identity);
-        AttackHitbox attackHitbox = obj.AddComponent<AttackHitbox>();
+    private void Aimed(AimedAbility aimedAbility, Vector3 aimTarget) {
+        GameObject obj = Instantiate(aimedAbility.Prefab, _player.transform.position + Vector3.up, Quaternion.identity);
+        DirectAbilityHitbox attackHitbox = obj.AddComponent<DirectAbilityHitbox>();
         Projectile projectile = obj.AddComponent<Projectile>();
-        attackHitbox.Initialize(_player, hit, -1);
-        projectile.Initialize(speed, distance, aimTarget);
-        _player.Room.VFXsManager.CreateVFX(obj, prefab.name, speed);
+        attackHitbox.Initialize(_player, aimedAbility.Hit, -1);
+        projectile.Initialize(aimedAbility.Speed, aimedAbility.Distance, aimTarget);
+        _player.Room.VFXsManager.CreateVFX(obj, aimedAbility.Prefab.name, aimedAbility.Speed);
     }
 
-    private void Melee(AbilityHit hit, float duration) {
-        AttackHitbox attackHitbox = Instantiate(_player.Abilities.MeleePrefab, _player.transform).GetComponent<AttackHitbox>();
-        attackHitbox.Initialize(_player, hit, duration);
+    private void Melee(MeleeAbility meleeAbility) {
+        DirectAbilityHitbox attackHitbox = Instantiate(_player.Abilities.MeleePrefab, _player.transform).GetComponent<DirectAbilityHitbox>();
+        attackHitbox.Initialize(_player, meleeAbility.Hit, meleeAbility.DurationInSeconds);
     }
 
-    private IEnumerator AOE(AbilityHit hit, Vector3 targetPosition, GameObject prefab, float durationInSeconds, float delayInSeconds) {
-        yield return new WaitForSeconds(delayInSeconds);
+    private IEnumerator DirectAOE(DirectAOEAbility directAOEAbility, Vector3 targetPosition) {
+        yield return new WaitForSeconds(directAOEAbility.DelayInSeconds);
 
-        GameObject obj = Instantiate(prefab, targetPosition, Quaternion.identity);
-        AttackHitbox attackHitbox = obj.AddComponent<AttackHitbox>();
-        attackHitbox.Initialize(_player, hit, durationInSeconds);
+        GameObject obj = Instantiate(directAOEAbility.Prefab, targetPosition, Quaternion.identity);
+        DirectAbilityHitbox attackHitbox = obj.AddComponent<DirectAbilityHitbox>();
+        attackHitbox.Initialize(_player, directAOEAbility.Hit, directAOEAbility.DurationInSeconds);
+    }
+
+    private IEnumerator PersistentAOE(PersistentAOEAbility persistentAOEAbility, Vector3 targetPosition) {
+        yield return new WaitForSeconds(persistentAOEAbility.DelayInSeconds);
+
+        GameObject obj = Instantiate(persistentAOEAbility.Prefab, targetPosition, Quaternion.identity);
+        PersistentAbilityHitbox attackHitbox = obj.AddComponent<PersistentAbilityHitbox>();
+        attackHitbox.Initialize(_player, persistentAOEAbility.Alteration, persistentAOEAbility.DurationInSeconds);
     }
 
     public void UseAbility(Ability ability, Vector3 aimTarget) {
@@ -47,14 +55,15 @@ public class PlayerAbilities : MonoBehaviour
 
         new PlayerDirectEffectController(_player, _player).Use(ability);
 
-        if (ability is OffensiveAbility offensiveAbility) {
-            if (ability is MeleeAbility meleeAbility)
-                Melee(meleeAbility.Hit, meleeAbility.Duration);
-            if (ability is AimedAbility aimedAbility)
-                Aimed(aimedAbility.Hit, aimTarget, aimedAbility.Prefab, aimedAbility.Speed, aimedAbility.Distance);
-            if (ability is AOEAbility AOEAbility)
-                StartCoroutine(AOE(AOEAbility.Hit, aimTarget, AOEAbility.Prefab, AOEAbility.DurationInSeconds, AOEAbility.DelayInSeconds));
-        }
+        if (ability is DirectAbility directAbility) {
+            if (directAbility is MeleeAbility meleeAbility)
+                Melee(meleeAbility);
+            else if (directAbility is AimedAbility aimedAbility)
+                Aimed(aimedAbility, aimTarget);
+            else if (directAbility is DirectAOEAbility directAOEAbility)
+                StartCoroutine(DirectAOE(directAOEAbility, aimTarget));
+        } else if (ability is PersistentAOEAbility persistentAOEAbility)
+            StartCoroutine(PersistentAOE(persistentAOEAbility, aimTarget));
 
         _player.Client.Tcp.Send(new MessageUsedAbility(ability.name));
         _player.Room.PlayersManager.BroadcastTCP(new MessageTriggerAnimation(_player.Id, ability.AnimationName));

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.UI.GridLayoutGroup;
 
 public class PlayerAlterations : MonoBehaviour
 {
@@ -57,6 +56,13 @@ public class PlayerAlterations : MonoBehaviour
         }
 
         expiredAlterationControllers.ForEach((AlterationController ac) => Remove(ac));
+    }
+
+    public void Remove(Alteration alteration, Player owner) {
+        AlterationController alterationController = Find(alteration, owner);
+
+        if (alterationController != null)
+            Remove(alterationController);
     }
 
     public void Apply(Alteration alteration, Player owner) {

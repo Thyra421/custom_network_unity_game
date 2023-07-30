@@ -1,8 +1,7 @@
-﻿using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(menuName="Ability/Aimed")]
-public class AimedAbility : OffensiveAbility
+public class AimedAbility : DirectAbility
 {
     [SerializeField]
     private GameObject _prefab;

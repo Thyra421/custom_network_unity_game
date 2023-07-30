@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Swing
   m_EditorClassIdentifier: 
   _displayName: Swing
-  _cooldown: 1
+  _cooldownInSeconds: 3
   _icon: {fileID: 21300000, guid: 3a88d46ed00b9214a8cc55ba6e67ab09, type: 3}
   _effects:
   - _methodName: ApplyAlteration
@@ -35,4 +35,4 @@ MonoBehaviour:
         _typeName: DamageType, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
           PublicKeyToken=null
         _parameterName: damageType
-  _duration: 0.5
+  _durationInSeconds: 0.5

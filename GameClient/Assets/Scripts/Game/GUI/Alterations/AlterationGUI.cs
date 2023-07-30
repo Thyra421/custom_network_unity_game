@@ -15,6 +15,7 @@ public class AlterationGUI : MonoBehaviour
         AlterationController = alterationController;
         _image.sprite = alterationController.Alteration.Icon;
         _timerText.text = alterationController.RemainingDuration.ToString();
+        _timerText.gameObject.SetActive(!alterationController.Alteration.IsPermanent);
         AlterationController.OnRemainingDurationChanged += OnRemainingDurationChanged;
     }
 

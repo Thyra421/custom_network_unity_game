@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-[CreateAssetMenu(menuName = "Ability/AOE")]
-public class AOEAbility : OffensiveAbility
+[CreateAssetMenu(menuName = "Ability/AOE/Persistent")]
+public class PersistentAOEAbility : Ability
 {
+    [SerializeField]
+    private Alteration _alteration;
     [SerializeField]
     private GameObject _prefab;
     [SerializeField]
@@ -15,4 +17,6 @@ public class AOEAbility : OffensiveAbility
     public float DelayInSeconds => _delayInSeconds;
 
     public float DurationInSeconds => _durationInSeconds;
+
+    public Alteration Alteration => _alteration;
 }

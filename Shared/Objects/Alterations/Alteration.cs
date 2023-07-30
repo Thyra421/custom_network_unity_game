@@ -13,7 +13,7 @@ public abstract class Alteration : ScriptableObject, IDisplayable
     /// </summary>
     [Tooltip("Set to -1 if permanent.")]
     [SerializeField]
-    private float _baseDuration;
+    private float _baseDurationInSeconds;
     [SerializeField]
     private bool _persistsAferDeath;
 
@@ -23,7 +23,9 @@ public abstract class Alteration : ScriptableObject, IDisplayable
 
     public bool Stackable => _stackable;
 
-    public float BaseDuration => _baseDuration;
+    public float BaseDurationInSeconds => _baseDurationInSeconds;
 
     public bool PersistsAferDeath => _persistsAferDeath;
+
+    public bool IsPermanent => _baseDurationInSeconds < 0;
 }

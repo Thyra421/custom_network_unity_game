@@ -10,17 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ec37ebadcb602c4f8e8ec9fb19437e6, type: 3}
-  m_Name: HealOverTime
+  m_Name: Blizzard
   m_EditorClassIdentifier: 
-  _displayName: Heal over time
-  _icon: {fileID: 21300000, guid: 2e350bcef09f70943ba03de78d8c063a, type: 3}
+  _displayName: Blizzard
+  _icon: {fileID: 21300000, guid: 4184495d79c523148bd19006e6e88b2d, type: 3}
   _stackable: 0
-  _baseDurationInSeconds: 12
+  _baseDurationInSeconds: -1
   _persistsAferDeath: 0
   _effects:
-  - _methodName: RestoreHealth
+  - _methodName: DealDamage
     _parameters:
-    - _parameterValue: 5
+    - _parameterValue: 3
       _typeName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
       _parameterName: amount
-  _intervalDurationInSeconds: 4
+    - _parameterValue: Magic
+      _typeName: DamageType, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _parameterName: damageType
+  _intervalDurationInSeconds: 1

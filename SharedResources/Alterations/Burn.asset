@@ -15,7 +15,7 @@ MonoBehaviour:
   _displayName: Burn
   _icon: {fileID: 21300000, guid: 9725fb87facc42a4984598500f76e0fb, type: 3}
   _stackable: 0
-  _baseDuration: 12
+  _baseDurationInSeconds: 12
   _persistsAferDeath: 0
   _effects:
   - _methodName: DealDamage
@@ -26,4 +26,4 @@ MonoBehaviour:
     - _parameterValue: Physical
       _typeName: DamageType, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       _parameterName: damageType
-  _intervalDuration: 3
+  _intervalDurationInSeconds: 3
