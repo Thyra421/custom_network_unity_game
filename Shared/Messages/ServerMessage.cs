@@ -47,22 +47,6 @@ public struct MessagePlayersMoved
     }
 }
 
-public enum CharacterType
-{
-    Player, NPC
-}
-
-public struct CharacterData
-{
-    public string id;
-    public CharacterType type;
-
-    public CharacterData(string id, CharacterType type) {
-        this.id = id;
-        this.type = type;
-    }
-}
-
 public struct MessageHealthChanged
 {
     public CharacterData character;
@@ -89,11 +73,11 @@ public struct MessageEquiped
 
 public struct MessageTriggerAnimation
 {
-    public string id;
+    public CharacterData character;
     public string animationName;
 
-    public MessageTriggerAnimation(string id, string animationName) {
-        this.id = id;
+    public MessageTriggerAnimation(CharacterData character, string animationName) {
+        this.character = character;
         this.animationName = animationName;
     }
 }
@@ -133,12 +117,12 @@ public struct MessageRemoveAlteration
 
 public struct MessageCast
 {
-    public string id;
+    public CharacterData character;
     public string activityName;
     public float castTimeInSeconds;
 
-    public MessageCast(string id, string activityName, float castTimeInSeconds) {
-        this.id = id;
+    public MessageCast(CharacterData character, string activityName, float castTimeInSeconds) {
+        this.character = character;
         this.castTimeInSeconds = castTimeInSeconds;
         this.activityName = activityName;
     }
@@ -146,13 +130,13 @@ public struct MessageCast
 
 public struct MessageChannel
 {
-    public string id;
+    public CharacterData character;
     public float intervalTimeInSeconds;
     public int ticks;
     public string activityName;
 
-    public MessageChannel(string id, string activityName, int ticks, float intervalTimeInSeconds) {
-        this.id = id;
+    public MessageChannel(CharacterData character, string activityName, int ticks, float intervalTimeInSeconds) {
+        this.character = character;
         this.activityName = activityName;
         this.ticks = ticks;
         this.intervalTimeInSeconds = intervalTimeInSeconds;
@@ -161,10 +145,11 @@ public struct MessageChannel
 
 public struct MessageStopActivity
 {
-    public string id;
+    public CharacterData character;
 
-    public MessageStopActivity(string id) {
-        this.id = id;
+
+    public MessageStopActivity(CharacterData character) {
+        this.character = character;
     }
 }
 

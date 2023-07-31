@@ -49,7 +49,7 @@ public class PlayerActivity : MonoBehaviour
         _currentActivity = activity;
         _remainingTicks = 1;
         _currentActivityTimeInSeconds = castTimeInSeconds;
-        _player.Room.PlayersManager.BroadcastTCP(new MessageCast(_player.Id, activityName, castTimeInSeconds));
+        _player.Room.PlayersManager.BroadcastTCP(new MessageCast(_player.CharacterData, activityName, castTimeInSeconds));
     }
 
     public void Channel(Action activity, string activityName, int ticks, float intervalTimeInSeconds) {
@@ -66,11 +66,11 @@ public class PlayerActivity : MonoBehaviour
         _currentActivity = activity;
         _remainingTicks = ticks;
         _currentActivityTimeInSeconds = intervalTimeInSeconds;
-        _player.Room.PlayersManager.BroadcastTCP(new MessageChannel(_player.Id, activityName, ticks, intervalTimeInSeconds));
+        _player.Room.PlayersManager.BroadcastTCP(new MessageChannel(_player.CharacterData, activityName, ticks, intervalTimeInSeconds));
     }
 
     public void Stop() {
         Clear();
-        _player.Room.PlayersManager.BroadcastTCP(new MessageStopActivity(_player.Id));
+        _player.Room.PlayersManager.BroadcastTCP(new MessageStopActivity(_player.CharacterData));
     }
 }

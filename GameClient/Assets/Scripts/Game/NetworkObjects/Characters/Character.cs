@@ -9,6 +9,7 @@ public abstract class Character : NetworkObject
     public CharacterHealth Health { get; private set; }
     public CharacterActivity Activity { get; private set; }
     public CharacterAlterations Alterations => _alterations;
+    public abstract CharacterAnimation CharacterAnimation { get; }
 
     protected virtual void Awake() {
         Health = new CharacterHealth();

@@ -3,6 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(NPCMovement))]
 public class NPC : Character
 {
+    public override CharacterAnimation CharacterAnimation => Animation;
     public NPCAnimation Animation { get; private set; }
     public NPCMovement Movement { get; private set; }
 

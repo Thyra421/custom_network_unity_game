@@ -1,13 +1,13 @@
 public struct AlterationData
 {
-    public string targetId;
-    public string ownerId;
+    public CharacterData target;
+    public CharacterData owner;
     public string alterationName;
     public float remainingDuration;
 
-    public AlterationData(string targetId, string ownerId, string alterationName, float remainingDuration) {
-        this.targetId = targetId;
-        this.ownerId = ownerId;
+    public AlterationData(CharacterData target, CharacterData owner, string alterationName, float remainingDuration) {
+        this.target = target;
+        this.owner = owner;
         this.alterationName = alterationName;
         this.remainingDuration = remainingDuration;
     }

@@ -7,7 +7,7 @@ public class AlterationController
     public Character Character { get; }
     public Character Owner { get; }
     public Alteration Alteration { get; }
-    public AlterationData Data => new AlterationData(Character.Id, Owner.Id, Alteration.name, _remainingDuration);
+    public AlterationData Data => new AlterationData(Character.CharacterData, Owner.CharacterData, Alteration.name, _remainingDuration);
     public bool IsExpired => _remainingDuration <= 0 && !Alteration.IsPermanent;
 
     public AlterationController(Character character, Character owner, Alteration alteration) {

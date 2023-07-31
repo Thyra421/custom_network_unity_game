@@ -10,6 +10,7 @@ public class LocalPlayer : Character
     private float _elapsedTime = 0f;
     private TransformData _lastTransform;
 
+    public override CharacterAnimation CharacterAnimation => _animation;
     public LocalPlayerAnimation Animation => _animation;
     public LocalPlayerMovement Movement => _movement;
 

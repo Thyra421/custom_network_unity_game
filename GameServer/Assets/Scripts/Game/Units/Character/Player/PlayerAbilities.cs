@@ -70,7 +70,7 @@ public class PlayerAbilities : MonoBehaviour
             StartCoroutine(PersistentAOE(persistentAOEAbility, aimTarget));
 
         _player.Client.TCP.Send(new MessageUsedAbility(ability.name));
-        _player.Room.PlayersManager.BroadcastTCP(new MessageTriggerAnimation(_player.Id, ability.AnimationName));
+        _player.Room.PlayersManager.BroadcastTCP(new MessageTriggerAnimation(_player.CharacterData, ability.AnimationName));
     }
 
     public void Equip(Weapon weapon) {

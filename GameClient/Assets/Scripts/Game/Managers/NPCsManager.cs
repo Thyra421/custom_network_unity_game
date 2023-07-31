@@ -14,8 +14,6 @@ public class NPCsManager : MonoBehaviour
     public event OnAddedNPCHandler OnAddedNPC;
     public event OnRemovedNPCHandler OnRemovedNPC;
 
-    private NPC FindNPC(string id) => _NPCs.Find((NPC n) => n.Id == id);
-
     private void CreateNPC(NPCData data) {
         Animal animal = Resources.Load<Animal>($"{SharedConfig.Current.NPCsPath}/{data.animalName}");
 
@@ -33,7 +31,7 @@ public class NPCsManager : MonoBehaviour
     }
 
     private void RemoveNPC(string id) {
-        NPC NPC = FindNPC(id);
+        NPC NPC = Find(id);
         OnRemovedNPC?.Invoke(NPC);
         _NPCs.Remove(NPC);
         Destroy(NPC.gameObject);
@@ -46,7 +44,7 @@ public class NPCsManager : MonoBehaviour
 
     private void OnMessageNPCsMoved(MessageNPCsMoved messageNPCsMoved) {
         foreach (NPCMovementData n in messageNPCsMoved.NPCs) {
-            NPC NPC = FindNPC(n.id);
+            NPC NPC = Find(n.id);
 
             if (NPC != null) {
                 NPC.Movement.SetMovement(n.transformData, n.movementSpeed);
@@ -65,12 +63,5 @@ public class NPCsManager : MonoBehaviour
         MessageHandler.Current.OnMessageNPCsMovedEvent += OnMessageNPCsMoved;
     }
 
-    public void OnMessageHealthChanged(MessageHealthChanged messageHealthChanged) {
-        NPC npc = FindNPC(messageHealthChanged.character.id);
-
-        if (npc != null) {
-            npc.Health.MaxHealth = messageHealthChanged.maxHealth;
-            npc.Health.CurrentHealth = messageHealthChanged.currentHealth;
-        }
-    }
+    public NPC Find(string id) => _NPCs.Find((NPC n) => n.Id == id);
 }
