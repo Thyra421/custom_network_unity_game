@@ -26,5 +26,6 @@ public class NPC : Character
         Initialize(room);
         Area = area;
         Movement.Initialize(this);
+        _alterations.Initialize(this);
     }
 }

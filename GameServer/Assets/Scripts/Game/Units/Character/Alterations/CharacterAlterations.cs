@@ -76,4 +76,8 @@ public class CharacterAlterations : MonoBehaviour
         else
             Add(alteration, owner);
     }
+
+    public void Initialize(Character character) {
+        _character = character;
+    }
 }

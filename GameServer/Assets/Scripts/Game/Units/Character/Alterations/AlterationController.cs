@@ -10,8 +10,8 @@ public class AlterationController
     public AlterationData Data => new AlterationData(Character.Id, Owner.Id, Alteration.name, _remainingDuration);
     public bool IsExpired => _remainingDuration <= 0 && !Alteration.IsPermanent;
 
-    public AlterationController(Character player, Character owner, Alteration alteration) {
-        Character = player;
+    public AlterationController(Character character, Character owner, Alteration alteration) {
+        Character = character;
         Owner = owner;
         Alteration = alteration;
         _remainingDuration = Alteration.BaseDurationInSeconds;
@@ -27,5 +27,5 @@ public class AlterationController
         if (Alteration.IsPermanent)
             return;
         _remainingDuration = Mathf.Clamp(_remainingDuration - Time.deltaTime, 0, Alteration.BaseDurationInSeconds);
-    }    
+    }
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2868418277408372615}
   - component: {fileID: 4166105059879136084}
   - component: {fileID: 8257957509114255943}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,7 +116,7 @@ GameObject:
   - component: {fileID: 1878232444699574948}
   - component: {fileID: 1049970951030799783}
   - component: {fileID: 7179709877790738983}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: Map3
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 3991037059134566179}
   - component: {fileID: 2342289230727691740}
   - component: {fileID: 8381751013834291335}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: Test2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -298,7 +298,7 @@ GameObject:
   - component: {fileID: 6061164359149311683}
   - component: {fileID: 3085384759776678079}
   - component: {fileID: 6743853263981228998}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: Map4
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -389,7 +389,7 @@ GameObject:
   - component: {fileID: 7501590348797131909}
   - component: {fileID: 8410951204170064804}
   - component: {fileID: 1869231510175812190}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: Map1
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -478,7 +478,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2360486282472451303}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: Map
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -518,7 +518,7 @@ GameObject:
   - component: {fileID: 1829459389097402761}
   - component: {fileID: 4674828005568757660}
   - component: {fileID: 5076050658030626290}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: Test1
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -609,7 +609,7 @@ GameObject:
   - component: {fileID: 761431473602668047}
   - component: {fileID: 8347813559619684868}
   - component: {fileID: 5272717441426212392}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: Map2
   m_TagString: Ground
   m_Icon: {fileID: 0}

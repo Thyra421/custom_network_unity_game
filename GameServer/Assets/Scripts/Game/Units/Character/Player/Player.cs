@@ -4,7 +4,6 @@
 [RequireComponent(typeof(PlayerAbilities))]
 [RequireComponent(typeof(PlayerActivity))]
 [RequireComponent(typeof(PlayerCooldowns))]
-[RequireComponent(typeof(CharacterAlterations))]
 public class Player : Character
 {
     [SerializeField]

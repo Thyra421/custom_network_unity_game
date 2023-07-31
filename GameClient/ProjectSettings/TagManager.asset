@@ -12,12 +12,12 @@ TagManager:
   - 
   - Water
   - UI
-  - Ground
-  - Node
   - Player
-  - 
-  - 
-  - 
+  - Projectile
+  - NPC
+  - Node
+  - Ground
+  - Obstacle
   - 
   - 
   - 
