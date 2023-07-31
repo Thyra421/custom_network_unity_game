@@ -29,8 +29,12 @@ public class AlterationsGUI : MonoBehaviour
         }
     }
 
-    private void Awake() {
+    private void Start() {
         _character.Alterations.OnAdded += OnAdded;
         _character.Alterations.OnRemoved += OnRemoved;
+    }
+
+    public void Initialize(Character character) {
+        _character = character;
     }
 }

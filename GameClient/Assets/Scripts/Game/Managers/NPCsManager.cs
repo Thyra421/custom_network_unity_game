@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class NPCsManager : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject _nameplatePrefab;
     private readonly List<NPC> _NPCs = new List<NPC>();
 
     public static NPCsManager Current { get; private set; }
@@ -16,9 +18,16 @@ public class NPCsManager : MonoBehaviour
 
     private void CreateNPC(NPCData data) {
         Animal animal = Resources.Load<Animal>($"{SharedConfig.Current.NPCsPath}/{data.animalName}");
-        GameObject newObject = Instantiate(animal.Prefab, data.transformData.position.ToVector3, Quaternion.Euler(data.transformData.rotation.ToVector3));
-        NPC newNPC = newObject.AddComponent<NPC>();
+
+        GameObject obj = Instantiate(animal.Prefab, data.transformData.position.ToVector3, Quaternion.Euler(data.transformData.rotation.ToVector3));
+        NPC newNPC = obj.AddComponent<NPC>();
         newNPC.Initialize(data.id);
+
+        GameObject nameplateObj = Instantiate(_nameplatePrefab, obj.transform);
+        nameplateObj.GetComponent<HealthBarGUI>().Initialize(newNPC);
+        nameplateObj.GetComponent<AlterationsGUI>().Initialize(newNPC);
+        nameplateObj.GetComponent<CastBarGUI>().Initialize(newNPC);
+
         _NPCs.Add(newNPC);
         OnAddedNPC?.Invoke(newNPC);
     }

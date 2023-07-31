@@ -29,7 +29,7 @@ public class CastBarGUI : MonoBehaviour
         }
     }
 
-    private void Awake() {
+    private void Start() {
         _character.Activity.OnCast += InitializeCast;
         _character.Activity.OnChannel += InitializeChannel;
         _character.Activity.OnStopActivity += Stop;
@@ -58,5 +58,9 @@ public class CastBarGUI : MonoBehaviour
     public void Stop() {
         _activityState = ActivityState.None;
         _timeSlider.gameObject.SetActive(false);
+    }
+
+    public void Initialize(Character character) {
+        _character = character;
     }
 }
