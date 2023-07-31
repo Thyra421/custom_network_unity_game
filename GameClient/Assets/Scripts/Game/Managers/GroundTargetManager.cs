@@ -3,8 +3,6 @@ using UnityEngine;
 public class GroundTargetManager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _groundTargetTemplate;
-    [SerializeField]
     private LayerMask _whatIsGround;
     private GameObject _currentTarget;
 
@@ -32,9 +30,9 @@ public class GroundTargetManager : MonoBehaviour
         Destroy(_currentTarget);
     }
 
-    public void CreateGroundTarget() {
+    public void CreateGroundTarget(GameObject prefab) {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, 100, _whatIsGround))
-            _currentTarget = Instantiate(_groundTargetTemplate, hit.point, Quaternion.identity);
+            _currentTarget = Instantiate(prefab, hit.point, Quaternion.identity);
     }    
 }

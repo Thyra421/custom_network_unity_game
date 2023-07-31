@@ -24,13 +24,13 @@ public class AbilitySlot
             cam.StartAim();
     }
 
-    private void AOE() {
+    private void AOE(GameObject prefab) {
         GroundTargetManager targ = GroundTargetManager.Current;
         if (targ.HasTarget) {
             TCPClient.Send(new MessageUseAbility(CurrentAbility.name, targ.TargetPosition));
             targ.DestroyGroundTarget();
         } else
-            targ.CreateGroundTarget();
+            targ.CreateGroundTarget(prefab);
     }
 
     public void Cooldown(float amount) {
@@ -49,10 +49,10 @@ public class AbilitySlot
                 Melee();
             else if (CurrentAbility is AimedAbility)
                 Aimed();
-            else if (CurrentAbility is DirectAOEAbility)
-                AOE();
-        } else if (CurrentAbility is PersistentAOEAbility)
-            AOE();
+            else if (CurrentAbility is DirectAOEAbility directAOEAbility)
+                AOE(directAOEAbility.Prefab);
+        } else if (CurrentAbility is PersistentAOEAbility persistentAOEAbility)
+            AOE(persistentAOEAbility.Prefab);
         else
             TCPClient.Send(new MessageUseAbility(CurrentAbility.name, Vector3Data.Zero));
     }

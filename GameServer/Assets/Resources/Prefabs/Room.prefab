@@ -78,6 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _room: {fileID: 1558508041055063865}
+  _playerPrefab: {fileID: 5084082204494938559, guid: b45595c11d2b97f44b6163dfb7ddca8b, type: 3}
 --- !u!114 &8808324417171987926
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -7,6 +7,8 @@ public class PlayersManager : MonoBehaviour
 {
     [SerializeField]
     private Room _room;
+    [SerializeField]
+    private GameObject _playerPrefab;
     private readonly List<Player> _players = new List<Player>();
     private float _elapsedTime = 0f;
 
@@ -66,7 +68,7 @@ public class PlayersManager : MonoBehaviour
     }
 
     public Player CreatePlayer(Client client) {
-        GameObject newGameObject = Instantiate(GameManager.Current.PlayerTemplate, transform);
+        GameObject newGameObject = Instantiate(_playerPrefab, transform);
         Player newPlayer = newGameObject.GetComponent<Player>();
         newGameObject.name = "Player " + newPlayer.Id;
         newPlayer.Initialize(_room, client);
