@@ -1,21 +1,21 @@
 ﻿using System.Linq;
 
-public class PlayerStatusEffectController : IStatusEffectController
+public class CharacterStatusEffectController : IStatusEffectController
 {
-    private readonly PlayerStatistics _statistics;
+    private readonly CharacterStatistics _statistics;
 
-    public PlayerStatusEffectController(PlayerStatistics statistics) {
+    public CharacterStatusEffectController(CharacterStatistics statistics) {
         _statistics = statistics;
     }
 
     public void Add(ContinuousAlteration alteration) {
         foreach (StatusEffect effect in alteration.Effects)
-            typeof(PlayerStatusEffectController).GetMethod(effect.MethodName).Invoke(this, effect.Parameters.Select((EffectParameter param) => param.ToObject).ToArray());
+            typeof(CharacterStatusEffectController).GetMethod(effect.MethodName).Invoke(this, effect.Parameters.Select((EffectParameter param) => param.ToObject).ToArray());
     }
 
     public void Remove(ContinuousAlteration alteration) {
         foreach (StatusEffect effect in alteration.Effects)
-            typeof(PlayerStatusEffectController).GetMethod($"Remove{effect.MethodName}").Invoke(this, effect.Parameters.Select((EffectParameter param) => param.ToObject).ToArray());
+            typeof(CharacterStatusEffectController).GetMethod($"Remove{effect.MethodName}").Invoke(this, effect.Parameters.Select((EffectParameter param) => param.ToObject).ToArray());
     }
 
     public void ModifyStatistic(StatisticType type, float value, bool percent) {

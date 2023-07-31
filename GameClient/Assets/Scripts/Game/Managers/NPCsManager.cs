@@ -35,8 +35,8 @@ public class NPCsManager : MonoBehaviour
             CreateNPC(n);
     }
 
-    private void OnMessageNPCMoved(MessageNPCMoved serverMessageNPCMoved) {
-        foreach (NPCMovementData n in serverMessageNPCMoved.NPCs) {
+    private void OnMessageNPCsMoved(MessageNPCsMoved messageNPCsMoved) {
+        foreach (NPCMovementData n in messageNPCsMoved.NPCs) {
             NPC NPC = FindNPC(n.id);
 
             if (NPC != null) {
@@ -53,6 +53,15 @@ public class NPCsManager : MonoBehaviour
             Destroy(gameObject);
 
         MessageHandler.Current.OnMessageSpawnNPCsEvent += OnMessageSpawnNPCs;
-        MessageHandler.Current.OnMessageNPCMovedEvent += OnMessageNPCMoved;
+        MessageHandler.Current.OnMessageNPCsMovedEvent += OnMessageNPCsMoved;
+    }
+
+    public void OnMessageHealthChanged(MessageHealthChanged messageHealthChanged) {
+        NPC npc = FindNPC(messageHealthChanged.character.id);
+
+        if (npc != null) {
+            npc.Health.MaxHealth = messageHealthChanged.maxHealth;
+            npc.Health.CurrentHealth = messageHealthChanged.currentHealth;
+        }
     }
 }

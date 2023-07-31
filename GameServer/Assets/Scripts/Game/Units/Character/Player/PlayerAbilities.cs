@@ -57,7 +57,7 @@ public class PlayerAbilities : MonoBehaviour
             return;
         }
 
-        new PlayerDirectEffectController(_player, _player).Use(ability);
+        new CharacterDirectEffectController(_player, _player).Use(ability);
 
         if (ability is DirectAbility directAbility) {
             if (directAbility is MeleeAbility meleeAbility)

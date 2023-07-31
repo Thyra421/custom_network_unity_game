@@ -24,21 +24,25 @@ public class PlayersManager : MonoBehaviour
         _elapsedTime += Time.deltaTime;
         if (_elapsedTime >= (1f / SharedConfig.Current.SyncFrequency)) {
             _elapsedTime = 0f;
+
             if (_players.Count < 2)
                 return;
+
             PlayerMovementData[] playerMovementDatas = FindAllMovementDatas((Player p) => p.UpdateTransformIfChanged());
+
             if (playerMovementDatas.Length > 0)
-                BroadcastUDP((Player player) => new MessagePlayerMoved(Array.FindAll(playerMovementDatas, (PlayerMovementData data) => data.id != player.Id).ToArray()), (MessagePlayerMoved message) => message.players.Length > 0);
+                BroadcastUDP((Player player) => new MessagePlayersMoved(Array.FindAll(playerMovementDatas, (PlayerMovementData data) => data.id != player.Id).ToArray()), (MessagePlayersMoved message) => message.players.Length > 0);
         }
     }
 
     private void BroadcastUDP<T>(CustomMessageHandler<T> customMessage, SendConditionHandler<T> condition) {
         foreach (Client client in Clients) {
             T message = customMessage(client.Player);
+
             if (condition(message))
                 client.UDP?.Send(message);
         }
-    }   
+    }
 
     private void Update() {
         SyncMovement();
@@ -65,7 +69,7 @@ public class PlayersManager : MonoBehaviour
         GameObject newGameObject = Instantiate(GameManager.Current.PlayerTemplate, transform);
         Player newPlayer = newGameObject.GetComponent<Player>();
         newGameObject.name = "Player " + newPlayer.Id;
-        newPlayer.Initialize(client, _room);
+        newPlayer.Initialize(_room, client);
         client.Player = newPlayer;
         _players.Add(newPlayer);
         BroadcastTCP(new MessageJoinedGame(newPlayer.Data), newPlayer);

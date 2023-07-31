@@ -37,8 +37,8 @@ public class PlayersManager : MonoBehaviour
             CreatePlayer(messageJoinedGame.player);
     }
 
-    private void OnMessagePlayerMoved(MessagePlayerMoved serverMessagePlayerMoved) {
-        foreach (PlayerMovementData pmd in serverMessagePlayerMoved.players) {
+    private void OnMessagePlayersMoved(MessagePlayersMoved messagePlayersMoved) {
+        foreach (PlayerMovementData pmd in messagePlayersMoved.players) {
             if (pmd.id == _myPlayer.Id)
                 continue;
 
@@ -51,28 +51,14 @@ public class PlayersManager : MonoBehaviour
         }
     }
 
-    private void OnMessageLeftGame(MessageLeftGame serverMessageLeftGame) {
-        if (serverMessageLeftGame.id == _myPlayer.Id)
+    private void OnMessageLeftGame(MessageLeftGame messageLeftGame) {
+        if (messageLeftGame.id == _myPlayer.Id)
             return;
 
-        RemotePlayer remotePlayer = FindPlayer(serverMessageLeftGame.id);
+        RemotePlayer remotePlayer = FindPlayer(messageLeftGame.id);
 
         if (remotePlayer != null)
             RemovePlayer(remotePlayer);
-    }
-
-    private void OnMessageHealthChanged(MessageHealthChanged messageHealthChanged) {
-        if (messageHealthChanged.id == _myPlayer.Id) {
-            _myPlayer.Statistics.MaxHealth = messageHealthChanged.maxHealth;
-            _myPlayer.Statistics.CurrentHealth = messageHealthChanged.currentHealth;
-        } else {
-            RemotePlayer remotePlayer = FindPlayer(messageHealthChanged.id);
-
-            if (remotePlayer != null) {
-                remotePlayer.Statistics.MaxHealth = messageHealthChanged.maxHealth;
-                remotePlayer.Statistics.CurrentHealth = messageHealthChanged.currentHealth;
-            }
-        }
     }
 
     private void OnMessageChannel(MessageChannel messageChannel) {
@@ -119,7 +105,27 @@ public class PlayersManager : MonoBehaviour
         }
     }
 
-    private void OnMessageTriggerAnimation(MessageTriggerAnimation messageTriggerAnimation) {
+    private void Awake() {
+        if (Current == null)
+            Current = this;
+        else
+            Destroy(gameObject);
+
+        MessageHandler.Current.OnMessageGameStateEvent += OnMessageGameState;
+        MessageHandler.Current.OnMessageJoinedGameEvent += OnMessageJoinedGame;
+        MessageHandler.Current.OnMessageLeftGameEvent += OnMessageLeftGame;
+        MessageHandler.Current.OnMessagePlayersMovedEvent += OnMessagePlayersMoved;
+        MessageHandler.Current.OnMessageChannelEvent += OnMessageChannel;
+        MessageHandler.Current.OnMessageCastEvent += OnMessageCast;
+        MessageHandler.Current.OnMessageStopActivityEvent += OnMessageStopActivity;
+        MessageHandler.Current.OnMessageEquipedEvent += OnMessageEquiped;
+        MessageHandler.Current.OnMessageTriggerAnimationEvent += OnMessageTriggerAnimation;
+        MessageHandler.Current.OnMessageAddAlterationEvent += OnMessageAddAlteration;
+        MessageHandler.Current.OnMessageRefreshAlterationEvent += OnMessageRefreshAlteration;
+        MessageHandler.Current.OnMessageRemoveAlterationEvent += OnMessageRemoveAlteration;
+    }
+
+    public void OnMessageTriggerAnimation(MessageTriggerAnimation messageTriggerAnimation) {
         if (messageTriggerAnimation.id == _myPlayer.Id)
             _myPlayer.Animation.SetTrigger(messageTriggerAnimation.animationName);
         else {
@@ -130,7 +136,7 @@ public class PlayersManager : MonoBehaviour
         }
     }
 
-    private void OnMessageAddAlteration(MessageAddAlteration messageAddAlteration) {
+    public void OnMessageAddAlteration(MessageAddAlteration messageAddAlteration) {
         Alteration alteration = Resources.Load<Alteration>($"{SharedConfig.Current.AlterationsPath}/{messageAddAlteration.alteration.alterationName}");
         AlterationController alterationController = new AlterationController(alteration, messageAddAlteration.alteration.remainingDuration, messageAddAlteration.alteration.ownerId);
 
@@ -144,7 +150,7 @@ public class PlayersManager : MonoBehaviour
         }
     }
 
-    private void OnMessageRefreshAlteration(MessageRefreshAlteration messageRefreshAlteration) {
+    public void OnMessageRefreshAlteration(MessageRefreshAlteration messageRefreshAlteration) {
         Alteration alteration = Resources.Load<Alteration>($"{SharedConfig.Current.AlterationsPath}/{messageRefreshAlteration.alteration.alterationName}");
 
         if (messageRefreshAlteration.alteration.targetId == _myPlayer.Id)
@@ -157,7 +163,7 @@ public class PlayersManager : MonoBehaviour
         }
     }
 
-    private void OnMessageRemoveAlteration(MessageRemoveAlteration messageRemoveAlteration) {
+    public void OnMessageRemoveAlteration(MessageRemoveAlteration messageRemoveAlteration) {
         Alteration alteration = Resources.Load<Alteration>($"{SharedConfig.Current.AlterationsPath}/{messageRemoveAlteration.alteration.alterationName}");
 
         if (messageRemoveAlteration.alteration.targetId == _myPlayer.Id)
@@ -170,24 +176,17 @@ public class PlayersManager : MonoBehaviour
         }
     }
 
-    private void Awake() {
-        if (Current == null)
-            Current = this;
-        else
-            Destroy(gameObject);
+    public void OnMessageHealthChanged(MessageHealthChanged messageHealthChanged) {
+        if (messageHealthChanged.character.id == _myPlayer.Id) {
+            _myPlayer.Health.MaxHealth = messageHealthChanged.maxHealth;
+            _myPlayer.Health.CurrentHealth = messageHealthChanged.currentHealth;
+        } else {
+            RemotePlayer remotePlayer = FindPlayer(messageHealthChanged.character.id);
 
-        MessageHandler.Current.OnMessageGameStateEvent += OnMessageGameState;
-        MessageHandler.Current.OnMessageJoinedGameEvent += OnMessageJoinedGame;
-        MessageHandler.Current.OnMessageLeftGameEvent += OnMessageLeftGame;
-        MessageHandler.Current.OnMessagePlayerMovedEvent += OnMessagePlayerMoved;
-        MessageHandler.Current.OnMessageHealthChangedEvent += OnMessageHealthChanged;
-        MessageHandler.Current.OnMessageChannelEvent += OnMessageChannel;
-        MessageHandler.Current.OnMessageCastEvent += OnMessageCast;
-        MessageHandler.Current.OnMessageStopActivityEvent += OnMessageStopActivity;
-        MessageHandler.Current.OnMessageEquipedEvent += OnMessageEquiped;
-        MessageHandler.Current.OnMessageTriggerAnimationEvent += OnMessageTriggerAnimation;
-        MessageHandler.Current.OnMessageAddAlterationEvent += OnMessageAddAlteration;
-        MessageHandler.Current.OnMessageRefreshAlterationEvent += OnMessageRefreshAlteration;
-        MessageHandler.Current.OnMessageRemoveAlterationEvent += OnMessageRemoveAlteration;
+            if (remotePlayer != null) {
+                remotePlayer.Health.MaxHealth = messageHealthChanged.maxHealth;
+                remotePlayer.Health.CurrentHealth = messageHealthChanged.currentHealth;
+            }
+        }
     }
 }

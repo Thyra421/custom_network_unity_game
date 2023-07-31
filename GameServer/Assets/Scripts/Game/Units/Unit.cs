@@ -5,6 +5,7 @@ public class Unit : MonoBehaviour
     private TransformData _lastTransform;
 
     public string Id { get; } = Utils.GenerateUUID();
+    public Room Room { get; private set; }
 
     public TransformData TransformData => new TransformData(transform);
 
@@ -17,5 +18,9 @@ public class Unit : MonoBehaviour
             _lastTransform = transformData;
             return true;
         }
+    }
+
+    public void Initialize(Room room) {
+        Room = room;
     }
 }

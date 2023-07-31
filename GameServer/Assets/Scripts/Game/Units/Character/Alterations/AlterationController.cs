@@ -4,14 +4,14 @@ public class AlterationController
 {
     protected float _remainingDuration;
 
-    public Player Player { get; }
-    public Player Owner { get; }
+    public Character Character { get; }
+    public Character Owner { get; }
     public Alteration Alteration { get; }
-    public AlterationData Data => new AlterationData(Player.Id, Owner.Id, Alteration.name, _remainingDuration);
+    public AlterationData Data => new AlterationData(Character.Id, Owner.Id, Alteration.name, _remainingDuration);
     public bool IsExpired => _remainingDuration <= 0 && !Alteration.IsPermanent;
 
-    public AlterationController(Player player, Player owner, Alteration alteration) {
-        Player = player;
+    public AlterationController(Character player, Character owner, Alteration alteration) {
+        Character = player;
         Owner = owner;
         Alteration = alteration;
         _remainingDuration = Alteration.BaseDurationInSeconds;

@@ -6,7 +6,7 @@ public class PeriodicAlterationController : AlterationController
 
     private bool TickReady => _tickTimer <= 0;
 
-    public PeriodicAlterationController(Player player, Player owner, PeriodicAlteration alteration) : base(player, owner, alteration) {
+    public PeriodicAlterationController(Character character, Character owner, PeriodicAlteration alteration) : base(character, owner, alteration) {
         _tickTimer = alteration.IntervalDurationInSeconds;
     }
 
@@ -19,7 +19,7 @@ public class PeriodicAlterationController : AlterationController
         base.Update();
         _tickTimer -= Time.deltaTime;
         if (TickReady) {
-            new PlayerDirectEffectController(Player, Owner).Use(Alteration as PeriodicAlteration);
+            new CharacterDirectEffectController(Character, Owner).Use(Alteration as PeriodicAlteration);
             _tickTimer = (Alteration as PeriodicAlteration).IntervalDurationInSeconds;
         }
     }

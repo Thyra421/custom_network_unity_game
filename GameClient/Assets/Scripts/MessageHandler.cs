@@ -5,13 +5,13 @@ public class MessageHandler : MonoBehaviour
     public static MessageHandler Current { get; private set; }
 
     public delegate void OnMessageJoinedGameHandler(MessageJoinedGame messageJoinedGame);
-    public delegate void OnMessagePlayerMovedHandler(MessagePlayerMoved messagePlayerMoved);
+    public delegate void OnMessagePlayersMovedHandler(MessagePlayersMoved messagePlayersMoved);
     public delegate void OnMessageLeftGameHandler(MessageLeftGame messageLeftGame);
     public delegate void OnMessageGameStateHandler(MessageGameState messageGameState);
     public delegate void OnMessageUsedAbilityHandler(MessageUsedAbility messageUsedAbility);
     public delegate void OnMessageDespawnNodeHandler(MessageDespawnNode messageDespawnNode);
     public delegate void OnMessageSpawnNodesHandler(MessageSpawnNodes messageSpawnNodes);
-    public delegate void OnMessageNPCMovedHandler(MessageNPCMoved messageNPCMoved);
+    public delegate void OnMessageNPCsMovedHandler(MessageNPCsMoved messageNPCsMoved);
     public delegate void OnMessageSpawnNPCsHandler(MessageSpawnNPCs messageSpawnNPCs);
     public delegate void OnMessageInventoryAddHandler(MessageInventoryAdd messageInventoryAdd);
     public delegate void OnMessageInventoryRemoveHandler(MessageInventoryRemove messageInventoryRemove);
@@ -24,7 +24,7 @@ public class MessageHandler : MonoBehaviour
     public delegate void OnMessageEquipedHandler(MessageEquiped messageEquiped);
     public delegate void OnMessageSpawnVFXHandler(MessageSpawnVFX messageSpawnVFX);
     public delegate void OnMessageDespawnVFXHandler(MessageDespawnVFX messageDespawnVFX);
-    public delegate void OnMessageVFXMovedHandler(MessageVFXMoved messageVFXMoved);
+    public delegate void OnMessageVFXsMovedHandler(MessageVFXsMoved messageVFXsMoved);
     public delegate void OnMessageTriggerAnimationHandler(MessageTriggerAnimation messageTriggerAnimation);
     public delegate void OnMessageAddAlterationHandler(MessageAddAlteration messageAddAlteration);
     public delegate void OnMessageRefreshAlterationHandler(MessageRefreshAlteration messageRefreshAlteration);
@@ -32,13 +32,13 @@ public class MessageHandler : MonoBehaviour
     public delegate void OnMessageStatisticsChangedHandler(MessageStatisticsChanged messageStatisticsChanged);
 
     public event OnMessageJoinedGameHandler OnMessageJoinedGameEvent;
-    public event OnMessagePlayerMovedHandler OnMessagePlayerMovedEvent;
+    public event OnMessagePlayersMovedHandler OnMessagePlayersMovedEvent;
     public event OnMessageLeftGameHandler OnMessageLeftGameEvent;
     public event OnMessageGameStateHandler OnMessageGameStateEvent;
     public event OnMessageUsedAbilityHandler OnMessageUsedAbilityEvent;
     public event OnMessageDespawnNodeHandler OnMessageDespawnNodeEvent;
     public event OnMessageSpawnNodesHandler OnMessageSpawnNodesEvent;
-    public event OnMessageNPCMovedHandler OnMessageNPCMovedEvent;
+    public event OnMessageNPCsMovedHandler OnMessageNPCsMovedEvent;
     public event OnMessageSpawnNPCsHandler OnMessageSpawnNPCsEvent;
     public event OnMessageInventoryAddHandler OnMessageInventoryAddEvent;
     public event OnMessageInventoryRemoveHandler OnMessageInventoryRemoveEvent;
@@ -51,7 +51,7 @@ public class MessageHandler : MonoBehaviour
     public event OnMessageEquipedHandler OnMessageEquipedEvent;
     public event OnMessageSpawnVFXHandler OnMessageSpawnVFXEvent;
     public event OnMessageDespawnVFXHandler OnMessageDespawnVFXEvent;
-    public event OnMessageVFXMovedHandler OnMessageVFXMovedEvent;
+    public event OnMessageVFXsMovedHandler OnMessageVFXsMovedEvent;
     public event OnMessageTriggerAnimationHandler OnMessageTriggerAnimationEvent;
     public event OnMessageAddAlterationHandler OnMessageAddAlterationEvent;
     public event OnMessageRefreshAlterationHandler OnMessageRefreshAlterationEvent;
@@ -59,13 +59,13 @@ public class MessageHandler : MonoBehaviour
     public event OnMessageStatisticsChangedHandler OnMessageStatisticsChangedEvent;
 
     public OnMessageJoinedGameHandler OnMessageJoinedGame => OnMessageJoinedGameEvent;
-    public OnMessagePlayerMovedHandler OnMessagePlayerMoved => OnMessagePlayerMovedEvent;
+    public OnMessagePlayersMovedHandler OnMessagePlayersMoved => OnMessagePlayersMovedEvent;
     public OnMessageLeftGameHandler OnMessageLeftGame => OnMessageLeftGameEvent;
     public OnMessageGameStateHandler OnMessageGameState => OnMessageGameStateEvent;
     public OnMessageUsedAbilityHandler OnMessageUsedAbility => OnMessageUsedAbilityEvent;
     public OnMessageDespawnNodeHandler OnMessageDespawnNode => OnMessageDespawnNodeEvent;
     public OnMessageSpawnNodesHandler OnMessageSpawnNodes => OnMessageSpawnNodesEvent;
-    public OnMessageNPCMovedHandler OnMessageNPCMoved => OnMessageNPCMovedEvent;
+    public OnMessageNPCsMovedHandler OnMessageNPCsMoved => OnMessageNPCsMovedEvent;
     public OnMessageSpawnNPCsHandler OnMessageSpawnNPCs => OnMessageSpawnNPCsEvent;
     public OnMessageInventoryAddHandler OnMessageInventoryAdd => OnMessageInventoryAddEvent;
     public OnMessageInventoryRemoveHandler OnMessageInventoryRemove => OnMessageInventoryRemoveEvent;
@@ -78,7 +78,7 @@ public class MessageHandler : MonoBehaviour
     public OnMessageEquipedHandler OnMessageEquiped => OnMessageEquipedEvent;
     public OnMessageSpawnVFXHandler OnMessageSpawnVFX => OnMessageSpawnVFXEvent;
     public OnMessageDespawnVFXHandler OnMessageDespawnVFX => OnMessageDespawnVFXEvent;
-    public OnMessageVFXMovedHandler OnMessageVFXMoved => OnMessageVFXMovedEvent;
+    public OnMessageVFXsMovedHandler OnMessageVFXsMoved => OnMessageVFXsMovedEvent;
     public OnMessageTriggerAnimationHandler OnMessageTriggerAnimation => OnMessageTriggerAnimationEvent;
     public OnMessageAddAlterationHandler OnMessageAddAlteration => OnMessageAddAlterationEvent;
     public OnMessageRefreshAlterationHandler OnMessageRefreshAlteration => OnMessageRefreshAlterationEvent;

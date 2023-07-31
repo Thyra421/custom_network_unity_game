@@ -23,7 +23,7 @@ public class NPCsManager : MonoBehaviour
 
             NPCMovementData[] NPCDatas = FindAllMovementDatas((NPC n) => n.UpdateTransformIfChanged());
             if (NPCDatas.Length > 0)
-                _room.PlayersManager.BroadcastUDP(new MessageNPCMoved(NPCDatas));
+                _room.PlayersManager.BroadcastUDP(new MessageNPCsMoved(NPCDatas));
         }
     }
 
@@ -54,7 +54,7 @@ public class NPCsManager : MonoBehaviour
     public NPC CreateNPC(NPCArea area) {
         GameObject newGameObject = Instantiate(area.Animal.Prefab, area.RandomPosition, Quaternion.identity, transform);
         NPC newNPC = newGameObject.AddComponent<NPC>();
-        newNPC.Initialize(area);
+        newNPC.Initialize(_room, area);
         newGameObject.name = $"{area.Animal.DisplayName} {newNPC.Id}";
         _NPCs.Add(newNPC);
         Debug.Log($"[NPCs] created => {_NPCs.Count} NPCs");

@@ -34,15 +34,15 @@ public static class UDPClient
         //Debug.Log($"[UDPServer] received {message}");
         Type messageType = Utils.GetMessageType(message);
 
-        if (messageType.Equals(typeof(MessagePlayerMoved))) {
-            MessagePlayerMoved messagePlayerMoved = Utils.Deserialize<MessagePlayerMoved>(message);
-            MessageHandler.Current.OnMessagePlayerMoved?.Invoke(messagePlayerMoved);
-        } else if (messageType.Equals(typeof(MessageNPCMoved))) {
-            MessageNPCMoved messageNPCMoved = Utils.Deserialize<MessageNPCMoved>(message);
-            MessageHandler.Current.OnMessageNPCMoved?.Invoke(messageNPCMoved);
-        } else if (messageType.Equals(typeof(MessageVFXMoved))) {
-            MessageVFXMoved messageVFXMoved = Utils.Deserialize<MessageVFXMoved>(message);
-            MessageHandler.Current.OnMessageVFXMoved?.Invoke(messageVFXMoved);
+        if (messageType.Equals(typeof(MessagePlayersMoved))) {
+            MessagePlayersMoved messagePlayersMoved = Utils.Deserialize<MessagePlayersMoved>(message);
+            MessageHandler.Current.OnMessagePlayersMoved?.Invoke(messagePlayersMoved);
+        } else if (messageType.Equals(typeof(MessageNPCsMoved))) {
+            MessageNPCsMoved messageNPCsMoved = Utils.Deserialize<MessageNPCsMoved>(message);
+            MessageHandler.Current.OnMessageNPCsMoved?.Invoke(messageNPCsMoved);
+        } else if (messageType.Equals(typeof(MessageVFXsMoved))) {
+            MessageVFXsMoved messageVFXsMoved = Utils.Deserialize<MessageVFXsMoved>(message);
+            MessageHandler.Current.OnMessageVFXsMoved?.Invoke(messageVFXsMoved);
         }
     }
 

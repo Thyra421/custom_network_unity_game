@@ -31,8 +31,8 @@ public class VFXsManager : MonoBehaviour
         RemoveVFX(messageDespawnVFXs.id);
     }
 
-    private void OnMessageVFXMoved(MessageVFXMoved serverMessageVFXMoved) {
-        foreach (VFXMovementData n in serverMessageVFXMoved.VFXs) {
+    private void OnMessageVFXsMoved(MessageVFXsMoved serverMessageVFXsMoved) {
+        foreach (VFXMovementData n in serverMessageVFXsMoved.VFXs) {
             VFX VFX = FindVFX(n.id);
 
             if (VFX != null)
@@ -47,7 +47,7 @@ public class VFXsManager : MonoBehaviour
             Destroy(gameObject);
 
         MessageHandler.Current.OnMessageSpawnVFXEvent += OnMessageSpawnVFX;
-        MessageHandler.Current.OnMessageVFXMovedEvent += OnMessageVFXMoved;
+        MessageHandler.Current.OnMessageVFXsMovedEvent += OnMessageVFXsMoved;
         MessageHandler.Current.OnMessageDespawnVFXEvent += OnMessageDespawnVFX;
     }
 }

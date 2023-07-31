@@ -8430,6 +8430,7 @@ GameObject:
   - component: {fileID: 1215654916}
   - component: {fileID: 1215654931}
   - component: {fileID: 1215654917}
+  - component: {fileID: 1215654932}
   - component: {fileID: 1215654914}
   - component: {fileID: 1215654918}
   - component: {fileID: 1215654922}
@@ -8666,6 +8667,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dragAndDropGUIManager: {fileID: 1215654924}
   _tooltipGUIManager: {fileID: 1215654930}
+--- !u!114 &1215654932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1215654913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adc461b6140fa994d9c0420583be7012, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1220714734
 GameObject:
   m_ObjectHideFlags: 0

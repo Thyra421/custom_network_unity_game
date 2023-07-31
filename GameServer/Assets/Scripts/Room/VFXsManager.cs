@@ -22,7 +22,7 @@ public class VFXsManager : MonoBehaviour
 
             VFXMovementData[] VFXDatas = FindAllMovementDatas((VFX v) => v.UpdateTransformIfChanged());
             if (VFXDatas.Length > 0)
-                _room.PlayersManager.BroadcastUDP(new MessageVFXMoved(VFXDatas));
+                _room.PlayersManager.BroadcastUDP(new MessageVFXsMoved(VFXDatas));
         }
     }    
 

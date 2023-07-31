@@ -38,23 +38,39 @@ public struct MessageGameState
     }
 }
 
-public struct MessagePlayerMoved
+public struct MessagePlayersMoved
 {
     public PlayerMovementData[] players;
 
-    public MessagePlayerMoved(PlayerMovementData[] players) {
+    public MessagePlayersMoved(PlayerMovementData[] players) {
         this.players = players;
+    }
+}
+
+public enum CharacterType
+{
+    Player, NPC
+}
+
+public struct CharacterData
+{
+    public string id;
+    public CharacterType type;
+
+    public CharacterData(string id, CharacterType type) {
+        this.id = id;
+        this.type = type;
     }
 }
 
 public struct MessageHealthChanged
 {
-    public string id;
+    public CharacterData character;
     public int currentHealth;
     public int maxHealth;
 
-    public MessageHealthChanged(string id, int currentHealth, int maxHealth) {
-        this.id = id;
+    public MessageHealthChanged(CharacterData character, int currentHealth, int maxHealth) {
+        this.character = character;
         this.currentHealth = currentHealth;
         this.maxHealth = maxHealth;
     }
@@ -189,12 +205,11 @@ public struct MessageSpawnNPCs
     }
 }
 
-
-public struct MessageNPCMoved
+public struct MessageNPCsMoved
 {
     public NPCMovementData[] NPCs;
 
-    public MessageNPCMoved(NPCMovementData[] NPCs) {
+    public MessageNPCsMoved(NPCMovementData[] NPCs) {
         this.NPCs = NPCs;
     }
 }
@@ -221,11 +236,11 @@ public struct MessageDespawnVFX
     }
 }
 
-public struct MessageVFXMoved
+public struct MessageVFXsMoved
 {
     public VFXMovementData[] VFXs;
 
-    public MessageVFXMoved(VFXMovementData[] vFXs) {
+    public MessageVFXsMoved(VFXMovementData[] vFXs) {
         VFXs = vFXs;
     }
 }
@@ -277,20 +292,7 @@ public struct MessageExperienceChanged
     public ExperienceData[] experiences;
 
     public MessageExperienceChanged(ExperienceData[] experiences) {
-        this.experiences = experiences;        
-    }
-}
-
-public struct MessageWeaponExperienceChanged
-{
-    public string weaponName;
-    public int currentLevel;
-    public float currentRatio;
-
-    public MessageWeaponExperienceChanged(string weaponName, int currentLevel, float currentRatio) {
-        this.weaponName = weaponName;
-        this.currentLevel = currentLevel;
-        this.currentRatio = currentRatio;
+        this.experiences = experiences;
     }
 }
 
