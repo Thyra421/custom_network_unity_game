@@ -19,15 +19,10 @@ public class Ability : ScriptableObject, IDisplayable, IRechargeable, IUsable, I
     private string _description;
 
     public string DisplayName => _displayName;
-
     public Sprite Icon => _icon;
-
     public DirectEffect[] Effects => _effects;
-
     public float CooldownInSeconds => _cooldownInSeconds;
-
     public string AnimationName => _animationName;
-
     public string Description => _description;
 
     public virtual void BuildTooltip(RectTransform parent) {

@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2214882472107139987}
   - component: {fileID: 1131989145181226026}
+  - component: {fileID: 3587676545720223628}
+  - component: {fileID: 2912872285621299463}
   m_Layer: 0
   m_Name: RemotePlayer
   m_TagString: Untagged
@@ -46,8 +48,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 984ce22c1b1491e4db2da6aeb54b69d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _alterations: {fileID: 2912872285621299463}
   _animation:
     _animator: {fileID: 2848456940967163190}
+  _movement: {fileID: 3587676545720223628}
+--- !u!114 &3587676545720223628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8210339860390585475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15409c0042fc7d648a7619bb3b7acb1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _player: {fileID: 1131989145181226026}
+--- !u!114 &2912872285621299463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8210339860390585475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 518fe13fa8fb0d8489a051401a7d6612, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1681536986232003260
 PrefabInstance:
   m_ObjectHideFlags: 0

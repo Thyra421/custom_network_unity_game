@@ -5,15 +5,9 @@ public class Node : NetworkObject
     private bool _isOnRange;
     private Outline _outline;
 
-    private void OnTriggerEnter(Collider other) {
-        ColorUtility.TryParseHtmlString("#DEA805", out Color color);
-        _outline.OutlineColor = color;
-        _isOnRange = true;
-    }
-
-    private void OnTriggerExit(Collider other) {
-        _outline.OutlineColor = Color.white;
-        _isOnRange = false;
+    private void Awake() {
+        _outline = gameObject.AddComponent<Outline>();
+        _outline.enabled = false;
     }
 
     private void Update() {
@@ -23,13 +17,18 @@ public class Node : NetworkObject
 
             if (Input.GetMouseButtonUp(1) && _isOnRange)
                 TCPClient.Send(new MessagePickUp(Id));
-        }
-        else
+        } else
             _outline.enabled = false;
     }
 
-    private void Awake() {
-        _outline = gameObject.AddComponent<Outline>();
-        _outline.enabled = false;
+    private void OnTriggerEnter(Collider other) {
+        ColorUtility.TryParseHtmlString("#DEA805", out Color color);
+        _outline.OutlineColor = color;
+        _isOnRange = true;
+    }
+
+    private void OnTriggerExit(Collider other) {
+        _outline.OutlineColor = Color.white;
+        _isOnRange = false;
     }
 }

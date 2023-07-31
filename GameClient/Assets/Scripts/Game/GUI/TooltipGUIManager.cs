@@ -10,6 +10,19 @@ public class TooltipGUIManager : MonoBehaviour
     private ITooltipHandlerGUI _currentTooltipHandler;
 
     public static TooltipGUIManager Current { get; private set; }
+    public ITooltipHandlerGUI Tooltip {
+        get => _currentTooltipHandler;
+        set {
+            if (value != _currentTooltipHandler) {
+                _currentTooltipHandler = value;
+                if (_currentTooltipHandler != null && _currentTooltipHandler.IsTooltipReady) {
+                    _parent.gameObject.SetActive(true);
+                    Rebuild();
+                } else
+                    _parent.gameObject.SetActive(false);
+            }
+        }
+    }
 
     private void Clear() {
         for (int i = 0; i < _parent.childCount; i++)
@@ -24,6 +37,13 @@ public class TooltipGUIManager : MonoBehaviour
     private void Rebuild() {
         Clear();
         Build();
+    }
+
+    private void Awake() {
+        if (Current == null)
+            Current = this;
+        else
+            Destroy(gameObject);
     }
 
     private void LateUpdate() {
@@ -52,26 +72,5 @@ public class TooltipGUIManager : MonoBehaviour
 
         _parent.pivot = pivot;
         _parent.position = position;
-    }
-
-    private void Awake() {
-        if (Current == null)
-            Current = this;
-        else
-            Destroy(gameObject);
-    }
-
-    public ITooltipHandlerGUI Tooltip {
-        get => _currentTooltipHandler;
-        set {
-            if (value != _currentTooltipHandler) {
-                _currentTooltipHandler = value;
-                if (_currentTooltipHandler != null && _currentTooltipHandler.IsTooltipReady) {
-                    _parent.gameObject.SetActive(true);
-                    Rebuild();
-                } else
-                    _parent.gameObject.SetActive(false);
-            }
-        }
-    }
+    }       
 }

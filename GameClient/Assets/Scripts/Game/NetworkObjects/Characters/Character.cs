@@ -1,21 +1,17 @@
+using UnityEngine;
+
+[RequireComponent(typeof(CharacterAlterations))]
 public abstract class Character : NetworkObject
 {
-    public CharacterAlterations Alterations { get; private set; }
+    [SerializeField]
+    protected CharacterAlterations _alterations;
+
     public CharacterHealth Statistics { get; private set; }
     public CharacterActivity Activity { get; private set; }
-    protected abstract CharacterMovement CharacterMovement { get; }
+    public CharacterAlterations Alterations => _alterations;
 
     protected virtual void Awake() {
-        Alterations = new CharacterAlterations();
         Statistics = new CharacterHealth();
         Activity = new CharacterActivity();
-    }
-
-    protected virtual void Update() {
-        Alterations.Update();
-    }
-
-    protected virtual void FixedUpdate() {
-        CharacterMovement.FixedUpdate();
     }
 }

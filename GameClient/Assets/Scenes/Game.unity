@@ -7406,6 +7406,8 @@ GameObject:
   - component: {fileID: 1084622875}
   - component: {fileID: 1084622871}
   - component: {fileID: 1084622880}
+  - component: {fileID: 1084622882}
+  - component: {fileID: 1084622881}
   m_Layer: 8
   m_Name: MyPlayer
   m_TagString: Untagged
@@ -7448,16 +7450,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e812fae08f9694fb41708aa15734a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _movement:
-    _localPlayer: {fileID: 1084622875}
-    _characterController: {fileID: 1084622880}
-    _acceleration: 30
-    _deceleration: 40
-    _jumpHeight: 1
-    _gravityStrength: -10
-    _whatIsGround:
-      serializedVersion: 2
-      m_Bits: 0
+  _alterations: {fileID: 1084622881}
+  _movement: {fileID: 1084622882}
   _animation:
     _animator: {fileID: 1662535364}
 --- !u!4 &1084622879
@@ -7503,6 +7497,39 @@ CharacterController:
   m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!114 &1084622881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084622870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 518fe13fa8fb0d8489a051401a7d6612, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1084622882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084622870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 758ee519d2340bb4aa8ec381bec1b67d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _localPlayer: {fileID: 1084622875}
+  _characterController: {fileID: 1084622880}
+  _acceleration: 30
+  _deceleration: 40
+  _jumpHeight: 1
+  _gravityStrength: -10
+  _whatIsGround:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &1084736407
 GameObject:
   m_ObjectHideFlags: 0
@@ -8582,7 +8609,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _aimTarget: {fileID: 1206533248}
-  _cameraController: {fileID: 330585548}
 --- !u!114 &1215654928
 MonoBehaviour:
   m_ObjectHideFlags: 0

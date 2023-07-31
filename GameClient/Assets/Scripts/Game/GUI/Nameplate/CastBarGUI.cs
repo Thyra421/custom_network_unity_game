@@ -29,14 +29,14 @@ public class CastBarGUI : MonoBehaviour
         }
     }
 
-    private void FixedUpdate() {
-        Process();
-    }
-
     private void Awake() {
         _character.Activity.OnCast += InitializeCast;
         _character.Activity.OnChannel += InitializeChannel;
         _character.Activity.OnStopActivity += Stop;
+    }
+
+    private void FixedUpdate() {
+        Process();
     }
 
     public void InitializeChannel(string activityName, int ticks, float intervalTimeInSeconds) {

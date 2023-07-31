@@ -6,6 +6,8 @@ public class InventorySlotGUI : MonoBehaviour, IDropAreaGUI, IDraggableGUI, IInt
     private ItemGUI _itemGUI;
 
     public InventorySlot Slot { get; private set; }
+    public Sprite DragIndicator => Slot.Item.Icon;
+    public bool IsReadyToBeDragged => Slot.Item != null;
 
     public void OnChanged(Item item, int amount) {
         _itemGUI.Initialize(item, amount);
@@ -31,9 +33,5 @@ public class InventorySlotGUI : MonoBehaviour, IDropAreaGUI, IDraggableGUI, IInt
         Slot = slot;
     }
 
-    public void Discard() { }
-
-    public Sprite DragIndicator => Slot.Item.Icon;
-
-    public bool IsReadyToBeDragged => Slot.Item != null;
+    public void Discard() { }    
 }

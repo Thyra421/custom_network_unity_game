@@ -6,26 +6,23 @@ public class RemotePlayerMovement : CharacterMovement
     private Vector3 _destinationRotation;
     private float _movementSpeed;
 
-    private RemotePlayer RemotePlayer { get; set; }
-
     protected override void Move() {
-        Vector3 direction = (_destinationPosition - RemotePlayer.transform.position).normalized;
-        float distance = Vector3.Distance(RemotePlayer.transform.position, _destinationPosition);
+        Vector3 direction = (_destinationPosition - transform.position).normalized;
+        float distance = Vector3.Distance(transform.position, _destinationPosition);
 
         if (distance <= _movementSpeed * Time.deltaTime || distance > 2)
-            RemotePlayer.transform.position = _destinationPosition;
+            transform.position = _destinationPosition;
         else
-            RemotePlayer.transform.position += _movementSpeed * Time.deltaTime * direction;
+            transform.position += _movementSpeed * Time.deltaTime * direction;
     }
 
     protected override void Rotate() {
-        RemotePlayer.transform.eulerAngles = _destinationRotation;
+        transform.eulerAngles = _destinationRotation;
     }
 
-    public RemotePlayerMovement(RemotePlayer remotePlayer) {
-        RemotePlayer = remotePlayer;
-        _destinationPosition = RemotePlayer.transform.position;
-        _destinationRotation = RemotePlayer.transform.eulerAngles;
+    private void Awake() {
+        _destinationPosition = transform.position;
+        _destinationRotation = transform.eulerAngles;
     }
 
     public void SetMovement(TransformData transformData, float movementSpeed) {

@@ -5,7 +5,6 @@ using System.Linq;
 
 public class PlayersManager : MonoBehaviour
 {
-    
     [SerializeField]
     private Room _room;
     private readonly List<Player> _players = new List<Player>();
@@ -14,13 +13,20 @@ public class PlayersManager : MonoBehaviour
     private delegate T CustomMessageHandler<T>(Player player);
     private delegate bool SendConditionHandler<T>(T message);
 
+    private Client[] Clients => _players.Select((Player player) => player.Client).ToArray();
+
+    public PlayerData[] Datas => _players.Select((Player player) => player.Data).ToArray();
+    public bool IsFull => _players.Count == Config.Current.MaxPlayersPerRoom;
+
+    private PlayerMovementData[] FindAllMovementDatas(Predicate<Player> condition) => _players.FindAll(condition).Select((Player player) => player.Movement.Data).ToArray();
+
     private void SyncMovement() {
         _elapsedTime += Time.deltaTime;
         if (_elapsedTime >= (1f / SharedConfig.Current.SyncFrequency)) {
             _elapsedTime = 0f;
             if (_players.Count < 2)
                 return;
-            PlayerMovementData[] playerMovementDatas = GetPlayerMovementDatas((Player p) => p.Movement.UpdateTransformIfChanged());
+            PlayerMovementData[] playerMovementDatas = FindAllMovementDatas((Player p) => p.UpdateTransformIfChanged());
             if (playerMovementDatas.Length > 0)
                 BroadcastUDP((Player player) => new MessagePlayerMoved(Array.FindAll(playerMovementDatas, (PlayerMovementData data) => data.id != player.Id).ToArray()), (MessagePlayerMoved message) => message.players.Length > 0);
         }
@@ -30,16 +36,9 @@ public class PlayersManager : MonoBehaviour
         foreach (Client client in Clients) {
             T message = customMessage(client.Player);
             if (condition(message))
-                client.Udp?.Send(message);
+                client.UDP?.Send(message);
         }
-    }
-
-    private PlayerMovementData[] GetPlayerMovementDatas(Predicate<Player> condition) => _players.FindAll(condition).Select((Player player) => player.Movement.Data).ToArray();
-
-    private PlayerData[] GetPlayerDatas(Predicate<Player> condition) =>
-        _players.FindAll(condition).Select((Player player) => player.Data).ToArray();
-
-    private Client[] Clients => _players.Select((Player player) => player.Client).ToArray();
+    }   
 
     private void Update() {
         SyncMovement();
@@ -47,19 +46,19 @@ public class PlayersManager : MonoBehaviour
 
     public void BroadcastUDP<T>(T message) {
         foreach (Client client in Clients) {
-            client.Udp?.Send(message);
+            client.UDP?.Send(message);
         }
     }
 
     public void BroadcastTCP<T>(T message) {
         foreach (Client client in Clients)
-            client.Tcp.Send(message);
+            client.TCP.Send(message);
     }
 
     public void BroadcastTCP<T>(T message, Player except) {
         foreach (Client client in Clients)
             if (client != except.Client)
-                client.Tcp.Send(message);
+                client.TCP.Send(message);
     }
 
     public Player CreatePlayer(Client client) {
@@ -67,6 +66,7 @@ public class PlayersManager : MonoBehaviour
         Player newPlayer = newGameObject.GetComponent<Player>();
         newGameObject.name = "Player " + newPlayer.Id;
         newPlayer.Initialize(client, _room);
+        client.Player = newPlayer;
         _players.Add(newPlayer);
         BroadcastTCP(new MessageJoinedGame(newPlayer.Data), newPlayer);
         Debug.Log($"[Players] created => {_players.Count} players");
@@ -81,8 +81,4 @@ public class PlayersManager : MonoBehaviour
         if (_players.Count == 0)
             Reception.Current.RemoveRoom(_room);
     }
-
-    public PlayerData[] PlayerDatas => _players.Select((Player player) => player.Data).ToArray();
-
-    public bool IsFull => _players.Count == Config.Current.MaxPlayersPerRoom;
 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using UnityEngine;
 
-public class CharacterAlterations
+public class CharacterAlterations : MonoBehaviour
 {
     private readonly List<AlterationController> _alterationControllers = new List<AlterationController>();
 
@@ -9,7 +10,11 @@ public class CharacterAlterations
     public event OnAddedHandler OnAdded;
     public event OnRemovedHandler OnRemoved;
 
-    private AlterationController Find(Alteration alteration, string ownerId) => _alterationControllers.Find((AlterationController alterationController) => alterationController.Alteration == alteration && alterationController.OwnerId == ownerId);    
+    private AlterationController Find(Alteration alteration, string ownerId) => _alterationControllers.Find((AlterationController alterationController) => alterationController.Alteration == alteration && alterationController.OwnerId == ownerId);
+
+    private void Update() {
+        _alterationControllers.ForEach((AlterationController alterationController) => alterationController.Update());
+    }
 
     public void Add(AlterationController alterationController) {
         _alterationControllers.Add(alterationController);
@@ -27,9 +32,5 @@ public class CharacterAlterations
             _alterationControllers.Remove(alterationController);
             OnRemoved?.Invoke(alterationController);
         }
-    }
-
-    public void Update() {
-        _alterationControllers.ForEach((AlterationController alterationController) => alterationController.Update());
-    }
+    }    
 }

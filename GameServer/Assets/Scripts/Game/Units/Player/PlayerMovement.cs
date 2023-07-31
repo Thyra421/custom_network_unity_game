@@ -4,41 +4,24 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField]
     private Player _player;
-    private TransformData _lastTransform;
     private float _elapsedTime;
 
-    public PlayerAnimationData AnimationData { get; private set; }
+    private float MovementSpeed => _player.Statistics.Find(StatisticType.MovementSpeed).AlteredValue * SharedConfig.Current.PlayerMovementSpeed;
+    public PlayerMovementData Data => new PlayerMovementData(_player.Id, new TransformData(transform), _player.Animation.Data, MovementSpeed);
+    public bool IsMoving => _elapsedTime <= .05f;
 
     private void Update() {
         _elapsedTime += Time.deltaTime;
     }
 
-    private void Awake() {
-        _lastTransform = TransformData.Zero;
+    public float Distance(Vector3Data otherPosition) {
+        return new Vector3Data(transform.position).Distance(otherPosition);
     }
 
-    public void SetMovement(TransformData transformData, PlayerAnimationData animation) {
-        if (!transformData.position.Equals(TransformData.position))
+    public void SetMovement(TransformData transformData) {
+        if (!transformData.position.Equals(new Vector3Data(transform.position)))
             _elapsedTime = 0;
         transform.position = transformData.position.ToVector3;
         transform.eulerAngles = transformData.rotation.ToVector3;
-        AnimationData = animation;
     }
-
-    public bool UpdateTransformIfChanged() {
-        if (_lastTransform.Equals(TransformData))
-            return false;
-        else {
-            _lastTransform = TransformData;
-            return true;
-        }
-    }
-
-    public float MovementSpeed => _player.Statistics.Find(StatisticType.MovementSpeed).AlteredValue * SharedConfig.Current.PlayerMovementSpeed;
-
-    public PlayerMovementData Data => new PlayerMovementData(_player.Id, TransformData, AnimationData, MovementSpeed);
-
-    public TransformData TransformData => new TransformData(transform);
-
-    public bool IsMoving => _elapsedTime <= .05f;
 }

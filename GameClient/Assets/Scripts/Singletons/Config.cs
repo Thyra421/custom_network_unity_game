@@ -13,10 +13,7 @@ public class Config : SingletonScriptableObject<Config>
     private string _serverAddress = "127.0.0.1";
 
     public int ServerPortTCP => _serverPortTCP;
-
     public int ServerPortUDP => _serverPortUDP;
-
     public int ServerPortHTTP => _serverPortHTTP;
-
     public string ServerAddress => _serverAddress;
 }

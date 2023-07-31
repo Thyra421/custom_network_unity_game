@@ -11,8 +11,6 @@ public class CraftingPattern : ScriptableObject
     private ExperienceType _experienceType;
 
     public ItemStack[] Reagents => _reagents;
-
     public ItemStack Outcome => _outcome;
-
     public ExperienceType ExperienceType => _experienceType;
 }

@@ -11,6 +11,7 @@ public class GUIManager : MonoBehaviour
     private bool _isOverUI;
 
     public static GUIManager Current { get; private set; }
+    public bool IsBusy => _isOverUI || _dragAndDropGUIManager.IsDragging;
 
     private void Awake() {
         if (Current == null)
@@ -71,6 +72,4 @@ public class GUIManager : MonoBehaviour
         else
             _tooltipGUIManager.Tooltip = tooltipHandler;
     }
-
-    public bool IsBusy => _isOverUI || _dragAndDropGUIManager.IsDragging;
 }

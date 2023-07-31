@@ -23,16 +23,10 @@ public class DropSource : ScriptableObject
     private int _requiredLevel;
 
     public Item RandomLoot => _lootTable.RandomLoot;
-
     public GameObject Prefab => _prefab;
-
     public LootTable Drops => _lootTable;
-
     public int MinInclusive => _minInclusive;
-
     public int MaxExclusive => _minExclusive;
-
     public float RespawnTimerInSeconds => _respawnTimerInSeconds;
-
     public ExperienceType ExperienceType => _experienceType;
 }

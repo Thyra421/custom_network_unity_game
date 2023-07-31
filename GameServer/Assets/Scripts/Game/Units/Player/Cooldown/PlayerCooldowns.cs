@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class PlayerCooldowns : MonoBehaviour
 {
-    private readonly List<Cooldown> _cooldowns = new List<Cooldown>();
+    private readonly List<CooldownController> _cooldowns = new List<CooldownController>();
 
     private void FixedUpdate() {
-        List<Cooldown> cooldownsReady = new List<Cooldown>();
+        List<CooldownController> cooldownsReady = new List<CooldownController>();
 
-        foreach (Cooldown c in _cooldowns) {
+        foreach (CooldownController c in _cooldowns) {
             c.Recharge();
             if (c.IsReady)
                 cooldownsReady.Add(c);
         }
 
-        cooldownsReady.ForEach((Cooldown c) => _cooldowns.Remove(c));
+        cooldownsReady.ForEach((CooldownController c) => _cooldowns.Remove(c));
     }
 
-    public bool Any(IRechargeable ability) => _cooldowns.Any((Cooldown c) => c.Element == ability);
+    public bool Any(IRechargeable ability) => _cooldowns.Any((CooldownController c) => c.Element == ability);
 
     public void Add(IRechargeable cooldownHandler) {
-        _cooldowns.Add(new Cooldown(cooldownHandler));
+        _cooldowns.Add(new CooldownController(cooldownHandler));
     }
 }

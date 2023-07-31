@@ -12,9 +12,9 @@ class Reception : MonoBehaviour
     private Player JoinRoom(Client client, Room room) {
         Player newPlayer = room.PlayersManager.CreatePlayer(client);
 
-        client.Tcp.Send(new MessageGameState(newPlayer.Id, newPlayer.Room.PlayersManager.PlayerDatas));
-        client.Tcp.Send(new MessageSpawnNodes(newPlayer.Room.NodesManager.NodeDatas));
-        client.Tcp.Send(new MessageSpawnNPCs(newPlayer.Room.NPCsManager.NPCDatas));
+        client.TCP.Send(new MessageGameState(newPlayer.Id, newPlayer.Room.PlayersManager.Datas));
+        client.TCP.Send(new MessageSpawnNodes(newPlayer.Room.NodesManager.Datas));
+        client.TCP.Send(new MessageSpawnNPCs(newPlayer.Room.NPCsManager.Datas));
 
         return newPlayer;
     }

@@ -1,18 +1,13 @@
 using UnityEngine;
 
+[RequireComponent(typeof(RemotePlayerMovement))]
 public class RemotePlayer : Character
 {
     [SerializeField]
     private RemotePlayerAnimation _animation;
+    [SerializeField]
+    private RemotePlayerMovement _movement;
 
-    public RemotePlayerMovement Movement { get; private set; }
-
-    protected override CharacterMovement CharacterMovement => Movement;
-
-    protected override void Awake() {
-        base.Awake();
-        Movement = new RemotePlayerMovement(this);
-    }
-
+    public RemotePlayerMovement Movement => _movement;
     public RemotePlayerAnimation Animation => _animation;
 }

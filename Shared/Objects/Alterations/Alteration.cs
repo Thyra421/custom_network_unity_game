@@ -22,15 +22,10 @@ public abstract class Alteration : ScriptableObject, IDisplayable, ITooltipHandl
     private bool _persistsAferDeath;
 
     public string DisplayName => _displayName;
-
     public Sprite Icon => _icon;
-
     public bool Stackable => _stackable;
-
     public float BaseDurationInSeconds => _baseDurationInSeconds;
-
     public bool PersistsAferDeath => _persistsAferDeath;
-
     public bool IsPermanent => _baseDurationInSeconds < 0;
 
     public void BuildTooltip(RectTransform parent) {

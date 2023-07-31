@@ -15,12 +15,8 @@ public class Animal : ScriptableObject
     private float _movementSpeed;
 
     public float RespawnTimerInSeconds => _respawnTimerInSeconds;
-
     public GameObject Prefab => _prefab;
-
     public bool Mobile => _mobile;
-
     public string DisplayName => _displayName;
-
     public float MovementSpeed => _movementSpeed;
 }

@@ -10,6 +10,8 @@ public class DragAndDropGUIManager : MonoBehaviour
     private Vector3 _dragOrigin;
 
     public static DragAndDropGUIManager Current { get; private set; }
+    public bool IsDragging => _currentDraggable != null;
+    public bool IsPreparedToDrag => _tempDraggable != null;
 
     private void BeginDrag() {
         _currentDraggable = _tempDraggable;
@@ -55,9 +57,5 @@ public class DragAndDropGUIManager : MonoBehaviour
     public void PrepareDrag(IDraggableGUI draggable, Vector3 position) {
         _tempDraggable = draggable;
         _dragOrigin = position;
-    }
-
-    public bool IsDragging => _currentDraggable != null;
-
-    public bool IsPreparedToDrag => _tempDraggable != null;
+    }    
 }

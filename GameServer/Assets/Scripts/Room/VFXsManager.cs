@@ -10,22 +10,21 @@ public class VFXsManager : MonoBehaviour
     private readonly List<VFX> _VFXs = new List<VFX>();
     private float _elapsedTime = 0f;
 
+    public VFXData[] Datas => _VFXs.Select((VFX vfx) => vfx.Data).ToArray();
+
+    private VFXMovementData[] FindAllMovementDatas(Predicate<VFX> condition) =>
+        _VFXs.FindAll(condition).Select((VFX vfx) => vfx.Movement.Data).ToArray();
+
     private void SyncMovement() {
         _elapsedTime += Time.deltaTime;
         if (_elapsedTime >= (1f / SharedConfig.Current.SyncFrequency)) {
             _elapsedTime = 0f;
 
-            VFXMovementData[] VFXDatas = GetVFXMovementDatas((VFX v) => v.UpdateTransformIfChanged());
+            VFXMovementData[] VFXDatas = FindAllMovementDatas((VFX v) => v.UpdateTransformIfChanged());
             if (VFXDatas.Length > 0)
                 _room.PlayersManager.BroadcastUDP(new MessageVFXMoved(VFXDatas));
         }
-    }
-
-    private VFXData[] GetVFXDatas(Predicate<VFX> condition) =>
-        _VFXs.FindAll(condition).Select((VFX vfx) => vfx.Data).ToArray();
-
-    private VFXMovementData[] GetVFXMovementDatas(Predicate<VFX> condition) =>
-        _VFXs.FindAll(condition).Select((VFX vfx) => vfx.MovementData).ToArray();
+    }    
 
     private void Update() {
         SyncMovement();
@@ -47,8 +46,4 @@ public class VFXsManager : MonoBehaviour
         // destroy called by AttackHitbox
         Debug.Log($"[VFXs] removed => {_VFXs.Count} VFXs");
     }
-
-    public VFXData[] VFXDatas => _VFXs.Select((VFX vfx) => vfx.Data).ToArray();
-
-    public VFXMovementData[] VFXMovementDatas => _VFXs.Select((VFX vfx) => vfx.MovementData).ToArray();
 }

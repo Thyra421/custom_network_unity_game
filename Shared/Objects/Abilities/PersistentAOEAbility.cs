@@ -13,10 +13,7 @@ public class PersistentAOEAbility : Ability
     private float _durationInSeconds;
 
     public GameObject Prefab => _prefab;
-
     public float DelayInSeconds => _delayInSeconds;
-
     public float DurationInSeconds => _durationInSeconds;
-
     public Alteration Alteration => _alteration;
 }

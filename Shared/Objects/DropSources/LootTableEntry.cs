@@ -9,6 +9,5 @@ public class LootTableEntry
     private int _dropChance;
 
     public int DropChance => _dropChance;
-
     public Item Item => _item;
 }

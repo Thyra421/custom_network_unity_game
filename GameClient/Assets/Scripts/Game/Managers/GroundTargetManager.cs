@@ -7,7 +7,10 @@ public class GroundTargetManager : MonoBehaviour
     [SerializeField]
     private LayerMask _whatIsGround;
     private GameObject _currentTarget;
+
     public static GroundTargetManager Current { get; private set; }
+    public bool HasTarget => _currentTarget != null;
+    public Vector3Data TargetPosition => new Vector3Data(_currentTarget.transform.position);
 
     private void Awake() {
         if (Current == null)
@@ -33,9 +36,5 @@ public class GroundTargetManager : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, 100, _whatIsGround))
             _currentTarget = Instantiate(_groundTargetTemplate, hit.point, Quaternion.identity);
-    }
-
-    public bool HasTarget => _currentTarget != null;
-
-    public Vector3Data TargetPosition => new Vector3Data(_currentTarget.transform.position);
+    }    
 }

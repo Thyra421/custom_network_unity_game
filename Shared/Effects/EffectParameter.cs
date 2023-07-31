@@ -11,11 +11,6 @@ public class EffectParameter
     [SerializeField]
     private string _parameterName;
 
-    public EffectParameter(string typeName, string parameterName) {
-        _typeName = typeName;
-        _parameterName = parameterName;
-    }
-
     public object ToObject {
         get {
             Type type = Type.GetType(_typeName);
@@ -39,8 +34,11 @@ public class EffectParameter
             return null;
         }
     }
-
     public string TypeName => _typeName;
-
     public string ParameterName => _parameterName;
+
+    public EffectParameter(string typeName, string parameterName) {
+        _typeName = typeName;
+        _parameterName = parameterName;
+    }    
 }

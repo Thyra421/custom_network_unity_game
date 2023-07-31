@@ -10,6 +10,8 @@ public class PlayerActivity : MonoBehaviour
     private int _remainingTicks;
     private float _currentActivityTimeInSeconds;
 
+    public bool IsBusy => _currentActivity != null;
+
     private void Process() {
         _elapsedTime += Time.deltaTime;
         if (_elapsedTime >= _currentActivityTimeInSeconds) {
@@ -35,11 +37,11 @@ public class PlayerActivity : MonoBehaviour
 
     public void Cast(Action activity, string activityName, float castTimeInSeconds) {
         if (_player.Movement.IsMoving) {
-            _player.Client.Tcp.Send(new MessageError(MessageErrorType.cantWhileMoving));
+            _player.Client.TCP.Send(new MessageError(MessageErrorType.cantWhileMoving));
             return;
         }
         if (IsBusy) {
-            _player.Client.Tcp.Send(new MessageError(MessageErrorType.busy));
+            _player.Client.TCP.Send(new MessageError(MessageErrorType.busy));
             return;
         }
 
@@ -52,11 +54,11 @@ public class PlayerActivity : MonoBehaviour
 
     public void Channel(Action activity, string activityName, int ticks, float intervalTimeInSeconds) {
         if (_player.Movement.IsMoving) {
-            _player.Client.Tcp.Send(new MessageError(MessageErrorType.cantWhileMoving));
+            _player.Client.TCP.Send(new MessageError(MessageErrorType.cantWhileMoving));
             return;
         }
         if (IsBusy) {
-            _player.Client.Tcp.Send(new MessageError(MessageErrorType.busy));
+            _player.Client.TCP.Send(new MessageError(MessageErrorType.busy));
             return;
         }
 
@@ -71,6 +73,4 @@ public class PlayerActivity : MonoBehaviour
         Clear();
         _player.Room.PlayersManager.BroadcastTCP(new MessageStopActivity(_player.Id));
     }
-
-    public bool IsBusy => _currentActivity != null;
 }

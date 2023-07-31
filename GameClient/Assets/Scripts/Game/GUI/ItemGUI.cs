@@ -13,6 +13,8 @@ public class ItemGUI : MonoBehaviour, ITooltipHandlerGUI
 
     public int Amount { get; private set; }
     public Item Item { get; private set; }
+    public bool IsTooltipReady => Item != null;
+    public RectTransform RectTransform => _rectTransform;
 
     public void Initialize(Item item, int amount) {
         Item = item;
@@ -30,9 +32,5 @@ public class ItemGUI : MonoBehaviour, ITooltipHandlerGUI
 
     public void BuildTooltip(RectTransform parent) {
         Item.BuildTooltip(parent);
-    }
-
-    public bool IsTooltipReady => Item != null;
-
-    public RectTransform RectTransform => _rectTransform;
+    }    
 }

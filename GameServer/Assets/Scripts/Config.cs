@@ -15,12 +15,8 @@ public class Config : SingletonScriptableObject<Config>
     private int _maxPlayersPerRoom = 2;
 
     public int TCPPort => _TCPPort;
-
     public int UDPPort => _UDPPort;
-
     public string Address => _address;
-
     public float LevelExperienceIncreaseMultiplicator => _levelExperienceIncreaseMultiplicator;
-
     public int MaxPlayersPerRoom => _maxPlayersPerRoom;
 }

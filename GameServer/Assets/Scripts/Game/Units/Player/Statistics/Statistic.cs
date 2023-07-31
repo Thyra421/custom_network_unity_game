@@ -6,12 +6,7 @@ public class Statistic
     public float BaseValue { get; } = 1;
     public List<StatisticModifier> Modifiers { get; } = new List<StatisticModifier>();
 
-    public Statistic(StatisticType type) {
-        Type = type;
-    }
-
     public StatisticData Data => new StatisticData(Type, AlteredValue);
-
     public float AlteredValue {
         get {
             float valueModifier = 0;
@@ -26,4 +21,8 @@ public class Statistic
             return (100 + percentModifier) * (BaseValue + valueModifier) / 100;
         }
     }
+
+    public Statistic(StatisticType type) {
+        Type = type;
+    }    
 }

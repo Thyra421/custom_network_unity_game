@@ -5,6 +5,9 @@ public class ActionBarSlotGUI : MonoBehaviour, IDropAreaGUI, IDraggableGUI
     [SerializeField]
     private ItemGUI _itemGUI;
 
+    public Sprite DragIndicator => _itemGUI.Item.Icon;
+    public bool IsReadyToBeDragged => _itemGUI.Item != null;
+
     private void Clear() {
         _itemGUI.Initialize(null, 0);
     }
@@ -48,9 +51,5 @@ public class ActionBarSlotGUI : MonoBehaviour, IDropAreaGUI, IDraggableGUI
 
     public void Discard() {
         Clear();
-    }
-
-    public Sprite DragIndicator => _itemGUI.Item.Icon;
-
-    public bool IsReadyToBeDragged => _itemGUI.Item != null;
+    }    
 }

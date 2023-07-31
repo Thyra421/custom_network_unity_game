@@ -10,6 +10,14 @@ public class AlterationController
     public delegate void OnRemainingDurationChangedHandler(float remainingDuration);
     public event OnRemainingDurationChangedHandler OnRemainingDurationChanged;
 
+    public float RemainingDuration {
+        get => _remainingDuration;
+        private set {
+            _remainingDuration = value;
+            OnRemainingDurationChanged?.Invoke(_remainingDuration);
+        }
+    }
+
     public AlterationController(Alteration alteration, float remainingDuration, string ownerId) {
         Alteration = alteration;
         RemainingDuration = remainingDuration;
@@ -26,13 +34,5 @@ public class AlterationController
         if (Alteration.IsPermanent)
             return;
         RemainingDuration = remainingDuration;
-    }
-
-    public float RemainingDuration {
-        get => _remainingDuration;
-        private set {
-            _remainingDuration = value;
-            OnRemainingDurationChanged?.Invoke(_remainingDuration);
-        }
-    }
+    }    
 }

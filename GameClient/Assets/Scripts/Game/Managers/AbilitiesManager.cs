@@ -20,13 +20,13 @@ public class AbilitiesManager : MonoBehaviour
         UseAbility(ability);
     }
 
-    private void FixedUpdate() {
-        float cooldownAmount = Time.deltaTime;
-        AbilitySlot1.Cooldown(cooldownAmount);
-        AbilitySlot2.Cooldown(cooldownAmount);
-        AbilitySlot3.Cooldown(cooldownAmount);
-        AbilitySlot4.Cooldown(cooldownAmount);
-        AbilitySlot5.Cooldown(cooldownAmount);
+    private void Awake() {
+        if (Current == null)
+            Current = this;
+        else
+            Destroy(gameObject);
+
+        MessageHandler.Current.OnMessageUsedAbilityEvent += OnMessageUsedAbility;
     }
 
     private void Update() {
@@ -42,13 +42,13 @@ public class AbilitiesManager : MonoBehaviour
             AbilitySlot5.Use();
     }
 
-    private void Awake() {
-        if (Current == null)
-            Current = this;
-        else
-            Destroy(gameObject);
-
-        MessageHandler.Current.OnMessageUsedAbilityEvent += OnMessageUsedAbility;
+    private void FixedUpdate() {
+        float cooldownAmount = Time.deltaTime;
+        AbilitySlot1.Cooldown(cooldownAmount);
+        AbilitySlot2.Cooldown(cooldownAmount);
+        AbilitySlot3.Cooldown(cooldownAmount);
+        AbilitySlot4.Cooldown(cooldownAmount);
+        AbilitySlot5.Cooldown(cooldownAmount);
     }
 
     public void UseAbility(Ability ability) {

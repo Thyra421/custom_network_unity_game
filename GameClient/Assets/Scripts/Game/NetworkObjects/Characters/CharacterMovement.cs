@@ -1,4 +1,6 @@
-public abstract class CharacterMovement
+using UnityEngine;
+
+public abstract class CharacterMovement : MonoBehaviour
 {
     protected abstract void Move();
 

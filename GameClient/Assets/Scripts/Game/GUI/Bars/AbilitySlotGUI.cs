@@ -14,6 +14,9 @@ public class AbilitySlotGUI : MonoBehaviour, ITooltipHandlerGUI
     private TMP_Text _text;
     private AbilitySlot _slot;
 
+    public bool IsTooltipReady => _slot?.CurrentAbility != null;
+    public RectTransform RectTransform => _transform;
+
     private void OnChanged(Ability ability) {
         if (ability != null) {
             _image.gameObject.SetActive(true);
@@ -40,9 +43,5 @@ public class AbilitySlotGUI : MonoBehaviour, ITooltipHandlerGUI
 
     public void BuildTooltip(RectTransform parent) {
         _slot.CurrentAbility.BuildTooltip(parent);
-    }
-
-    public bool IsTooltipReady => _slot?.CurrentAbility != null;
-
-    public RectTransform RectTransform => _transform;
+    }    
 }

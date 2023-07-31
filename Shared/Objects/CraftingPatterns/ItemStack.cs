@@ -9,6 +9,5 @@ public class ItemStack
     private int _amount;
 
     public Item Item => _item;
-
     public int Amount => _amount;
 }

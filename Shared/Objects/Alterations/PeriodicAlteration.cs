@@ -9,6 +9,5 @@ public class PeriodicAlteration : Alteration, IUsable
     private float _intervalDurationInSeconds;
 
     public DirectEffect[] Effects => _effects;
-
     public float IntervalDurationInSeconds => _intervalDurationInSeconds;
 }

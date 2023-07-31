@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 
-public class Cooldown
+public class CooldownController
 {
     public IRechargeable Element { get; private set; }
     private float _remainingCooldownInSeconds;
 
-    public Cooldown(IRechargeable element) {
+    public bool IsReady => _remainingCooldownInSeconds <= 0;
+
+    public CooldownController(IRechargeable element) {
         Element = element;
         _remainingCooldownInSeconds = element.CooldownInSeconds;
     }
@@ -13,6 +15,4 @@ public class Cooldown
     public void Recharge() {
         _remainingCooldownInSeconds -= Time.deltaTime;
     }
-
-    public bool IsReady => _remainingCooldownInSeconds <= 0;
 }

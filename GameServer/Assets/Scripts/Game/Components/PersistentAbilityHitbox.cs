@@ -5,19 +5,14 @@ class PersistentAbilityHitbox : MonoBehaviour
 {
     private float _duration;
     private Alteration _alteration;
-    private List<Player> _playersHit = new List<Player>();
+    private readonly List<Player> _playersHit = new List<Player>();
 
     public Player Player { get; private set; }
 
     private void Start() {
         if (_duration > 0)
             Destroy(gameObject, _duration);
-    }
-
-    private void OnDestroy() {
-        if (_playersHit.Count > 0)
-            _playersHit.ForEach((Player p) => p.Alterations.Remove(_alteration, Player));
-    }
+    }    
 
     private void OnTriggerEnter(Collider other) {
         Player otherPlayer = other.GetComponent<Player>();
@@ -35,6 +30,11 @@ class PersistentAbilityHitbox : MonoBehaviour
             otherPlayer.Alterations.Remove(_alteration, Player);
             _playersHit.Remove(otherPlayer);
         }
+    }
+
+    private void OnDestroy() {
+        if (_playersHit.Count > 0)
+            _playersHit.ForEach((Player p) => p.Alterations.Remove(_alteration, Player));
     }
 
     public void Initialize(Player player, Alteration alteration, float duration) {

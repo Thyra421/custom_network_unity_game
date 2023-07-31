@@ -5,11 +5,7 @@ public class Statistic
     public StatisticType Type { get; }
 
     public delegate void OnStatisticChangedHandler(float value);
-    public event OnStatisticChangedHandler OnStatisticChanged;    
-
-    public Statistic(StatisticType type) {
-        Type = type;
-    }
+    public event OnStatisticChangedHandler OnStatisticChanged;
 
     public float Value {
         get => _value;
@@ -17,5 +13,9 @@ public class Statistic
             _value = value;
             OnStatisticChanged(_value);
         }
+    }
+
+    public Statistic(StatisticType type) {
+        Type = type;
     }
 }

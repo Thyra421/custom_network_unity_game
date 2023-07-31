@@ -11,6 +11,8 @@ public class PlayerAbilities : MonoBehaviour
     private Weapon _weapon;
     private Ability _extraAbility;
 
+    public GameObject MeleePrefab => _meleePrefab;
+
     private void Aimed(AimedAbility aimedAbility, Vector3 aimTarget) {
         GameObject obj = Instantiate(aimedAbility.Prefab, _player.transform.position + Vector3.up, Quaternion.identity);
         DirectAbilityHitbox attackHitbox = obj.AddComponent<DirectAbilityHitbox>();
@@ -46,12 +48,12 @@ public class PlayerAbilities : MonoBehaviour
     public void UseAbility(Ability ability, Vector3 aimTarget) {
         // is allowed to use this ability?
         if ((_weapon == null || !_weapon.Abilities.Any((Ability a) => a == ability)) && ability != _extraAbility) {
-            _player.Client.Tcp.Send(new MessageError(MessageErrorType.cantDoThat));
+            _player.Client.TCP.Send(new MessageError(MessageErrorType.cantDoThat));
             return;
         }
         // ability is in coolown?
         if (_player.Cooldowns.Any(ability)) {
-            _player.Client.Tcp.Send(new MessageError(MessageErrorType.inCooldown));
+            _player.Client.TCP.Send(new MessageError(MessageErrorType.inCooldown));
             return;
         }
 
@@ -67,7 +69,7 @@ public class PlayerAbilities : MonoBehaviour
         } else if (ability is PersistentAOEAbility persistentAOEAbility)
             StartCoroutine(PersistentAOE(persistentAOEAbility, aimTarget));
 
-        _player.Client.Tcp.Send(new MessageUsedAbility(ability.name));
+        _player.Client.TCP.Send(new MessageUsedAbility(ability.name));
         _player.Room.PlayersManager.BroadcastTCP(new MessageTriggerAnimation(_player.Id, ability.AnimationName));
     }
 
@@ -76,8 +78,6 @@ public class PlayerAbilities : MonoBehaviour
             _weapon = weapon;
             _player.Room.PlayersManager.BroadcastTCP(new MessageEquiped(_player.Id, _weapon.name));
         } else
-            _player.Client.Tcp.Send(new MessageError(MessageErrorType.cantDoThat));
+            _player.Client.TCP.Send(new MessageError(MessageErrorType.cantDoThat));
     }
-
-    public GameObject MeleePrefab => _meleePrefab;
 }

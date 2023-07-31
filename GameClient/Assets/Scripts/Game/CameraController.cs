@@ -40,6 +40,7 @@ public class CameraController : MonoBehaviour
     public static CameraController Current { get; private set; }
     public bool IsAiming { get; private set; }
     public bool IsBusy { get; private set; }
+    public Vector3Data AimDirection => new Vector3Data(transform.forward);
 
     public delegate void OnStartZoomInAimHandler();
     public delegate void OnEndZoomInAimHandler();
@@ -109,6 +110,4 @@ public class CameraController : MonoBehaviour
         IsAiming = false;
         OnEndZoomInAim?.Invoke();
     }
-
-    public Vector3Data AimDirection => new Vector3Data(transform.forward);
 }

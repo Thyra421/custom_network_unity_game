@@ -10,6 +10,8 @@ public class NodesManager : MonoBehaviour
     private readonly List<Transform> _occupied = new List<Transform>();
     private readonly List<Node> _nodes = new List<Node>();
 
+    public NodeData[] Datas => _nodes.Select((Node node) => node.Data).ToArray();
+
     private Transform FindFreeSpawn(NodeArea area) {
         Transform randomTransform = area.RandomSpawn;
         while (_occupied.Contains(randomTransform))
@@ -46,6 +48,10 @@ public class NodesManager : MonoBehaviour
         PrepareNodes();
     }
 
+    public Node FindNode(string id) {
+        return _nodes.Find((Node m) => m.Id == id);
+    }
+
     public void RemoveNode(Node node) {
         _room.PlayersManager.BroadcastTCP(new MessageDespawnNode(node.Id));
         _occupied.Remove(node.NodeArea.FindSpawn(node.transform.position));
@@ -54,10 +60,4 @@ public class NodesManager : MonoBehaviour
         _nodes.Remove(node);
         Destroy(node.gameObject);
     }
-
-    public Node FindNode(string id) {
-        return _nodes.Find((Node m) => m.Id == id);
-    }
-
-    public NodeData[] NodeDatas => _nodes.Select((Node node) => node.Data).ToArray();
 }

@@ -8,12 +8,10 @@ public abstract class Effect
     private EffectParameter[] _parameters;
 
     public string ClassName { get; }
+    public string MethodName => _methodName;
+    public EffectParameter[] Parameters => _parameters;
 
     public Effect(string className) {
         ClassName = className;
-    }
-
-    public string MethodName => _methodName;
-
-    public EffectParameter[] Parameters => _parameters;
+    }    
 }

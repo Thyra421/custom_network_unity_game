@@ -6,6 +6,8 @@ public class InventorySlot
     public delegate void OnChangedHandler(Item item, int amount);
     public event OnChangedHandler OnChanged;
 
+    public bool IsEmpty => Item == null;
+
     public void Clear() {
         Item = null;
         Amount = 0;
@@ -37,7 +39,5 @@ public class InventorySlot
         Amount += amount;
         OnChanged?.Invoke(Item, Amount);
     }
-
-    public bool IsEmpty => Item == null;
 }
 

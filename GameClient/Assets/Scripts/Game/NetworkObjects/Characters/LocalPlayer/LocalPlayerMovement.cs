@@ -1,7 +1,7 @@
-using System;
 using UnityEngine;
 
-[Serializable]
+[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(CapsuleCollider))]
 public class LocalPlayerMovement : CharacterMovement
 {
     [Header("Components")]
@@ -29,6 +29,8 @@ public class LocalPlayerMovement : CharacterMovement
     private float _currentSpeed;
     private Vector3 _hitNormal;
 
+    private bool IsOnSlope => Vector3.Angle(Vector3.up, _hitNormal) >= _characterController.slopeLimit;
+    private bool IsGrounded => Physics.CheckSphere(_localPlayer.transform.position, .2f, _whatIsGround);
     private float MovementSpeed => StatisticsManager.Current.Find(StatisticType.MovementSpeed).Value * SharedConfig.Current.PlayerMovementSpeed;
 
     private void MoveInDirection() {
@@ -61,7 +63,7 @@ public class LocalPlayerMovement : CharacterMovement
         _hitNormal = hit.normal;
     }
 
-    public void Update() {
+    private void Update() {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         Vector3 input = new Vector3(horizontalInput, 0, verticalInput);
@@ -89,8 +91,4 @@ public class LocalPlayerMovement : CharacterMovement
         _localPlayer.Animation.SetFloat("X", _direction.x);
         _localPlayer.Animation.SetFloat("Y", _direction.z);
     }
-
-    public bool IsOnSlope => Vector3.Angle(Vector3.up, _hitNormal) >= _characterController.slopeLimit;
-
-    public bool IsGrounded => Physics.CheckSphere(_localPlayer.transform.position, .2f, _whatIsGround);
 }

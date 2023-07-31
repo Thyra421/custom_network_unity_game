@@ -6,10 +6,6 @@ public class CharacterHealth
     public delegate void OnChangedHandler(int currentHealth, int maxHealth);
     public event OnChangedHandler OnChanged;
 
-    public CharacterHealth() {
-        _currentHealth = _maxHealth;
-    }
-
     public int CurrentHealth {
         get => _currentHealth;
         set {
@@ -17,7 +13,6 @@ public class CharacterHealth
             OnChanged?.Invoke(_currentHealth, _maxHealth);
         }
     }
-
     public int MaxHealth {
         get => _maxHealth;
         set {
@@ -25,4 +20,8 @@ public class CharacterHealth
             OnChanged?.Invoke(_currentHealth, _maxHealth);
         }
     }
+
+    public CharacterHealth() {
+        _currentHealth = _maxHealth;
+    }    
 }

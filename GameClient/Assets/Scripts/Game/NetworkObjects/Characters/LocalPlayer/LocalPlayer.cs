@@ -1,7 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
-[RequireComponent(typeof(CapsuleCollider))]
+[RequireComponent(typeof(LocalPlayerMovement))]
 public class LocalPlayer : Character
 {
     [SerializeField]
@@ -11,7 +10,8 @@ public class LocalPlayer : Character
     private float _elapsedTime = 0f;
     private TransformData _lastTransform;
 
-    protected override CharacterMovement CharacterMovement => _movement;
+    public LocalPlayerAnimation Animation => _animation;
+    public LocalPlayerMovement Movement => _movement;
 
     private void SendMovement() {
         TransformData transformData = new TransformData(transform);
@@ -22,14 +22,7 @@ public class LocalPlayer : Character
         }
     }
 
-    public void OnControllerColliderHit(ControllerColliderHit hit) {
-        Movement.OnControllerColliderHit(hit);
-    }
-
-    protected override void Update() {
-        base.Update();
-        Movement.Update();
-
+    private void Update() {
         _elapsedTime += Time.deltaTime;
 
         if (_elapsedTime >= (1f / SharedConfig.Current.SyncFrequency)) {
@@ -37,8 +30,4 @@ public class LocalPlayer : Character
             SendMovement();
         }
     }
-
-    public LocalPlayerAnimation Animation => _animation;
-
-    public LocalPlayerMovement Movement => _movement;
 }

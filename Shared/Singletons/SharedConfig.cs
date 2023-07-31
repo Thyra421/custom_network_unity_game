@@ -27,24 +27,14 @@ public class SharedConfig : SingletonScriptableObject<SharedConfig>
     private string _alterationsPath = "Shared/Alterations";    
 
     public int SyncFrequency => _syncFrequency;
-
     public int TCPBatchSize => _TCPBatchSize;
-
     public int InventorySpace => _inventorySpace;
-
     public float PlayerMovementSpeed => _playerMovementSpeed;
-
     public string PrefabsPath => _prefabsPath;
-
     public string ItemsPath => _itemsPath;
-
     public string DropSourcesPath => _dropSourcesPath;
-
     public string CraftingPattersPath => _craftingPattersPath;
-
     public string NPCsPath => _NPCsPath;
-
     public string AbilitiesPath => _abilitiesPath;
-
     public string AlterationsPath => _alterationsPath;
 }

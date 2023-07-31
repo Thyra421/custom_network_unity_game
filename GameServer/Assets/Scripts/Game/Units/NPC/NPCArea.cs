@@ -10,10 +10,8 @@ public class NPCArea : MonoBehaviour
     [SerializeField]
     private int _amount;
 
-    private void OnDrawGizmos() {
-        Gizmos.DrawWireSphere(transform.position, _radius);
-    }
-
+    public Animal Animal => _animal;
+    public int Amount => _amount;
     public Vector3 RandomPosition {
         get {
             Vector3 randomPoint = transform.position + Random.insideUnitSphere * _radius;
@@ -22,7 +20,7 @@ public class NPCArea : MonoBehaviour
         }
     }
 
-    public Animal Animal => _animal;
-
-    public int Amount => _amount;
+    private void OnDrawGizmos() {
+        Gizmos.DrawWireSphere(transform.position, _radius);
+    }      
 }

@@ -5,7 +5,6 @@
 [RequireComponent(typeof(PlayerActivity))]
 [RequireComponent(typeof(PlayerCooldowns))]
 [RequireComponent(typeof(PlayerAlterations))]
-[RequireComponent(typeof(PlayerStatistics))]
 public class Player : Unit
 {
     [SerializeField]
@@ -18,36 +17,31 @@ public class Player : Unit
     private PlayerCooldowns _cooldowns;
     [SerializeField]
     private PlayerAlterations _alterations;
-    [SerializeField]
-    private PlayerStatistics _statistics;
 
     public Client Client { get; private set; }
     public Room Room { get; private set; }
-    public PlayerInventory Inventory { get; }
-    public PlayerExperience Experience { get; }
+    public PlayerInventory Inventory { get; private set; }
+    public PlayerExperience Experience { get; private set; }
+    public PlayerStatistics Statistics { get; private set; }
+    public PlayerHealth Health { get; private set; }
+    public PlayerAnimation Animation { get; private set; }
+    public PlayerAbilities Abilities => _abilities;
+    public PlayerMovement Movement => _movement;
+    public PlayerActivity Activity => _activity;
+    public PlayerCooldowns Cooldowns => _cooldowns;
+    public PlayerAlterations Alterations => _alterations;
+    public PlayerData Data => new PlayerData(Id, TransformData, Animation.Data);
 
-    private Player() {
+    private void Awake() {
         Inventory = new PlayerInventory(this);
         Experience = new PlayerExperience(this);
+        Statistics = new PlayerStatistics(this);
+        Health = new PlayerHealth(this);
+        Animation = new PlayerAnimation();
     }
 
     public void Initialize(Client client, Room room) {
         Client = client;
         Room = room;
-        client.Player = this;
-    }
-
-    public PlayerData Data => new PlayerData(Id, Movement.TransformData, Movement.AnimationData);
-
-    public PlayerAbilities Abilities => _abilities;
-
-    public PlayerMovement Movement => _movement;
-
-    public PlayerActivity Activity => _activity;
-
-    public PlayerCooldowns Cooldowns => _cooldowns;
-
-    public PlayerAlterations Alterations => _alterations;
-
-    public PlayerStatistics Statistics => _statistics;
+    }    
 }

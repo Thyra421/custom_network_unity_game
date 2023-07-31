@@ -8,7 +8,6 @@ public class LootTable
     private LootTableEntry[] _entries;
 
     public LootTableEntry[] Entries => _entries;
-
     public Item RandomLoot {
         get {
             int totalDropChance = _entries.Select((LootTableEntry e) => e.DropChance).Sum();

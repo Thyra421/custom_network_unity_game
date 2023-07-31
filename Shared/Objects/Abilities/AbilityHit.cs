@@ -10,6 +10,5 @@ public class AbilityHit : IUsable
     private DirectEffect[] _effects;
 
     public bool Pierce => _pierce;
-
     public DirectEffect[] Effects => _effects;
 }

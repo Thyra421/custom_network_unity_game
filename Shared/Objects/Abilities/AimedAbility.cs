@@ -11,9 +11,7 @@ public class AimedAbility : DirectAbility
     private float _distance;
 
     public GameObject Prefab => _prefab;
-
     public float Speed => _speed;
-
     public float Distance => _distance;
 
     public override void BuildTooltip(RectTransform parent) {

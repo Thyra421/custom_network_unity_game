@@ -12,6 +12,8 @@ public class AlterationGUI : MonoBehaviour, ITooltipHandlerGUI
     private TMP_Text _timerText;
 
     public AlterationController AlterationController { get; private set; }
+    public RectTransform RectTransform => _rectTransform;
+    public bool IsTooltipReady => AlterationController != null && AlterationController.Alteration != null;
 
     private void OnRemainingDurationChanged(float remainingDuration) {
         _timerText.text = Mathf.Ceil(remainingDuration).ToString();
@@ -27,9 +29,5 @@ public class AlterationGUI : MonoBehaviour, ITooltipHandlerGUI
 
     public void BuildTooltip(RectTransform parent) {
         AlterationController.Alteration.BuildTooltip(parent);
-    }
-
-    public RectTransform RectTransform => _rectTransform;
-
-    public bool IsTooltipReady => AlterationController != null && AlterationController.Alteration != null;
+    }    
 }

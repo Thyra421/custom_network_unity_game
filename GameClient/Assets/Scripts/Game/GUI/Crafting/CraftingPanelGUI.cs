@@ -28,6 +28,10 @@ public class CraftingPanelGUI : MonoBehaviour
         TCPClient.Send(new MessageCraft(_selectedPattern.name, _directoryName));
     }
 
+    private void Awake() {
+        _craftButton.onClick.AddListener(OnClickCraft);
+    }
+
     private void Start() {
         CraftingPattern[] patterns = Resources.LoadAll<CraftingPattern>($"{SharedConfig.Current.CraftingPattersPath}/{_directoryName}");
         foreach (CraftingPattern pattern in patterns) {
@@ -35,11 +39,7 @@ public class CraftingPanelGUI : MonoBehaviour
             craftingItemSelectionGUI.Initialize(this, pattern);
         }
         SelectPattern(patterns[0]);
-    }
-
-    private void Awake() {
-        _craftButton.onClick.AddListener(OnClickCraft);
-    }
+    }    
 
     public void SelectPattern(CraftingPattern pattern) {
         if (pattern == _selectedPattern)

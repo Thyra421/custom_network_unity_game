@@ -27,6 +27,7 @@ public class AbilitiesGUIManager : MonoBehaviour
 
     private void Awake() {
         AbilitiesManager.Current.OnChangedWeapon += OnChangedWeapon;
+
         _ability1.Initialize(AbilitiesManager.Current.AbilitySlot1);
         _ability2.Initialize(AbilitiesManager.Current.AbilitySlot2);
         _ability3.Initialize(AbilitiesManager.Current.AbilitySlot3);

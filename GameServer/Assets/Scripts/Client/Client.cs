@@ -1,31 +1,19 @@
 ﻿public class Client
 {
-    private readonly TCPClient _tcp;
-    private UDPClient _udp;
-    private string _secret;
-    private Player _player;
+    public TCPClient TCP { get; private set; }
+    public UDPClient UDP { get; private set; }
+    public string Secret { get; private set; }
+    public Player Player { get; set; }
+    public bool Authenticated => UDP != null && UDP!= null;
 
     public Client(TCPClient tcp) {
-        _tcp = tcp;
+        TCP = tcp;
         tcp.Client = this;
     }
 
     public void Authenticate(UDPClient udp, string secret) {
-        _udp = udp;
-        _secret = secret;
-    }
-
-    public TCPClient Tcp => _tcp;
-
-    public UDPClient Udp => _udp;
-
-    public string Secret => _secret;
-
-    public bool Authenticated => _udp != null && _secret != null;
-
-    public Player Player {
-        get => _player;
-        set => _player = value;
+        UDP = udp;
+        Secret = secret;
     }
 }
 

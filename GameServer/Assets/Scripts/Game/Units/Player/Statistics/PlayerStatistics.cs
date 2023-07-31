@@ -1,14 +1,9 @@
 using System;
 using System.Linq;
-using UnityEngine;
 
-public class PlayerStatistics : MonoBehaviour
+public class PlayerStatistics
 {
-    [SerializeField]
-    private Player _player;
-    private int _maxHealth = 100;
-    private int _currentHealth;
-
+    private readonly Player _player;
     private readonly Statistic[] _statistics = new Statistic[Enum.GetValues(typeof(StatisticType)).Length];
 
     private StatisticData[] Datas => _statistics.Select((Statistic s) => s.Data).ToArray();
@@ -19,14 +14,16 @@ public class PlayerStatistics : MonoBehaviour
         StatisticData[] difference = newStatistics.Where((StatisticData sd, int index) => sd.value != oldStatistics[index].value).ToArray();
 
         if (difference.Length > 0)
-            _player.Client.Tcp.Send(new MessageStatisticsChanged(difference));
+            _player.Client.TCP.Send(new MessageStatisticsChanged(difference));
     }
 
-    private void Awake() {
+    public PlayerStatistics(Player player) {
+        _player = player;
         for (int i = 0; i < Enum.GetValues(typeof(StatisticType)).Length; i++)
             _statistics[i] = new Statistic((StatisticType)Enum.GetValues(typeof(StatisticType)).GetValue(i));
-        _currentHealth = _maxHealth;
     }
+
+    public Statistic Find(StatisticType type) => Array.Find(_statistics, (Statistic s) => s.Type == type);
 
     public void OnAddedContinuousAlteration(ContinuousAlteration alteration) {
         StatisticData[] oldStatistics = Datas;
@@ -41,23 +38,4 @@ public class PlayerStatistics : MonoBehaviour
 
         OnStatisticsChanged(oldStatistics);
     }
-
-    public int CurrentHealth {
-        get => _currentHealth;
-        set {
-            _currentHealth = Mathf.Clamp(value, 0, _maxHealth);
-            _player.Room.PlayersManager.BroadcastTCP(new MessageHealthChanged(_player.Id, _player.Statistics.CurrentHealth, _player.Statistics.MaxHealth));
-        }
-    }
-
-    public int MaxHealth {
-        get => _maxHealth;
-        set {
-            _maxHealth = value;
-            _currentHealth = Mathf.Clamp(_currentHealth, 0, _maxHealth);
-            _player.Room.PlayersManager.BroadcastTCP(new MessageHealthChanged(_player.Id, _player.Statistics.CurrentHealth, _player.Statistics.MaxHealth));
-        }
-    }
-
-    public Statistic Find(StatisticType type) => Array.Find(_statistics, (Statistic s) => s.Type == type);
 }
