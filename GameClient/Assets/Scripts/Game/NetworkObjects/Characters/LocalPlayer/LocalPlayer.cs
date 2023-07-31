@@ -1,5 +1,7 @@
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(CapsuleCollider))]
 public class LocalPlayer : Character
 {
     [SerializeField]

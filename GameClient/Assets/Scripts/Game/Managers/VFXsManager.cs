@@ -46,6 +46,7 @@ public class VFXsManager : MonoBehaviour
             Current = this;
         else
             Destroy(gameObject);
+
         MessageHandler.Current.OnMessageSpawnVFXEvent += OnMessageSpawnVFX;
         MessageHandler.Current.OnMessageVFXMovedEvent += OnMessageVFXMoved;
         MessageHandler.Current.OnMessageDespawnVFXEvent += OnMessageDespawnVFX;

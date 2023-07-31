@@ -44,6 +44,7 @@ public class NodesManager : MonoBehaviour
             Current = this;
         else
             Destroy(gameObject);
+
         MessageHandler.Current.OnMessageDespawnNodeEvent += OnMessageDespawnNode;
         MessageHandler.Current.OnMessageSpawnNodesEvent += OnMessageSpawnNodes;
     }

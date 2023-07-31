@@ -59,9 +59,11 @@ public class InventoryManager : MonoBehaviour
             Current = this;
         else
             Destroy(gameObject);
+
         Slots = new InventorySlot[SharedConfig.Current.InventorySpace];
         for (int i = 0; i < Slots.Length; i++)
             Slots[i] = new InventorySlot();
+
         MessageHandler.Current.OnMessageInventoryAddEvent += OnMessageInventoryAdd;
         MessageHandler.Current.OnMessageInventoryRemoveEvent += OnMessageInventoryRemove;
         MessageHandler.Current.OnMessageCraftedEvent += OnMessageCrafted;

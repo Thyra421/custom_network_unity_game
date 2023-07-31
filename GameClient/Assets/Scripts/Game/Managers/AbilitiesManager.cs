@@ -47,6 +47,7 @@ public class AbilitiesManager : MonoBehaviour
             Current = this;
         else
             Destroy(gameObject);
+
         MessageHandler.Current.OnMessageUsedAbilityEvent += OnMessageUsedAbility;
     }
 
