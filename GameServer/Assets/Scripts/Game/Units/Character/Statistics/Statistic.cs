@@ -24,5 +24,5 @@ public class Statistic
 
     public Statistic(StatisticType type) {
         Type = type;
-    }    
+    }
 }

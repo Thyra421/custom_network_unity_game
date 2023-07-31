@@ -4085,7 +4085,6 @@ MonoBehaviour:
   - {fileID: 1913980706}
   - {fileID: 1654411860}
   - {fileID: 4423439}
-  _playerTemplate: {fileID: 5084082204494938559, guid: b45595c11d2b97f44b6163dfb7ddca8b, type: 3}
   _nodeAreas:
   - _spawns:
     - {fileID: 1932258258}

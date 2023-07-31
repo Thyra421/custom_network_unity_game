@@ -18,7 +18,7 @@ MonoBehaviour:
   _effects: []
   _animationName: Attack
   _description: Summons an ice storm dealing damage to all enemies.
-  _alteration: {fileID: 11400000, guid: 847aed9e1b932c94d9e275ba207a4149, type: 2}
+  _alteration: {fileID: 11400000, guid: 2219ad8c35762c14ba4c90ff37654d3f, type: 2}
   _prefab: {fileID: 6274588109753194328, guid: 4dcebb5fb6812b14a8ca9194dd975d97, type: 3}
   _delayInSeconds: 0
   _durationInSeconds: 12
