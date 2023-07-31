@@ -1,4 +1,4 @@
-public class Statistics
+public class CharacterHealth
 {
     private int _currentHealth;
     private int _maxHealth = 100;
@@ -6,7 +6,7 @@ public class Statistics
     public delegate void OnChangedHandler(int currentHealth, int maxHealth);
     public event OnChangedHandler OnChanged;
 
-    public Statistics() {
+    public CharacterHealth() {
         _currentHealth = _maxHealth;
     }
 

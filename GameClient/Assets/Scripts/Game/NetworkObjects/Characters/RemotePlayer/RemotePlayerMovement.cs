@@ -1,36 +1,36 @@
 using UnityEngine;
 
-public class RemotePlayerMovement : Movement
+public class RemotePlayerMovement : CharacterMovement
 {
-    [SerializeField]
-    protected float _rotationSpeed = 100f;
+    private Vector3 _destinationPosition;
+    private Vector3 _destinationRotation;
+    private float _movementSpeed;
 
-    public Vector3 DestinationPosition { get; set; }
-    public Vector3 DestinationRotation { get; set; }
-    public PlayerAnimationData PlayerAnimationData { get; set; }
-    public float MovementSpeed { get; set; }
+    private RemotePlayer RemotePlayer { get; set; }
 
     protected override void Move() {
-        Vector3 direction = (DestinationPosition - transform.position).normalized;
-        float distance = Vector3.Distance(transform.position, DestinationPosition);
+        Vector3 direction = (_destinationPosition - RemotePlayer.transform.position).normalized;
+        float distance = Vector3.Distance(RemotePlayer.transform.position, _destinationPosition);
 
-        _animator.SetBool("IsRunning", PlayerAnimationData.isRunning);
-        _animator.SetBool("IsGrounded", PlayerAnimationData.isGrounded);
-        _animator.SetFloat("X", PlayerAnimationData.x);
-        _animator.SetFloat("Y", PlayerAnimationData.y);
-        if (distance <= MovementSpeed * Time.deltaTime || distance > 2) {
-            transform.position = DestinationPosition;
-        } else {
-            transform.position += MovementSpeed * Time.deltaTime * direction;
-        }
+        if (distance <= _movementSpeed * Time.deltaTime || distance > 2)
+            RemotePlayer.transform.position = _destinationPosition;
+        else
+            RemotePlayer.transform.position += _movementSpeed * Time.deltaTime * direction;
     }
 
     protected override void Rotate() {
-        transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, DestinationRotation, Time.deltaTime * _rotationSpeed);
+        RemotePlayer.transform.eulerAngles = _destinationRotation;
     }
 
-    private void Awake() {
-        DestinationPosition = transform.position;
-        DestinationRotation = transform.eulerAngles;
+    public RemotePlayerMovement(RemotePlayer remotePlayer) {
+        RemotePlayer = remotePlayer;
+        _destinationPosition = RemotePlayer.transform.position;
+        _destinationRotation = RemotePlayer.transform.eulerAngles;
+    }
+
+    public void SetMovement(TransformData transformData, float movementSpeed) {
+        _destinationPosition = transformData.position.ToVector3;
+        _destinationRotation = transformData.rotation.ToVector3;
+        _movementSpeed = movementSpeed;
     }
 }

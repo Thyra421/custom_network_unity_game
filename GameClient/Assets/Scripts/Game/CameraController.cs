@@ -6,7 +6,7 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private Transform _target;
     [SerializeField]
-    private LocalPlayerMovement _player;
+    private Transform _player;
     [Header("Movement")]
     [SerializeField]
     private float _zoomSpeed = 5f;
@@ -79,7 +79,7 @@ public class CameraController : MonoBehaviour
                 _xRotation += Input.GetAxis("Mouse X") * _rotationSpeed;
                 _yRotation -= Input.GetAxis("Mouse Y") * _rotationSpeed;
                 _yRotation = Mathf.Clamp(_yRotation, -60f, 60f);
-                _player.transform.rotation = Quaternion.Euler(0f, _xRotation, 0f);
+                _player.rotation = Quaternion.Euler(0f, _xRotation, 0f);
             }
         }
 

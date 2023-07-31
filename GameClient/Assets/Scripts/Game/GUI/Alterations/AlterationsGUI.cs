@@ -8,7 +8,7 @@ public class AlterationsGUI : MonoBehaviour
     [SerializeField]
     private GameObject _prefab;
     [SerializeField]
-    private Alterations _alterations;
+    private Character _character;
     private readonly List<AlterationGUI> _alterationGUIs = new List<AlterationGUI>();
 
     private AlterationGUI Find(AlterationController alterationController) => _alterationGUIs.Find((AlterationGUI alterationGUI) => alterationGUI.AlterationController == alterationController);
@@ -30,7 +30,7 @@ public class AlterationsGUI : MonoBehaviour
     }
 
     private void Awake() {
-        _alterations.OnAdded += OnAdded;
-        _alterations.OnRemoved += OnRemoved;
+        _character.Alterations.OnAdded += OnAdded;
+        _character.Alterations.OnRemoved += OnRemoved;
     }
 }

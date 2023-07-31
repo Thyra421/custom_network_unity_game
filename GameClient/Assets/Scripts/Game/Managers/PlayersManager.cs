@@ -11,32 +11,25 @@ public class PlayersManager : MonoBehaviour
 
     public static PlayersManager Current { get; private set; }
 
-    public delegate void OnAddedPlayerHandler(Character player);
-    public delegate void OnRemovedPlayerHandler(Character player);
-    public event OnAddedPlayerHandler OnAddedPlayer;
-    public event OnRemovedPlayerHandler OnRemovedPlayer;
-
     private RemotePlayer FindPlayer(string id) => _remotePlayers.Find((RemotePlayer p) => p.Id == id);
 
     private void CreatePlayer(PlayerData data) {
         RemotePlayer newRemotePlayer = Instantiate(_playerPrefab, data.transformData.position.ToVector3, Quaternion.identity).GetComponent<RemotePlayer>();
         newRemotePlayer.Initialize(data.id);
         _remotePlayers.Add(newRemotePlayer);
-        OnAddedPlayer?.Invoke(newRemotePlayer);
     }
 
     private void RemovePlayer(RemotePlayer remotePlayer) {
-        OnRemovedPlayer?.Invoke(remotePlayer);
         _remotePlayers.Remove(remotePlayer);
         Destroy(remotePlayer.gameObject);
     }
 
     private void OnMessageGameState(MessageGameState messageGameState) {
         _myPlayer.Initialize(messageGameState.id);
-        foreach (PlayerData p in messageGameState.players) {
+
+        foreach (PlayerData p in messageGameState.players)
             if (p.id != _myPlayer.Id)
                 CreatePlayer(p);
-        }
     }
 
     private void OnMessageJoinedGame(MessageJoinedGame messageJoinedGame) {
@@ -50,11 +43,10 @@ public class PlayersManager : MonoBehaviour
                 continue;
 
             RemotePlayer remotePlayer = FindPlayer(pmd.id);
+
             if (remotePlayer != null) {
-                remotePlayer.Movement.DestinationPosition = pmd.transformData.position.ToVector3;
-                remotePlayer.Movement.DestinationRotation = pmd.transformData.rotation.ToVector3;
-                remotePlayer.Movement.PlayerAnimationData = pmd.animationData;
-                remotePlayer.Movement.MovementSpeed = pmd.movementSpeed;
+                remotePlayer.Movement.SetMovement(pmd.transformData, pmd.movementSpeed);
+                remotePlayer.Animation.SetAnimation(pmd.animationData);
             }
         }
     }
@@ -64,6 +56,7 @@ public class PlayersManager : MonoBehaviour
             return;
 
         RemotePlayer remotePlayer = FindPlayer(serverMessageLeftGame.id);
+
         if (remotePlayer != null)
             RemovePlayer(remotePlayer);
     }
@@ -74,6 +67,7 @@ public class PlayersManager : MonoBehaviour
             _myPlayer.Statistics.CurrentHealth = messageHealthChanged.currentHealth;
         } else {
             RemotePlayer remotePlayer = FindPlayer(messageHealthChanged.id);
+
             if (remotePlayer != null) {
                 remotePlayer.Statistics.MaxHealth = messageHealthChanged.maxHealth;
                 remotePlayer.Statistics.CurrentHealth = messageHealthChanged.currentHealth;
@@ -83,23 +77,35 @@ public class PlayersManager : MonoBehaviour
 
     private void OnMessageChannel(MessageChannel messageChannel) {
         if (messageChannel.id == _myPlayer.Id)
-            _myPlayer.Channel(messageChannel.activityName, messageChannel.ticks, messageChannel.intervalTimeInSeconds);
-        else
-            FindPlayer(messageChannel.id)?.Channel(messageChannel.activityName, messageChannel.ticks, messageChannel.intervalTimeInSeconds);
+            _myPlayer.Activity.Channel(messageChannel.activityName, messageChannel.ticks, messageChannel.intervalTimeInSeconds);
+        else {
+            RemotePlayer remotePlayer = FindPlayer(messageChannel.id);
+
+            if (remotePlayer != null)
+                remotePlayer.Activity.Channel(messageChannel.activityName, messageChannel.ticks, messageChannel.intervalTimeInSeconds);
+        }
     }
 
     private void OnMessageCast(MessageCast messageCast) {
         if (messageCast.id == _myPlayer.Id)
-            _myPlayer.Cast(messageCast.activityName, messageCast.castTimeInSeconds);
-        else
-            FindPlayer(messageCast.id)?.Cast(messageCast.activityName, messageCast.castTimeInSeconds);
+            _myPlayer.Activity.Cast(messageCast.activityName, messageCast.castTimeInSeconds);
+        else {
+            RemotePlayer remotePlayer = FindPlayer(messageCast.id);
+
+            if (remotePlayer != null)
+                remotePlayer.Activity.Cast(messageCast.activityName, messageCast.castTimeInSeconds);
+        }
     }
 
     private void OnMessageStopActivity(MessageStopActivity messageStopActivity) {
         if (messageStopActivity.id == _myPlayer.Id)
-            _myPlayer.StopActivity();
-        else
-            FindPlayer(messageStopActivity.id)?.StopActivity();
+            _myPlayer.Activity.StopActivity();
+        else {
+            RemotePlayer remotePlayer = FindPlayer(messageStopActivity.id);
+
+            if (remotePlayer != null)
+                remotePlayer.Activity.StopActivity();
+        }
     }
 
     private void OnMessageEquiped(MessageEquiped messageEquiped) {
@@ -108,16 +114,20 @@ public class PlayersManager : MonoBehaviour
         if (messageEquiped.id == _myPlayer.Id) {
             AbilitiesManager.Current.Equip(weapon);
             // TODO equip weapon skin
-        } else
+        } else {
             // TODO equip weapon skin
-            ;
+        }
     }
 
     private void OnMessageTriggerAnimation(MessageTriggerAnimation messageTriggerAnimation) {
         if (messageTriggerAnimation.id == _myPlayer.Id)
-            _myPlayer.TriggerAnimation(messageTriggerAnimation.animationName);
-        else
-            FindPlayer(messageTriggerAnimation.id)?.TriggerAnimation(messageTriggerAnimation.animationName);
+            _myPlayer.Animation.SetTrigger(messageTriggerAnimation.animationName);
+        else {
+            RemotePlayer remotePlayer = FindPlayer(messageTriggerAnimation.id);
+
+            if (remotePlayer != null)
+                remotePlayer.Animation.SetTrigger(messageTriggerAnimation.animationName);
+        }
     }
 
     private void OnMessageAddAlteration(MessageAddAlteration messageAddAlteration) {
@@ -126,8 +136,12 @@ public class PlayersManager : MonoBehaviour
 
         if (messageAddAlteration.alteration.targetId == _myPlayer.Id)
             _myPlayer.Alterations.Add(alterationController);
-        else
-            FindPlayer(messageAddAlteration.alteration.targetId)?.Alterations.Add(alterationController);
+        else {
+            RemotePlayer remotePlayer = FindPlayer(messageAddAlteration.alteration.targetId);
+
+            if (remotePlayer != null)
+                remotePlayer.Alterations.Add(alterationController);
+        }
     }
 
     private void OnMessageRefreshAlteration(MessageRefreshAlteration messageRefreshAlteration) {
@@ -135,8 +149,12 @@ public class PlayersManager : MonoBehaviour
 
         if (messageRefreshAlteration.alteration.targetId == _myPlayer.Id)
             _myPlayer.Alterations.Refresh(alteration, messageRefreshAlteration.alteration.remainingDuration, messageRefreshAlteration.alteration.ownerId);
-        else
-            FindPlayer(messageRefreshAlteration.alteration.targetId)?.Alterations.Refresh(alteration, messageRefreshAlteration.alteration.remainingDuration, messageRefreshAlteration.alteration.ownerId);
+        else {
+            RemotePlayer remotePlayer = FindPlayer(messageRefreshAlteration.alteration.targetId);
+
+            if (remotePlayer != null)
+                remotePlayer.Alterations.Refresh(alteration, messageRefreshAlteration.alteration.remainingDuration, messageRefreshAlteration.alteration.ownerId);
+        }
     }
 
     private void OnMessageRemoveAlteration(MessageRemoveAlteration messageRemoveAlteration) {
@@ -144,8 +162,12 @@ public class PlayersManager : MonoBehaviour
 
         if (messageRemoveAlteration.alteration.targetId == _myPlayer.Id)
             _myPlayer.Alterations.Remove(alteration, messageRemoveAlteration.alteration.ownerId);
-        else
-            FindPlayer(messageRemoveAlteration.alteration.targetId)?.Alterations.Remove(alteration, messageRemoveAlteration.alteration.ownerId);
+        else {
+            RemotePlayer remotePlayer = FindPlayer(messageRemoveAlteration.alteration.targetId);
+
+            if (remotePlayer != null)
+                remotePlayer.Alterations.Remove(alteration, messageRemoveAlteration.alteration.ownerId);
+        }
     }
 
     private void Awake() {
@@ -153,6 +175,7 @@ public class PlayersManager : MonoBehaviour
             Current = this;
         else
             Destroy(gameObject);
+
         MessageHandler.Current.OnMessageGameStateEvent += OnMessageGameState;
         MessageHandler.Current.OnMessageJoinedGameEvent += OnMessageJoinedGame;
         MessageHandler.Current.OnMessageLeftGameEvent += OnMessageLeftGame;

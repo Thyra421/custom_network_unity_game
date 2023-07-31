@@ -1,33 +1,36 @@
 using UnityEngine;
 
-public class NPCMovement : Movement
+public class NPCMovement : CharacterMovement
 {
-    protected float _rotationSpeed = 100f;
+    private Vector3 _destinationPosition;
+    private Vector3 _destinationRotation;
+    private float _movementSpeed;
 
-    public Vector3 DestinationPosition { get; set; }
-    public Vector3 DestinationRotation { get; set; }
-    public NPCAnimationData NPCAnimationData { get; set; }
-    public float MovementSpeed { get; set; }
+    private NPC NPC { get; set; }
 
     protected override void Move() {
-        Vector3 direction = (DestinationPosition - transform.position).normalized;
-        float distance = Vector3.Distance(transform.position, DestinationPosition);
+        Vector3 direction = (_destinationPosition - NPC.transform.position).normalized;
+        float distance = Vector3.Distance(NPC.transform.position, _destinationPosition);
 
-        _animator.SetBool("IsRunning", NPCAnimationData.isRunning);
-        if (distance <= MovementSpeed * Time.deltaTime) {
-            transform.position = DestinationPosition;
-        } else {
-            transform.position += MovementSpeed * Time.deltaTime * direction;
-        }
+        if (distance <= _movementSpeed * Time.deltaTime)
+            NPC.transform.position = _destinationPosition;
+        else
+            NPC.transform.position += _movementSpeed * Time.deltaTime * direction;
     }
 
     protected override void Rotate() {
-        transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, DestinationRotation, Time.deltaTime * _rotationSpeed);
+        NPC.transform.eulerAngles = _destinationRotation;
     }
 
-    private void Awake() {
-        _animator = GetComponent<Animator>();
-        DestinationPosition = transform.position;
-        DestinationRotation = transform.eulerAngles;
+    public NPCMovement(NPC npc) {
+        NPC = npc;
+        _destinationPosition = NPC.transform.position;
+        _destinationRotation = NPC.transform.eulerAngles;
+    }
+
+    public void SetMovement(TransformData transformData, float movementSpeed) {
+        _destinationPosition = transformData.position.ToVector3;
+        _destinationRotation = transformData.rotation.ToVector3;
+        _movementSpeed = movementSpeed;
     }
 }

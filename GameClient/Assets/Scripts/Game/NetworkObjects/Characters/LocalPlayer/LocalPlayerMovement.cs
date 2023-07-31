@@ -1,8 +1,12 @@
+using System;
 using UnityEngine;
 
-public class LocalPlayerMovement : Movement
+[Serializable]
+public class LocalPlayerMovement : CharacterMovement
 {
     [Header("Components")]
+    [SerializeField]
+    private LocalPlayer _localPlayer;
     [SerializeField]
     private CharacterController _characterController;
 
@@ -24,13 +28,12 @@ public class LocalPlayerMovement : Movement
     private float _verticalVelocity;
     private float _currentSpeed;
     private Vector3 _hitNormal;
-    private Vector3 _hitPoint;
 
     private float MovementSpeed => StatisticsManager.Current.Find(StatisticType.MovementSpeed).Value * SharedConfig.Current.PlayerMovementSpeed;
 
     private void MoveInDirection() {
         Vector3 movingDirection = _direction * _currentSpeed;
-        movingDirection = transform.rotation * movingDirection;
+        movingDirection = _localPlayer.transform.rotation * movingDirection;
         Vector3 verticalDirection = Vector3.up * _verticalVelocity;
 
         if (IsOnSlope) {
@@ -38,16 +41,11 @@ public class LocalPlayerMovement : Movement
             movingDirection = perpendicular.normalized * movingDirection.magnitude * (Vector3.Dot(perpendicular, movingDirection) > 0 ? 1 : -1) / 2;
             Quaternion slopeRotation = Quaternion.AngleAxis(90, perpendicular);
             Vector3 slopeDirection = slopeRotation * _hitNormal;
-            Debug.DrawRay(transform.position, slopeDirection);
+            Debug.DrawRay(_localPlayer.transform.position, slopeDirection);
             verticalDirection += slopeDirection * _verticalVelocity;
         }
 
         _characterController.Move((movingDirection + verticalDirection) * Time.deltaTime);
-    }
-
-    void OnControllerColliderHit(ControllerColliderHit hit) {
-        _hitNormal = hit.normal;
-        _hitPoint = hit.point;
     }
 
     protected override void Move() {
@@ -55,7 +53,15 @@ public class LocalPlayerMovement : Movement
         MoveInDirection();
     }
 
-    private void Update() {
+    protected override void Rotate() {
+        //handled by camera
+    }
+
+    public void OnControllerColliderHit(ControllerColliderHit hit) {
+        _hitNormal = hit.normal;
+    }
+
+    public void Update() {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         Vector3 input = new Vector3(horizontalInput, 0, verticalInput);
@@ -64,7 +70,7 @@ public class LocalPlayerMovement : Movement
         if (IsGrounded && !IsOnSlope) {
             if (Input.GetKeyDown(KeyCode.Space)) {
                 _verticalVelocity = Mathf.Sqrt(_jumpHeight * -2f * _gravityStrength);
-                _animator.SetTrigger("Jump");
+                _localPlayer.Animation.SetTrigger("Jump");
             }
         }
 
@@ -78,29 +84,13 @@ public class LocalPlayerMovement : Movement
                 _direction = Vector3.zero;
         }
 
-        _animator.SetBool("IsGrounded", IsGrounded);
-        _animator.SetBool("IsRunning", input.magnitude > 0);
-        _animator.SetFloat("X", _direction.x);
-        _animator.SetFloat("Y", _direction.z);
-    }
-
-    protected override void Rotate() {
-        //handled by camera
-    }
-
-    public Vector3 Movement {
-        get => _direction;
-        set => _direction = value;
-    }
-
-    private void OnDrawGizmos() {
-        Gizmos.DrawSphere(transform.position, .2f);
-        Gizmos.DrawSphere(_hitPoint, .1f);
+        _localPlayer.Animation.SetBool("IsGrounded", IsGrounded);
+        _localPlayer.Animation.SetBool("IsRunning", input.magnitude > 0);
+        _localPlayer.Animation.SetFloat("X", _direction.x);
+        _localPlayer.Animation.SetFloat("Y", _direction.z);
     }
 
     public bool IsOnSlope => Vector3.Angle(Vector3.up, _hitNormal) >= _characterController.slopeLimit;
 
-    public bool IsGrounded => Physics.CheckSphere(transform.position, .2f, _whatIsGround);
-
-    public PlayerAnimationData Animation => new PlayerAnimationData(_animator.GetFloat("X"), _animator.GetFloat("Y"), _animator.GetBool("IsRunning"), _animator.GetBool("IsGrounded"));
+    public bool IsGrounded => Physics.CheckSphere(_localPlayer.transform.position, .2f, _whatIsGround);
 }

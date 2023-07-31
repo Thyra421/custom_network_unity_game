@@ -1,11 +1,15 @@
 using UnityEngine;
 
-[RequireComponent(typeof(NPCMovement))]
 public class NPC : Character
 {
+    public NPCAnimation Animation { get; private set; }
     public NPCMovement Movement { get; private set; }
 
-    private void Awake() {
-        Movement = gameObject.GetComponent<NPCMovement>();
+    protected override CharacterMovement CharacterMovement => Movement;
+
+    protected override void Awake() {
+        base.Awake();
+        Movement = new NPCMovement(this);
+        Animation = new NPCAnimation(GetComponent<Animator>());
     }
 }

@@ -34,9 +34,9 @@ public class CastBarGUI : MonoBehaviour
     }
 
     private void Awake() {
-        _character.OnCast += InitializeCast;
-        _character.OnChannel += InitializeChannel;
-        _character.OnStopActivity += Stop;
+        _character.Activity.OnCast += InitializeCast;
+        _character.Activity.OnChannel += InitializeChannel;
+        _character.Activity.OnStopActivity += Stop;
     }
 
     public void InitializeChannel(string activityName, int ticks, float intervalTimeInSeconds) {

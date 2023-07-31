@@ -31,19 +31,17 @@ public class NPCsManager : MonoBehaviour
     }
 
     private void OnMessageSpawnNPCs(MessageSpawnNPCs messageSpawnNPCs) {
-        foreach (NPCData n in messageSpawnNPCs.NPCs) {
+        foreach (NPCData n in messageSpawnNPCs.NPCs)
             CreateNPC(n);
-        }
     }
 
     private void OnMessageNPCMoved(MessageNPCMoved serverMessageNPCMoved) {
         foreach (NPCMovementData n in serverMessageNPCMoved.NPCs) {
             NPC NPC = FindNPC(n.id);
+
             if (NPC != null) {
-                NPC.Movement.DestinationPosition = n.transformData.position.ToVector3;
-                NPC.Movement.DestinationRotation = n.transformData.rotation.ToVector3;
-                NPC.Movement.NPCAnimationData = n.NPCAnimationData;
-                NPC.Movement.MovementSpeed = n.speed;
+                NPC.Movement.SetMovement(n.transformData, n.movementSpeed);
+                NPC.Animation.SetAnimation(n.NPCAnimationData);
             }
         }
     }
@@ -53,6 +51,7 @@ public class NPCsManager : MonoBehaviour
             Current = this;
         else
             Destroy(gameObject);
+
         MessageHandler.Current.OnMessageSpawnNPCsEvent += OnMessageSpawnNPCs;
         MessageHandler.Current.OnMessageNPCMovedEvent += OnMessageNPCMoved;
     }

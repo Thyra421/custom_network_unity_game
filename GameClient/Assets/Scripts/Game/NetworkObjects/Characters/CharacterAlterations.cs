@@ -1,23 +1,18 @@
 using System.Collections.Generic;
-using UnityEngine;
 
-public class Alterations : MonoBehaviour
+public class CharacterAlterations
 {
-    public List<AlterationController> AlterationControllers { get; } = new List<AlterationController>();
+    private readonly List<AlterationController> _alterationControllers = new List<AlterationController>();
 
     public delegate void OnAddedHandler(AlterationController alterationController);
     public delegate void OnRemovedHandler(AlterationController alterationController);
     public event OnAddedHandler OnAdded;
     public event OnRemovedHandler OnRemoved;
 
-    private AlterationController Find(Alteration alteration, string ownerId) => AlterationControllers.Find((AlterationController alterationController) => alterationController.Alteration == alteration && alterationController.OwnerId == ownerId);
-
-    private void Update() {
-        AlterationControllers.ForEach((AlterationController alterationController) => alterationController.Update());
-    }
+    private AlterationController Find(Alteration alteration, string ownerId) => _alterationControllers.Find((AlterationController alterationController) => alterationController.Alteration == alteration && alterationController.OwnerId == ownerId);    
 
     public void Add(AlterationController alterationController) {
-        AlterationControllers.Add(alterationController);
+        _alterationControllers.Add(alterationController);
         OnAdded?.Invoke(alterationController);
     }
 
@@ -29,8 +24,12 @@ public class Alterations : MonoBehaviour
         AlterationController alterationController = Find(alteration, ownerId);
 
         if (alterationController != null) {
-            AlterationControllers.Remove(alterationController);
+            _alterationControllers.Remove(alterationController);
             OnRemoved?.Invoke(alterationController);
         }
+    }
+
+    public void Update() {
+        _alterationControllers.ForEach((AlterationController alterationController) => alterationController.Update());
     }
 }
