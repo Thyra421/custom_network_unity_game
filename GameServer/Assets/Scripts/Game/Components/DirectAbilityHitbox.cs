@@ -7,7 +7,7 @@ class DirectAbilityHitbox : MonoBehaviour
     private float _duration;
     private AbilityHit _hit;
 
-    public Character Character { get; private set; }
+    public Character Owner { get; private set; }
 
     private void Start() {
         if (_duration > 0)
@@ -17,16 +17,17 @@ class DirectAbilityHitbox : MonoBehaviour
     private void OnTriggerEnter(Collider other) {
         if (_collidersTouched.Contains(other))
             return;
-        Character otherCharacter = other.GetComponent<Character>();
 
-        if (otherCharacter != null && otherCharacter != Character && otherCharacter.Room == Character.Room) {
+        Character target = other.GetComponent<Character>();
+
+        if (target != null && target != Owner && target.Room == Owner.Room) {
             _collidersTouched.Add(other);
-            new CharacterDirectEffectController(otherCharacter, Character).Use(_hit);
+            target.DirectEffectController.Use(_hit, Owner);
         }
     }
 
-    public void Initialize(Character player, AbilityHit hit, float duration) {
-        Character = player;
+    public void Initialize(Character owner, AbilityHit hit, float duration) {
+        Owner = owner;
         _hit = hit;
         _duration = duration;
     }

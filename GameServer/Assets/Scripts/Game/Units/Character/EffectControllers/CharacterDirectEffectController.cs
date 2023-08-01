@@ -4,14 +4,14 @@ using UnityEngine;
 public class CharacterDirectEffectController : IDirectEffectController
 {
     private readonly Character _target;
-    private readonly Character _owner;
+    private Character _owner;
 
-    public CharacterDirectEffectController(Character target, Character owner) {
+    public CharacterDirectEffectController(Character target) {
         _target = target;
-        _owner = owner;
     }
 
-    public void Use(IUsable usable) {
+    public void Use(IUsable usable, Character owner) {
+        _owner = owner;
         foreach (Effect effect in usable.Effects)
             typeof(CharacterDirectEffectController).GetMethod(effect.MethodName).Invoke(this, effect.Parameters.Select((EffectParameter param) => param.ToObject).ToArray());
     }

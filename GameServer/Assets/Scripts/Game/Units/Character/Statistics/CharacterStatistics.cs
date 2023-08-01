@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 public class CharacterStatistics
@@ -6,16 +7,9 @@ public class CharacterStatistics
     private readonly Character _character;
     private readonly Statistic[] _statistics = new Statistic[Enum.GetValues(typeof(StatisticType)).Length];
 
-    private StatisticData[] Datas => _statistics.Select((Statistic s) => s.Data).ToArray();
+    public StatisticData[] Datas => _statistics.Select((Statistic s) => s.Data).ToArray();
 
-    private void OnStatisticsChanged(StatisticData[] oldStatistics) {
-        StatisticData[] newStatistics = Datas;
-
-        StatisticData[] difference = newStatistics.Where((StatisticData sd, int index) => sd.value != oldStatistics[index].value).ToArray();
-
-        if (_character is Player player && difference.Length > 0)
-            player.Client.TCP.Send(new MessageStatisticsChanged(difference));
-    }
+    private static StatisticData[] SelectDatas(List<Statistic> statistics) => statistics.Select((Statistic s) => s.Data).ToArray();
 
     public CharacterStatistics(Character character) {
         _character = character;
@@ -25,17 +19,8 @@ public class CharacterStatistics
 
     public Statistic Find(StatisticType type) => Array.Find(_statistics, (Statistic s) => s.Type == type);
 
-    public void OnAddedContinuousAlteration(ContinuousAlteration alteration) {
-        StatisticData[] oldStatistics = Datas;
-        new CharacterStatusEffectController(this).Add(alteration);
-
-        OnStatisticsChanged(oldStatistics);
-    }
-
-    public void OnRemovedContinuousAlteration(ContinuousAlteration alteration) {
-        StatisticData[] oldStatistics = Datas;
-        new CharacterStatusEffectController(this).Remove(alteration);
-
-        OnStatisticsChanged(oldStatistics);
+    public void OnStatisticsChanged(List<Statistic> modifiedStatistics) {
+        if (_character is Player player)
+            player.Client.TCP.Send(new MessageStatisticsChanged(SelectDatas(modifiedStatistics)));
     }
 }

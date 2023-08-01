@@ -9,23 +9,37 @@ public class CharacterAlterations : MonoBehaviour
 
     private AlterationController Find(Alteration alteration, Character owner) => _alterationControllers.Find((AlterationController ac) => ac.Alteration == alteration && ac.Owner == owner);
 
-    private void Add(Alteration alteration, Character owner) {
-        AlterationController newAlterationController;
+    private PeriodicAlterationController AddPeriodicAlteration(PeriodicAlteration periodicAlteration, Character owner) {
+        PeriodicAlterationController newPeriodicAlterationController = new PeriodicAlterationController(_character, owner, periodicAlteration);
+        _alterationControllers.Add(newPeriodicAlterationController);
 
-        if (alteration is PeriodicAlteration periodicAlteration)
-            newAlterationController = new PeriodicAlterationController(_character, owner, periodicAlteration);
-        else
-            newAlterationController = new AlterationController(_character, owner, alteration);
+        return newPeriodicAlterationController;
+    }
 
+    private AlterationController AddContinuousAlteration(ContinuousAlteration continuousAlteration, Character owner) {
+        AlterationController newAlterationController = new AlterationController(_character, owner, continuousAlteration);
         _alterationControllers.Add(newAlterationController);
 
-        if (_character is Player player)
-            player.Client.TCP.Send(new MessageAddAlteration(newAlterationController.Data));
-        if (owner is Player playerOwner && _character != owner)
-            playerOwner.Client.TCP.Send(new MessageAddAlteration(newAlterationController.Data));
+        List<Statistic> modifiedStatistics = new List<Statistic>();
+        _character.StatusEffectController.Add(continuousAlteration, modifiedStatistics);
+        if (modifiedStatistics.Count > 0)
+            _character.Statistics.OnStatisticsChanged(modifiedStatistics);
 
-        if (alteration is ContinuousAlteration continuousAlteration)
-            _character.Statistics.OnAddedContinuousAlteration(continuousAlteration);
+        return newAlterationController;
+    }
+
+    private void Add(Alteration alteration, Character owner) {
+        AlterationController alterationController = null;
+
+        if (alteration is PeriodicAlteration periodicAlteration)
+            alterationController = AddPeriodicAlteration(periodicAlteration, owner);
+        else if (alteration is ContinuousAlteration continuousAlteration)
+            alterationController = AddContinuousAlteration(continuousAlteration, owner);
+
+        if (_character is Player player)
+            player.Client.TCP.Send(new MessageAddAlteration(alterationController.Data));
+        if (owner is Player playerOwner && _character != owner)
+            playerOwner.Client.TCP.Send(new MessageAddAlteration(alterationController.Data));
     }
 
     private void Refresh(AlterationController alterationController) {
@@ -37,6 +51,14 @@ public class CharacterAlterations : MonoBehaviour
             playerOwner.Client.TCP.Send(new MessageRefreshAlteration(alterationController.Data));
     }
 
+    private void OnRemovedContinuousAlteration(ContinuousAlteration continuousAlteration) {
+        List<Statistic> modifiedStatistics = new List<Statistic>();
+
+        _character.StatusEffectController.Remove(continuousAlteration, modifiedStatistics);
+        if (modifiedStatistics.Count > 0)
+            _character.Statistics.OnStatisticsChanged(modifiedStatistics);
+    }
+
     private void Remove(AlterationController alterationController) {
         if (_character is Player player)
             player.Client.TCP.Send(new MessageRemoveAlteration(alterationController.Data));
@@ -46,7 +68,7 @@ public class CharacterAlterations : MonoBehaviour
         _alterationControllers.Remove(alterationController);
 
         if (alterationController.Alteration is ContinuousAlteration continuousAlteration)
-            _character.Statistics.OnRemovedContinuousAlteration(continuousAlteration);
+            OnRemovedContinuousAlteration(continuousAlteration);
     }
 
     private void FixedUpdate() {
@@ -77,6 +99,9 @@ public class CharacterAlterations : MonoBehaviour
             Add(alteration, owner);
     }
 
+    /// <summary>
+    /// Use this when editor serialization is not accessible.
+    /// </summary>
     public void Initialize(Character character) {
         _character = character;
     }

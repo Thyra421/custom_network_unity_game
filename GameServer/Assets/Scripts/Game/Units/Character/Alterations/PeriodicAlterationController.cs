@@ -19,7 +19,7 @@ public class PeriodicAlterationController : AlterationController
         base.Update();
         _tickTimer -= Time.deltaTime;
         if (TickReady) {
-            new CharacterDirectEffectController(Character, Owner).Use(Alteration as PeriodicAlteration);
+            Character.DirectEffectController.Use(Alteration as PeriodicAlteration, Owner);
             _tickTimer = (Alteration as PeriodicAlteration).IntervalDurationInSeconds;
         }
     }

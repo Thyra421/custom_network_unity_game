@@ -171,7 +171,8 @@ public class TCPClient
             Send(new MessageError(MessageErrorType.inCooldown));
             return;
         }
-        new CharacterDirectEffectController(Client.Player, Client.Player).Use(item);
+
+        Client.Player.DirectEffectController.Use(item, Client.Player);
     }
 
     public TCPClient(TcpClient tcpClient) {
