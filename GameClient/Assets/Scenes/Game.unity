@@ -2538,7 +2538,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _target: {fileID: 415597315}
-  _player: {fileID: 1084622879}
+  _player: {fileID: 1084622875}
   _zoomSpeed: 10
   _zoomIncrement: 5
   _rotationSpeed: 3
@@ -2571,6 +2571,7 @@ GameObject:
   - component: {fileID: 365963034}
   - component: {fileID: 365963035}
   - component: {fileID: 365963036}
+  - component: {fileID: 365963037}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2731,6 +2732,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba4e37283c580454abc9f9036a487284, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &365963037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 365963023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38a77812006229d4e8b7c221c1aa4b3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &399527543

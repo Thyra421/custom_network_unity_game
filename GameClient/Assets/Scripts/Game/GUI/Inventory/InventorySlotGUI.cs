@@ -14,7 +14,7 @@ public class InventorySlotGUI : MonoBehaviour, IDropAreaGUI, IDraggableGUI, IInt
     }
 
     public void Interact() {
-        if (Slot.Item == null)
+        if (Slot.Item == null || !StatesManager.Current.HasControl)
             return;
 
         if (Slot.Item is Weapon)

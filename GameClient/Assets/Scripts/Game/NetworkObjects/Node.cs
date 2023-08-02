@@ -15,7 +15,7 @@ public class Node : NetworkObject
         if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 100, allLayersExceptPlayer) && hit.transform == transform) {
             _outline.enabled = true;
 
-            if (Input.GetMouseButtonUp(1) && _isOnRange)
+            if (Input.GetMouseButtonUp(1) && _isOnRange && StatesManager.Current.HasControl)
                 TCPClient.Send(new MessagePickUp(Id));
         } else
             _outline.enabled = false;

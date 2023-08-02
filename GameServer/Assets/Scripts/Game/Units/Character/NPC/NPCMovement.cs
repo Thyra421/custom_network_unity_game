@@ -9,7 +9,9 @@ public class NPCMovement : MonoBehaviour
     private NavMeshAgent _navMeshAgent;
     private bool _isResting;
 
+    private bool CanMove => !_NPC.States.Find(StateType.Rooted).Value;
     private float MovementSpeed => _NPC.Statistics.Find(StatisticType.MovementSpeed).AlteredValue * _NPC.Area.Animal.MovementSpeed;
+
     public NPCMovementData Data => new NPCMovementData(_NPC.Id, _NPC.TransformData, _NPC.Animation.Data, _navMeshAgent.velocity.magnitude);
 
     private void Awake() {
@@ -24,8 +26,12 @@ public class NPCMovement : MonoBehaviour
     }
 
     private void Update() {
+        // TODO optimize
+
         if (_navMeshAgent.speed != MovementSpeed)
             _navMeshAgent.speed = MovementSpeed;
+
+        _navMeshAgent.isStopped = !CanMove;
 
         if (_NPC.Area.Animal.Mobile && !_isResting && Vector3.Distance(transform.position, _navMeshAgent.destination) <= 1) {
             _navMeshAgent.ResetPath();

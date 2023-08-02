@@ -301,7 +301,18 @@ public struct MessageStatesChanged
 
 public enum MessageErrorType
 {
-    inventoryFull, notEnoughInventorySpace, uniqueItem, objectNotFound, abilityNotFound, notEnoughResources, tooFarAway, cantWhileMoving, busy, inCooldown, cantDoThat
+    InventoryFull,
+    NotEnoughInventorySpace,
+    UniqueItem,
+    ObjectNotFound,
+    AbilityNotFound,
+    NotEnoughResources,
+    TooFarAway,
+    CantWhileMoving,
+    Busy,
+    InCooldown,
+    CantDoThat,
+    CantWhileStunned
 }
 
 public struct MessageError

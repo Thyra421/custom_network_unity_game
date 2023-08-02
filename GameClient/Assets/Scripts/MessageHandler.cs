@@ -30,6 +30,7 @@ public class MessageHandler : MonoBehaviour
     public delegate void OnMessageRefreshAlterationHandler(MessageRefreshAlteration messageRefreshAlteration);
     public delegate void OnMessageRemoveAlterationHandler(MessageRemoveAlteration messageRemoveAlteration);
     public delegate void OnMessageStatisticsChangedHandler(MessageStatisticsChanged messageStatisticsChanged);
+    public delegate void OnMessageStatesChangedHandler(MessageStatesChanged messageStatesChanged);
 
     public event OnMessageJoinedGameHandler OnMessageJoinedGameEvent;
     public event OnMessagePlayersMovedHandler OnMessagePlayersMovedEvent;
@@ -57,6 +58,7 @@ public class MessageHandler : MonoBehaviour
     public event OnMessageRefreshAlterationHandler OnMessageRefreshAlterationEvent;
     public event OnMessageRemoveAlterationHandler OnMessageRemoveAlterationEvent;
     public event OnMessageStatisticsChangedHandler OnMessageStatisticsChangedEvent;
+    public event OnMessageStatesChangedHandler OnMessageStatesChangedEvent;
 
     public OnMessageJoinedGameHandler OnMessageJoinedGame => OnMessageJoinedGameEvent;
     public OnMessagePlayersMovedHandler OnMessagePlayersMoved => OnMessagePlayersMovedEvent;
@@ -84,6 +86,7 @@ public class MessageHandler : MonoBehaviour
     public OnMessageRefreshAlterationHandler OnMessageRefreshAlteration => OnMessageRefreshAlterationEvent;
     public OnMessageRemoveAlterationHandler OnMessageRemoveAlteration => OnMessageRemoveAlterationEvent;
     public OnMessageStatisticsChangedHandler OnMessageStatisticsChanged => OnMessageStatisticsChangedEvent;
+    public OnMessageStatesChangedHandler OnMessageStatesChanged => OnMessageStatesChangedEvent;
 
     private void Awake() {
         if (Current == null)

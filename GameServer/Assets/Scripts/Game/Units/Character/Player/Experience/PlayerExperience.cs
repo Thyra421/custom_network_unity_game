@@ -24,6 +24,6 @@ public class PlayerExperience
             modifiedSkills.Add(skillExperience);
         }
 
-        _player.Client.TCP.Send(new MessageExperienceChanged(modifiedSkills.Select((SkillExperience se) => se.Data).ToArray()));
+        _player.Send(new MessageExperienceChanged(modifiedSkills.Select((SkillExperience se) => se.Data).ToArray()));
     }
 }

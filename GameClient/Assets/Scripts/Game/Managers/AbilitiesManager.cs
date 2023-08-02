@@ -17,7 +17,7 @@ public class AbilitiesManager : MonoBehaviour
     private void OnMessageUsedAbility(MessageUsedAbility messageUsedAbility) {
         Ability ability = Resources.Load<Ability>($"{SharedConfig.Current.AbilitiesPath}/{messageUsedAbility.abilityName}");
 
-        UseAbility(ability);
+        UsedAbility(ability);
     }
 
     private void Awake() {
@@ -51,7 +51,7 @@ public class AbilitiesManager : MonoBehaviour
         AbilitySlot5.Cooldown(cooldownAmount);
     }
 
-    public void UseAbility(Ability ability) {
+    public void UsedAbility(Ability ability) {
         if (AbilitySlot1.CurrentAbility == ability)
             AbilitySlot1.Used();
         if (AbilitySlot2.CurrentAbility == ability)

@@ -48,12 +48,12 @@ public class PlayerAbilities : MonoBehaviour
     public void UseAbility(Ability ability, Vector3 aimTarget) {
         // is allowed to use this ability?
         if ((_weapon == null || !_weapon.Abilities.Any((Ability a) => a == ability)) && ability != _extraAbility) {
-            _player.Client.TCP.Send(new MessageError(MessageErrorType.cantDoThat));
+            _player.Send(new MessageError(MessageErrorType.CantDoThat));
             return;
         }
         // ability is in coolown?
         if (_player.Cooldowns.Any(ability)) {
-            _player.Client.TCP.Send(new MessageError(MessageErrorType.inCooldown));
+            _player.Send(new MessageError(MessageErrorType.InCooldown));
             return;
         }
 
@@ -69,7 +69,7 @@ public class PlayerAbilities : MonoBehaviour
         } else if (ability is PersistentAOEAbility persistentAOEAbility)
             StartCoroutine(PersistentAOE(persistentAOEAbility, aimTarget));
 
-        _player.Client.TCP.Send(new MessageUsedAbility(ability.name));
+        _player.Send(new MessageUsedAbility(ability.name));
         _player.Room.PlayersManager.BroadcastTCP(new MessageTriggerAnimation(_player.CharacterData, ability.AnimationName));
     }
 
@@ -78,6 +78,6 @@ public class PlayerAbilities : MonoBehaviour
             _weapon = weapon;
             _player.Room.PlayersManager.BroadcastTCP(new MessageEquiped(_player.Id, _weapon.name));
         } else
-            _player.Client.TCP.Send(new MessageError(MessageErrorType.cantDoThat));
+            _player.Send(new MessageError(MessageErrorType.CantDoThat));
     }
 }

@@ -40,7 +40,7 @@ public class ActionBarSlotGUI : MonoBehaviour, IDropAreaGUI, IDraggableGUI
     }
 
     public void Use() {
-        if (_itemGUI.Item == null)
+        if (_itemGUI.Item == null || !StatesManager.Current.HasControl)
             return;
 
         if (_itemGUI.Item is Weapon)

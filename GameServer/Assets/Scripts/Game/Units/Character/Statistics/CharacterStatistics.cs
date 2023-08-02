@@ -21,6 +21,6 @@ public class CharacterStatistics
 
     public void OnStatisticsChanged(List<StatisticController> modifiedStatistics) {
         if (_character is Player player)
-            player.Client.TCP.Send(new MessageStatisticsChanged(SelectDatas(modifiedStatistics)));
+            player.Send(new MessageStatisticsChanged(SelectDatas(modifiedStatistics)));
     }
 }

@@ -135,6 +135,9 @@ public static class TCPClient
         } else if (messageType.Equals(typeof(MessageStatisticsChanged))) {
             MessageStatisticsChanged messageStatisticsChanged = Utils.Deserialize<MessageStatisticsChanged>(message);
             MessageHandler.Current.OnMessageStatisticsChanged?.Invoke(messageStatisticsChanged);
+        } else if (messageType.Equals(typeof(MessageStatesChanged))) {
+            MessageStatesChanged messageStatesChanged = Utils.Deserialize<MessageStatesChanged>(message);
+            MessageHandler.Current.OnMessageStatesChanged?.Invoke(messageStatesChanged);
         }
     }
 

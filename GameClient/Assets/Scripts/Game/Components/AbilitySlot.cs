@@ -11,6 +11,8 @@ public class AbilitySlot
     public event OnChangedHandler OnChanged;
     public event OnUpdatedHandler OnUpdated;
 
+    private bool IsOnCooldown => _currentCooldown > 0;
+
     private void Melee() {
         TCPClient.Send(new MessageUseAbility(CurrentAbility.name, Vector3Data.Zero));
     }
@@ -34,14 +36,14 @@ public class AbilitySlot
     }
 
     public void Cooldown(float amount) {
-        if (_currentCooldown > 0) {
+        if (IsOnCooldown) {
             _currentCooldown = Mathf.Clamp(_currentCooldown - amount, 0, CurrentAbility.CooldownInSeconds);
             OnUpdated?.Invoke(_currentCooldown);
         }
     }
 
     public void Use() {
-        if (CurrentAbility == null || _currentCooldown > 0)
+        if (CurrentAbility == null || IsOnCooldown || !StatesManager.Current.HasControl)
             return;
 
         if (CurrentAbility is DirectAbility) {

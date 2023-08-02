@@ -37,11 +37,11 @@ public class PlayerActivity : MonoBehaviour
 
     public void Cast(Action activity, string activityName, float castTimeInSeconds) {
         if (_player.Movement.IsMoving) {
-            _player.Client.TCP.Send(new MessageError(MessageErrorType.cantWhileMoving));
+            _player.Send(new MessageError(MessageErrorType.CantWhileMoving));
             return;
         }
         if (IsBusy) {
-            _player.Client.TCP.Send(new MessageError(MessageErrorType.busy));
+            _player.Send(new MessageError(MessageErrorType.Busy));
             return;
         }
 
@@ -54,11 +54,11 @@ public class PlayerActivity : MonoBehaviour
 
     public void Channel(Action activity, string activityName, int ticks, float intervalTimeInSeconds) {
         if (_player.Movement.IsMoving) {
-            _player.Client.TCP.Send(new MessageError(MessageErrorType.cantWhileMoving));
+            _player.Send(new MessageError(MessageErrorType.CantWhileMoving));
             return;
         }
         if (IsBusy) {
-            _player.Client.TCP.Send(new MessageError(MessageErrorType.busy));
+            _player.Send(new MessageError(MessageErrorType.Busy));
             return;
         }
 

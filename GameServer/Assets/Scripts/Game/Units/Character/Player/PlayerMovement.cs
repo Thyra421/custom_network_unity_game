@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     private float MovementSpeed => _player.Statistics.Find(StatisticType.MovementSpeed).AlteredValue * SharedConfig.Current.PlayerMovementSpeed;
     public PlayerMovementData Data => new PlayerMovementData(_player.Id, new TransformData(transform), _player.Animation.Data, MovementSpeed);
     public bool IsMoving => _elapsedTime <= .05f;
+    public bool CanMove => !_player.States.Find(StateType.Rooted).Value;
 
     private void Update() {
         _elapsedTime += Time.deltaTime;

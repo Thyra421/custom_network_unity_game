@@ -24,28 +24,28 @@ public class PlayerInventory
         // already has unique item?
         if (item.Property == ItemProperty.Unique && Any(item)) {
             if (send)
-                _player.Client.TCP.Send(new MessageError(MessageErrorType.uniqueItem));
+                _player.Send(new MessageError(MessageErrorType.UniqueItem));
             return false;
         }
         // is stackable and already has a stack?
         else if (item.Property == ItemProperty.Stackable && Any(item)) {
             Find(item).Add(amount);
             if (send)
-                _player.Client.TCP.Send(new MessageInventoryAdd(new ItemStackData(item.name, amount)));
+                _player.Send(new MessageInventoryAdd(new ItemStackData(item.name, amount)));
             return true;
         }
         // => not stackable
         // inventory full?
         else if (_stacks.Count >= SharedConfig.Current.InventorySpace) {
             if (send)
-                _player.Client.TCP.Send(new MessageError(MessageErrorType.inventoryFull));
+                _player.Send(new MessageError(MessageErrorType.InventoryFull));
             return false;
         }
         // doesn't have any?
         else {
             _stacks.Add(new InventoryItemStack(item, amount));
             if (send)
-                _player.Client.TCP.Send(new MessageInventoryAdd(new ItemStackData(item.name, amount)));
+                _player.Send(new MessageInventoryAdd(new ItemStackData(item.name, amount)));
             return true;
         }
     }
@@ -61,7 +61,7 @@ public class PlayerInventory
             if (stack.Amount <= 0)
                 _stacks.Remove(stack);
             if (send)
-                _player.Client.TCP.Send(new MessageInventoryRemove(new ItemStackData(item.name, amount)));
+                _player.Send(new MessageInventoryRemove(new ItemStackData(item.name, amount)));
         }
     }
 }

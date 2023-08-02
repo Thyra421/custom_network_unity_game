@@ -39,6 +39,12 @@ MonoBehaviour:
         _typeName: DamageType, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
           PublicKeyToken=null
         _parameterName: damageType
+    - _methodName: ApplyAlteration
+      _parameters:
+      - _parameterValue: Stun
+        _typeName: Alteration, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        _parameterName: alteration
   _prefab: {fileID: 6274588109753194328, guid: 4dcebb5fb6812b14a8ca9194dd975d97, type: 3}
   _delayInSeconds: 1
   _durationInSeconds: 0.5

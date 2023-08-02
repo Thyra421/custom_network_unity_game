@@ -20,17 +20,7 @@ public class CraftingPanelGUI : MonoBehaviour
     private TMP_Text _selectedItemTitleText;
     [SerializeField]
     private TMP_Text _selectedItemDescriptionText;
-    [SerializeField]
-    private Button _craftButton;
     private CraftingPattern _selectedPattern;
-
-    private void OnClickCraft() {
-        TCPClient.Send(new MessageCraft(_selectedPattern.name, _directoryName));
-    }
-
-    private void Awake() {
-        _craftButton.onClick.AddListener(OnClickCraft);
-    }
 
     private void Start() {
         CraftingPattern[] patterns = Resources.LoadAll<CraftingPattern>($"{SharedConfig.Current.CraftingPattersPath}/{_directoryName}");
@@ -39,7 +29,7 @@ public class CraftingPanelGUI : MonoBehaviour
             craftingItemSelectionGUI.Initialize(this, pattern);
         }
         SelectPattern(patterns[0]);
-    }    
+    }
 
     public void SelectPattern(CraftingPattern pattern) {
         if (pattern == _selectedPattern)
@@ -54,5 +44,10 @@ public class CraftingPanelGUI : MonoBehaviour
             craftingReagentGUI.Initialize(reagent.Item, reagent.Amount);
         }
         _selectedPattern = pattern;
+    }
+
+    public void OnClickCraft() {
+        if (StatesManager.Current.HasControl)
+            TCPClient.Send(new MessageCraft(_selectedPattern.name, _directoryName));
     }
 }

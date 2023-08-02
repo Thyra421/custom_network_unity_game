@@ -33,6 +33,8 @@ public class LocalPlayerMovement : CharacterMovement
     private bool IsGrounded => Physics.CheckSphere(_localPlayer.transform.position, .2f, _whatIsGround);
     private float MovementSpeed => StatisticsManager.Current.Find(StatisticType.MovementSpeed).Value * SharedConfig.Current.PlayerMovementSpeed;
 
+    public bool CanMove => !(StatesManager.Current.Find(StateType.Rooted).Value || StatesManager.Current.Find(StateType.Stunned).Value);
+
     private void MoveInDirection() {
         Vector3 movingDirection = _direction * _currentSpeed;
         movingDirection = _localPlayer.transform.rotation * movingDirection;
@@ -40,10 +42,9 @@ public class LocalPlayerMovement : CharacterMovement
 
         if (IsOnSlope) {
             Vector3 perpendicular = Vector3.Cross(_hitNormal, Vector3.up);
-            movingDirection = perpendicular.normalized * movingDirection.magnitude * (Vector3.Dot(perpendicular, movingDirection) > 0 ? 1 : -1) / 2;
+            movingDirection = (Vector3.Dot(perpendicular, movingDirection) > 0 ? 1 : -1) * movingDirection.magnitude * perpendicular.normalized / 2;
             Quaternion slopeRotation = Quaternion.AngleAxis(90, perpendicular);
             Vector3 slopeDirection = slopeRotation * _hitNormal;
-            Debug.DrawRay(_localPlayer.transform.position, slopeDirection);
             verticalDirection += slopeDirection * _verticalVelocity;
         }
 
@@ -59,8 +60,15 @@ public class LocalPlayerMovement : CharacterMovement
         //handled by camera
     }
 
-    public void OnControllerColliderHit(ControllerColliderHit hit) {
+    private void OnControllerColliderHit(ControllerColliderHit hit) {
         _hitNormal = hit.normal;
+    }
+
+    private void HandleJump() {
+        if (CanMove && IsGrounded && !IsOnSlope && Input.GetKeyDown(KeyCode.Space)) {
+            _verticalVelocity = Mathf.Sqrt(_jumpHeight * -2f * _gravityStrength);
+            _localPlayer.Animation.SetTrigger("Jump");
+        }
     }
 
     private void Update() {
@@ -69,14 +77,9 @@ public class LocalPlayerMovement : CharacterMovement
         Vector3 input = new Vector3(horizontalInput, 0, verticalInput);
         input.Normalize();
 
-        if (IsGrounded && !IsOnSlope) {
-            if (Input.GetKeyDown(KeyCode.Space)) {
-                _verticalVelocity = Mathf.Sqrt(_jumpHeight * -2f * _gravityStrength);
-                _localPlayer.Animation.SetTrigger("Jump");
-            }
-        }
+        HandleJump();
 
-        if (input.magnitude > 0) {
+        if (input.magnitude > 0 && CanMove) {
             _direction = input;
             _currentSpeed = Mathf.Clamp(_currentSpeed + _acceleration * Time.deltaTime, 0, MovementSpeed);
         } else {
@@ -87,7 +90,7 @@ public class LocalPlayerMovement : CharacterMovement
         }
 
         _localPlayer.Animation.SetBool("IsGrounded", IsGrounded);
-        _localPlayer.Animation.SetBool("IsRunning", input.magnitude > 0);
+        _localPlayer.Animation.SetBool("IsRunning", input.magnitude > 0 && CanMove);
         _localPlayer.Animation.SetFloat("X", _direction.x);
         _localPlayer.Animation.SetFloat("Y", _direction.z);
     }

@@ -27,6 +27,14 @@ public class Player : Character
     public PlayerData Data => new PlayerData(Id, TransformData, Animation.Data);
     public override CharacterHealth Health => _health;
     public override CharacterData CharacterData => new CharacterData(Id, CharacterType.Player);
+    public bool HasControl => !States.Find(StateType.Stunned).Value;
+
+    /// <summary>
+    /// Shortcut for Player.Client.TCP.Send(message).
+    /// </summary>
+    public void Send<T>(T message) {
+        Client.TCP.Send(message);
+    }
 
     protected override void Awake() {
         base.Awake();

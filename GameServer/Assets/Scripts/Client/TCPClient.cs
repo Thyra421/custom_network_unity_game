@@ -8,14 +8,16 @@ public class TCPClient
 {
     private readonly NetworkStream _stream;
 
+    private Player Player => Client.Player;
+    private Room Room => Player.Room;
+
     public Client Client { get; set; }
 
     private void OnDisconnect() {
         Debug.Log($"[TCPClient] disconnected");
 
-        Player player = Client.Player;
-        if (player != null)
-            player.Room.PlayersManager.RemovePlayer(player);
+        if (Player)
+            Room.PlayersManager.RemovePlayer(Player);
 
         API.Clients.Remove(Client);
     }
@@ -58,121 +60,143 @@ public class TCPClient
     }
 
     private void OnMessageUseAbility(MessageUseAbility messageUseAbility) {
+        if (!Player.HasControl) {
+            Send(new MessageError(MessageErrorType.CantWhileStunned));
+            return;
+        }
+
         Ability ability = Resources.Load<Ability>($"{SharedConfig.Current.AbilitiesPath}/{messageUseAbility.abilityName}");
 
         // ability exists?
         if (ability == null) {
-            Send(new MessageError(MessageErrorType.abilityNotFound));
+            Send(new MessageError(MessageErrorType.AbilityNotFound));
             return;
         }
-        Client.Player.Abilities.UseAbility(ability, messageUseAbility.aimTarget.ToVector3);
+        Player.Abilities.UseAbility(ability, messageUseAbility.aimTarget.ToVector3);
     }
 
     private void OnMessageEquip(MessageEquip messageEquip) {
+        if (!Player.HasControl) {
+            Send(new MessageError(MessageErrorType.CantWhileStunned));
+            return;
+        }
+
         Weapon weapon = Resources.Load<Weapon>($"{SharedConfig.Current.ItemsPath}/{messageEquip.weaponName}");
 
         // weapon exists?
         if (weapon == null) {
-            Send(new MessageError(MessageErrorType.objectNotFound));
+            Send(new MessageError(MessageErrorType.ObjectNotFound));
             return;
         }
         // has weapon in inventory?
-        if (!Client.Player.Inventory.Contains(weapon, 1)) {
-            Send(new MessageError(MessageErrorType.objectNotFound));
+        if (!Player.Inventory.Contains(weapon, 1)) {
+            Send(new MessageError(MessageErrorType.ObjectNotFound));
             return;
         }
-        Client.Player.Abilities.Equip(weapon);
+        Player.Abilities.Equip(weapon);
     }
 
     private void OnMessagePickUp(MessagePickUp messagePickUp) {
-        Player player = Client.Player;
-        Node node = player.Room.NodesManager.FindNode(messagePickUp.id);
+        if (!Player.HasControl) {
+            Send(new MessageError(MessageErrorType.CantWhileStunned));
+            return;
+        }
+
+        Node node = Room.NodesManager.FindNode(messagePickUp.id);
 
         // node exists and has loots remaining?
         if (node == null || node.RemainingLoots <= 0) {
-            Send(new MessageError(MessageErrorType.objectNotFound));
+            Send(new MessageError(MessageErrorType.ObjectNotFound));
             return;
         }
         // player close enough?
-        if (!node.GetComponentInChildren<Collider>().bounds.Intersects(player.GetComponent<Collider>().bounds)) {
-            Send(new MessageError(MessageErrorType.tooFarAway));
+        if (!node.GetComponentInChildren<Collider>().bounds.Intersects(Player.GetComponent<Collider>().bounds)) {
+            Send(new MessageError(MessageErrorType.TooFarAway));
             return;
         }
         // start channel
-        player.Activity.Channel(() => {
+        Player.Activity.Channel(() => {
             Item item = node.Loot;
             // can add to inventory?
-            if (player.Inventory.Add(item, 1, true)) {
+            if (Player.Inventory.Add(item, 1, true)) {
                 node.RemoveOne();
                 // node depleted?
                 if (node.RemainingLoots <= 0)
-                    player.Room.NodesManager.RemoveNode(node);
+                    Room.NodesManager.RemoveNode(node);
                 // gain experience
-                player.Experience.AddExperience(new ExperienceType[] { ExperienceType.General, node.DropSource.ExperienceType }, 5);
+                Player.Experience.AddExperience(new ExperienceType[] { ExperienceType.General, node.DropSource.ExperienceType }, 5);
             }
             // else cancel channeling
             else
-                player.Activity.Stop();
+                Player.Activity.Stop();
         }, "Picking up", node.RemainingLoots, .5f);
     }
 
     private void OnMessageCraft(MessageCraft messageCraft) {
+        if (!Player.HasControl) {
+            Send(new MessageError(MessageErrorType.CantWhileStunned));
+            return;
+        }
+
         CraftingPattern pattern = Resources.Load<CraftingPattern>($"{SharedConfig.Current.CraftingPattersPath}/{messageCraft.directoryName}/{messageCraft.patternName}");
 
         // pattern exists?
         if (pattern == null) {
-            Send(new MessageError(MessageErrorType.objectNotFound));
+            Send(new MessageError(MessageErrorType.ObjectNotFound));
             return;
         }
 
-        Player player = Client.Player;
-
         // has all reagents?
         foreach (ItemStack itemStack in pattern.Reagents)
-            if (!player.Inventory.Contains(itemStack.Item, itemStack.Amount)) {
-                Send(new MessageError(MessageErrorType.notEnoughResources));
+            if (!Player.Inventory.Contains(itemStack.Item, itemStack.Amount)) {
+                Send(new MessageError(MessageErrorType.NotEnoughResources));
                 return;
             }
         //start casting
-        player.Activity.Cast(() => {
+        Player.Activity.Cast(() => {
             // remove reagents from inventory
             foreach (ItemStack itemStack in pattern.Reagents)
-                player.Inventory.Remove(itemStack.Item, itemStack.Amount, false);
+                Player.Inventory.Remove(itemStack.Item, itemStack.Amount, false);
             // has enough space?
-            if (player.Inventory.Add(pattern.Outcome.Item, pattern.Outcome.Amount, false)) {
+            if (Player.Inventory.Add(pattern.Outcome.Item, pattern.Outcome.Amount, false)) {
                 Send(new MessageCrafted(pattern.Reagents.Select((ItemStack stack) => new ItemStackData(stack.Item.name, stack.Amount)).ToArray(), new ItemStackData(pattern.Outcome.Item.name, pattern.Outcome.Amount)));
                 // gain experience
-                player.Experience.AddExperience(new ExperienceType[] { ExperienceType.General, pattern.ExperienceType }, 20);
+                Player.Experience.AddExperience(new ExperienceType[] { ExperienceType.General, pattern.ExperienceType }, 20);
             }
             // else put the reagents back in the inventory
             else {
                 foreach (ItemStack itemStack in pattern.Reagents)
-                    Client.Player.Inventory.Add(itemStack.Item, itemStack.Amount, false);
-                Send(new MessageError(MessageErrorType.notEnoughInventorySpace));
+                    Player.Inventory.Add(itemStack.Item, itemStack.Amount, false);
+                Send(new MessageError(MessageErrorType.NotEnoughInventorySpace));
             }
         }, "Crafting", 1);
     }
 
     private void OnMessageUseItem(MessageUseItem messageUseItem) {
+        if (!Player.HasControl) {
+            Send(new MessageError(MessageErrorType.CantWhileStunned));
+            return;
+        }
+
         UsableItem item = Resources.Load<UsableItem>($"{SharedConfig.Current.ItemsPath}/{messageUseItem.itemName}");
 
         // item exists?
         if (item == null) {
-            Send(new MessageError(MessageErrorType.objectNotFound));
+            Send(new MessageError(MessageErrorType.ObjectNotFound));
             return;
         }
         // has item in inventory?
-        if (!Client.Player.Inventory.Contains(item, 1)) {
-            Send(new MessageError(MessageErrorType.objectNotFound));
+        if (!Player.Inventory.Contains(item, 1)) {
+            Send(new MessageError(MessageErrorType.ObjectNotFound));
             return;
         }
         // is in cooldown?
-        if (Client.Player.Cooldowns.Any(item)) {
-            Send(new MessageError(MessageErrorType.inCooldown));
+        if (Player.Cooldowns.Any(item)) {
+            Send(new MessageError(MessageErrorType.InCooldown));
             return;
         }
 
-        Client.Player.DirectEffectController.Use(item, Client.Player);
+        Player.DirectEffectController.Use(item, Player);
     }
 
     public TCPClient(TcpClient tcpClient) {

@@ -6,7 +6,7 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private Transform _target;
     [SerializeField]
-    private Transform _player;
+    private LocalPlayer _player;
     [Header("Movement")]
     [SerializeField]
     private float _zoomSpeed = 5f;
@@ -64,7 +64,7 @@ public class CameraController : MonoBehaviour
         if (IsBusy || !GUIManager.Current.IsBusy) {
             if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
                 IsBusy = true;
-            if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
+            else if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
                 IsBusy = false;
 
             float scroll = Input.GetAxis("Mouse ScrollWheel");
@@ -76,11 +76,12 @@ public class CameraController : MonoBehaviour
                 _yRotation -= Input.GetAxis("Mouse Y") * _rotationSpeed;
                 _yRotation = Mathf.Clamp(_yRotation, -60f, 60f);
             }
-            if (Input.GetMouseButton(1)) {
+            else if (Input.GetMouseButton(1)) {
                 _xRotation += Input.GetAxis("Mouse X") * _rotationSpeed;
                 _yRotation -= Input.GetAxis("Mouse Y") * _rotationSpeed;
                 _yRotation = Mathf.Clamp(_yRotation, -60f, 60f);
-                _player.rotation = Quaternion.Euler(0f, _xRotation, 0f);
+                if (_player.Movement.CanMove)
+                    _player.transform.rotation = Quaternion.Euler(0f, _xRotation, 0f);
             }
         }
 

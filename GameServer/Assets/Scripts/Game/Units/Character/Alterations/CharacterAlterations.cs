@@ -42,18 +42,18 @@ public class CharacterAlterations : MonoBehaviour
             alterationController = AddContinuousAlteration(continuousAlteration, owner);
 
         if (_character is Player player)
-            player.Client.TCP.Send(new MessageAddAlteration(alterationController.Data));
+            player.Send(new MessageAddAlteration(alterationController.Data));
         if (owner is Player playerOwner && _character != owner)
-            playerOwner.Client.TCP.Send(new MessageAddAlteration(alterationController.Data));
+            playerOwner.Send(new MessageAddAlteration(alterationController.Data));
     }
 
     private void Refresh(AlterationController alterationController) {
         alterationController.Refresh();
 
         if (_character is Player player)
-            player.Client.TCP.Send(new MessageRefreshAlteration(alterationController.Data));
+            player.Send(new MessageRefreshAlteration(alterationController.Data));
         if (alterationController.Owner is Player playerOwner && _character != alterationController.Owner)
-            playerOwner.Client.TCP.Send(new MessageRefreshAlteration(alterationController.Data));
+            playerOwner.Send(new MessageRefreshAlteration(alterationController.Data));
     }
 
     private void OnRemovedContinuousAlteration(ContinuousAlteration continuousAlteration) {
@@ -70,9 +70,9 @@ public class CharacterAlterations : MonoBehaviour
 
     private void Remove(AlterationController alterationController) {
         if (_character is Player player)
-            player.Client.TCP.Send(new MessageRemoveAlteration(alterationController.Data));
+            player.Send(new MessageRemoveAlteration(alterationController.Data));
         if (alterationController.Owner is Player playerOwner && _character != alterationController.Owner)
-            playerOwner.Client.TCP.Send(new MessageRemoveAlteration(alterationController.Data));
+            playerOwner.Send(new MessageRemoveAlteration(alterationController.Data));
 
         _alterationControllers.Remove(alterationController);
 

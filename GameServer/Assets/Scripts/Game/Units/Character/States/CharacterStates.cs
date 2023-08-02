@@ -21,6 +21,6 @@ public class CharacterStates
 
     public void OnStatesChanged(List<StateController> modifiedStates) {
         if (_character is Player player)
-            player.Client.TCP.Send(new MessageStatesChanged(SelectDatas(modifiedStates)));
+            player.Send(new MessageStatesChanged(SelectDatas(modifiedStates)));
     }
 }
