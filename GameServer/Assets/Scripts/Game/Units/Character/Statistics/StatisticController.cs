@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-public class Statistic
+public class StatisticController
 {
     public StatisticType Type { get; }
     public float BaseValue { get; } = 1;
@@ -22,7 +22,7 @@ public class Statistic
         }
     }
 
-    public Statistic(StatisticType type) {
+    public StatisticController(StatisticType type) {
         Type = type;
     }
 }

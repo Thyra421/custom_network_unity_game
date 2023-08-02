@@ -1,14 +1,14 @@
 ﻿using System;
 
-public interface IStatusEffectController
+public interface IPersistentEffectController
 {
     public void ModifyStatistic(StatisticType type, float value, bool percent);
 
-    public void Root();
+    public void StateStack(StateType type);
 }
 
 [Serializable]
 public class StatusEffect : Effect
 {
-    public StatusEffect() : base(typeof(IStatusEffectController).AssemblyQualifiedName) { }
+    public StatusEffect() : base(typeof(IPersistentEffectController).AssemblyQualifiedName) { }
 }

@@ -29,6 +29,8 @@ public class EffectParameter
                 return Resources.Load<Alteration>($"{SharedConfig.Current.AlterationsPath}/{_parameterValue}");
             else if (type == typeof(StatisticType))
                 return Enum.TryParse(_parameterValue, out StatisticType result) ? result : 0;
+            else if (type == typeof(StateType))
+                return Enum.TryParse(_parameterValue, out StateType result) ? result : 0;
             else if (type == typeof(DamageType))
                 return Enum.TryParse(_parameterValue, out DamageType result) ? result : 0;
             return null;
@@ -40,5 +42,5 @@ public class EffectParameter
     public EffectParameter(string typeName, string parameterName) {
         _typeName = typeName;
         _parameterName = parameterName;
-    }    
+    }
 }

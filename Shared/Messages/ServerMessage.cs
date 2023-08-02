@@ -290,6 +290,15 @@ public struct MessageStatisticsChanged
     }
 }
 
+public struct MessageStatesChanged
+{
+    public StateData[] stateDatas;
+
+    public MessageStatesChanged(StateData[] stateDatas) {
+        this.stateDatas = stateDatas;
+    }
+}
+
 public enum MessageErrorType
 {
     inventoryFull, notEnoughInventorySpace, uniqueItem, objectNotFound, abilityNotFound, notEnoughResources, tooFarAway, cantWhileMoving, busy, inCooldown, cantDoThat

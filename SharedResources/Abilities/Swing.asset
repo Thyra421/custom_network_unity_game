@@ -35,4 +35,10 @@ MonoBehaviour:
         _typeName: DamageType, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
           PublicKeyToken=null
         _parameterName: damageType
+    - _methodName: ApplyAlteration
+      _parameters:
+      - _parameterValue: Root
+        _typeName: Alteration, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        _parameterName: alteration
   _durationInSeconds: 0.5

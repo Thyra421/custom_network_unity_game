@@ -19,5 +19,8 @@ MonoBehaviour:
   _baseDurationInSeconds: 5
   _persistsAferDeath: 0
   _effects:
-  - _methodName: Root
-    _parameters: []
+  - _methodName: StateStack
+    _parameters:
+    - _parameterValue: Rooted
+      _typeName: StateType, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _parameterName: type

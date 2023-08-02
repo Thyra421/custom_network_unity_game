@@ -20,10 +20,15 @@ public class CharacterAlterations : MonoBehaviour
         AlterationController newAlterationController = new AlterationController(_character, owner, continuousAlteration);
         _alterationControllers.Add(newAlterationController);
 
-        List<Statistic> modifiedStatistics = new List<Statistic>();
-        _character.StatusEffectController.Add(continuousAlteration, modifiedStatistics);
+        List<StatisticController> modifiedStatistics = new List<StatisticController>();
+        List<StateController> modifiedStates = new List<StateController>();
+
+        _character.PersistentEffectController.Add(continuousAlteration, modifiedStatistics, modifiedStates);
+
         if (modifiedStatistics.Count > 0)
             _character.Statistics.OnStatisticsChanged(modifiedStatistics);
+        if (modifiedStates.Count > 0)
+            _character.States.OnStatesChanged(modifiedStates);
 
         return newAlterationController;
     }
@@ -52,11 +57,15 @@ public class CharacterAlterations : MonoBehaviour
     }
 
     private void OnRemovedContinuousAlteration(ContinuousAlteration continuousAlteration) {
-        List<Statistic> modifiedStatistics = new List<Statistic>();
+        List<StatisticController> modifiedStatistics = new List<StatisticController>();
+        List<StateController> modifiedStates = new List<StateController>();
 
-        _character.StatusEffectController.Remove(continuousAlteration, modifiedStatistics);
+        _character.PersistentEffectController.Remove(continuousAlteration, modifiedStatistics, modifiedStates);
+
         if (modifiedStatistics.Count > 0)
             _character.Statistics.OnStatisticsChanged(modifiedStatistics);
+        if (modifiedStates.Count > 0)
+            _character.States.OnStatesChanged(modifiedStates);
     }
 
     private void Remove(AlterationController alterationController) {
