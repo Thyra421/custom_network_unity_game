@@ -59,8 +59,8 @@ public class NPCsManager : MonoBehaviour
         else
             Destroy(gameObject);
 
-        MessageHandler.Current.OnMessageSpawnNPCsEvent += OnMessageSpawnNPCs;
-        MessageHandler.Current.OnMessageNPCsMovedEvent += OnMessageNPCsMoved;
+        TCPClient.MessageHandler.AddListener<MessageSpawnNPCs>(OnMessageSpawnNPCs);
+        UDPClient.MessageHandler.AddListener<MessageNPCsMoved>(OnMessageNPCsMoved);
     }
 
     public NPC Find(string id) => _NPCs.Find((NPC n) => n.Id == id);

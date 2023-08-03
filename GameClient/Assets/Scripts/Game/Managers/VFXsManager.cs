@@ -1,11 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VFXsManager : MonoBehaviour
+public class VFXsManager : Singleton<VFXsManager>
 {
     private readonly List<VFX> _VFXs = new List<VFX>();
-
-    public static VFXsManager Current { get; private set; }
 
     private VFX FindVFX(string id) => _VFXs.Find((VFX v) => v.Id == id);
 
@@ -40,14 +38,11 @@ public class VFXsManager : MonoBehaviour
         }
     }
 
-    private void Awake() {
-        if (Current == null)
-            Current = this;
-        else
-            Destroy(gameObject);
+    protected override void Awake() {
+        base.Awake();
 
-        MessageHandler.Current.OnMessageSpawnVFXEvent += OnMessageSpawnVFX;
-        MessageHandler.Current.OnMessageVFXsMovedEvent += OnMessageVFXsMoved;
-        MessageHandler.Current.OnMessageDespawnVFXEvent += OnMessageDespawnVFX;
+        UDPClient.MessageHandler.AddListener<MessageVFXsMoved>(OnMessageVFXsMoved);
+        TCPClient.MessageHandler.AddListener<MessageSpawnVFX>(OnMessageSpawnVFX);
+        TCPClient.MessageHandler.AddListener<MessageDespawnVFX>(OnMessageDespawnVFX);
     }
 }

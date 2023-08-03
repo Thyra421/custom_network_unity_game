@@ -6,11 +6,12 @@ using UnityEngine;
 
 public static class UDPClient
 {
-    public const string Address = "127.0.0.1";
     private static UdpClient _udpClient;
     private static bool _connected;
 
-    public static int Port { get; private set; } = 10000;
+    public static MessageHandler MessageHandler { get; } = new MessageHandler();
+    public static string Address { get; private set; }
+    public static int Port { get; private set; }
 
     private static async void Listen() {
         if (!_connected) {
@@ -31,19 +32,9 @@ public static class UDPClient
     }
 
     private static void OnMessage(string message) {
-        //Debug.Log($"[UDPServer] received {message}");
         Type messageType = Utils.GetMessageType(message);
-
-        if (messageType.Equals(typeof(MessagePlayersMoved))) {
-            MessagePlayersMoved messagePlayersMoved = Utils.Deserialize<MessagePlayersMoved>(message);
-            MessageHandler.Current.OnMessagePlayersMoved?.Invoke(messagePlayersMoved);
-        } else if (messageType.Equals(typeof(MessageNPCsMoved))) {
-            MessageNPCsMoved messageNPCsMoved = Utils.Deserialize<MessageNPCsMoved>(message);
-            MessageHandler.Current.OnMessageNPCsMoved?.Invoke(messageNPCsMoved);
-        } else if (messageType.Equals(typeof(MessageVFXsMoved))) {
-            MessageVFXsMoved messageVFXsMoved = Utils.Deserialize<MessageVFXsMoved>(message);
-            MessageHandler.Current.OnMessageVFXsMoved?.Invoke(messageVFXsMoved);
-        }
+        object obj = Utils.Deserialize(message, messageType);
+        MessageHandler.Invoke(obj, messageType);
     }
 
     private static void OnError() => Debug.LogWarning("[UDPClient] not connected");
@@ -57,6 +48,7 @@ public static class UDPClient
             _udpClient = new UdpClient();
             _udpClient.Connect(Config.Current.ServerAddress, Config.Current.ServerPortUDP);
             Port = ((IPEndPoint)_udpClient.Client.LocalEndPoint).Port;
+            Address = ((IPEndPoint)_udpClient.Client.LocalEndPoint).Address.ToString();
             _connected = true;
             OnConnected();
             Listen();

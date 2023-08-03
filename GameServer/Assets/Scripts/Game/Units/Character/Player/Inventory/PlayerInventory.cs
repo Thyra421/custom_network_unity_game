@@ -9,13 +9,28 @@ public class PlayerInventory
 
     private bool Any(Item item) => _stacks.Any((InventoryItemStack i) => i.Item == item);
 
-    private InventoryItemStack Find(Item item) => _stacks.Find((InventoryItemStack i) => i.Item == item);
+    private InventoryItemStack Find(Item item) => _stacks.Find((InventoryItemStack i) => i.Item == item);       
 
     public PlayerInventory(Player player) {
-        _player = player;
+        _player = player;        
     }
 
     public bool Contains(Item item, int amount) => Find(item)?.Amount >= amount;
+
+    public void Remove(Item item, int amount, bool send) {
+        Debug.Assert(amount >= 1, "Amount must be greater than 1.");
+        Debug.Assert(!(item.Property != ItemProperty.Stackable && amount != 1), "Can't remove more than 1 item if it's not stackable.");
+
+        InventoryItemStack stack = Find(item);
+
+        if (stack?.Amount >= amount) {
+            stack.Remove(amount);
+            if (stack.Amount <= 0)
+                _stacks.Remove(stack);
+            if (send)
+                _player.Send(new MessageInventoryRemove(new ItemStackData(item.name, amount)));
+        }
+    }
 
     public bool Add(Item item, int amount, bool send) {
         Debug.Assert(amount >= 1, "Amount must be greater than 1.");
@@ -50,18 +65,4 @@ public class PlayerInventory
         }
     }
 
-    public void Remove(Item item, int amount, bool send) {
-        Debug.Assert(amount >= 1, "Amount must be greater than 1.");
-        Debug.Assert(!(item.Property != ItemProperty.Stackable && amount != 1), "Can't remove more than 1 item if it's not stackable.");
-
-        InventoryItemStack stack = Find(item);
-
-        if (stack?.Amount >= amount) {
-            stack.Remove(amount);
-            if (stack.Amount <= 0)
-                _stacks.Remove(stack);
-            if (send)
-                _player.Send(new MessageInventoryRemove(new ItemStackData(item.name, amount)));
-        }
-    }
 }

@@ -26,34 +26,19 @@ public class UDPServer
         }
     }
 
-    private static void OnMessage(string message, Client client) {
-        Type messageType = Utils.GetMessageType(message);
-
-        if (messageType.Equals(typeof(MessageMovement))) {
-            MessageMovement messageMovement = Utils.Deserialize<MessageMovement>(message);
-            OnMessageMovement(messageMovement, client);
-        }
-    }
-
-    private static void OnMessageMovement(MessageMovement messageMovement, Client client) {
-        Player player = client.Player;
-
-        if (!(player.HasControl && player.Movement.CanMove))
-            return;
-
-        if (player.Activity.IsBusy && player.TransformData.position.Distance(messageMovement.newTransform.position) > .1f)
-            player.Activity.Stop();
-        player.Movement.SetMovement(messageMovement.newTransform);
-        player.Animation.SetAnimation(messageMovement.animation);
-    }
-
     private static void OnStarted() => Debug.Log($"[UDPServer] started");
 
     private static void OnListening() => Debug.Log($"[UDPServer] listening");
 
     private static void OnError() => Debug.Log("[UDPServer] not connected");
 
-    private static void OnConnectionFailed() => Debug.Log($"[UDPServer] connection failed");
+    private static void OnConnectionFailed() => Debug.Log($"[UDPServer] connection failed");    
+
+    private void OnMessage(string message, Client client) {
+        Type messageType = Utils.GetMessageType(message);
+        object obj = Utils.Deserialize(message, messageType);
+        client.UDP.MessageHandler.Invoke(obj, messageType);
+    }    
 
     public bool Start() {
         try {

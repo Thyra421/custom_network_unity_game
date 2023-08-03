@@ -64,9 +64,10 @@ public class InventoryManager : MonoBehaviour
         for (int i = 0; i < Slots.Length; i++)
             Slots[i] = new InventorySlot();
 
-        MessageHandler.Current.OnMessageInventoryAddEvent += OnMessageInventoryAdd;
-        MessageHandler.Current.OnMessageInventoryRemoveEvent += OnMessageInventoryRemove;
-        MessageHandler.Current.OnMessageCraftedEvent += OnMessageCrafted;
+
+        TCPClient.MessageHandler.AddListener<MessageInventoryAdd>(OnMessageInventoryAdd);
+        TCPClient.MessageHandler.AddListener<MessageInventoryRemove>(OnMessageInventoryRemove);
+        TCPClient.MessageHandler.AddListener<MessageCrafted>(OnMessageCrafted);
     }
 
     public void ADD_TEST_ITEM(Item i) {

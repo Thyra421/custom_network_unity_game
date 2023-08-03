@@ -9,15 +9,16 @@ public static class HTTPClient
     public delegate void OnFailureHandler();
 
     private static IEnumerator Get<T>(string route, OnSuccessHandler<T> onSuccess, OnFailureHandler onError = null) {
-        string url = $"{Config.Current.ServerAddress}:{Config.Current.ServerPortHTTP}/{route}";
-        UnityWebRequest uwr = UnityWebRequest.Get(url);
-        uwr.SendWebRequest();
-        while (!uwr.isDone)
-            yield return null;
-        if ((HttpStatusCode)uwr.responseCode == HttpStatusCode.OK)
-            onSuccess?.Invoke(Utils.Deserialize<T>(uwr.downloadHandler.text));
-        else
-            onError?.Invoke();
+        //string url = $"{Config.Current.ServerAddress}:{Config.Current.ServerPortHTTP}/{route}";
+        //UnityWebRequest uwr = UnityWebRequest.Get(url);
+        //uwr.SendWebRequest();
+        //while (!uwr.isDone)
+        //    yield return null;
+        //if ((HttpStatusCode)uwr.responseCode == HttpStatusCode.OK)
+        //    onSuccess?.Invoke(Utils.Deserialize(uwr.downloadHandler.text, typeof<T>));
+        //else
+        //    onError?.Invoke();
+        return null;
     }
 
     private static IEnumerator Post<T1, T2>(string route, T1 message, OnSuccessHandler<T2> onSuccess, OnFailureHandler onError = null) {

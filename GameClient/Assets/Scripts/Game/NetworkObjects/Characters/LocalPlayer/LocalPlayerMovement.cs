@@ -28,6 +28,7 @@ public class LocalPlayerMovement : CharacterMovement
     private float _verticalVelocity;
     private float _currentSpeed;
     private Vector3 _hitNormal;
+    private Vector3 _input;
 
     private bool IsOnSlope => Vector3.Angle(Vector3.up, _hitNormal) >= _characterController.slopeLimit;
     private bool IsGrounded => Physics.CheckSphere(_localPlayer.transform.position, .2f, _whatIsGround);
@@ -35,7 +36,8 @@ public class LocalPlayerMovement : CharacterMovement
 
     public bool CanMove => !(StatesManager.Current.Find(StateType.Rooted).Value || StatesManager.Current.Find(StateType.Stunned).Value);
 
-    private void MoveInDirection() {
+    protected override void Move() {
+        _verticalVelocity = Mathf.Clamp(_verticalVelocity + _gravityStrength * Time.deltaTime, _gravityStrength, Mathf.Infinity);
         Vector3 movingDirection = _direction * _currentSpeed;
         movingDirection = _localPlayer.transform.rotation * movingDirection;
         Vector3 verticalDirection = Vector3.up * _verticalVelocity;
@@ -51,17 +53,19 @@ public class LocalPlayerMovement : CharacterMovement
         _characterController.Move((movingDirection + verticalDirection) * Time.deltaTime);
     }
 
-    protected override void Move() {
-        _verticalVelocity = Mathf.Clamp(_verticalVelocity + _gravityStrength * Time.deltaTime, _gravityStrength, Mathf.Infinity);
-        MoveInDirection();
-    }
-
     protected override void Rotate() {
         //handled by camera
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit) {
         _hitNormal = hit.normal;
+    }
+
+    private void HandleAnimations() {
+        _localPlayer.Animation.SetBool("IsGrounded", IsGrounded);
+        _localPlayer.Animation.SetBool("IsRunning", _input.magnitude > 0 && CanMove);
+        _localPlayer.Animation.SetFloat("X", _direction.x);
+        _localPlayer.Animation.SetFloat("Y", _direction.z);
     }
 
     private void HandleJump() {
@@ -71,16 +75,14 @@ public class LocalPlayerMovement : CharacterMovement
         }
     }
 
-    private void Update() {
+    private void HandleMovement() {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
-        Vector3 input = new Vector3(horizontalInput, 0, verticalInput);
-        input.Normalize();
+        _input = new Vector3(horizontalInput, 0, verticalInput);
+        _input.Normalize();
 
-        HandleJump();
-
-        if (input.magnitude > 0 && CanMove) {
-            _direction = input;
+        if (_input.magnitude > 0 && CanMove) {
+            _direction = _input;
             _currentSpeed = Mathf.Clamp(_currentSpeed + _acceleration * Time.deltaTime, 0, MovementSpeed);
         } else {
             _direction = Vector3.Lerp(_direction, Vector3.zero, Time.deltaTime * _deceleration);
@@ -88,10 +90,11 @@ public class LocalPlayerMovement : CharacterMovement
             if (_currentSpeed < 1)
                 _direction = Vector3.zero;
         }
+    }
 
-        _localPlayer.Animation.SetBool("IsGrounded", IsGrounded);
-        _localPlayer.Animation.SetBool("IsRunning", input.magnitude > 0 && CanMove);
-        _localPlayer.Animation.SetFloat("X", _direction.x);
-        _localPlayer.Animation.SetFloat("Y", _direction.z);
+    private void Update() {
+        HandleJump();
+        HandleMovement();
+        HandleAnimations();
     }
 }

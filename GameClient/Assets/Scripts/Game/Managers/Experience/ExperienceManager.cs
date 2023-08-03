@@ -23,7 +23,7 @@ public class ExperienceManager : MonoBehaviour
         for (int i = 0; i < Enum.GetValues(typeof(ExperienceType)).Length; i++)
             _skillExperiences[i] = new SkillExperience((ExperienceType)Enum.GetValues(typeof(ExperienceType)).GetValue(i));
 
-        MessageHandler.Current.OnMessageExperienceChangedEvent += OnExperienceChanged;
+        TCPClient.MessageHandler.AddListener<MessageExperienceChanged>(OnExperienceChanged);
     }
 
     public SkillExperience Find(ExperienceType experienceType) => Array.Find(_skillExperiences, (SkillExperience se) => se.ExperienceType == experienceType);

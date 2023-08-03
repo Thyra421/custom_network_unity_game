@@ -26,7 +26,7 @@ public class AbilitiesManager : MonoBehaviour
         else
             Destroy(gameObject);
 
-        MessageHandler.Current.OnMessageUsedAbilityEvent += OnMessageUsedAbility;
+        TCPClient.MessageHandler.AddListener<MessageUsedAbility>(OnMessageUsedAbility);
     }
 
     private void Update() {

@@ -314,7 +314,6 @@ MonoBehaviour:
   _selectedItemGUI: {fileID: 0}
   _selectedItemTitleText: {fileID: 1663318671}
   _selectedItemDescriptionText: {fileID: 242066887}
-  _craftButton: {fileID: 1148957144}
 --- !u!114 &27594300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -976,7 +975,6 @@ MonoBehaviour:
   _selectedItemGUI: {fileID: 0}
   _selectedItemTitleText: {fileID: 1001967497}
   _selectedItemDescriptionText: {fileID: 1768060542}
-  _craftButton: {fileID: 1888197221}
 --- !u!114 &107909940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1309,7 +1307,6 @@ MonoBehaviour:
   _selectedItemGUI: {fileID: 0}
   _selectedItemTitleText: {fileID: 1428019337}
   _selectedItemDescriptionText: {fileID: 1531550033}
-  _craftButton: {fileID: 180546041}
 --- !u!114 &134647277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2561,7 +2558,6 @@ GameObject:
   m_Component:
   - component: {fileID: 365963024}
   - component: {fileID: 365963027}
-  - component: {fileID: 365963030}
   - component: {fileID: 365963026}
   - component: {fileID: 365963029}
   - component: {fileID: 365963028}
@@ -2643,18 +2639,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 63de63fa8618822428776cc03f6144c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &365963030
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 365963023}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 825aa7145608e3d45a5075c686c45b8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &365963031
@@ -14606,7 +14590,6 @@ MonoBehaviour:
   _selectedItemGUI: {fileID: 0}
   _selectedItemTitleText: {fileID: 2032596745}
   _selectedItemDescriptionText: {fileID: 1706329927}
-  _craftButton: {fileID: 528465550}
 --- !u!1 &2014721877
 GameObject:
   m_ObjectHideFlags: 0

@@ -82,13 +82,13 @@ public class CharactersManager : MonoBehaviour
     }
 
     private void Awake() {
-        MessageHandler.Current.OnMessageHealthChangedEvent += OnMessageHealthChanged;
-        MessageHandler.Current.OnMessageChannelEvent += OnMessageChannel;
-        MessageHandler.Current.OnMessageCastEvent += OnMessageCast;
-        MessageHandler.Current.OnMessageStopActivityEvent += OnMessageStopActivity;
-        MessageHandler.Current.OnMessageTriggerAnimationEvent += OnMessageTriggerAnimation;
-        MessageHandler.Current.OnMessageAddAlterationEvent += OnMessageAddAlteration;
-        MessageHandler.Current.OnMessageRefreshAlterationEvent += OnMessageRefreshAlteration;
-        MessageHandler.Current.OnMessageRemoveAlterationEvent += OnMessageRemoveAlteration;
+        TCPClient.MessageHandler.AddListener<MessageHealthChanged>(OnMessageHealthChanged);
+        TCPClient.MessageHandler.AddListener<MessageChannel>(OnMessageChannel);
+        TCPClient.MessageHandler.AddListener<MessageCast>(OnMessageCast);
+        TCPClient.MessageHandler.AddListener<MessageStopActivity>(OnMessageStopActivity);
+        TCPClient.MessageHandler.AddListener<MessageTriggerAnimation>(OnMessageTriggerAnimation);
+        TCPClient.MessageHandler.AddListener<MessageAddAlteration>(OnMessageAddAlteration);
+        TCPClient.MessageHandler.AddListener<MessageRefreshAlteration>(OnMessageRefreshAlteration);
+        TCPClient.MessageHandler.AddListener<MessageRemoveAlteration>(OnMessageRemoveAlteration);
     }
 }

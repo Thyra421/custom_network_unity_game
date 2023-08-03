@@ -49,8 +49,9 @@ public static class Utils
         if (type.IsEnum)
             return Enum.Parse(type, (value as string)!);
         if (!type.IsPrimitive && !type.Equals(typeof(string))) {
-            MethodInfo genericMethod = typeof(Utils).GetMethod(nameof(DeserializeSplitted), BindingFlags.Static | BindingFlags.NonPublic)!.MakeGenericMethod(type);
-            return genericMethod.Invoke(null, new object[] { (value as List<object>)! })!;
+            //MethodInfo genericMethod = typeof(Utils).GetMethod(nameof(DeserializeSplitted), BindingFlags.Static | BindingFlags.NonPublic)!.MakeGenericMethod(type);
+            //return genericMethod.Invoke(null, new object[] { ((value as List<object>)! })!;
+            return DeserializeSplitted(value as List<object>, type);
         } else if (type.Equals(typeof(bool)))
             return bool.Parse((value as string)!);
         else if (type.Equals(typeof(int)))
@@ -64,10 +65,9 @@ public static class Utils
         return value;
     }
 
-    private static T DeserializeSplitted<T>(List<object> splittedSerializedObject) {
-        Type objectType = typeof(T);
-        FieldInfo[] objectFields = objectType.GetFields();
-        object objectInstance = Activator.CreateInstance(objectType)!;
+    private static object DeserializeSplitted(List<object> splittedSerializedObject, Type type) {
+        FieldInfo[] objectFields = type.GetFields();
+        object objectInstance = Activator.CreateInstance(type)!;
 
         for (int i = 0; i < objectFields.Length; i++) {
             Type fieldType = objectFields[i].FieldType;
@@ -85,7 +85,7 @@ public static class Utils
             } else
                 objectFields[i].SetValue(objectInstance, DeserializeValue(value, fieldType));
         }
-        return (T)objectInstance;
+        return objectInstance;
     }
 
     /// <summary>
@@ -151,12 +151,12 @@ public static class Utils
         return str;
     }
 
-    public static T Deserialize<T>(string serializedObject) {
+    public static object Deserialize(string serializedObject, Type type) {
         int i = serializedObject.IndexOf('{');
         serializedObject = serializedObject[i..];
         List<object> splittedSerializedObject = new List<object>();
         Split(serializedObject, splittedSerializedObject);
-        return DeserializeSplitted<T>(splittedSerializedObject);
+        return DeserializeSplitted(splittedSerializedObject, type);
     }
 
     public static string Serialize<T>(T myStruct) {

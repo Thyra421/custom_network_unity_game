@@ -15,14 +15,10 @@ public class PlayerMovement : MonoBehaviour
         _elapsedTime += Time.deltaTime;
     }
 
-    public float Distance(Vector3Data otherPosition) {
-        return new Vector3Data(transform.position).Distance(otherPosition);
-    }
-
     public void SetMovement(TransformData transformData) {
         if (!transformData.position.Equals(new Vector3Data(transform.position)))
             _elapsedTime = 0;
         transform.position = transformData.position.ToVector3;
         transform.eulerAngles = transformData.rotation.ToVector3;
-    }
+    }    
 }

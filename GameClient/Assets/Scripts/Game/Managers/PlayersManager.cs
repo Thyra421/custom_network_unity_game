@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayersManager : MonoBehaviour
+public class PlayersManager : Singleton<PlayersManager>
 {
     [SerializeField]
     private GameObject _playerPrefab;
@@ -9,7 +9,6 @@ public class PlayersManager : MonoBehaviour
     private LocalPlayer _myPlayer;
     private readonly List<RemotePlayer> _remotePlayers = new List<RemotePlayer>();
 
-    public static PlayersManager Current { get; private set; }
     public LocalPlayer MyPlayer => _myPlayer;
 
     private void CreatePlayer(PlayerData data) {
@@ -71,17 +70,14 @@ public class PlayersManager : MonoBehaviour
         }
     }
 
-    private void Awake() {
-        if (Current == null)
-            Current = this;
-        else
-            Destroy(gameObject);
+    protected override void Awake() {
+        base.Awake();        
 
-        MessageHandler.Current.OnMessageGameStateEvent += OnMessageGameState;
-        MessageHandler.Current.OnMessageJoinedGameEvent += OnMessageJoinedGame;
-        MessageHandler.Current.OnMessageLeftGameEvent += OnMessageLeftGame;
-        MessageHandler.Current.OnMessagePlayersMovedEvent += OnMessagePlayersMoved;
-        MessageHandler.Current.OnMessageEquipedEvent += OnMessageEquiped;
+        TCPClient.MessageHandler.AddListener<MessageGameState>(OnMessageGameState);
+        TCPClient.MessageHandler.AddListener<MessageJoinedGame>(OnMessageJoinedGame);
+        TCPClient.MessageHandler.AddListener<MessageLeftGame>(OnMessageLeftGame);
+        UDPClient.MessageHandler.AddListener<MessagePlayersMoved>(OnMessagePlayersMoved);
+        TCPClient.MessageHandler.AddListener<MessageEquiped>(OnMessageEquiped);
     }
 
     public RemotePlayer Find(string id) => _remotePlayers.Find((RemotePlayer p) => p.Id == id);

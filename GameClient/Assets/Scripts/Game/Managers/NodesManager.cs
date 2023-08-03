@@ -45,7 +45,7 @@ public class NodesManager : MonoBehaviour
         else
             Destroy(gameObject);
 
-        MessageHandler.Current.OnMessageDespawnNodeEvent += OnMessageDespawnNode;
-        MessageHandler.Current.OnMessageSpawnNodesEvent += OnMessageSpawnNodes;
+        TCPClient.MessageHandler.AddListener<MessageSpawnNodes>(OnMessageSpawnNodes);
+        TCPClient.MessageHandler.AddListener<MessageDespawnNode>(OnMessageDespawnNode);
     }
 }
