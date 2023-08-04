@@ -192,9 +192,9 @@ public struct MessageSpawnNPCs
 
 public struct MessageNPCsMoved
 {
-    public NPCMovementData[] NPCs;
+    public UnitMovementData[] NPCs;
 
-    public MessageNPCsMoved(NPCMovementData[] NPCs) {
+    public MessageNPCsMoved(UnitMovementData[] NPCs) {
         this.NPCs = NPCs;
     }
 }
@@ -223,9 +223,9 @@ public struct MessageDespawnVFX
 
 public struct MessageVFXsMoved
 {
-    public VFXMovementData[] VFXs;
+    public UnitMovementData[] VFXs;
 
-    public MessageVFXsMoved(VFXMovementData[] vFXs) {
+    public MessageVFXsMoved(UnitMovementData[] vFXs) {
         VFXs = vFXs;
     }
 }

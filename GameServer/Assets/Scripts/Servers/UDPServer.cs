@@ -32,13 +32,13 @@ public class UDPServer
 
     private static void OnError() => Debug.Log("[UDPServer] not connected");
 
-    private static void OnConnectionFailed() => Debug.Log($"[UDPServer] connection failed");    
+    private static void OnConnectionFailed() => Debug.Log($"[UDPServer] connection failed");
 
     private void OnMessage(string message, Client client) {
         Type messageType = Utils.GetMessageType(message);
         object obj = Utils.Deserialize(message, messageType);
         client.UDP.MessageHandler.Invoke(obj, messageType);
-    }    
+    }
 
     public bool Start() {
         try {
@@ -52,13 +52,26 @@ public class UDPServer
         return true;
     }
 
+    /// <summary>
+    /// Prepares the message and sends it.
+    /// Use SendBytes for better performance when broadcasting the same message to several clients to avoid re-serializing it each time.
+    /// </summary>
     public void Send<T>(UDPClient recipient, T message) {
         if (_udpClient == null) {
             OnError();
             return;
         }
-        string serializedMessage = Utils.Serialize(message);
-        byte[] messageBytes = Encoding.UTF8.GetBytes(serializedMessage);
-        _udpClient.Send(messageBytes, messageBytes.Length, recipient.Address, recipient.Port);
+
+        byte[] messageBytes = Utils.GetBytes(message);
+        SendBytes(recipient, messageBytes);
+    }
+
+    public void SendBytes(UDPClient recipient, byte[] messageBytes) {
+        if (_udpClient == null) {
+            OnError();
+            return;
+        }
+
+        _udpClient.SendAsync(messageBytes, messageBytes.Length, recipient.Address, recipient.Port);
     }
 }

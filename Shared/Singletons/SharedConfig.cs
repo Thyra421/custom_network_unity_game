@@ -3,14 +3,17 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Config/SharedConfig")]
 public class SharedConfig : SingletonScriptableObject<SharedConfig>
 {
+    [Header("Network")]
     [SerializeField]
     private int _syncFrequency = 20;
     [SerializeField]
     private int _TCPBatchSize = 1024;
+    [Header("Gameplay")]
     [SerializeField]
     private int _inventorySpace = 30;
     [SerializeField]
     private float _playerMovementSpeed = 7;
+    [Header("Database")]
     [SerializeField]
     private string _prefabsPath = "Shared/Prefabs";
     [SerializeField]

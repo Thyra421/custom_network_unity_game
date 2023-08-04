@@ -9,13 +9,14 @@ public class NPC : Character
     public NPCArea Area { get; private set; }
     public NPCMovement Movement { get; private set; }
     public NPCAnimation Animation { get; private set; }
-    public NPCData Data => new NPCData(Id, TransformData, Animation.Data, Area.Animal.name);
+    public NPCData Data => new NPCData(Id, TransformData, Area.Animal.name);
     public override CharacterData CharacterData => new CharacterData(Id, CharacterType.NPC);
 
     public override CharacterHealth Health => _health;
 
     protected override void Awake() {
         base.Awake();
+
         Movement = GetComponent<NPCMovement>();
         Animation = GetComponent<NPCAnimation>();
         _alterations = GetComponent<CharacterAlterations>();

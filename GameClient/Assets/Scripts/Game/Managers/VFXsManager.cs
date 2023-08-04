@@ -30,11 +30,11 @@ public class VFXsManager : Singleton<VFXsManager>
     }
 
     private void OnMessageVFXsMoved(MessageVFXsMoved serverMessageVFXsMoved) {
-        foreach (VFXMovementData n in serverMessageVFXsMoved.VFXs) {
+        foreach (UnitMovementData n in serverMessageVFXsMoved.VFXs) {
             VFX VFX = FindVFX(n.id);
 
             if (VFX != null)
-                VFX.SetMovement(n.transformData.position.ToVector3, n.speed);
+                VFX.Movement.SetMovement(n.transform, n.movementSpeed);
         }
     }
 

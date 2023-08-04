@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class GUIManager : MonoBehaviour
+public class GUIManager : Singleton<GUIManager>
 {
     [SerializeField]
     private DragAndDropGUIManager _dragAndDropGUIManager;
@@ -10,15 +10,7 @@ public class GUIManager : MonoBehaviour
     private TooltipGUIManager _tooltipGUIManager;
     private bool _isOverUI;
 
-    public static GUIManager Current { get; private set; }
     public bool IsBusy => _isOverUI || _dragAndDropGUIManager.IsDragging;
-
-    private void Awake() {
-        if (Current == null)
-            Current = this;
-        else
-            Destroy(gameObject);
-    }
 
     private void Update() {
         if (CameraController.Current.IsBusy)

@@ -10,15 +10,6 @@ public class GameGUIManager : MonoBehaviour
     [SerializeField]
     private GameObject _inventoryPanel;
 
-    public static GameGUIManager Current { get; private set; }
-
-    private void Awake() {
-        if (Current == null)
-            Current = this;
-        else
-            Destroy(gameObject);
-    }
-
     private void CloseAll() {
         CloseCrafting();
         CloseInventory();

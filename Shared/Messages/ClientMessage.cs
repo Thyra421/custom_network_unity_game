@@ -35,6 +35,15 @@ public struct MessageMovement
     }
 }
 
+public struct MessageAnimation
+{
+    public AnimationData[] animations;
+
+    public MessageAnimation(AnimationData[] animations) {
+        this.animations = animations;
+    }
+}
+
 public struct MessageUseAbility
 {
     public string abilityName;

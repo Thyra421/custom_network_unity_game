@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CraftingGUIManager : MonoBehaviour
+public class CraftingGUIManager : Singleton<CraftingGUIManager>
 {
     [SerializeField]
     private GameObject _engineeringPanel;
@@ -12,15 +12,6 @@ public class CraftingGUIManager : MonoBehaviour
     private GameObject _cookingPanel;
     [SerializeField]
     private GameObject _craftingPanel;
-
-    public static CraftingGUIManager Current { get; private set; }
-
-    private void Awake() {
-        if (Current == null)
-            Current = this;
-        else
-            Destroy(gameObject);
-    }
 
     public void ToggleEngineering() {
         if (_engineeringPanel.activeSelf && _craftingPanel.activeSelf) {

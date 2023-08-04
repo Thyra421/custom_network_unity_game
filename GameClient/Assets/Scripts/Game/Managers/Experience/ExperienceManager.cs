@@ -1,11 +1,8 @@
 using System;
-using UnityEngine;
 
-public class ExperienceManager : MonoBehaviour
+public class ExperienceManager : Singleton<ExperienceManager>
 {
     private readonly SkillExperience[] _skillExperiences = new SkillExperience[Enum.GetValues(typeof(ExperienceType)).Length];
-
-    public static ExperienceManager Current { get; private set; }
 
     private void OnExperienceChanged(MessageExperienceChanged messageExperienceChanged) {
         foreach (ExperienceData ed in messageExperienceChanged.experiences) {
@@ -14,11 +11,8 @@ public class ExperienceManager : MonoBehaviour
         }
     }
 
-    private void Awake() {
-        if (Current == null)
-            Current = this;
-        else
-            Destroy(gameObject);
+    protected override void Awake() {
+        base.Awake();
 
         for (int i = 0; i < Enum.GetValues(typeof(ExperienceType)).Length; i++)
             _skillExperiences[i] = new SkillExperience((ExperienceType)Enum.GetValues(typeof(ExperienceType)).GetValue(i));

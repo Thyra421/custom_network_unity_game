@@ -16,4 +16,4 @@ MonoBehaviour:
   _UDPPort: 8080
   _address: 127.0.0.1
   _levelExperienceIncreaseMultiplicator: 1.3
-  _maxPlayersPerRoom: 5
+  _maxPlayersPerRoom: 30

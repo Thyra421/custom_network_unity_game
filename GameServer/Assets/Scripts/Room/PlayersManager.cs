@@ -12,9 +12,6 @@ public class PlayersManager : MonoBehaviour
     private readonly List<Player> _players = new List<Player>();
     private float _elapsedTime = 0f;
 
-    private delegate T CustomMessageHandler<T>(Player player);
-    private delegate bool SendConditionHandler<T>(T message);
-
     private Client[] Clients => _players.Select((Player player) => player.Client).ToArray();
 
     public PlayerData[] Datas => _players.Select((Player player) => player.Data).ToArray();
@@ -23,48 +20,46 @@ public class PlayersManager : MonoBehaviour
     private PlayerMovementData[] FindAllMovementDatas(Predicate<Player> condition) => _players.FindAll(condition).Select((Player player) => player.Movement.Data).ToArray();
 
     private void SyncMovement() {
-        _elapsedTime += Time.deltaTime;
-        if (_elapsedTime >= (1f / SharedConfig.Current.SyncFrequency)) {
-            _elapsedTime = 0f;
+        if (_players.Count < 2)
+            return;
 
-            if (_players.Count < 2)
-                return;
+        PlayerMovementData[] playerMovementDatas = FindAllMovementDatas((Player p) => p.UpdateTransformIfChanged());
 
-            PlayerMovementData[] playerMovementDatas = FindAllMovementDatas((Player p) => p.UpdateTransformIfChanged());
-
-            if (playerMovementDatas.Length > 0)
-                BroadcastUDP((Player player) => new MessagePlayersMoved(Array.FindAll(playerMovementDatas, (PlayerMovementData data) => data.id != player.Id).ToArray()), (MessagePlayersMoved message) => message.players.Length > 0);
-        }
-    }
-
-    private void BroadcastUDP<T>(CustomMessageHandler<T> customMessage, SendConditionHandler<T> condition) {
-        foreach (Client client in Clients) {
-            T message = customMessage(client.Player);
-
-            if (condition(message))
-                client.UDP?.Send(message);
-        }
+        if (playerMovementDatas.Length > 0)
+            BroadcastUDP(new MessagePlayersMoved(playerMovementDatas));
     }
 
     private void Update() {
-        SyncMovement();
+        _elapsedTime += Time.deltaTime;
+
+        if (_elapsedTime >= (1f / SharedConfig.Current.SyncFrequency)) {
+            _elapsedTime = 0f;
+
+            SyncMovement();
+        }
     }
 
     public void BroadcastUDP<T>(T message) {
+        byte[] bytes = Utils.GetBytes(message);
+
         foreach (Client client in Clients) {
-            client.UDP?.Send(message);
+            client.UDP.SendBytes(bytes);
         }
     }
 
     public void BroadcastTCP<T>(T message) {
+        byte[] bytes = Utils.GetBytesForTCP(message);
+
         foreach (Client client in Clients)
-            client.TCP.Send(message);
+            client.TCP.SendBytes(bytes);
     }
 
     public void BroadcastTCP<T>(T message, Player except) {
+        byte[] bytes = Utils.GetBytesForTCP(message);
+
         foreach (Client client in Clients)
             if (client != except.Client)
-                client.TCP.Send(message);
+                client.TCP.SendBytes(bytes);
     }
 
     public Player CreatePlayer(Client client) {

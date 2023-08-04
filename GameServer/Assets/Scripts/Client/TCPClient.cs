@@ -9,8 +9,8 @@ public class TCPClient
 
     private Player Player => Client.Player;
     private Room Room => Player.Room;
-    public MessageHandler MessageHandler { get; } = new MessageHandler();
 
+    public MessageHandler MessageHandler { get; } = new MessageHandler();
     public Client Client { get; set; }
 
     private void OnDisconnect() {
@@ -30,31 +30,7 @@ public class TCPClient
         MessageHandler.Invoke(obj, messageType);
     }
 
-    public TCPClient(TcpClient tcpClient) {
-        _stream = tcpClient.GetStream();
-        Listen();
-    }
-
-    public void Send<T>(T message) {
-        string serializedMessage = Utils.Serialize(message);
-        serializedMessage += '#';
-        byte[] bytes = Encoding.ASCII.GetBytes(serializedMessage);
-
-        int batchSize = SharedConfig.Current.TCPBatchSize;
-        int i = 0;
-
-        while (i < bytes.Length) {
-            if (i + batchSize >= bytes.Length) {
-                _stream.Write(bytes, i, bytes.Length - i);
-                i = bytes.Length;
-            } else {
-                _stream.Write(bytes, i, batchSize);
-                i += batchSize;
-            }
-        }
-    }
-
-    public async void Listen() {
+    private async void Listen() {
         byte[] bytes = new byte[SharedConfig.Current.TCPBatchSize];
         int i;
         string buffer = "";
@@ -75,6 +51,36 @@ public class TCPClient
             OnDisconnect();
         } catch (Exception e) {
             Debug.LogException(e);
+        }
+    }
+
+    public TCPClient(TcpClient tcpClient) {
+        _stream = tcpClient.GetStream();
+        Listen();
+    }
+
+    /// <summary>
+    /// Prepares the message and sends it.
+    /// Use SendBytes for better performance when broadcasting the same message to several clients to avoid re-serializing it each time.
+    /// </summary>
+    public void Send<T>(T message) {
+        byte[] bytes = Utils.GetBytesForTCP(message);
+
+        SendBytes(bytes);
+    }
+
+    public void SendBytes(byte[] bytes) {
+        int batchSize = SharedConfig.Current.TCPBatchSize;
+        int i = 0;
+
+        while (i < bytes.Length) {
+            if (i + batchSize >= bytes.Length) {
+                _stream.Write(bytes, i, bytes.Length - i);
+                i = bytes.Length;
+            } else {
+                _stream.Write(bytes, i, batchSize);
+                i += batchSize;
+            }
         }
     }
 }

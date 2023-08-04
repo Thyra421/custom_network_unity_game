@@ -1,13 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-class Reception : MonoBehaviour
+class Reception : Singleton<Reception>
 {
     [SerializeField]
     private GameObject _roomPrefab;
     private readonly List<Room> _rooms = new List<Room>();
-
-    public static Reception Current { get; private set; }
 
     private Player JoinRoom(Client client, Room room) {
         Player newPlayer = room.PlayersManager.CreatePlayer(client);
@@ -21,15 +19,10 @@ class Reception : MonoBehaviour
 
     private Player CreateAndJoinRoom(Client client) {
         Room newRoom = Instantiate(_roomPrefab).GetComponent<Room>();
-        _rooms.Add(newRoom);
-        return JoinRoom(client, newRoom);
-    }
 
-    private void Awake() {
-        if (Current == null)
-            Current = this;
-        else
-            Destroy(gameObject);
+        _rooms.Add(newRoom);
+
+        return JoinRoom(client, newRoom);
     }
 
     public void RemoveRoom(Room room) {
@@ -39,8 +32,10 @@ class Reception : MonoBehaviour
 
     public Player JoinOrCreateRoom(Client client) {
         Room room = _rooms.Find((Room r) => !r.PlayersManager.IsFull);
+
         if (room == null)
             return CreateAndJoinRoom(client);
+
         return JoinRoom(client, room);
     }
 }

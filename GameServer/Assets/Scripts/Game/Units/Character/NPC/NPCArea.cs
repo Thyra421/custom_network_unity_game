@@ -15,7 +15,9 @@ public class NPCArea : MonoBehaviour
     public Vector3 RandomPosition {
         get {
             Vector3 randomPoint = transform.position + Random.insideUnitSphere * _radius;
+
             NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, _radius, NavMesh.AllAreas);
+
             return hit.position;
         }
     }

@@ -9,7 +9,6 @@ public class TooltipGUIManager : MonoBehaviour
     private VerticalLayoutGroup _verticalLayoutGroup;
     private ITooltipHandlerGUI _currentTooltipHandler;
 
-    public static TooltipGUIManager Current { get; private set; }
     public ITooltipHandlerGUI Tooltip {
         get => _currentTooltipHandler;
         set {
@@ -37,13 +36,6 @@ public class TooltipGUIManager : MonoBehaviour
     private void Rebuild() {
         Clear();
         Build();
-    }
-
-    private void Awake() {
-        if (Current == null)
-            Current = this;
-        else
-            Destroy(gameObject);
     }
 
     private void LateUpdate() {

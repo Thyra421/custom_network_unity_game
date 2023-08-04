@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CameraController : MonoBehaviour
+public class CameraController : Singleton<CameraController>
 {
     [Header("Target")]
     [SerializeField]
@@ -37,7 +37,6 @@ public class CameraController : MonoBehaviour
     private float _desiredDistance;
     private Vector3 _internalOffset;
 
-    public static CameraController Current { get; private set; }
     public bool IsAiming { get; private set; }
     public bool IsBusy { get; private set; }
     public Vector3Data AimDirection => new Vector3Data(transform.forward);
@@ -46,13 +45,6 @@ public class CameraController : MonoBehaviour
     public delegate void OnEndZoomInAimHandler();
     public event OnStartZoomInAimHandler OnStartZoomInAim;
     public event OnEndZoomInAimHandler OnEndZoomInAim;
-
-    private void Awake() {
-        if (Current == null)
-            Current = this;
-        else
-            Destroy(gameObject);
-    }
 
     private void Start() {
         _offset = transform.position - _target.position;

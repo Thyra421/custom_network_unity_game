@@ -1,21 +1,13 @@
 using UnityEngine;
 
-public class GroundTargetManager : MonoBehaviour
+public class GroundTargetManager : Singleton<GroundTargetManager>
 {
     [SerializeField]
     private LayerMask _whatIsGround;
     private GameObject _currentTarget;
 
-    public static GroundTargetManager Current { get; private set; }
     public bool HasTarget => _currentTarget != null;
     public Vector3Data TargetPosition => new Vector3Data(_currentTarget.transform.position);
-
-    private void Awake() {
-        if (Current == null)
-            Current = this;
-        else
-            Destroy(gameObject);
-    }
 
     private void Update() {
         if (!HasTarget)

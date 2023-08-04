@@ -1,13 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCsManager : MonoBehaviour
+public class NPCsManager : Singleton<NPCsManager>
 {
     [SerializeField]
     private GameObject _nameplatePrefab;
     private readonly List<NPC> _NPCs = new List<NPC>();
-
-    public static NPCsManager Current { get; private set; }
 
     public delegate void OnAddedNPCHandler(NPC NPC);
     public delegate void OnRemovedNPCHandler(NPC NPC);
@@ -17,7 +15,7 @@ public class NPCsManager : MonoBehaviour
     private void CreateNPC(NPCData data) {
         Animal animal = Resources.Load<Animal>($"{SharedConfig.Current.NPCsPath}/{data.animalName}");
 
-        GameObject obj = Instantiate(animal.Prefab, data.transformData.position.ToVector3, Quaternion.Euler(data.transformData.rotation.ToVector3));
+        GameObject obj = Instantiate(animal.Prefab, data.transform.position.ToVector3, Quaternion.Euler(data.transform.rotation.ToVector3));
         NPC newNPC = obj.AddComponent<NPC>();
         newNPC.Initialize(data.id);
 
@@ -43,21 +41,17 @@ public class NPCsManager : MonoBehaviour
     }
 
     private void OnMessageNPCsMoved(MessageNPCsMoved messageNPCsMoved) {
-        foreach (NPCMovementData n in messageNPCsMoved.NPCs) {
-            NPC NPC = Find(n.id);
+        foreach (UnitMovementData umd in messageNPCsMoved.NPCs) {
+            NPC NPC = Find(umd.id);
 
             if (NPC != null) {
-                NPC.Movement.SetMovement(n.transformData, n.movementSpeed);
-                NPC.Animation.SetAnimation(n.NPCAnimationData);
+                NPC.Movement.SetMovement(umd.transform, umd.movementSpeed);
             }
         }
     }
 
-    private void Awake() {
-        if (Current == null)
-            Current = this;
-        else
-            Destroy(gameObject);
+    protected override void Awake() {
+        base.Awake();
 
         TCPClient.MessageHandler.AddListener<MessageSpawnNPCs>(OnMessageSpawnNPCs);
         UDPClient.MessageHandler.AddListener<MessageNPCsMoved>(OnMessageNPCsMoved);

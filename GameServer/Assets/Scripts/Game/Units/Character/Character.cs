@@ -13,6 +13,7 @@ public abstract class Character : Unit
     public CharacterDirectEffectController DirectEffectController { get; private set; }
     public abstract CharacterHealth Health { get; }
     public abstract CharacterData CharacterData { get; }
+    public bool HasControl => !States.Find(StateType.Stunned).Value;
 
     protected virtual void Awake() {
         Statistics = new CharacterStatistics(this);

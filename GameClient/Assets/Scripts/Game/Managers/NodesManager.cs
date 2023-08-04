@@ -5,8 +5,6 @@ public class NodesManager : MonoBehaviour
 {
     private readonly List<Node> _nodes = new List<Node>();
 
-    public static NodesManager Current { get; private set; }
-
     public delegate void OnAddedNodeHandler(Node node);
     public delegate void OnRemovedNodeHandler(Node node);
     private event OnAddedNodeHandler OnAddedNode;
@@ -40,11 +38,6 @@ public class NodesManager : MonoBehaviour
     }
 
     private void Awake() {
-        if (Current == null)
-            Current = this;
-        else
-            Destroy(gameObject);
-
         TCPClient.MessageHandler.AddListener<MessageSpawnNodes>(OnMessageSpawnNodes);
         TCPClient.MessageHandler.AddListener<MessageDespawnNode>(OnMessageDespawnNode);
     }

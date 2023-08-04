@@ -9,7 +9,6 @@ public class DragAndDropGUIManager : MonoBehaviour
     private IDraggableGUI _currentDraggable;
     private Vector3 _dragOrigin;
 
-    public static DragAndDropGUIManager Current { get; private set; }
     public bool IsDragging => _currentDraggable != null;
     public bool IsPreparedToDrag => _tempDraggable != null;
 
@@ -23,13 +22,6 @@ public class DragAndDropGUIManager : MonoBehaviour
         _tempDraggable = null;
         _currentDraggable = null;
         _dragIndicator.gameObject.SetActive(false);
-    }
-
-    private void Awake() {
-        if (Current == null)
-            Current = this;
-        else
-            Destroy(gameObject);
     }
 
     private void LateUpdate() {

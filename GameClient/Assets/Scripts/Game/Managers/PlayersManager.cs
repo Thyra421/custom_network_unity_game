@@ -43,8 +43,8 @@ public class PlayersManager : Singleton<PlayersManager>
             RemotePlayer remotePlayer = Find(pmd.id);
 
             if (remotePlayer != null) {
-                remotePlayer.Movement.SetMovement(pmd.transformData, pmd.movementSpeed);
-                remotePlayer.Animation.SetAnimation(pmd.animationData);
+                remotePlayer.Movement.SetMovement(pmd.transform, pmd.movementSpeed);
+                remotePlayer.Animation.SetAnimation(pmd.animation);
             }
         }
     }

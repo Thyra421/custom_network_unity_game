@@ -1,8 +1,7 @@
 using UnityEngine;
 
-public class AbilitiesManager : MonoBehaviour
+public class AbilitiesManager : Singleton<AbilitiesManager>
 {
-    public static AbilitiesManager Current { get; private set; }
     public AbilitySlot AbilitySlot1 { get; } = new AbilitySlot();
     public AbilitySlot AbilitySlot2 { get; } = new AbilitySlot();
     public AbilitySlot AbilitySlot3 { get; } = new AbilitySlot();
@@ -20,11 +19,8 @@ public class AbilitiesManager : MonoBehaviour
         UsedAbility(ability);
     }
 
-    private void Awake() {
-        if (Current == null)
-            Current = this;
-        else
-            Destroy(gameObject);
+    protected override void Awake() {
+        base.Awake();
 
         TCPClient.MessageHandler.AddListener<MessageUsedAbility>(OnMessageUsedAbility);
     }

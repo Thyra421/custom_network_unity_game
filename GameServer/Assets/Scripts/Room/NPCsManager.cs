@@ -13,18 +13,14 @@ public class NPCsManager : MonoBehaviour
 
     public NPCData[] Datas => _NPCs.Select((NPC npc) => npc.Data).ToArray();
 
-    private NPCMovementData[] FindAllMovementDatas(Predicate<NPC> condition) =>
+    private UnitMovementData[] FindAllMovementDatas(Predicate<NPC> condition) =>
         _NPCs.FindAll(condition).Select((NPC npc) => npc.Movement.Data).ToArray();
 
     private void SyncMovement() {
-        _elapsedTime += Time.deltaTime;
-        if (_elapsedTime >= (1f / SharedConfig.Current.SyncFrequency)) {
-            _elapsedTime = 0f;
+        UnitMovementData[] NPCDatas = FindAllMovementDatas((NPC n) => n.UpdateTransformIfChanged());
 
-            NPCMovementData[] NPCDatas = FindAllMovementDatas((NPC n) => n.UpdateTransformIfChanged());
-            if (NPCDatas.Length > 0)
-                _room.PlayersManager.BroadcastUDP(new MessageNPCsMoved(NPCDatas));
-        }
+        if (NPCDatas.Length > 0)
+            _room.PlayersManager.BroadcastUDP(new MessageNPCsMoved(NPCDatas));
     }
 
     private IEnumerator Respawn(NPCArea area) {
@@ -48,7 +44,13 @@ public class NPCsManager : MonoBehaviour
     }
 
     private void Update() {
-        SyncMovement();
+        _elapsedTime += Time.deltaTime;
+
+        if (_elapsedTime >= (1f / SharedConfig.Current.SyncFrequency)) {
+            _elapsedTime = 0f;
+
+            SyncMovement();
+        }
     }
 
     public NPC CreateNPC(NPCArea area) {

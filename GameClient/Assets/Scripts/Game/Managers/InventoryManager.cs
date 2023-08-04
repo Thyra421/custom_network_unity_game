@@ -2,9 +2,8 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-public class InventoryManager : MonoBehaviour
+public class InventoryManager : Singleton<InventoryManager>
 {
-    public static InventoryManager Current { get; private set; }
     public InventorySlot[] Slots { get; private set; }
 
     public delegate void OnChangedHandler(Item item, int amount);
@@ -54,11 +53,8 @@ public class InventoryManager : MonoBehaviour
         Add(outcome, messageCrafted.outcome.amount);
     }
 
-    private void Awake() {
-        if (Current == null)
-            Current = this;
-        else
-            Destroy(gameObject);
+    protected override void Awake() {
+        base.Awake();
 
         Slots = new InventorySlot[SharedConfig.Current.InventorySpace];
         for (int i = 0; i < Slots.Length; i++)

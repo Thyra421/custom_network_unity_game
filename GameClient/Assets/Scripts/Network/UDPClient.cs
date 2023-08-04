@@ -64,6 +64,6 @@ public static class UDPClient
         }
         string serializedMessage = Utils.Serialize(message);
         byte[] messageBytes = Encoding.UTF8.GetBytes(serializedMessage);
-        _udpClient.Send(messageBytes, messageBytes.Length);
+        _udpClient.SendAsync(messageBytes, messageBytes.Length);
     }
 }

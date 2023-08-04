@@ -1,7 +1,5 @@
 ﻿using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 [RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(PlayerAbilities))]
@@ -27,10 +25,9 @@ public class Player : Character
     public PlayerMovement Movement => _movement;
     public PlayerActivity Activity => _activity;
     public PlayerCooldowns Cooldowns => _cooldowns;
-    public PlayerData Data => new PlayerData(Id, TransformData, Animation.Data);
+    public PlayerData Data => new PlayerData(Id, TransformData);
     public override CharacterHealth Health => _health;
     public override CharacterData CharacterData => new CharacterData(Id, CharacterType.Player);
-    public bool HasControl => !States.Find(StateType.Stunned).Value;
 
     private void OnMessageMovement(MessageMovement messageMovement) {
         // has control and can move?

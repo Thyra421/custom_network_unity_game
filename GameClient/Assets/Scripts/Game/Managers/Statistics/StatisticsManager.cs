@@ -10,11 +10,10 @@ public class StatisticChangeListener
     public delegate void OnStatisticChangedHandler(float value);
 }
 
-public class StatisticsManager : MonoBehaviour
+public class StatisticsManager : Singleton<StatisticsManager>
 {
     private readonly Statistic[] _statistics = new Statistic[Enum.GetValues(typeof(StatisticType)).Length];
 
-    public static StatisticsManager Current { get; private set; }
     public Dictionary<StatisticType, StatisticChangeListener> OnStatisticChanged { get; } = new Dictionary<StatisticType, StatisticChangeListener>();
 
     private void OnMessageStatisticsChanged(MessageStatisticsChanged messageStatisticsChanged) {
@@ -24,12 +23,9 @@ public class StatisticsManager : MonoBehaviour
         }
     }
 
-    private void Awake() {
-        if (Current == null)
-            Current = this;
-        else
-            Destroy(gameObject);
-
+    protected override void Awake() {
+        base.Awake();
+        
         for (int i = 0; i < Enum.GetValues(typeof(StatisticType)).Length; i++) {
             StatisticType type = (StatisticType)Enum.GetValues(typeof(StatisticType)).GetValue(i);
 

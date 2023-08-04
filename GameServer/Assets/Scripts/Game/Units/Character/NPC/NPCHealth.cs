@@ -17,6 +17,7 @@ public class NPCHealth : CharacterHealth
         set {
             _maxHealth = value;
             _currentHealth = Mathf.Clamp(_currentHealth, 0, _maxHealth);
+
             NPC.Room.PlayersManager.BroadcastTCP(new MessageHealthChanged(NPC.CharacterData, CurrentHealth, MaxHealth));
         }
     }

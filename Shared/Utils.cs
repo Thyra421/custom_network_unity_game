@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text;
 
 public static class Utils
 {
@@ -49,8 +50,6 @@ public static class Utils
         if (type.IsEnum)
             return Enum.Parse(type, (value as string)!);
         if (!type.IsPrimitive && !type.Equals(typeof(string))) {
-            //MethodInfo genericMethod = typeof(Utils).GetMethod(nameof(DeserializeSplitted), BindingFlags.Static | BindingFlags.NonPublic)!.MakeGenericMethod(type);
-            //return genericMethod.Invoke(null, new object[] { ((value as List<object>)! })!;
             return DeserializeSplitted(value as List<object>, type);
         } else if (type.Equals(typeof(bool)))
             return bool.Parse((value as string)!);
@@ -113,6 +112,7 @@ public static class Utils
                 list.Add(l);
             } else if (s[i] == ';') {
                 if (currentValue.Length > 0 || s[i - 1] == ';')
+                    // TODO fix empty string
                     list.Add(currentValue);
                 currentValue = "";
             } else
@@ -168,5 +168,25 @@ public static class Utils
         int i = serializedObject.IndexOf('{');
         string messageTypeName = serializedObject[..i];
         return Type.GetType(messageTypeName);
+    }
+
+    /// <summary>
+    /// Converts the message to a byte array using custom serialization.
+    /// </summary>
+    public static byte[] GetBytes<T>(T message) {
+        string serializedMessage = Serialize(message);
+        byte[] bytes = Encoding.UTF8.GetBytes(serializedMessage);
+        return bytes;
+    }
+
+    /// <summary>
+    /// Converts the message to a byte array using custom serialization.
+    /// Adds the required formatting rules for a TCP message.
+    /// </summary>
+    public static byte[] GetBytesForTCP<T>(T message) {
+        string serializedMessage = Serialize(message);
+        serializedMessage += '#';
+        byte[] bytes = Encoding.UTF8.GetBytes(serializedMessage);
+        return bytes;
     }
 }
