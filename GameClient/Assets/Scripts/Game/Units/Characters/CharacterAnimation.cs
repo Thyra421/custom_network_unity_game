@@ -5,15 +5,15 @@ public abstract class CharacterAnimation
     [SerializeField]
     protected Animator _animator;
 
-    public void SetTrigger(string triggerName) {
+    public virtual void SetTrigger(string triggerName) {
         _animator.SetTrigger(triggerName);
     }
 
-    public void SetBool(string boolName, bool value) {
+    public virtual void SetBool(string boolName, bool value) {
         _animator.SetBool(boolName, value);
     }
 
-    public void SetFloat(string floatName, float value) {
+    public virtual void SetFloat(string floatName, float value) {
         _animator.SetFloat(floatName, value);
     }
 
