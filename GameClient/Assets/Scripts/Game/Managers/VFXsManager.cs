@@ -34,7 +34,7 @@ public class VFXsManager : Singleton<VFXsManager>
             VFX VFX = FindVFX(n.id);
 
             if (VFX != null)
-                VFX.Movement.SetMovement(n.transform, n.movementSpeed);
+                VFX.Movement.SetMovement(n.transform, n.timestamp);
         }
     }
 

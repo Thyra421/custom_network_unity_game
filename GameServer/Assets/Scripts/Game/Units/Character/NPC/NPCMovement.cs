@@ -12,7 +12,7 @@ public class NPCMovement : MonoBehaviour
     private bool CanMove => !_NPC.States.Find(StateType.Rooted).Value;
     private float MovementSpeed => _NPC.Statistics.Find(StatisticType.MovementSpeed).AlteredValue * _NPC.Area.Animal.MovementSpeed;
 
-    public UnitMovementData Data => new UnitMovementData(_NPC.Id, _NPC.TransformData, _navMeshAgent.velocity.magnitude);
+    public UnitMovementData Data => new UnitMovementData(_NPC.Id, _NPC.TransformData, Time.time);
 
     private void Awake() {
         _navMeshAgent = GetComponent<NavMeshAgent>();

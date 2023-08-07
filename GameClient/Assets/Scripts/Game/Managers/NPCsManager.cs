@@ -45,7 +45,7 @@ public class NPCsManager : Singleton<NPCsManager>
             NPC NPC = Find(umd.id);
 
             if (NPC != null)
-                NPC.Movement.SetMovement(umd.transform, umd.movementSpeed);
+                NPC.Movement.SetMovement(umd.transform, umd.timestamp);
         }
     }
 

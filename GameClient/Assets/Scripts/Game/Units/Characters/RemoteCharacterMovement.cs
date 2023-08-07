@@ -6,7 +6,7 @@ public class RemoteCharacterMovement : RemoteUnitMovement
     private Character _character;
 
     private bool IsGrounded => Physics.CheckSphere(transform.position, .1f, Config.Current.WhisIsGround);
-    private bool IsRunning => _distance > 0;
+    private bool IsRunning => _elapsedTime < .1f;
 
     protected override void Update() {
         base.Update();
