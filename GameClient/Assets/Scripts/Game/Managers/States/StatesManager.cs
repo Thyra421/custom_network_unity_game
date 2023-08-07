@@ -4,6 +4,8 @@ public class StatesManager : Singleton<StatesManager>
 {
     private readonly State[] _states = new State[Enum.GetValues(typeof(StateType)).Length];
 
+    // TODO add a message-handler-dictionary-like event listener
+
     public bool HasControl => !Find(StateType.Stunned).Value;
 
     private void OnMessageStatesChanged(MessageStatesChanged messageStatesChanged) {

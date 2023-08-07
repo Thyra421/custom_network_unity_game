@@ -253,7 +253,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animal: {fileID: 11400000, guid: 30e5b829dae316c42b54292cf2c7e11d, type: 2}
   _radius: 30
-  _amount: 5
+  _amount: 0
 --- !u!1 &10443830
 GameObject:
   m_ObjectHideFlags: 0
@@ -4946,7 +4946,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animal: {fileID: 11400000, guid: 30e5b829dae316c42b54292cf2c7e11d, type: 2}
   _radius: 40
-  _amount: 8
+  _amount: 0
 --- !u!1 &1679977753
 GameObject:
   m_ObjectHideFlags: 0
@@ -5304,7 +5304,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animal: {fileID: 11400000, guid: 30e5b829dae316c42b54292cf2c7e11d, type: 2}
   _radius: 20
-  _amount: 3
+  _amount: 0
 --- !u!1 &1932258254
 GameObject:
   m_ObjectHideFlags: 0

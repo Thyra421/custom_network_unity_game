@@ -16,7 +16,7 @@ MonoBehaviour:
   _cooldownInSeconds: 3
   _icon: {fileID: 21300000, guid: 0d852f5493cecf94a90183f3f83ce947, type: 3}
   _effects: []
-  _animationName: Attack
+  _animationName: Summon
   _description: Summon a meteor that deals massive damage on impact.
   _hit:
     _pierce: 0

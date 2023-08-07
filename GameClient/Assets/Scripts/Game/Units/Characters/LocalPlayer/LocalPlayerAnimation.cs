@@ -7,7 +7,6 @@ public class LocalPlayerAnimation : CharacterAnimation
 
     public override void SetBool(string boolName, bool value) {
         base.SetBool(boolName, value);
-
     }
 
     public override void SetFloat(string floatName, float value) {

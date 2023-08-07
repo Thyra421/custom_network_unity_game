@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class StatisticChangeListener
 {
@@ -13,6 +12,8 @@ public class StatisticChangeListener
 public class StatisticsManager : Singleton<StatisticsManager>
 {
     private readonly Statistic[] _statistics = new Statistic[Enum.GetValues(typeof(StatisticType)).Length];
+
+    // TODO add a message-handler-dictionary-like event listener
 
     public Dictionary<StatisticType, StatisticChangeListener> OnStatisticChanged { get; } = new Dictionary<StatisticType, StatisticChangeListener>();
 

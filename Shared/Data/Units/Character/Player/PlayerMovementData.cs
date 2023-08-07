@@ -5,10 +5,10 @@ public struct PlayerMovementData
     public float movementSpeed;
     public PlayerAnimationData animation;
 
-    public PlayerMovementData(string id, TransformData transform, float movementSpeed, PlayerAnimationData animationData) {
+    public PlayerMovementData(string id, TransformData transform, float movementSpeed, PlayerAnimationData animation) {
         this.id = id;
         this.transform = transform;
         this.movementSpeed = movementSpeed;
-        this.animation = animationData;
+        this.animation = animation;
     }
 }

@@ -44,9 +44,8 @@ public class NPCsManager : Singleton<NPCsManager>
         foreach (UnitMovementData umd in messageNPCsMoved.NPCs) {
             NPC NPC = Find(umd.id);
 
-            if (NPC != null) {
+            if (NPC != null)
                 NPC.Movement.SetMovement(umd.transform, umd.movementSpeed);
-            }
         }
     }
 

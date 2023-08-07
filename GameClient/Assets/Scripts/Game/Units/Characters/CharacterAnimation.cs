@@ -6,6 +6,9 @@ public abstract class CharacterAnimation
     protected Animator _animator;
 
     public virtual void SetTrigger(string triggerName) {
+        if (GetBool(triggerName))
+            return;
+
         _animator.SetTrigger(triggerName);
     }
 
@@ -23,6 +26,10 @@ public abstract class CharacterAnimation
 
     public float GetFloat(string floatName) {
         return _animator.GetFloat(floatName);
+    }
+
+    public void Play(string animationName) {
+        _animator.Play(animationName);
     }
 
     public void SetAnimations(AnimationData[] animations) {

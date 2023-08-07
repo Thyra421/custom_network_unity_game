@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d88019cb9b2eda442820e6bc2059b663
+guid: 0ca48fe5fbbe9ff43ac1b94fba2c985d
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -36,7 +36,7 @@ ModelImporter:
       name: Land
       takeName: mixamo.com
       internalID: -203655887218126122
-      firstFrame: 0
+      firstFrame: 8
       lastFrame: 32
       wrapMode: 0
       orientationOffsetY: 0

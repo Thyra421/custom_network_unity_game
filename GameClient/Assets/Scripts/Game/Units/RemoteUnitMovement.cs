@@ -5,27 +5,28 @@ public class RemoteUnitMovement : MonoBehaviour
     private Vector3 _destinationPosition;
     private Vector3 _destinationRotation;
     private float _movementSpeed;
+    protected float _distance;
 
-    protected void Move() {
-        Vector3 direction = (_destinationPosition - transform.position).normalized;
-        float distance = Vector3.Distance(transform.position, _destinationPosition);
+    private void Move() {
+        _distance = Vector3.Distance(transform.position, _destinationPosition);
 
-        if (distance <= _movementSpeed * Time.deltaTime || distance > 2)
+        Debugger.Current.debugText.text = _distance.ToString();
+        if (_distance <= _movementSpeed * Time.deltaTime || _distance > 10)
             transform.position = _destinationPosition;
         else
-            transform.position += _movementSpeed * Time.deltaTime * direction;
+            transform.position = Vector3.Lerp(transform.position, _destinationPosition, _movementSpeed * Time.deltaTime);
     }
 
-    protected void Rotate() {
+    private void Rotate() {
         transform.eulerAngles = _destinationRotation;
     }
 
-    private void Awake() {
+    protected virtual void Awake() {
         _destinationPosition = transform.position;
         _destinationRotation = transform.eulerAngles;
     }
 
-    private void FixedUpdate() {
+    protected virtual void Update() {
         Move();
         Rotate();
     }

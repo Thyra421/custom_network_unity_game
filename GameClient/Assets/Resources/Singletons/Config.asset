@@ -16,3 +16,6 @@ MonoBehaviour:
   _serverPortUDP: 8080
   _serverPortHTTP: 80
   _serverAddress: 127.0.0.1
+  _whatIsGround:
+    serializedVersion: 2
+    m_Bits: 3072

@@ -27,9 +27,6 @@ public class CameraController : Singleton<CameraController>
     private float _aimSpeed = 10f;
     [SerializeField]
     private float _aimZoomDistance = 2f;
-    [Header("Physics")]
-    [SerializeField]
-    private LayerMask _collisionLayers;
     private Vector3 _offset;
     private float _currentDistance;
     private float _xRotation = 0f;
@@ -88,7 +85,7 @@ public class CameraController : Singleton<CameraController>
         Quaternion rotation = Quaternion.Euler(_yRotation, _xRotation, 0f);
         Vector3 desiredPosition = _target.position + rotation * _offset * _currentDistance + _internalOffset;
 
-        if (Physics.Linecast(_target.position, desiredPosition, out RaycastHit hit, _collisionLayers))
+        if (Physics.Linecast(_target.position, desiredPosition, out RaycastHit hit, Config.Current.WhisIsGround))
             desiredPosition = hit.point + Vector3.up * .1f;
 
         transform.SetPositionAndRotation(desiredPosition, rotation);
