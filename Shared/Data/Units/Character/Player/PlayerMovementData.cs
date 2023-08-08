@@ -2,13 +2,13 @@ public struct PlayerMovementData
 {
     public string id;
     public TransformData transform;
-    public float timestamp;
+    public float movementSpeed;
     public PlayerAnimationData animation;
 
-    public PlayerMovementData(string id, TransformData transform, float timestamp, PlayerAnimationData animation) {
+    public PlayerMovementData(string id, TransformData transform, float movementSpeed, PlayerAnimationData animation) {
         this.id = id;
         this.transform = transform;
-        this.timestamp = timestamp;
+        this.movementSpeed = movementSpeed;
         this.animation = animation;
     }
 }

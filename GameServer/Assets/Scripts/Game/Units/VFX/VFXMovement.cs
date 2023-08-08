@@ -1,11 +1,9 @@
-using UnityEngine;
-
 public class VFXMovement
 {
     private float _speed;
 
     public VFX VFX { get; }
-    public UnitMovementData Data => new UnitMovementData(VFX.Id, new TransformData(VFX.transform), Time.time);
+    public UnitMovementData Data => new UnitMovementData(VFX.Id, new TransformData(VFX.transform), _speed);
 
     public VFXMovement(VFX vfx) {
         VFX = vfx;

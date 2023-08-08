@@ -5,8 +5,8 @@ public class RemoteCharacterMovement : RemoteUnitMovement
     [SerializeField]
     private Character _character;
 
-    private bool IsGrounded => Physics.CheckSphere(transform.position, .1f, Config.Current.WhisIsGround);
-    private bool IsRunning => _elapsedTime < .1f;
+    private bool IsGrounded => Physics.CheckSphere(transform.position, .2f, Config.Current.WhisIsGround);
+    private bool IsRunning => _isMoving;
 
     protected override void Update() {
         base.Update();
