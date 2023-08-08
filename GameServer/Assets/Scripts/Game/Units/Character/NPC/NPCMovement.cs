@@ -33,7 +33,10 @@ public class NPCMovement : MonoBehaviour
 
         _navMeshAgent.isStopped = !(CanMove && _NPC.HasControl);
 
-        if (_NPC.Area.Animal.Mobile && !_isResting && Vector3.Distance(transform.position, _navMeshAgent.destination) <= 1) {
+        if (_NPC.Target != null && _NPC.Target.transform.position != _navMeshAgent.destination)
+            _navMeshAgent.SetDestination(_NPC.Target.transform.position);
+
+        if (_NPC.Target == null && _NPC.Area.Animal.Mobile && !_isResting && Vector3.Distance(transform.position, _navMeshAgent.destination) <= 1) {
             _navMeshAgent.ResetPath();
             _NPC.Animation.SetBool("IsRunning", false);
             StartCoroutine(Rest());
