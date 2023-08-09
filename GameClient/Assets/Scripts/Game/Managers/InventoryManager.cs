@@ -61,9 +61,9 @@ public class InventoryManager : Singleton<InventoryManager>
             Slots[i] = new InventorySlot();
 
 
-        TCPClient.MessageHandler.AddListener<MessageInventoryAdd>(OnMessageInventoryAdd);
-        TCPClient.MessageHandler.AddListener<MessageInventoryRemove>(OnMessageInventoryRemove);
-        TCPClient.MessageHandler.AddListener<MessageCrafted>(OnMessageCrafted);
+        TCPClient.MessageRegistry.AddListener<MessageInventoryAdd>(OnMessageInventoryAdd);
+        TCPClient.MessageRegistry.AddListener<MessageInventoryRemove>(OnMessageInventoryRemove);
+        TCPClient.MessageRegistry.AddListener<MessageCrafted>(OnMessageCrafted);
     }
 
     public void ADD_TEST_ITEM(Item i) {

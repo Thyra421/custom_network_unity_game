@@ -7,11 +7,8 @@ public class PlayerAbilities : MonoBehaviour
     [SerializeField]
     private Player _player;
     [SerializeField]
-    private GameObject _meleePrefab;
     private Weapon _weapon;
     private Ability _extraAbility;
-
-    public GameObject MeleePrefab => _meleePrefab;
 
     private void Aimed(AimedAbility aimedAbility, Vector3 aimTarget) {
         GameObject obj = Instantiate(aimedAbility.Prefab, _player.transform.position + Vector3.up, Quaternion.identity);
@@ -23,7 +20,7 @@ public class PlayerAbilities : MonoBehaviour
     }
 
     private void Melee(MeleeAbility meleeAbility) {
-        DirectAbilityHitbox attackHitbox = Instantiate(_player.Abilities.MeleePrefab, _player.transform).GetComponent<DirectAbilityHitbox>();
+        DirectAbilityHitbox attackHitbox = Instantiate(Config.Current.MeleePrefab, _player.transform).GetComponent<DirectAbilityHitbox>();
         attackHitbox.Initialize(_player, meleeAbility.Hit, meleeAbility.DurationInSeconds);
     }
 

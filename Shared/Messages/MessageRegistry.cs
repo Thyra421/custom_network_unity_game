@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-public class MessageHandler
+public class MessageRegistry
 {
     private Dictionary<Type, MessageListener> _listeners = new Dictionary<Type, MessageListener>();
 

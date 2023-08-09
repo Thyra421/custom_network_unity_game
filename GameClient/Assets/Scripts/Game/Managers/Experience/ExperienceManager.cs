@@ -17,7 +17,7 @@ public class ExperienceManager : Singleton<ExperienceManager>
         for (int i = 0; i < Enum.GetValues(typeof(ExperienceType)).Length; i++)
             _skillExperiences[i] = new SkillExperience((ExperienceType)Enum.GetValues(typeof(ExperienceType)).GetValue(i));
 
-        TCPClient.MessageHandler.AddListener<MessageExperienceChanged>(OnExperienceChanged);
+        TCPClient.MessageRegistry.AddListener<MessageExperienceChanged>(OnExperienceChanged);
     }
 
     public SkillExperience Find(ExperienceType experienceType) => Array.Find(_skillExperiences, (SkillExperience se) => se.ExperienceType == experienceType);

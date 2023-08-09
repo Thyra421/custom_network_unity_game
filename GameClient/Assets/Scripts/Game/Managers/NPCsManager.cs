@@ -52,8 +52,8 @@ public class NPCsManager : Singleton<NPCsManager>
     protected override void Awake() {
         base.Awake();
 
-        TCPClient.MessageHandler.AddListener<MessageSpawnNPCs>(OnMessageSpawnNPCs);
-        UDPClient.MessageHandler.AddListener<MessageNPCsMoved>(OnMessageNPCsMoved);
+        TCPClient.MessageRegistry.AddListener<MessageSpawnNPCs>(OnMessageSpawnNPCs);
+        UDPClient.MessageRegistry.AddListener<MessageNPCsMoved>(OnMessageNPCsMoved);
     }
 
     public NPC Find(string id) => _NPCs.Find((NPC n) => n.Id == id);

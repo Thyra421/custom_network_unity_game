@@ -1,5 +1,6 @@
 public enum StateType
 {
+    Dashing,
     Rooted,
     Stunned,
     Immune

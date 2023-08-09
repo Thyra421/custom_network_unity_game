@@ -15,8 +15,8 @@ public class SceneLoader : MonoBehaviour
     }
 
     private static IEnumerator LoadSceneAsync(string sceneName) {
-        TCPClient.MessageHandler.Clear();
-        UDPClient.MessageHandler.Clear();
+        TCPClient.MessageRegistry.Clear();
+        UDPClient.MessageRegistry.Clear();
 
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
 

@@ -38,7 +38,7 @@ public class NodesManager : MonoBehaviour
     }
 
     private void Awake() {
-        TCPClient.MessageHandler.AddListener<MessageSpawnNodes>(OnMessageSpawnNodes);
-        TCPClient.MessageHandler.AddListener<MessageDespawnNode>(OnMessageDespawnNode);
+        TCPClient.MessageRegistry.AddListener<MessageSpawnNodes>(OnMessageSpawnNodes);
+        TCPClient.MessageRegistry.AddListener<MessageDespawnNode>(OnMessageDespawnNode);
     }
 }

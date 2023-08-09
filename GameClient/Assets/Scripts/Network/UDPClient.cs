@@ -9,7 +9,7 @@ public static class UDPClient
     private static UdpClient _udpClient;
     private static bool _connected;
 
-    public static MessageHandler MessageHandler { get; } = new MessageHandler();
+    public static MessageRegistry MessageRegistry { get; } = new MessageRegistry();
     public static string Address { get; private set; }
     public static int Port { get; private set; }
 
@@ -34,7 +34,7 @@ public static class UDPClient
     private static void OnMessage(string message) {
         Type messageType = Utils.GetMessageType(message);
         object obj = Utils.Deserialize(message, messageType);
-        MessageHandler.Invoke(obj, messageType);
+        MessageRegistry.Invoke(obj, messageType);
     }
 
     private static void OnError() => Debug.LogWarning("[UDPClient] not connected");

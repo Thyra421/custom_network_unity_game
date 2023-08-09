@@ -41,8 +41,8 @@ public class VFXsManager : Singleton<VFXsManager>
     protected override void Awake() {
         base.Awake();
 
-        UDPClient.MessageHandler.AddListener<MessageVFXsMoved>(OnMessageVFXsMoved);
-        TCPClient.MessageHandler.AddListener<MessageSpawnVFX>(OnMessageSpawnVFX);
-        TCPClient.MessageHandler.AddListener<MessageDespawnVFX>(OnMessageDespawnVFX);
+        UDPClient.MessageRegistry.AddListener<MessageVFXsMoved>(OnMessageVFXsMoved);
+        TCPClient.MessageRegistry.AddListener<MessageSpawnVFX>(OnMessageSpawnVFX);
+        TCPClient.MessageRegistry.AddListener<MessageDespawnVFX>(OnMessageDespawnVFX);
     }
 }

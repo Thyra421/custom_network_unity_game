@@ -82,13 +82,13 @@ public class CharactersManager : MonoBehaviour
     }
 
     private void Awake() {
-        TCPClient.MessageHandler.AddListener<MessageHealthChanged>(OnMessageHealthChanged);
-        TCPClient.MessageHandler.AddListener<MessageChannel>(OnMessageChannel);
-        TCPClient.MessageHandler.AddListener<MessageCast>(OnMessageCast);
-        TCPClient.MessageHandler.AddListener<MessageStopActivity>(OnMessageStopActivity);
-        TCPClient.MessageHandler.AddListener<MessageTriggerAnimation>(OnMessageTriggerAnimation);
-        TCPClient.MessageHandler.AddListener<MessageAddAlteration>(OnMessageAddAlteration);
-        TCPClient.MessageHandler.AddListener<MessageRefreshAlteration>(OnMessageRefreshAlteration);
-        TCPClient.MessageHandler.AddListener<MessageRemoveAlteration>(OnMessageRemoveAlteration);
+        TCPClient.MessageRegistry.AddListener<MessageHealthChanged>(OnMessageHealthChanged);
+        TCPClient.MessageRegistry.AddListener<MessageChannel>(OnMessageChannel);
+        TCPClient.MessageRegistry.AddListener<MessageCast>(OnMessageCast);
+        TCPClient.MessageRegistry.AddListener<MessageStopActivity>(OnMessageStopActivity);
+        TCPClient.MessageRegistry.AddListener<MessageTriggerAnimation>(OnMessageTriggerAnimation);
+        TCPClient.MessageRegistry.AddListener<MessageAddAlteration>(OnMessageAddAlteration);
+        TCPClient.MessageRegistry.AddListener<MessageRefreshAlteration>(OnMessageRefreshAlteration);
+        TCPClient.MessageRegistry.AddListener<MessageRemoveAlteration>(OnMessageRemoveAlteration);
     }
 }

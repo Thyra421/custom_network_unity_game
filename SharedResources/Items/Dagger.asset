@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e3e2bf53d4eaa41b4a0b3d5093ffbe, type: 3}
+  m_Name: Dagger
+  m_EditorClassIdentifier: 
+  _displayName: IceSword
+  _description: Swoooosh
+  _rarity: 1
+  _property: 1
+  _icon: {fileID: 21300000, guid: d31aa8412a4d374458c912d11686642a, type: 3}
+  _abilities:
+  - {fileID: 11400000, guid: eea032a0bf30a0e4b8ceecba6ac0f856, type: 2}
+  - {fileID: 11400000, guid: 01c0b49aa5c701d4f902753099cef5dc, type: 2}
+  - {fileID: 11400000, guid: 261d810978016804b8d51d796a972d99, type: 2}

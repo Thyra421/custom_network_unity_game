@@ -70,14 +70,19 @@ public class PlayersManager : Singleton<PlayersManager>
         }
     }
 
-    protected override void Awake() {
-        base.Awake();        
+    private void OnMessageDash(MessageDash messageDash) {
+        _myPlayer.Movement.ForceMovement(messageDash.destination.ToVector3, messageDash.speed);
+    }
 
-        TCPClient.MessageHandler.AddListener<MessageGameState>(OnMessageGameState);
-        TCPClient.MessageHandler.AddListener<MessageJoinedGame>(OnMessageJoinedGame);
-        TCPClient.MessageHandler.AddListener<MessageLeftGame>(OnMessageLeftGame);
-        UDPClient.MessageHandler.AddListener<MessagePlayersMoved>(OnMessagePlayersMoved);
-        TCPClient.MessageHandler.AddListener<MessageEquiped>(OnMessageEquiped);
+    protected override void Awake() {
+        base.Awake();
+
+        TCPClient.MessageRegistry.AddListener<MessageGameState>(OnMessageGameState);
+        TCPClient.MessageRegistry.AddListener<MessageJoinedGame>(OnMessageJoinedGame);
+        TCPClient.MessageRegistry.AddListener<MessageLeftGame>(OnMessageLeftGame);
+        UDPClient.MessageRegistry.AddListener<MessagePlayersMoved>(OnMessagePlayersMoved);
+        TCPClient.MessageRegistry.AddListener<MessageEquiped>(OnMessageEquiped);
+        TCPClient.MessageRegistry.AddListener<MessageDash>(OnMessageDash);
     }
 
     public RemotePlayer Find(string id) => _remotePlayers.Find((RemotePlayer p) => p.Id == id);

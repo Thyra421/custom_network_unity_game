@@ -12,6 +12,8 @@ public interface IDirectEffectController
     public void DealDamage(int amount, DamageType damageType);
 
     public void RestoreHealth(int amount);
+
+    public void Dash(float distance, float speed);
 }
 
 [Serializable]

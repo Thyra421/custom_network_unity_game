@@ -299,6 +299,17 @@ public struct MessageStatesChanged
     }
 }
 
+public struct MessageDash
+{
+    public Vector3Data destination;
+    public float speed;
+
+    public MessageDash(Vector3Data destination, float speed) {
+        this.destination = destination;
+        this.speed = speed;
+    }
+}
+
 public enum MessageErrorType
 {
     InventoryFull,

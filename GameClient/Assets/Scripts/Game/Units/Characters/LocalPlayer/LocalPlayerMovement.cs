@@ -31,6 +31,10 @@ public class LocalPlayerMovement : MonoBehaviour
     private bool _isGrounded;
     private bool _isRunning;
 
+    private bool _isControlledByServer;
+    private Vector3 _forcedDestination;
+    private float _forcedSpeed;
+
     private bool IsGrounded {
         get => _isGrounded;
         set {
@@ -51,7 +55,7 @@ public class LocalPlayerMovement : MonoBehaviour
 
     private float MovementSpeed => StatisticsManager.Current.Find(StatisticType.MovementSpeed).Value * SharedConfig.Current.PlayerMovementSpeed;
 
-    public bool CanMove => !(StatesManager.Current.Find(StateType.Rooted).Value || StatesManager.Current.Find(StateType.Stunned).Value);
+    public bool CanMove => !(StatesManager.Current.Find(StateType.Rooted).Value || StatesManager.Current.Find(StateType.Stunned).Value) && !_isControlledByServer;
 
     private void Move() {
         Vector3 movingDirection = _direction * _currentSpeed;
@@ -114,11 +118,28 @@ public class LocalPlayerMovement : MonoBehaviour
     }
 
     private void FixedUpdate() {
+        if (_isControlledByServer) {
+            if (Vector3.Distance(transform.position, _forcedDestination) <= .1f) {
+                _isControlledByServer = false;
+                _characterController.enabled = true;
+            } else {
+                transform.position = Vector3.Lerp(transform.position, _forcedDestination, _forcedSpeed * Time.deltaTime);
+                return;
+            }
+        }
+
         Move();
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit) {
         _hitNormal = hit.normal;
         _isOnSlope = Vector3.Angle(Vector3.up, _hitNormal) >= _characterController.slopeLimit;
+    }
+
+    public void ForceMovement(Vector3 destination, float speed) {
+        _characterController.enabled = false;
+        _isControlledByServer = true;
+        _forcedDestination = destination;
+        _forcedSpeed = speed;
     }
 }

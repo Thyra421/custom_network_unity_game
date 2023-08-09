@@ -23,6 +23,7 @@ public class NPCMovement : MonoBehaviour
     private void Start() {
         if (_NPC.Area.Animal.Mobile)
             SetRandomDestination();
+        
     }
 
     private void Update() {

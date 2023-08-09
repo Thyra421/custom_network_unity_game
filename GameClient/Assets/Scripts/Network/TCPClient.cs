@@ -7,7 +7,7 @@ public static class TCPClient
 {
     private static TcpClient _tcpClient;
 
-    public static MessageHandler MessageHandler { get; } = new MessageHandler();
+    public static MessageRegistry MessageRegistry { get; } = new MessageRegistry();
 
     private static async void Listen() {
         if (_tcpClient == null || !_tcpClient.Connected) {
@@ -69,7 +69,7 @@ public static class TCPClient
         Type messageType = Utils.GetMessageType(message);
         object obj = Utils.Deserialize(message, messageType);
 
-        MessageHandler.Invoke(obj, messageType);
+        MessageRegistry.Invoke(obj, messageType);
     }
 
     public static void Connect() {

@@ -19,7 +19,7 @@ public class StatesManager : Singleton<StatesManager>
         for (int i = 0; i < Enum.GetValues(typeof(StateType)).Length; i++)
             _states[i] = new State((StateType)Enum.GetValues(typeof(StateType)).GetValue(i));
 
-        TCPClient.MessageHandler.AddListener<MessageStatesChanged>(OnMessageStatesChanged);
+        TCPClient.MessageRegistry.AddListener<MessageStatesChanged>(OnMessageStatesChanged);
     }
 
     public State Find(StateType type) => Array.Find(_states, (State s) => s.Type == type);

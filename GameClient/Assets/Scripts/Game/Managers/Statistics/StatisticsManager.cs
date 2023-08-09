@@ -34,7 +34,7 @@ public class StatisticsManager : Singleton<StatisticsManager>
             OnStatisticChanged.Add(type, new StatisticChangeListener());
         }
 
-        TCPClient.MessageHandler.AddListener<MessageStatisticsChanged>(OnMessageStatisticsChanged);
+        TCPClient.MessageRegistry.AddListener<MessageStatisticsChanged>(OnMessageStatisticsChanged);
     }
 
     public Statistic Find(StatisticType type) => Array.Find(_statistics, (Statistic s) => s.Type == type);

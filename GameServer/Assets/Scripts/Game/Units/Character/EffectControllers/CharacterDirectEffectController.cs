@@ -1,5 +1,6 @@
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class CharacterDirectEffectController : IDirectEffectController
 {
@@ -33,5 +34,13 @@ public class CharacterDirectEffectController : IDirectEffectController
                 _target.Health.CurrentHealth -= Mathf.FloorToInt(amount * _owner.Statistics.Find(StatisticType.MagicDamage).AlteredValue);
                 break;
         }
+    }
+
+    public void Dash(float distance, float speed) {
+        Vector3 rawDestination = _owner.transform.position + _owner.transform.forward * distance;
+
+        if (NavMesh.SamplePosition(rawDestination, out NavMeshHit hit, distance, NavMesh.AllAreas))
+            if (_owner is Player player)
+                player.Send(new MessageDash(new Vector3Data(hit.position), speed));
     }
 }

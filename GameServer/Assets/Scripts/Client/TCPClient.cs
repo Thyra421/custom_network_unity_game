@@ -10,7 +10,7 @@ public class TCPClient
     private Player Player => Client.Player;
     private Room Room => Player.Room;
 
-    public MessageHandler MessageHandler { get; } = new MessageHandler();
+    public MessageRegistry MessageHandler { get; } = new MessageRegistry();
     public Client Client { get; set; }
 
     private void OnDisconnect() {

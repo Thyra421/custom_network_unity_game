@@ -22,7 +22,7 @@ public class AbilitiesManager : Singleton<AbilitiesManager>
     protected override void Awake() {
         base.Awake();
 
-        TCPClient.MessageHandler.AddListener<MessageUsedAbility>(OnMessageUsedAbility);
+        TCPClient.MessageRegistry.AddListener<MessageUsedAbility>(OnMessageUsedAbility);
     }
 
     private void Update() {
